@@ -15,7 +15,7 @@
   z-index: 1000;
 
   backdrop-filter: blur(12px);
-  background: rgba(243, 243, 241, 0.72);
+  background: rgba(255, 255, 255, 0.72);
 
   border-bottom: 1px solid rgba(79, 115, 95, 0.08);
 
@@ -41,10 +41,10 @@
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  min-height: 85px;
+  min-height: 65px;
   max-width: 1240px;
   margin: 0 auto;
-  padding: 36px 36px 0 45px;
+  padding: 0 36px 0 45px;
 }
 
 /* BRAND */
@@ -392,5 +392,5 @@
 }
 
 .constructor--header{
-  padding: 36px 20px 0 25px;
+  padding: 0 20px 0 25px;
 }
