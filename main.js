@@ -325,3 +325,27 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('scroll', updateActiveSection);
   window.addEventListener('resize', updateActiveSection);
 });
+//Блок модалки при клике на кнопку "Связаться с нами"
+const openButtons = document.querySelectorAll('[data-modal]');
+const modals = document.querySelectorAll('[data-modal-window]');
+
+openButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const id = btn.dataset.modal;
+    const modal = document.querySelector(`[data-modal-window="${id}"]`);
+
+    if (modal) {
+      modal.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+    }
+  });
+});
+
+modals.forEach(modal => {
+  modal.addEventListener('click', e => {
+    if (e.target.hasAttribute('data-modal-close')) {
+      modal.classList.remove('is-open');
+      document.body.style.overflow = '';
+    }
+  });
+});

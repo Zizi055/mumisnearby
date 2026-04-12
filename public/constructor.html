@@ -828,5 +828,33 @@
     </div>
   </div>
 </div>
+<!--Блок модалки при клике на кнопку Связаться с нами--->
+
+<div class="modal" data-modal-window="plan-3" aria-hidden="true">
+  <div class="modal__overlay" data-modal-close></div>
+
+  <div class="modal__dialog" role="dialog" aria-modal="true">
+    <button class="modal__close" type="button" data-modal-close>
+      ✕
+    </button>
+
+    <div class="modal__content">
+      <h3 class="modal__title">Связаться с нами</h3>
+      <p class="modal__text">
+        Оставьте заявку — мы свяжемся с вами и поможем собрать оптимальный тариф.
+      </p>
+
+      <form class="modal-form">
+        <input type="text" placeholder="Ваше имя" required />
+        <input type="email" placeholder="E-mail" required />
+        <input type="tel" placeholder="Телефон" />
+
+        <button type="submit" class="btn btn--primary">
+          Отправить заявку
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
   </body>
 </html>
