@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Заголовок страницы -->
+    <title>Мама рядом — помощь и поддержка для мам рядом с тобой</title>
+
+    <!-- SEO -->
+    <meta
+      name="description"
+      content="Мама рядом — помощь и поддержка для мам рядом с тобой."
+    />
+    <meta
+      name="keywords"
+      content="Мама рядом, помощь для мам, поддержка для мам, мамы рядом"
+    />
+
+    <!-- Open Graph  -->
+    <meta
+      property="og:title"
+      content="Мама рядом — помощь и поддержка для мам рядом с тобой"
+    />
+    <meta
+      property="og:description"
+      content="Мама рядом — помощь и поддержка для мам рядом с тобой."
+    />
+    <meta
+      property="og:image"
+      content="https://momnearby.com/img/og-preview.jpg"
+    />
+    <meta property="og:url" content="https://momnearby.com" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ru_RU" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="img/favicon.png" />
+    <link rel="apple-touch-icon" href="img/apple-touch-icon.png" />
+
+
+    <!-- Стили -->
+
+<script type="module" src="/main.js"></script>
+
+ <!-- ШРИФТ -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div class="wrapper">
+      <!--
+<header class="header">
+  <div class="container header__container">
+    
+    <nav class="header__nav">
+       <a href="index.html" class="header__link">Главная</a>
+      <a href="#" class="header__link">О проекте</a>
+      <a href="#" class="header__link">Преимущества</a>
+      <a href="#" class="header__link">Тарифы</a>
+      <a href="#" class="header__link">Как это работает</a>
+      <a href="/constructor.html" class="header__link">Конструктор</a>
+      <a href="#" class="header__link">FAQ</a>
+      <a href="#" class="header__link">Контакты</a>
+    </nav>
+
+    <div class="header__actions">
+      <p class="header__voices">Родные голоса</p>
+
+      <button class="header__profile">
+        <img src="/src/assets/img/index/account.svg" alt="Профиль">
+      </button>
+    </div>
+
+  </div>
+</header>
+-->
+<header class="header">
+  <div class="container header__container constructor--header">
+
+    <a href="index.html" class="header__brand">Родные голоса</a>
+
+    <nav class="header__nav" aria-label="Навигация по странице конструктора">
+      
+      <a href="#carcas" class="header__link">Каркас</a>
+      <a href="#modul" class="header__link">Модули</a>
+      <a href="#constructor-example" class="header__link">Пример</a>
+      <a href="#tarif" class="header__link">Собрать тариф</a>
+
+      <div class="header__dropdown">
+        <button
+          class="header__dropdown-trigger"
+          type="button"
+          aria-expanded="false"
+          aria-label="Открыть дополнительные разделы"
+        >
+          <span>Ещё</span>
+          <span class="header__dropdown-icon">⌄</span>
+        </button>
+
+        <div class="header__dropdown-menu">
+          <a href="index.html" class="header__dropdown-link">Главная</a>
+          <a href="#faq" class="header__dropdown-link">FAQ</a>
+               <a href="#forms" class="header__dropdown-link">Связаться с нами</a>
+          <a href="#contacts" class="header__dropdown-link">Контакты</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="header__actions">
+      <button class="header__profile" aria-label="Профиль">
+        <img src="/src/assets/img/index/account.svg" alt="" />
+      </button>
+
+      <button
+        class="header__burger"
+        type="button"
+        aria-label="Открыть меню"
+        aria-expanded="false"
+        aria-controls="mobileMenu"
+      >
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- MOBILE MENU -->
+  <div class="header__mobile" id="mobileMenu">
+    <div class="header__mobile-inner">
+      <a href="index.html" class="header__mobile-link">Главная</a>
+      <a href="#about" class="header__mobile-link">О проекте</a>
+      <a href="#advantages" class="header__mobile-link">Преимущества</a>
+      <a href="#tariffs" class="header__mobile-link">Тарифы</a>
+      <a href="#how-it-works" class="header__mobile-link">Как это работает</a>
+      <a href="/constructor.html" class="header__mobile-link">Конструктор</a>
+           <a href="#forms" class="header__dropdown-link">Связаться с нами</a>
+      <a href="#faq" class="header__mobile-link">FAQ</a>
+      <a href="#contacts" class="header__mobile-link">Контакты</a>
+    </div>
+  </div>
+</header>
+  <main>
+      
+<section class="constructor-page">
+  <div class="constructor-page__container">
+    <header class="constructor-hero">
+      <div class="constructor-hero__content">
+        <p class="constructor-hero__eyebrow">Гибкий тариф</p>
+
+        <h1 class="constructor-hero__title">
+          Конструктор «Собери сам»
+        </h1>
+
+        <p class="constructor-hero__text">
+          Тариф для тех, кому нужна не вся экосистема сразу, а только те функции,
+          которые действительно важны именно сейчас. Вы подключаете базу и
+          добавляете только нужные модули — без переплаты за лишнее.
+        </p>
+
+        <div class="constructor-hero__actions">
+          <button type="button" class="btn btn--primary btn--arrow">
+            <span class="btn__text">Собрать свой тариф</span>
+            <span class="btn__icon">
+              <svg viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                <path
+                  d="M5 13L13 5M13 5H7M13 5V11"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </span>
+          </button>
+
+          <a href="#constructor-example" class="constructor-hero__link">
+            Посмотреть пример сборки
+          </a>
+        </div>
+      </div>
+
+      <div class="constructor-hero__aside">
+        <div class="constructor-summary-card">
+          <p class="constructor-summary-card__label">Принцип тарифа</p>
+          <p class="constructor-summary-card__value">
+            Базовая годовая подписка «Каркас» + платные модули
+          </p>
+          <p class="constructor-summary-card__note">
+            Maximum Flexibility — максимум свободы в выборе.
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <section class="constructor-intro">
+      <div class="constructor-section-head">
+        <p class="constructor-section-head__eyebrow">Как это работает</p>
+        <h2 class="constructor-section-head__title">
+          Соберите тариф под свою реальную задачу
+        </h2>
+      </div>
+
+      <div class="constructor-steps">
+        <article class="constructor-step-card">
+          <span class="constructor-step-card__number">01</span>
+          <h3 class="constructor-step-card__title">Подключаете Каркас</h3>
+          <p class="constructor-step-card__text">
+            Это обязательная база, с которой начинается доступ к платформе:
+            голосовой двойник, личный кабинет и стартовая библиотека.
+          </p>
+        </article>
+
+        <article class="constructor-step-card">
+          <span class="constructor-step-card__number">02</span>
+          <h3 class="constructor-step-card__title">Добавляете модули</h3>
+          <p class="constructor-step-card__text">
+            Выбираете только те функции, которые нужны вашей семье сейчас:
+            расширенную библиотеку, терапевтические сценарии, свободную озвучку
+            или дополнительный голос.
+          </p>
+        </article>
+
+        <article class="constructor-step-card">
+          <span class="constructor-step-card__number">03</span>
+          <h3 class="constructor-step-card__title">Получаете свой формат</h3>
+          <p class="constructor-step-card__text">
+            В результате вы платите только за нужные возможности и получаете
+            персональный тариф без перегруженности и переплаты.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="constructor-base" id="carcas"> 
+      <div class="constructor-section-head constructor-section-head--row">
+        <div>
+          <p class="constructor-section-head__eyebrow">Основа тарифа</p>
+          <h2 class="constructor-section-head__title">Каркас</h2>
+        </div>
+
+        <div class="constructor-section-head__meta">
+          <span class="constructor-price-pill">6000 ₽ / год</span>
+        </div>
+      </div>
+
+      <article class="constructor-base-card">
+        <div class="constructor-base-card__main">
+          <p class="constructor-base-card__lead">
+            Базовая годовая подписка, обязательная для подключения.
+          </p>
+
+          <ul class="constructor-feature-list">
+            <li class="constructor-feature-list__item">
+              Создание 1 голосового двойника
+            </li>
+            <li class="constructor-feature-list__item">
+              Личный кабинет
+            </li>
+            <li class="constructor-feature-list__item">
+              15 сказок из базовой библиотеки
+            </li>
+          </ul>
+        </div>
+
+        <div class="constructor-base-card__side">
+          <p class="constructor-base-card__caption">Что даёт Каркас</p>
+          <p class="constructor-base-card__text">
+            Это фундамент, на который затем можно точечно наращивать нужные
+            функции. Если вам нужна только одна ключевая возможность, именно
+            эта модель даёт максимальную гибкость.
+          </p>
+        </div>
+      </article>
+    </section>
+
+    <section class="constructor-modules" id="modul">
+      <div class="constructor-section-head">
+        <p class="constructor-section-head__eyebrow">Модули</p>
+        <h2 class="constructor-section-head__title">
+          Добавьте только то, что действительно нужно
+        </h2>
+      </div>
+
+      <div class="constructor-modules__grid">
+        <article class="module-card">
+          <div class="module-card__top">
+            <div class="module-card__badge">Модуль 01</div>
+            <span class="constructor-price-pill constructor-price-pill--dark">
+              +16 900 ₽ / год
+            </span>
+          </div>
+
+          <h3 class="module-card__title">Библиотека</h3>
+          <p class="module-card__subtitle">
+            Доступ к библиотеке «Расширенная»
+          </p>
+
+          <p class="module-card__text">
+            Подходит тем, кто хочет получить больше сценариев, сказок и
+            аудиоматериалов для регулярного использования.
+          </p>
+
+          <ul class="module-card__list">
+            <li>100+ материалов</li>
+            <li>Расширенный контент для разных ситуаций</li>
+            <li>Больше выбора для ежедневного использования</li>
+          </ul>
+        </article>
+
+        <article class="module-card">
+          <div class="module-card__top">
+            <div class="module-card__badge">Модуль 02</div>
+            <span class="constructor-price-pill constructor-price-pill--dark">
+              +8 900 ₽ / год
+            </span>
+          </div>
+
+          <h3 class="module-card__title">Терапия</h3>
+          <p class="module-card__subtitle">
+            Доступ к 20 терапевтическим сценариям
+          </p>
+
+          <p class="module-card__text">
+            Для семей, которым важно мягко поддерживать ребёнка в период тревоги,
+            разлуки, перемен или эмоциональной нестабильности.
+          </p>
+
+          <ul class="module-card__list">
+            <li>20 терапевтических сценариев</li>
+            <li>Поддержка в сложных эмоциональных состояниях</li>
+            <li>Бережный формат взаимодействия</li>
+          </ul>
+        </article>
+
+        <article class="module-card">
+          <div class="module-card__top">
+            <div class="module-card__badge">Модуль 03</div>
+            <span class="constructor-price-pill constructor-price-pill--dark">
+              +20 900 ₽ / год
+            </span>
+          </div>
+
+          <h3 class="module-card__title">Свобода слова</h3>
+          <p class="module-card__subtitle">
+            Конструктор текстов с озвучкой любого текста
+          </p>
+
+          <p class="module-card__text">
+            Если вам важно не только пользоваться библиотекой, но и озвучивать
+            собственные тексты, этот модуль открывает максимальную свободу.
+          </p>
+
+          <ul class="module-card__list">
+            <li>Озвучка любого текста</li>
+            <li>До 10 000 знаков в месяц</li>
+            <li>Подходит для гибких и нестандартных сценариев</li>
+          </ul>
+        </article>
+
+        <article class="module-card">
+          <div class="module-card__top">
+            <div class="module-card__badge">Модуль 04</div>
+            <span class="constructor-price-pill constructor-price-pill--dark">
+              +3 990 ₽ / год
+            </span>
+          </div>
+
+          <h3 class="module-card__title">Семейный круг</h3>
+          <p class="module-card__subtitle">
+            Дополнительный голосовой двойник
+          </p>
+
+          <p class="module-card__text">
+            Подходит для случаев, когда в аудиосреде ребёнка важен не один голос,
+            а несколько близких и узнаваемых голосов семьи.
+          </p>
+
+          <ul class="module-card__list">
+            <li>+1 голосовой двойник</li>
+            <li>3 990 ₽ / год за каждого дополнительного</li>
+            <li>Гибкое расширение семейного сценария</li>
+          </ul>
+        </article>
+      </div>
+    </section>
+
+    <section class="constructor-logic">
+      <div class="constructor-section-head">
+        <p class="constructor-section-head__eyebrow">Кому это подходит</p>
+        <h2 class="constructor-section-head__title">
+          Когда конструктор особенно выгоден
+        </h2>
+      </div>
+
+      <div class="constructor-logic__grid">
+        <article class="constructor-note-card">
+          <h3 class="constructor-note-card__title">Если нужна одна ключевая функция</h3>
+          <p class="constructor-note-card__text">
+            Например, только терапевтические сценарии или только возможность
+            озвучивать собственные тексты без расширенного пакета.
+          </p>
+        </article>
+
+        <article class="constructor-note-card">
+          <h3 class="constructor-note-card__title">Если нужен гибкий бюджет</h3>
+          <p class="constructor-note-card__text">
+            Вы не покупаете избыточный пакет, а собираете только тот набор
+            возможностей, который соответствует вашей текущей ситуации.
+          </p>
+        </article>
+
+        <article class="constructor-note-card">
+          <h3 class="constructor-note-card__title">Если нужны точечные сценарии</h3>
+          <p class="constructor-note-card__text">
+            Такой формат особенно удобен для семей, где задача очень конкретная:
+            разлука, командировки, второй голос или персональные тексты.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <section class="constructor-example" id="constructor-example">
+      <div class="constructor-section-head constructor-section-head--row">
+        <div>
+          <p class="constructor-section-head__eyebrow">Пример сборки</p>
+          <h2 class="constructor-section-head__title">Для командировок</h2>
+        </div>
+
+        <div class="constructor-section-head__meta">
+          <span class="constructor-price-pill">22 800 ₽ / год</span>
+        </div>
+      </div>
+
+      <article class="constructor-example-card">
+        <div class="constructor-example-card__left">
+          <p class="constructor-example-card__lead">
+            Сценарий для семьи, где важно снизить тревогу разлуки и сохранить
+            ощущение близости даже на расстоянии.
+          </p>
+
+          <div class="constructor-example-card__composition">
+            <div class="constructor-example-row">
+              <span class="constructor-example-row__label">Каркас</span>
+              <span class="constructor-example-row__value">6000 ₽</span>
+            </div>
+
+            <div class="constructor-example-row">
+              <span class="constructor-example-row__label">
+                Модуль «Терапия»
+              </span>
+              <span class="constructor-example-row__value">8900 ₽</span>
+            </div>
+
+            <div class="constructor-example-row">
+              <span class="constructor-example-row__label">
+                Модуль «Семейный круг»
+              </span>
+              <span class="constructor-example-row__value">3990 ₽</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="constructor-example-card__right">
+          <div class="constructor-result-card">
+            <p class="constructor-result-card__label">Итоговая сборка</p>
+            <p class="constructor-result-card__price">22 800 ₽ / год</p>
+            <p class="constructor-result-card__text">
+              Выгоднее, чем пакет «Сказочник», но уже точечно заточено под задачу
+              разлуки и эмоциональной поддержки.
+            </p>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="constructor-cta" id="tarif">
+      <div class="constructor-cta__content">
+        <p class="constructor-cta__eyebrow">Персональный сценарий</p>
+
+        <h2 class="constructor-cta__title">
+          Соберите свой тариф под ритм вашей семьи
+        </h2>
+
+        <p class="constructor-cta__text">
+          Начните с Каркаса и добавьте только те модули, которые действительно
+          решают вашу задачу сегодня.
+        </p>
+      </div>
+
+      <div class="constructor-cta__actions">
+        <button type="button" data-builder class="btn btn--primary btn--arrow">
+          <span class="btn__text">Собрать тариф</span>
+          <span class="btn__icon">
+            <svg viewBox="0 0 18 18" fill="none" aria-hidden="true">
+              <path
+                d="M5 13L13 5M13 5H7M13 5V11"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </span>
+        </button>
+      </div>
+    </section>
+  </div>
+</section>
+<section class="faq" id="faq">
+  <div class="faq__container">
+    <h2 class="display-2 faq__title">Часто задаваемые вопросы</h2>
+
+    <div class="faq__list" data-accordion>
+      <article class="faq-item">
+        <button
+          class="faq-item__trigger"
+          type="button"
+          aria-expanded="false"
+          aria-controls="faq-content-1"
+          id="faq-trigger-1"
+        >
+          <span class="faq-item__question">Как работает конструктор тарифа?</span>
+          <span class="faq-item__icon" aria-hidden="true"></span>
+        </button>
+
+        <div
+          class="faq-item__content"
+          id="faq-content-1"
+          role="region"
+          aria-labelledby="faq-trigger-1"
+        >
+          <div class="faq-item__content-inner">
+            <p>
+              Вы выбираете базу и добавляете только те модули, которые действительно нужны. Итоговая стоимость формируется автоматически в зависимости от выбранных функций.
+            </p>
+          </div>
+        </div>
+      </article>
+
+      <article class="faq-item">
+        <button
+          class="faq-item__trigger"
+          type="button"
+          aria-expanded="false"
+          aria-controls="faq-content-2"
+          id="faq-trigger-2"
+        >
+          <span class="faq-item__question">Можно ли менять тариф после подключения?
+</span>
+          <span class="faq-item__icon" aria-hidden="true"></span>
+        </button>
+
+        <div
+          class="faq-item__content"
+          id="faq-content-2"
+          role="region"
+          aria-labelledby="faq-trigger-2"
+        >
+          <div class="faq-item__content-inner">
+            <p>
+             Да. Вы можете в любой момент добавить новые модули или отключить ненужные. Тариф гибко адаптируется под ваши текущие задачи.
+            </p>
+          </div>
+        </div>
+      </article>
+
+      <article class="faq-item">
+        <button
+          class="faq-item__trigger"
+          type="button"
+          aria-expanded="false"
+          aria-controls="faq-content-3"
+          id="faq-trigger-3"
+        >
+          <span class="faq-item__question">Есть ли минимальный набор функций?</span>
+          <span class="faq-item__icon" aria-hidden="true"></span>
+        </button>
+
+        <div
+          class="faq-item__content"
+          id="faq-content-3"
+          role="region"
+          aria-labelledby="faq-trigger-3"
+        >
+          <div class="faq-item__content-inner">
+            <p>
+              Да, базовый пакет обязателен — он обеспечивает стабильную работу системы. Остальные модули подключаются по вашему желанию.
+            </p>
+          </div>
+        </div>
+      </article>
+
+      <article class="faq-item">
+        <button
+          class="faq-item__trigger"
+          type="button"
+          aria-expanded="false"
+          aria-controls="faq-content-4"
+          id="faq-trigger-4"
+        >
+          <span class="faq-item__question">Как рассчитывается итоговая цена?</span>
+          <span class="faq-item__icon" aria-hidden="true"></span>
+        </button>
+
+        <div
+          class="faq-item__content"
+          id="faq-content-4"
+          role="region"
+          aria-labelledby="faq-trigger-4"
+        >
+          <div class="faq-item__content-inner">
+            <p>
+              Цена складывается из базового тарифа и выбранных модулей. Вы сразу видите итоговую сумму в правой части экрана — без скрытых платежей.
+            </p>
+          </div>
+        </div>
+      </article>
+
+      <article class="faq-item">
+        <button
+          class="faq-item__trigger"
+          type="button"
+          aria-expanded="false"
+          aria-controls="faq-content-5"
+          id="faq-trigger-5"
+        >
+          <span class="faq-item__question">Нужны ли технические навыки для настройки?</span>
+          <span class="faq-item__icon" aria-hidden="true"></span>
+        </button>
+
+        <div
+          class="faq-item__content"
+          id="faq-content-5"
+          role="region"
+          aria-labelledby="faq-trigger-5"
+        >
+          <div class="faq-item__content-inner">
+            <p>
+              Нет. Интерфейс интуитивно понятен — вы просто выбираете нужные опции, а система автоматически собирает тариф.
+            </p>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+      </main>
+      <footer class="footer">
+  <div class="footer__wave" aria-hidden="true">
+    <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+      <path
+        d="M0,20 
+           C60,40 90,75 140,70
+           C190,65 220,20 300,20
+           C380,20 420,65 480,65
+           C540,65 570,20 660,20
+           C750,20 780,65 840,65
+           C900,65 930,20 1020,20
+           C1110,20 1140,65 1200,70
+           C1260,75 1320,40 1440,0
+           L1440,120 L0,120 Z"
+        fill="#18181b"
+      />
+    </svg>
+  </div>
+
+  <div class="footer__body">
+    <div class="footer__container">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <h2 class="footer__title">Родные голоса</h2>
+          <p class="footer__subtitle">
+            Для тех, кто верит, что любовь можно записать.
+            <br />
+            И проиграть снова.
+          </p>
+        </div>
+
+        <nav class="footer__nav" aria-label="Навигация по сайту">
+          <ul class="footer__menu">
+            <li class="footer__menu-item"><a href="#about">О проекте</a></li>
+            <li class="footer__menu-item"><a href="#advantages">Преимущества</a></li>
+            <li class="footer__menu-item"><a href="#tariffs">Тарифы</a></li>
+            <li class="footer__menu-item"><a href="#how-it-works">Как это работает</a></li>
+            <li class="footer__menu-item"><a href="#contacts">Контакты</a></li>
+          </ul>
+        </nav>
+
+        <div class="footer__details">
+          <p>Индивидуальный предприниматель</p>
+          <p>Бабочкин Вячеслав Вячеславович</p>
+          <p>ИНН 343534427084</p>
+          <p>Расчетный счет</p>
+          <p>40802810000008656886</p>
+          <p>АО «Т-Банк»</p>
+        </div>
+
+        <div class="footer__cta">
+          <div class="footer__socials">
+            <a href="#" class="footer__social" aria-label="Позвонить">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M21 16.42V19A2 2 0 0 1 18.82 21C9.87 21 3 14.13 3 5.18A2 2 0 0 1 5 3h2.58a2 2 0 0 1 1.98 1.72l.38 2.65a2 2 0 0 1-.57 1.72l-1.27 1.27a16 16 0 0 0 5.66 5.66l1.27-1.27a2 2 0 0 1 1.72-.57l2.65.38A2 2 0 0 1 21 16.42Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+
+          </div>
+
+          <a href="#" class="footer__button">
+            <span>Попробовать</span>
+            <span class="footer__button-icon">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <path d="M5 13L13 5M13 5H7M13 5V11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </a>
+
+          <p class="footer__note">
+            Подарите ребёнку главный звук детства.
+            <br />
+            Начните бесплатно прямо сейчас
+          </p>
+        </div>
+      </div>
+
+      <div class="footer__bottom">
+        <div class="footer__copyright">
+          <p>Все права защищены. 2026</p>
+          <p>
+            Весь контент сайта защищен авторским правом
+            <br />
+            и принадлежит правообладателю.
+          </p>
+        </div>
+
+        <a href="#" class="footer__policy">Политика конфиденциальности данных</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+</div>
+
+
+<!--Блок модалки при клике на кнопку СОБРАТЬ ТАРИФ--->
+<div class="builder" id="builder">
+  <div class="builder__overlay"></div>
+
+  <div class="builder__panel">
+    <div class="builder__header">
+      <h2>Соберите свой тариф</h2>
+      <button class="builder__close">✕</button>
+    </div>
+
+    <div class="builder__body">
+
+      <!-- LEFT -->
+      <div class="builder__left">
+
+        <div class="builder-section">
+          <h3>База</h3>
+
+          <div class="builder-card is-active">
+            <div>
+              <p class="builder-card__title">Каркас</p>
+              <p class="builder-card__desc">Обязательная база</p>
+            </div>
+            <div class="builder-card__price">6000 ₽</div>
+          </div>
+        </div>
+
+        <div class="builder-section">
+          <h3>Модули</h3>
+
+          <label class="builder-option">
+            <input type="checkbox" data-price="16900">
+            <span>Библиотека</span>
+            <span>+16 900 ₽</span>
+          </label>
+
+          <label class="builder-option">
+            <input type="checkbox" data-price="8900">
+            <span>Терапия</span>
+            <span>+8 900 ₽</span>
+          </label>
+
+          <label class="builder-option">
+            <input type="checkbox" data-price="20900">
+            <span>Свобода слова</span>
+            <span>+20 900 ₽</span>
+          </label>
+
+          <label class="builder-option">
+            <input type="checkbox" data-price="3990">
+            <span>Семейный круг</span>
+            <span>+3 990 ₽</span>
+          </label>
+
+        </div>
+
+      </div>
+
+      <!-- RIGHT -->
+      <div class="builder__right">
+
+        <div class="builder-summary">
+          <p class="builder-summary__title">Ваш тариф</p>
+
+          <div class="builder-summary__list" id="summaryList">
+            <div>Каркас — 6000 ₽</div>
+          </div>
+
+          <div class="builder-summary__total">
+            <span>Итого:</span>
+            <span id="totalPrice">6000 ₽</span>
+          </div>
+
+          <button class="btn btn--primary builder__submit">
+            Оформить тариф
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+  </body>
+</html>

@@ -1,0 +1,513 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/media' as *;
+
+/* ========================================
+   WHY TECH — FINAL PREMIUM
+======================================== */
+
+.why-tech {
+  padding: 20px 0 110px;
+    background: #f8f5f0;
+}
+
+.why-tech .container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+/* HEAD */
+
+.why-tech__head {
+  margin-bottom: 36px;
+}
+
+.why-tech__intro {
+  max-width: 880px;
+}
+
+.why-tech__title {
+  margin: 0 0 14px;
+  max-width: 920px;
+}
+
+.why-tech__text {
+  margin: 0;
+  max-width: 760px;
+}
+
+/* LAYOUT */
+
+.why-tech__layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.8fr) minmax(0, 1.2fr);
+  gap: 24px;
+  align-items: stretch;
+}
+
+.why-tech__side {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  gap: 24px;
+}
+
+/* CARD BASE */
+
+.why-tech-card {
+  position: relative;
+  padding: 28px;
+  border-radius: 30px;
+  overflow: hidden;
+  min-height: 100%;
+  transition:
+    transform 0.28s ease,
+    box-shadow 0.28s ease,
+    border-color 0.28s ease,
+    background-color 0.28s ease;
+}
+
+.why-tech-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.24),
+    rgba(255, 255, 255, 0) 44%
+  );
+  pointer-events: none;
+}
+
+.why-tech-card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.why-tech-card:hover {
+  transform: translateY(-6px);
+}
+
+/* LEFT CARDS — PREMIUM */
+
+.why-tech-card--problem,
+.why-tech-card--regular {
+  border: 1px solid rgba(79, 115, 95, 0.12);
+box-shadow:
+  0 10px 30px rgba(255, 255, 255, 0.6),
+  0 20px 60px rgba(255, 255, 255, 0.4),
+  inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.why-tech-card--problem {
+  background: linear-gradient(180deg, #ffffff 0%, #f3f5f3 100%);
+}
+
+.why-tech-card--problem:hover {
+  border-color: rgba(111, 146, 127, 0.2);
+ box-shadow:
+  0 10px 30px rgba(255, 255, 255, 0.6),
+  0 20px 60px rgba(255, 255, 255, 0.4),
+  inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.why-tech-card--regular {
+  background: linear-gradient(180deg, #dee7e1 0%, #d1dbd4 100%);
+}
+
+.why-tech-card--regular:hover {
+  border-color: rgba(111, 146, 127, 0.22);
+box-shadow:
+  0 10px 30px rgba(255, 255, 255, 0.6),
+  0 20px 60px rgba(255, 255, 255, 0.4),
+  inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+/* DARK SOLUTION BASE */
+
+.why-tech-card--solution {
+  background:
+    radial-gradient(circle at top left, rgba(255, 255, 255, 0.08), transparent 36%),
+    linear-gradient(180deg, #1b1c1d 0%, #111214 100%);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+box-shadow:
+  0 10px 30px rgba(255, 255, 255, 0.6),
+  0 20px 60px rgba(255, 255, 255, 0.4),
+  inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.why-tech-card--solution:hover {
+box-shadow:
+  0 10px 30px rgba(255, 255, 255, 0.6),
+  0 20px 60px rgba(255, 255, 255, 0.4),
+  inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+/* NUMBER */
+
+.why-tech-card__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 38px;
+  height: 24px;
+  padding: 0 8px;
+  margin-bottom: 18px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.why-tech-card--problem .why-tech-card__num {
+  background: rgba(111, 146, 127, 0.08);
+  color: #5f816f;
+}
+
+.why-tech-card--regular .why-tech-card__num {
+  background: rgba(79, 115, 95, 0.1);
+  color: #4f735f;
+}
+
+.why-tech-card--solution .why-tech-card__num {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+/* TEXT */
+
+.why-tech-card__title {
+  margin: 0 0 14px;
+  max-width: 280px;
+}
+
+.why-tech-card__text {
+  margin: 0;
+  max-width: 300px;
+  line-height: 1.55;
+}
+
+.why-tech-card--problem .why-tech-card__text {
+  color: rgba(34, 34, 34, 0.78);
+}
+
+.why-tech-card--regular .why-tech-card__text {
+  color: rgba(34, 34, 34, 0.82);
+}
+
+.why-tech-card--solution .why-tech-card__text {
+  color: rgba(255, 255, 255, 0.9);
+  max-width: 420px;
+}
+
+/* HERO CARD — LIGHT PREMIUM */
+
+.why-tech-card--hero {
+  background: linear-gradient(180deg, #ffffff 0%, #f7f9f8 100%);
+ border: 1.5px solid rgba(79, 115, 95, 0.26);
+  color: #1c1c1c;
+box-shadow:
+  0 10px 30px rgba(255, 255, 255, 0.6),
+  0 20px 60px rgba(255, 255, 255, 0.4),
+  inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.why-tech-card--hero:hover {
+box-shadow:
+  0 10px 30px rgba(255, 255, 255, 0.6),
+  0 20px 60px rgba(255, 255, 255, 0.4),
+  inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.why-tech-card--hero .why-tech-card__title {
+  color: #1c1c1c;
+}
+
+.why-tech-card--hero .why-tech-card__text {
+  color: rgba(28, 28, 28, 0.76);
+}
+
+.why-tech-card--hero .why-tech-card__num {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+
+  min-width: 56px;
+  height: 32px;
+  padding: 0 16px;
+  margin-bottom: 18px;
+
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.05);
+  color: #52826C;
+
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+/* HERO STRUCTURE */
+
+.why-tech-card--hero {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 520px;
+}
+
+.why-tech-card__hero-top {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 240px;
+  gap: 24px;
+  align-items: start;
+}
+
+.why-tech-card__hero-copy {
+  max-width: 100%;
+}
+
+.why-tech-card__hero-bottom {
+  margin-top: 28px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.why-tech-card__hero-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 38px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.06);
+  color: #1c1c1c;
+  font-size: 13px;
+  line-height: 1;
+}
+
+/* AUDIO BOX */
+
+.why-tech-audio-box {
+  min-height: 220px;
+  border-radius: 24px;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.why-tech-card--hero .why-tech-audio-box {
+  background: linear-gradient(180deg, #f2f4f3 0%, #e9eeec 100%);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+
+.why-tech-audio-box__inner {
+  width: 100%;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+
+/* PLAY */
+
+.why-tech-audio-box__play {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  line-height: 1;
+  transition:
+    transform 0.22s ease,
+    background-color 0.22s ease,
+    box-shadow 0.22s ease,
+    color 0.22s ease;
+}
+
+.why-tech-card--hero .why-tech-audio-box__play {
+  background: #1c1c1c;
+  color: #fff;
+}
+
+.why-tech-card--hero .why-tech-audio-box__play:hover {
+  background: #000;
+  transform: scale(1.05);
+}
+
+.why-tech-audio-box__play.is-playing {
+box-shadow:
+  0 10px 30px rgba(255, 255, 255, 0.6),
+  0 20px 60px rgba(255, 255, 255, 0.4),
+  inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+/* WAVE */
+
+.why-tech-audio-box__wave {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  height: 24px;
+}
+
+.why-tech-audio-box__wave span {
+  display: inline-block;
+  width: 4px;
+  height: 8px;
+  border-radius: 999px;
+  animation: none;
+}
+
+.why-tech-card--hero .why-tech-audio-box__wave span {
+  background: rgba(28, 28, 28, 0.18);
+}
+
+.why-tech-card--hero .why-tech-audio-box__wave.is-playing span {
+  background: #1c1c1c;
+  animation: whySpotifyWave 1.1s ease-in-out infinite;
+}
+
+.why-tech-audio-box__wave.is-playing span:nth-child(1) { animation-delay: 0s; }
+.why-tech-audio-box__wave.is-playing span:nth-child(2) { animation-delay: 0.12s; }
+.why-tech-audio-box__wave.is-playing span:nth-child(3) { animation-delay: 0.24s; }
+.why-tech-audio-box__wave.is-playing span:nth-child(4) { animation-delay: 0.36s; }
+.why-tech-audio-box__wave.is-playing span:nth-child(5) { animation-delay: 0.48s; }
+.why-tech-audio-box__wave.is-playing span:nth-child(6) { animation-delay: 0.6s; }
+.why-tech-audio-box__wave.is-playing span:nth-child(7) { animation-delay: 0.72s; }
+
+@keyframes whySpotifyWave {
+  0%, 100% { height: 8px; opacity: 0.45; }
+  20% { height: 18px; opacity: 0.8; }
+  40% { height: 12px; opacity: 0.6; }
+  60% { height: 22px; opacity: 1; }
+  80% { height: 14px; opacity: 0.75; }
+}
+
+/* CTA */
+
+.why-tech-audio-box__cta {
+  padding: 10px 16px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.2;
+  cursor: pointer;
+  transition:
+    transform 0.22s ease,
+    background-color 0.22s ease,
+    border-color 0.22s ease,
+    color 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.why-tech-card--hero .why-tech-audio-box__cta {
+  background: #1c1c1c;
+  color: #fff;
+  border: none;
+}
+
+.why-tech-card--hero .why-tech-audio-box__cta:hover {
+  background: #000;
+  transform: translateY(-2px);
+}
+
+/* PLAYING STATE — BUTTON */
+
+.why-tech-card--hero .why-tech-audio-box__cta.is-playing {
+  background: #e2e8e5;
+  color: #1c1c1c;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+}
+
+#whyAudio {
+  display: none;
+}
+
+/* TABLET */
+
+@media (max-width: 1024px) {
+  .why-tech {
+    padding: 72px 0 82px;
+  }
+
+  .why-tech .container {
+    padding: 0 28px;
+  }
+
+  .why-tech__layout {
+    grid-template-columns: 1fr;
+  }
+
+  .why-tech__side {
+    grid-template-rows: none;
+    grid-template-columns: 1fr;
+  }
+
+  .why-tech-card--hero {
+    min-height: auto;
+  }
+
+  .why-tech-card__hero-top {
+    grid-template-columns: 1fr;
+  }
+
+  .why-tech-audio-box {
+    min-height: 180px;
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 767px) {
+  .why-tech {
+    padding: 56px 0 64px;
+  }
+
+  .why-tech .container {
+    padding: 0 20px;
+  }
+
+  .why-tech__head {
+    margin-bottom: 24px;
+  }
+
+  .why-tech-card {
+    padding: 20px 18px;
+    border-radius: 22px;
+  }
+
+  .why-tech-card__num {
+    margin-bottom: 14px;
+  }
+
+  .why-tech-audio-box {
+    min-height: 160px;
+    border-radius: 18px;
+  }
+
+  .why-tech-audio-box__inner {
+    padding: 18px;
+    gap: 14px;
+  }
+
+  .why-tech-audio-box__play {
+    width: 50px;
+    height: 50px;
+    font-size: 16px;
+  }
+
+  .why-tech-audio-box__cta {
+    width: 100%;
+  }
+}

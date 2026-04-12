@@ -1,0 +1,277 @@
+@use '../abstracts/variables' as *;
+@use '../abstracts/media' as *;
+
+.love-tech {
+  padding: 30px 0;
+  background: #f8f5f0;
+}
+
+.love-tech .container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+/* HEAD */
+
+.love-tech__head {
+  display: block; 
+  margin-bottom: 55px;
+}
+
+.love-tech__intro {
+  max-width: 880px; 
+}
+
+.love-tech__title {
+ 
+  margin: 0 0 20px;
+  font-size: clamp(32px, 4vw, 44px);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+
+.love-tech__text {
+
+  margin: 20px 0;
+  font-size: 17px;
+  line-height: 1.6;
+  color: rgba(34, 34, 34, 0.75);
+}
+
+.love-tech__illustration {
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-start;
+  padding-top: 6px;
+}
+
+.love-tech__illustration-image {
+  display: block;
+  width: 100%;
+  max-width: 132px;
+  height: auto;
+  object-fit: contain;
+  animation: loveTechFloat 4.5s ease-in-out infinite;
+}
+
+/* GRID */
+
+.love-tech__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  align-items: stretch;
+}
+
+/* CARD */
+
+.love-tech-card {
+  min-height: 248px;
+  padding: 24px 24px 26px;
+  border-radius: 32px;
+  border: 1.5px solid rgba(111, 146, 127, 0.35);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease,
+    background-color 0.25s ease;
+}
+
+.love-tech-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 14px 34px rgba(54, 84, 66, 0.10);
+}
+
+/* VARIANTS */
+
+.love-tech-card--outline {
+  background: #f5f5f3;
+}
+
+.love-tech-card--soft {
+  background: #c8d6ce;
+}
+
+.love-tech-card--accent {
+  background: #f3f3f1;
+  color: #222;
+  border-color: #6f927f;
+}
+
+/* TOP */
+
+.love-tech-card__top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+/* NUMBER INSTEAD OF DOT */
+
+.love-tech-card__dot {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
+  background: rgba(111, 146, 127, 0.12);
+  color: #6f927f;
+  transition: transform 0.25s ease, background-color 0.25s ease, color 0.25s ease;
+}
+
+.love-tech-card:hover .love-tech-card__dot {
+  transform: scale(1.06);
+}
+
+/* numbering */
+
+.love-tech-card:nth-child(1) .love-tech-card__dot::before {
+  content: "01";
+}
+
+.love-tech-card:nth-child(2) .love-tech-card__dot::before {
+  content: "02";
+}
+
+.love-tech-card:nth-child(3) .love-tech-card__dot::before {
+  content: "03";
+}
+
+/* variants for numbers */
+
+.love-tech-card--soft .love-tech-card__dot {
+  background: rgba(79, 115, 95, 0.14);
+  color: #4f735f;
+}
+
+.love-tech-card--accent .love-tech-card__dot {
+  background: rgba(255, 255, 255, 0.18);
+  color: #222;
+}
+
+/* CONTENT */
+
+.love-tech-card__title {
+  margin: 0 0 16px;
+  max-width: 320px;
+}
+
+.love-tech-card__text {
+  margin: 0;
+  max-width: 320px;
+  color: rgba(34, 34, 34, 0.78);
+}
+
+
+
+/* MICRO POLISH */
+
+.love-tech-card--accent:hover {
+  box-shadow: 0 16px 36px rgba(54, 84, 66, 0.16);
+}
+
+.love-tech-card--outline:hover,
+.love-tech-card--soft:hover {
+  border-color: rgba(111, 146, 127, 0.55);
+}
+
+/* ANIMATION */
+
+@keyframes loveTechFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+/* TABLET */
+
+@media (max-width: 1024px) {
+  .love-tech {
+    padding: 76px 0 88px;
+  }
+
+  .love-tech .container {
+    padding: 0 28px;
+  }
+
+  .love-tech__head {
+    grid-template-columns: 1fr 110px;
+    gap: 24px;
+    margin-bottom: 34px;
+  }
+
+  .love-tech__grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .love-tech-card {
+    min-height: auto;
+  }
+
+  .love-tech__illustration-image {
+    max-width: 100px;
+  }
+}
+
+/* MOBILE */
+
+@media (max-width: 767px) {
+  .love-tech {
+    padding: 58px 0 68px;
+  }
+
+  .love-tech .container {
+    padding: 0 20px;
+  }
+
+  .love-tech__head {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    margin-bottom: 26px;
+  }
+
+  .love-tech__illustration {
+    justify-content: flex-start;
+  }
+
+  .love-tech__illustration-image {
+    max-width: 84px;
+  }
+
+  .love-tech-card {
+    padding: 20px 18px 20px;
+    border-radius: 24px;
+  }
+
+  .love-tech-card__top {
+    margin-bottom: 14px;
+  }
+
+  .love-tech-card__title {
+    margin-bottom: 12px;
+  }
+
+  .love-tech-card__dot {
+    min-width: 32px;
+    height: 24px;
+    font-size: 12px;
+    border-radius: 8px;
+  }
+}

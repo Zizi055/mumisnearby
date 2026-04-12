@@ -1,0 +1,140 @@
+@use '../abstracts/variables' as *;
+
+/* =========================
+   BUTTON BASE
+========================= */
+
+.btn {
+  --btn-bg: #{$color-accent};
+  --btn-color: #{$color-white};
+  --btn-border: transparent;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+
+  padding: 14px 22px;
+  border-radius: 999px;
+
+  background: var(--btn-bg);
+  color: var(--btn-color);
+  border: 1px solid var(--btn-border);
+
+  text-decoration: none;
+  cursor: pointer;
+
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease, color .2s ease;
+
+  /* убираем дефолтные стили кнопки */
+  appearance: none;
+  -webkit-appearance: none;
+  font: inherit;
+}
+
+/* hover / active */
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.btn:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* disabled */
+.btn:disabled,
+.btn.is-disabled {
+  opacity: .6;
+  pointer-events: none;
+}
+
+/* =========================
+   VARIANTS
+========================= */
+
+.btn--primary {
+  --btn-bg: #{$color-accent};
+  --btn-color: #{$color-white};
+  --btn-border: transparent;
+}
+
+.btn--secondary {
+  --btn-bg: transparent;
+  --btn-color: #{$color-text};
+  --btn-border: #{$color-border};
+}
+
+/* hover variants */
+.btn--secondary:hover {
+  --btn-bg: #{$color-accent};
+  --btn-color: #{$color-white};
+  --btn-border: #{$color-accent};
+}
+
+/* =========================
+   SIZES (опционально)
+========================= */
+
+.btn--sm {
+  padding: 10px 16px;
+}
+
+.btn--lg {
+  padding: 16px 26px;
+}
+
+/* =========================
+   ELEMENTS
+========================= */
+
+.btn__text {
+  display: inline-flex;
+  align-items: center;
+}
+
+.btn__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform .2s ease;
+}
+
+.btn:hover .btn__icon {
+  transform: translateX(3px);
+}
+
+/* =========================
+   ARROW IN CIRCLE
+========================= */
+
+.btn--arrow {
+  gap: 14px; // чуть больше воздуха
+
+  .btn__icon {
+    width: 32px;
+    height: 32px;
+
+    border: 1.5px solid currentColor;
+    border-radius: 50%;
+
+    flex-shrink: 0;
+
+    transition:
+      transform .25s ease,
+      background .25s ease,
+      border-color .25s ease;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+
+
+}
+.btn--arrow:hover .btn__icon {
+  transform: translateX(4px) scale(1.05);
+}

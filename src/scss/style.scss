@@ -1,0 +1,49 @@
+
+@use './abstracts/fonts';
+@use './abstracts/variables' as *;
+@use './abstracts/mixins';
+@use './abstracts/media';
+
+@use './base/typography';
+@use './components/buttons';
+@use './layout/header';
+@use './layout/hero';
+@use './layout/love-tech.scss';
+@use './sections/howwork.scss';
+@use './sections/why-tech.scss';
+@use './sections/loyalty-banner.scss';
+@use './sections/voices-echo.scss';
+@use './sections/audience.scss';
+@use './sections/pricing.scss';
+@use './layout/about.scss';
+@use './layout/guarantes.scss';
+@use './layout/forms.scss';
+@use './layout/faq.scss';
+@use './layout/footer.scss';
+@use './pages/constructor.scss';
+@use './layout/builder-modal.scss';
+
+html {
+  box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+section[id] {
+  scroll-margin-top: 120px;
+}
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+
+}
+@media (max-width: 767px) {
+  section[id] {
+    scroll-margin-top: 80px;
+  }
+}

@@ -1,0 +1,1598 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- Заголовок страницы -->
+    <title>Мама рядом — помощь и поддержка для мам рядом с тобой</title>
+
+    <!-- SEO -->
+    <meta
+      name="description"
+      content="Мама рядом — помощь и поддержка для мам рядом с тобой."
+    />
+    <meta
+      name="keywords"
+      content="Мама рядом, помощь для мам, поддержка для мам, мамы рядом"
+    />
+
+    <!-- Open Graph  -->
+    <meta
+      property="og:title"
+      content="Мама рядом — помощь и поддержка для мам рядом с тобой"
+    />
+    <meta
+      property="og:description"
+      content="Мама рядом — помощь и поддержка для мам рядом с тобой."
+    />
+    <meta
+      property="og:image"
+      content="https://momnearby.com/img/og-preview.jpg"
+    />
+    <meta property="og:url" content="https://momnearby.com" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ru_RU" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="img/favicon.png" />
+    <link rel="apple-touch-icon" href="img/apple-touch-icon.png" />
+
+
+    <!-- Стили -->
+
+<script type="module" src="/main.js"></script>
+
+ <!-- ШРИФТ -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div class="wrapper">
+      <!--
+<header class="header">
+  <div class="container header__container">
+    
+    <nav class="header__nav">
+         <a href="index.html" class="header__link">Главная</a>
+      <a href="#about" class="header__link">О проекте</a>
+      <a href="#features" class="header__link">Преимущества</a>
+      <a href="#pricing" class="header__link">Тарифы</a>
+      <a href="#how-it-works" class="header__link">Как это работает</a>
+     <a href="/constructor.html" class="header__link">Конструктор</a>
+      <a href="#faq" class="header__link">FAQ</a>
+      <a href="#contacts" class="header__link">Контакты</a>
+    </nav>
+
+    <div class="header__actions">
+      <p class="header__voices">Родные голоса</p>
+
+      <button class="header__profile">
+        <img src="/src/assets/img/index/account.svg" alt="Профиль">
+      </button>
+    </div>
+
+  </div>
+</header>
+-->
+<header class="header">
+  <div class="container header__container">
+
+    <a href="index.html" class="header__brand">Родные голоса</a>
+
+    <nav class="header__nav" aria-label="Основная навигация">
+      <a href="index.html" class="header__link is-active">Главная</a>
+      <a href="#about" class="header__link">О проекте</a>
+      <a href="#advantages" class="header__link">Преимущества</a>
+      <a href="#pricing" class="header__link">Тарифы</a>
+      <a href="#how-it-works" class="header__link">Как это работает</a>
+
+      <div class="header__dropdown">
+        <button
+          class="header__dropdown-trigger"
+          type="button"
+          aria-expanded="false"
+          aria-label="Открыть дополнительные разделы"
+        >
+          <span>Ещё</span>
+          <span class="header__dropdown-icon">⌄</span>
+        </button>
+
+        <div class="header__dropdown-menu">
+          <a href="/constructor.html" class="header__dropdown-link">Конструктор</a>
+          <a href="#faq" class="header__dropdown-link">FAQ</a>
+           <a href="#forms" class="header__dropdown-link">Связаться с нами</a>
+          <a href="#contacts" class="header__dropdown-link">Контакты</a>
+        </div>
+      </div>
+    </nav>
+
+    <div class="header__actions">
+      <button class="header__profile" aria-label="Профиль">
+        <img src="/src/assets/img/index/account.svg" alt="" />
+      </button>
+
+      <button
+        class="header__burger"
+        type="button"
+        aria-label="Открыть меню"
+        aria-expanded="false"
+        aria-controls="mobileMenu"
+      >
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- MOBILE MENU -->
+  <div class="header__mobile" id="mobileMenu">
+    <div class="header__mobile-inner">
+      <a href="index.html" class="header__mobile-link">Главная</a>
+      <a href="#about" class="header__mobile-link">О проекте</a>
+      <a href="#advantages" class="header__mobile-link">Преимущества</a>
+      <a href="#tariffs" class="header__mobile-link">Тарифы</a>
+      <a href="#how-it-works" class="header__mobile-link">Как это работает</a>
+      <a href="/constructor.html" class="header__mobile-link">Конструктор</a>
+           <a href="#forms" class="header__dropdown-link">Связаться с нами</a>
+      <a href="#faq" class="header__mobile-link">FAQ</a>
+      <a href="#contacts" class="header__mobile-link">Контакты</a>
+    </div>
+  </div>
+</header>
+<section class="hero hero--split">
+  <div class="hero__container">
+    <div class="hero__grid">
+      <div class="hero__content">
+        <div class="hero__label">
+          Технология нового поколения
+        </div>
+
+        <h1 class="hero__title">
+          Ваш голос — это основной инстинкт
+          спокойствия вашего ребёнка
+        </h1>
+
+        <p class="hero__lead">
+          Теперь он может работать
+          <span class="hero__lead-accent">на расстоянии</span>
+        </p>
+
+        <p class="hero__subtitle">
+          Технология, в которой живёт любовь
+        </p>
+
+        <div class="hero__actions">
+          <button type="button" class="btn btn--primary hero__btn">
+            <span class="btn__text">Создать голосового двойника за 10 минут</span>
+            <span class="btn__icon">↗</span>
+          </button>
+
+          <button type="button" class="btn btn--ghost hero__btn">
+            <span class="btn__text">Как это работает?</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="hero__visual">
+<div class="hero-card">
+  <div class="hero-card__image" aria-hidden="true">
+    <img
+      src="/src/assets/img/index/dragon-Photoroom.png"
+      alt=""
+      class="hero-card__image-item"
+    />
+  </div>
+
+  <div class="hero-card__top">
+    <span class="hero-card__badge">AI Voice</span>
+  </div>
+
+  <h3 class="hero-card__title">
+    Голос остаётся рядом
+  </h3>
+
+  <p class="hero-card__text">
+    Даже если вы далеко — ребёнок слышит вас перед сном,
+    в дороге и в важные моменты
+  </p>
+
+  <div class="hero-card__player">
+    <div class="hero-card__demo">
+      <button
+        type="button"
+        class="hero-card__play"
+        id="playVoice"
+        aria-label="Воспроизвести пример"
+        aria-pressed="false"
+      >
+        <span class="hero-card__play-icon hero-card__play-icon--play">▶</span>
+        <span class="hero-card__play-icon hero-card__play-icon--pause">❚❚</span>
+      </button>
+
+      <div class="hero-card__wave" aria-hidden="true">
+        <span></span><span></span><span></span><span></span>
+      </div>
+    </div>
+
+    <div class="hero-card__progress-wrap">
+      <button
+        type="button"
+        class="hero-card__listen"
+        id="listenExample"
+      >
+        Послушать пример
+      </button>
+
+      <div class="hero-card__progress-block">
+        <div class="hero-card__time">
+          <span id="currentTime">0:00</span>
+          <span id="durationTime">0:00</span>
+        </div>
+
+        <div class="hero-card__progress" id="audioProgress" aria-label="Прогресс аудио">
+          <div class="hero-card__progress-bar" id="audioProgressBar"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-card__meta">
+    <span>1273 семьи</span>
+    <span>•</span>
+    <span>10 минут настройка</span>
+  </div>
+
+<audio id="heroAudio" preload="metadata">
+  <source src="/audio/demo2mp3.mp3" type="audio/mpeg" />
+</audio>
+</div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="love-tech">
+  <div class="container">
+    <div class="love-tech__head">
+      <div class="love-tech__intro">
+        <h2 class="display-2 love-tech__title">
+          Технология, в которой живёт любовь
+        </h2>
+
+        <p class="text-lg text-muted love-tech__text">
+          Уже 1273 семьи читают сказки, убаюкивают и поддерживают малышей
+          своим голосом, даже находясь за тысячи километров.
+          Присоединяйтесь — это займёт 10 минут.
+        </p>
+      </div>
+
+
+
+ <div class="love-tech__grid">
+  <article class="love-tech-card love-tech-card--outline">
+    <div class="love-tech-card__top">
+      <span class="love-tech-card__dot"></span>
+    </div>
+
+    <h3 class="heading-4 love-tech-card__title">
+      РАЗЛУКА УЧИТ ЕГО ЗАСЫПАТЬ
+      <br>
+      БЕЗ ВАС
+    </h3>
+
+    <p class="text-md love-tech-card__text">
+      Когда вечерний ритуал всё чаще заменяется экраном, ребёнок учится
+      засыпать не под ваш голос, а под внешний источник
+    </p>
+  </article>
+
+  <article class="love-tech-card love-tech-card--soft">
+    <div class="love-tech-card__top">
+      <span class="love-tech-card__dot"></span>
+    </div>
+
+    <h3 class="heading-4 love-tech-card__title">
+      ОН ДОВЕРЯЕТ АЛИСЕ БОЛЬШЕ,
+      <br>
+      ЧЕМ ВАМ
+    </h3>
+
+    <p class="text-md love-tech-card__text">
+      Он задаёт вопросы не вам, а устройству — потому что оно всегда
+      отвечает быстро и без пауз
+    </p>
+  </article>
+
+  <article class="love-tech-card love-tech-card--accent">
+    <div class="love-tech-card__top">
+      <span class="love-tech-card__dot"></span>
+    </div>
+
+    <h3 class="heading-4 love-tech-card__title">
+      ВЫ ИСЧЕЗАЕТЕ ИЗ ЕГО НАСТОЯЩЕГО
+    </h3>
+
+    <p class="text-md love-tech-card__text">
+      Вы рядом физически, но не в тех моментах, где формируются память,
+      эмоции и чувство близости
+    </p>
+  </article>
+</div>
+  </div>
+</section>
+
+<section class="how-it-works" id="how-it-works">
+  <div class="how-it-works__top">
+    <div class="container">
+      <div class="how-it-works__top-inner">
+        <div class="how-it-works__teaser">
+          <p class="display-2 how-it-works__teaser-text">
+            Знакомо? Теперь у этой проблемы
+            есть простое и волшебное решение.
+          </p>
+        </div>
+
+        <a class="btn btn--primary btn--arrow">
+          <span class="btn__text">Подать заявку</span>
+          <span class="btn__icon">
+            <svg viewBox="0 0 18 18" fill="none">
+              <path
+                d="M5 13L13 5M13 5H7M13 5V11"
+                stroke="currentColor"
+                stroke-width="1.8"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="how-it-works__body">
+    <div class="container">
+      <div class="how-it-works__inner">
+        <div class="how-it-works__media">
+          <div class="how-it-works__photo how-it-works__photo--top">
+            <img
+              src="/src/assets/img/index/hand.svg"
+              alt="Мама играет с ребёнком"
+              class="how-it-works__photo-image"
+            />
+          </div>
+
+          <div class="how-it-works__photo how-it-works__photo--bottom">
+            <img
+              src="/src/assets/img/index/boy.svg"
+              alt="Мама с ребёнком"
+              class="how-it-works__photo-image"
+            />
+          </div>
+        </div>
+
+        <div class="how-it-works__content">
+          <div class="how-it-works__intro">
+            <h2 class="display-2 how-it-works__title">Как это работает</h2>
+
+            <p class="text-lg text-muted how-it-works__description">
+              Это проще, чем кажется. Весь процесс займёт 10 минут.
+              А первый сказочный сценарий для теста мы подарим сразу
+            </p>
+          </div>
+
+          <div class="how-it-works__steps">
+            <article class="how-it-works-step">
+              <div class="how-it-works-step__icon" aria-hidden="true">
+                <img src="/src/assets/img/index/Chat.svg" alt="" class="how-it-works-step__icon-image" />
+              </div>
+
+              <div class="how-it-works-step__body">
+                <div class="how-it-works-step__head">
+                  <h3 class="heading-4 how-it-works-step__title">ВЫ ГОВОРИТЕ 10 МИНУТ</h3>
+
+                  <div class="how-it-works-step__marks" aria-hidden="true">
+                    <span class="how-it-works-step__mark"></span>
+                  </div>
+                </div>
+
+                <p class="text-md how-it-works-step__text">
+                  Вы записываете свой голос — читаете небольшой текст.
+                  Не нужно быть актёром. Нужно просто быть собой.
+                  Наша технология улавливает сотни нюансов:
+                  <strong>как вы смягчаете звуки, как меняете ритм, где улыбаетесь.</strong>
+                </p>
+              </div>
+            </article>
+
+            <article class="how-it-works-step">
+              <div class="how-it-works-step__icon" aria-hidden="true">
+                <img src="/src/assets/img/index/Virtual.svg" alt="" class="how-it-works-step__icon-image" />
+              </div>
+
+              <div class="how-it-works-step__body">
+                <div class="how-it-works-step__head">
+                  <h3 class="heading-4 how-it-works-step__title">МЫ СОЗДАЁМ ЭХО 24 ЧАСА</h3>
+
+                  <div class="how-it-works-step__marks" aria-hidden="true">
+                    <span class="how-it-works-step__mark"></span>
+                  </div>
+                </div>
+
+                <p class="text-md how-it-works-step__text">
+                  Наша система, основанная на этичных и конфиденциальных принципах,
+                  создаёт персональную голосовую модель.
+                  <strong>Это ваш цифровой двойник, который будет говорить вашим голосом.</strong>
+                </p>
+              </div>
+            </article>
+
+            <article class="how-it-works-step">
+              <div class="how-it-works-step__icon" aria-hidden="true">
+                <img src="/src/assets/img/index/Books.svg" alt="" class="how-it-works-step__icon-image" />
+              </div>
+
+              <div class="how-it-works-step__body">
+                <div class="how-it-works-step__head">
+                  <h3 class="heading-4 how-it-works-step__title">ВЫ ВЫБИРАЕТЕ ИСТОРИЮ 100+</h3>
+
+                  <div class="how-it-works-step__marks" aria-hidden="true">
+                    <span class="how-it-works-step__mark"></span>
+                  </div>
+                </div>
+
+                <p class="text-md how-it-works-step__text">
+                  Огромная библиотека проверенных сказок, терапевтических сценариев,
+                  составленных детскими психологами, или ваш собственный текст.
+                  <strong>Любящее письмо ребёнку, семейную историю, стихотворение.</strong>
+                </p>
+              </div>
+            </article>
+
+            <article class="how-it-works-step">
+              <div class="how-it-works-step__icon" aria-hidden="true">
+                <img src="/src/assets/img/index/Auditory.png" alt="" class="how-it-works-step__icon-image" />
+              </div>
+
+              <div class="how-it-works-step__body">
+                <div class="how-it-works-step__head">
+                  <h3 class="heading-4 how-it-works-step__title">ОНИ СЛЫШАТ ВАС.</h3>
+
+                  <div class="how-it-works-step__marks" aria-hidden="true">
+                    <span class="how-it-works-step__mark"></span>
+                  </div>
+                </div>
+
+                <p class="text-md how-it-works-step__text">
+                  Ребёнок включает сказку и слышит ваш голос. Не похожий. Не другой.
+                  Именно ваш. Он убаюкивает, утешает, рассказывает про драконов и принцесс,
+                  помогает победить страх темноты или просто шепчет:
+                  <strong>«Я рядом. Я люблю тебя».</strong>
+                </p>
+              </div>
+            </article>
+          </div>
+
+          <div class="how-it-works__footer">
+            <button
+              type="button"
+              class="btn btn--secondary btn--arrow label-md pricing-card__btn cadr-btn__one"
+              data-modal="plan-3"
+              aria-label="Оформить подписку на пакет Волшебник"
+            >
+              <span class="btn__text">Записать бесплатно</span>
+
+              <span class="btn__icon">
+                <svg viewBox="0 0 18 18" fill="none">
+                  <path
+                    d="M5 13L13 5M13 5H7M13 5V11"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</section>
+
+<section class="why-tech" id="advantages">
+  <div class="container">
+    <div class="why-tech__head">
+      <div class="why-tech__intro">
+        <h2 class="display-2 why-tech__title">
+          Почему это больше, чем технология?
+        </h2>
+
+        <p class="text-lg text-muted why-tech__text">
+          Потому что срабатывает на уровне инстинкта: мозг ребёнка
+          запрограммирован успокаиваться на голос родителей. Всё, что мы
+          сделали, — дали вам дистанционный пульт от этого врождённого механизма.
+        </p>
+      </div>
+    </div>
+
+    <div class="why-tech__layout">
+      <div class="why-tech__side">
+        <article class="why-tech-card why-tech-card--problem">
+          <div class="why-tech-card__num">01</div>
+
+          <h3 class="heading-4 why-tech-card__title">ПРОБЛЕМА</h3>
+
+          <p class="text-md why-tech-card__text">
+            Ребёнок не спит, капризничает, скучает, а вы не можете быть рядом.
+          </p>
+        </article>
+
+        <article class="why-tech-card why-tech-card--regular">
+          <div class="why-tech-card__num">02</div>
+
+          <h3 class="heading-4 why-tech-card__title">ОБЫЧНОЕ «РЕШЕНИЕ»</h3>
+
+          <p class="text-md why-tech-card__text">
+            Чужая аудиокнига, мультик, уговоры по телефону. Работает плохо, потому
+            что не трогает струны привязанности.
+          </p>
+        </article>
+      </div>
+
+      <article class="why-tech-card why-tech-card--solution why-tech-card--hero">
+        <div class="why-tech-card__num">03</div>
+
+        <div class="why-tech-card__hero-top">
+          <div class="why-tech-card__hero-copy">
+            <h3 class="heading-4 why-tech-card__title">НАШЕ РЕШЕНИЕ</h3>
+
+            <p class="text-md why-tech-card__text">
+              Вы включаете ребёнку ваш собственный голос, который читает проверенную
+              терапевтическую сказку. Срабатывает инстинкт. Ребёнок получает порцию
+              вашего спокойствия. Вы делаете дело.
+            </p>
+          </div>
+
+          <div class="why-tech-audio-box">
+            <div class="why-tech-audio-box__inner">
+              <button type="button" class="why-tech-audio-box__play" id="whyPlay" aria-label="Воспроизвести сказку">
+                ▶
+              </button>
+
+              <div class="why-tech-audio-box__wave" id="whyWave" aria-hidden="true">
+                <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+              </div>
+
+              <button type="button" class="why-tech-audio-box__cta" id="whyListen">
+                Послушать сказку
+              </button>
+            </div>
+
+            <audio id="whyAudio" preload="metadata">
+              <source src="/audio/demo.mp3" type="audio/mpeg" />
+              Ваш браузер не поддерживает аудио.
+            </audio>
+          </div>
+        </div>
+
+        <div class="why-tech-card__hero-bottom">
+          <div class="why-tech-card__hero-badge">Голос вместо расстояния</div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+
+
+<section class="loyalty-banner">
+
+
+  <div class="loyalty-banner__body">
+    <div class="container">
+      <div class="loyalty-banner__card">
+        <div class="loyalty-banner__left">
+          <h2 class="heading-3 loyalty-banner__title">
+            Наша программа лояльности
+          </h2>
+
+          <div class="loyalty-banner__caterpillar" aria-hidden="true">
+            <img
+              src="/src/assets/img/index/улитка.svg"
+              alt="Caterpillar"
+              class="loyalty-banner__caterpillar-image"
+            />
+          </div>
+        </div>
+
+        <div class="loyalty-banner__center">
+          <div class="loyalty-banner__badge" aria-hidden="true">
+            <img
+              src="/src/assets/img/index/Discount.svg"
+              alt="Discount"
+              class="loyalty-banner__badge-image"
+            />
+          </div>
+
+    
+        </div>
+
+        <div class="loyalty-banner__right">
+            <h3 class="heading-4 loyalty-banner__text">
+            Подтвердите статус многодетной семьи
+            и получите постоянную скидку 25 %
+          </h3>
+          <button
+            type="button"
+            class="btn btn--primary label-md loyalty-banner__btn"
+            aria-label="Подать заявку"
+          >
+            <span class="btn__text">Подать заявку</span>
+            <span class="btn__icon">↗</span>
+          </button>
+
+          <div class="loyalty-banner__family" aria-hidden="true">
+            <img
+              src="/src/assets/img/index/family.svg"
+              alt="Family"
+              class="loyalty-banner__family-image"
+            />
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+</section>
+<section class="voices-echo">
+  <div class="container">
+    <div class="voices-echo__inner">
+      <div class="voices-echo__content">
+        <h2 class="display-2 voices-echo__title">
+          «Родные голоса» — для тех, кто верит, что любовь можно записать.
+          И проиграть снова.
+        </h2>
+
+        <div class="voices-echo__text-group">
+          <p class="text-md voices-echo__text">
+            Для пилотов, смотрящих в ночное небо, и для их детей, засыпающих
+            под их историю про облака. Для врачей на суточном дежурстве, чей
+            голос может пожелать спокойной ночи. Для бабушек и дедушек из
+            другого города, чьи сказки должны стать наследством. Для пап в
+            командировках и мам на важных совещаниях. Для всех, чьё сердце
+            разрывается от мысли:
+            <strong>«Вот бы сейчас быть рядом».</strong>
+          </p>
+
+          <p class="text-md voices-echo__text">
+            Присоединяйтесь. Давайте сохраним самое ценное. Подарите своему
+            ребёнку эхо своего голоса. Это эхо будет звучать в нём всю жизнь.
+          </p>
+        </div>
+
+        <button
+          type="button"
+          class="btn btn--primary label-md voices-echo__btn"
+          aria-label="Попробовать"
+        >
+          <span class="btn__text">Попробовать</span>
+          <span class="btn__icon">↗</span>
+        </button>
+      </div>
+
+      <div class="voices-echo__media">
+        <img
+          src="/src/assets/img/index/deti2.svg"
+          alt="Дети подняли руки вверх"
+          class="voices-echo__image"
+        />
+      </div>
+    </div>
+  </div>
+</section>
+<section class="audience">
+  <div class="audience__body">
+    <div class="container">
+      <div class="audience__inner">
+        <div class="audience__media">
+          <div class="audience__photo audience__photo--top">
+            <img
+              src="/src/assets/img/index/mama3.svg"
+              alt="Мама с ребёнком"
+              class="audience__image"
+            />
+          </div>
+
+          <div class="audience__photo audience__photo--bottom">
+            <video
+          class="audience-tech__video"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="metadata"
+          poster="/src/assets/video/mom.mp4"
+        >
+          <source src="/src/assets/video/mom.mp4" type="video/mp4" />
+          Ваш браузер не поддерживает видео.
+        </video>
+          </div>
+        </div>
+
+        <div class="audience__content">
+          <div class="audience__intro">
+            <h2 class="display-2 audience__title">Для кого?</h2>
+
+            <p class="text-lg audience__subtitle">
+              Подарите своему ребёнку эхо своего голоса.
+              Это эхо будет звучать в нём всю жизнь.
+            </p>
+          </div>
+
+          <div class="audience__list">
+            <article class="audience-card audience-card--featured">
+              <div class="audience-card__quote" aria-hidden="true">❝</div>
+
+              <div class="audience-card__body">
+                <h3 class="heading-4 audience-card__title">
+                  Анна, 33 года, врач хирург
+                </h3>
+
+                <p class="text-md audience-card__text">
+                  После ночной операции открываю приложение и включаю дочери
+                  сказку, которую «рассказываю» я. Она спит, а я спокойна.
+                  Мой голос бережно держит её сон. Между нами тишина,
+                  наполненная смыслом: она — в мире грёз, я — в мире забот,
+                  и всё равно мы рядом. Пусть я не в комнате, но я в её ночи.
+                  Пусть она не слышит меня сейчас — моя любовь всё равно
+                  доходит. Иногда быть мамой — это просто быть голосом, который
+                  говорит: «Я с тобой. Даже когда ты спишь».
+                </p>
+              </div>
+            </article>
+
+            <article class="audience-card audience-card--white">
+              <div class="audience-card__quote" aria-hidden="true">❝</div>
+
+              <div class="audience-card__body">
+                <h3 class="heading-4 audience-card__title">
+                  Родитель в командировке:
+                </h3>
+
+                <p class="text-md audience-card__text">
+                  Чтобы мой “скоро приеду” звучал каждый вечер как новая глава
+                  нашей общей сказки
+                </p>
+              </div>
+            </article>
+
+            <article class="audience-card audience-card--white">
+              <div class="audience-card__quote" aria-hidden="true">❝</div>
+
+              <div class="audience-card__body">
+                <h3 class="heading-4 audience-card__title">
+                  Бабушка и дедушка в другом городе:
+                </h3>
+
+                <p class="text-md audience-card__text">
+                  Чтобы наши сказки и колыбельные стали живым наследством,
+                  а не воспоминанием
+                </p>
+              </div>
+            </article>
+
+            <article class="audience-card audience-card--white">
+              <div class="audience-card__quote" aria-hidden="true">❝</div>
+
+              <div class="audience-card__body">
+                <h3 class="heading-4 audience-card__title">
+                  Работающий родитель:
+                </h3>
+
+                <p class="text-md audience-card__text">
+                  Чтобы я мог закончить срочный проект, зная, что моё спокойствие
+                  уже убаюкивает сына
+                </p>
+              </div>
+            </article>
+            <article class="audience-card audience-card--white">
+  <div class="audience-card__quote" aria-hidden="true">❝</div>
+
+  <div class="audience-card__body">
+    <h3 class="heading-4 audience-card__title">
+      Родитель на расстоянии:
+    </h3>
+
+    <p class="text-md audience-card__text">
+      Чтобы даже в разлуке ребёнок засыпал с ощущением, что вы рядом —
+      не через экран, а через знакомый, родной голос
+    </p>
+  </div>
+</article>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+</section>
+<section class="pricing" id="pricing">
+  <div class="container">
+    <div class="pricing__head">
+      <h2 class="display-2 pricing__title">Тарифы</h2>
+      <p class="text-lg pricing__subtitle">
+        Выберите подходящий для вас, остальное за вас сделаем мы
+      </p>
+    </div>
+
+
+    <div class="pricing__grid">
+      <!-- ПАКЕТ 1 -->
+      <article class="pricing-card pricing-card--soft" data-plan-card>
+        <div class="pricing-card__badge" aria-hidden="true">
+          <img
+            src="/src/assets/img/index/вввв 1.svg"
+            alt=""
+            class="pricing-card__badge-image"
+          />
+        </div>
+
+        <div class="pricing-card__body">
+          <h3 class="heading-3 pricing-card__title">
+            <span class="pricing-card__title-strong">Пакет 1:</span>
+            <span class="pricing-card__title-light">СКАЗОЧНИК</span>
+          </h3>
+
+          <p class="text-md pricing-card__lead">
+            Идеальный старт. Ваш голос оживляет классические сказки.
+          </p>
+
+          <ol class="pricing-card__list text-md">
+            <li>Создание 1 голосового двойника (родитель 1).</li>
+            <li>
+              <strong>Библиотека «Базовая»:</strong>
+              50 проверенных сказок и 10 колыбельных (обновление +10 в квартал).
+            </li>
+            <li>
+              <strong>Три простых терапевтических сценария на выбор (из 5 доступных):</strong>
+              «Засыпай-ка», «Не боюсь темноты», «Мамин лучик» (для сепарации).
+            </li>
+            <li>
+              <strong>Формат:</strong>
+              Прослушивание в MP3 безлимитно.
+            </li>
+            <li>
+              <strong>Поддержка:</strong>
+              Чат-бот + база знаний.
+            </li>
+          </ol>
+        </div>
+
+        <div class="pricing-card__footer">
+          <div class="pricing-card__price-block">
+            <p class="pricing-card__price-label">Подписка</p>
+            <p class="pricing-card__price">14 400 ₽ / год</p>
+          </div>
+    <button
+  type="button"
+  class="btn btn--secondary btn--arrow label-md pricing-card__btn cadr-btn__one"
+  data-modal="plan-3"
+  aria-label="Оформить подписку на пакет Волшебник"
+>
+  <span class="btn__text">Оформить подписку</span>
+
+  <span class="btn__icon">
+    <svg viewBox="0 0 18 18" fill="none">
+      <path
+        d="M5 13L13 5M13 5H7M13 5V11"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  </span>
+</button>
+        </div>
+      </article>
+
+      <!-- ПАКЕТ 2 -->
+      <article class="pricing-card pricing-card--light pricing-card--featured" data-plan-card>
+        <div class="pricing-card__badge" aria-hidden="true">
+          <img
+            src="/src/assets/img/index/character1.svg"
+            alt=""
+            class="pricing-card__badge-image"
+          />
+        </div>
+
+        <div class="pricing-card__tag">Самый выгодный</div>
+
+        <div class="pricing-card__body">
+          <h3 class="heading-3 pricing-card__title">
+            <span class="pricing-card__title-strong">Пакет 2:</span>
+            <span class="pricing-card__title-light">ХРАНИТЕЛЬ</span>
+          </h3>
+
+          <p class="text-md pricing-card__lead">
+            Полноценное присутствие. Ваш голос растёт вместе с ребёнком, поддерживая и утешая.
+            <strong>Самый выгодный пакет</strong>
+          </p>
+
+          <ol class="pricing-card__list text-md">
+            <li>
+              Создание 2 голосовых двойников (родитель 1 + родитель 2/бабушка/дедушка).
+            </li>
+            <li>
+              <strong>Библиотека «Расширенная»:</strong>
+              100+ сказок, 10 колыбельных (обновление + 5 в месяц).
+            </li>
+            <li>
+              <strong>Полный доступ к «Мастерской сценариев»:</strong>
+              20+ терапевтических сценариев от психологов
+              (тревожность, адаптация, гнев, уверенность).
+            </li>
+            <li>
+              <strong>Формат:</strong>
+              Безлимитное прослушивание в MP3.
+            </li>
+            <li>
+              <strong>Приоритетная поддержка:</strong>
+              Email + чат в течение 24 ч.
+            </li>
+          </ol>
+        </div>
+
+        <div class="pricing-card__footer">
+          <div class="pricing-card__price-block">
+            <p class="pricing-card__price-label">Подписка</p>
+            <p class="pricing-card__price">24 400 ₽ / год</p>
+          </div>
+
+         <button
+  type="button"
+  class="btn btn--secondary btn--arrow label-md pricing-card__btn cadr-btn__one"
+  data-modal="plan-3"
+  aria-label="Оформить подписку на пакет Волшебник"
+>
+  <span class="btn__text">Оформить подписку</span>
+
+  <span class="btn__icon">
+    <svg viewBox="0 0 18 18" fill="none">
+      <path
+        d="M5 13L13 5M13 5H7M13 5V11"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  </span>
+</button>
+        </div>
+      </article>
+
+      
+
+<article class="pricing-card pricing-card--accent" data-plan-card>
+  <div class="pricing-card__badge" aria-hidden="true">
+    <img
+      src="/src/assets/img/index/character2.svg"
+      alt=""
+      class="pricing-card__badge-image"
+    />
+  </div>
+
+  <div class="pricing-card__body">
+    <h3 class="heading-3 pricing-card__title">
+      <span class="pricing-card__title-strong">Пакет 3:</span>
+      <span class="pricing-card__title-light">ВОЛШЕБНИК</span>
+    </h3>
+
+    <p class="text-md pricing-card__lead">
+      Голос как наследие. Ваша любовь, интонации и мудрость останутся с ребёнком
+      навсегда, в любой истории и в любом диалоге
+    </p>
+
+    <ol class="pricing-card__list text-md">
+      <li>
+        До 5 голосовых двойников
+        (родители, бабушки, дедушки, няня — «семейный круг»)
+      </li>
+      <li>
+        <strong>Безграничная библиотека + конструктор:</strong>
+        озвучка любого текста без ограничений + эксклюзивные сценарии
+      </li>
+      <li>
+        <strong>Терапевтический конструктор:</strong>
+        адаптация сценариев с куратором (2 сессии в год)
+      </li>
+      <li>
+        <strong>Капсула времени:</strong>
+        архив записи + подарочный формат
+        <br />
+        <span class="pricing-card__note">+15 000 ₽</span>
+      </li>
+      <li>
+        <strong>Персональный менеджер:</strong>
+        консьерж-поддержка
+      </li>
+      <li>
+        <strong>Формат:</strong>
+        MP3 + WAV
+      </li>
+      <li>
+        <strong>Лимиты:</strong>
+        отсутствуют
+      </li>
+    </ol>
+  </div>
+
+  <div class="pricing-card__footer">
+    <div class="pricing-card__price-block">
+      <p class="pricing-card__price-label">Подписка</p>
+      <p class="pricing-card__price">59 900 ₽ / год</p>
+    </div>
+
+    <button
+  type="button"
+  class="btn btn--secondary btn--arrow label-md pricing-card__btn cadr-btn__one"
+  data-modal="plan-3"
+  aria-label="Оформить подписку на пакет Волшебник"
+>
+  <span class="btn__text">Оформить подписку</span>
+
+  <span class="btn__icon">
+    <svg viewBox="0 0 18 18" fill="none">
+      <path
+        d="M5 13L13 5M13 5H7M13 5V11"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  </span>
+</button>
+  </div>
+</article>
+<article class="pricing-card pricing-card--builder" data-plan-card>
+
+
+  <div class="pricing-card__body">
+    <h3 class="heading-3 pricing-card__title">
+      <span class="pricing-card__title-strong">Конструктор:</span>
+      <span class="pricing-card__title-light">СОБЕРИ САМ</span>
+    </h3>
+
+    <p class="text-md pricing-card__subtitle">Maximum Flexibility:</p>
+
+    <p class="text-md pricing-card__text">
+      Собери сам — ты выбираешь форму, наполнение и логику конструктора под свои задачи.
+      Максимальная гибкость позволяет легко менять блоки, сценарии и элементы,
+      создавая уникальный продукт без ограничений шаблонами.
+    </p>
+  </div>
+
+  <div class="pricing-card__footer">
+
+    <a class="btn btn--primary btn--arrow card-btn__new">
+  <span class="btn__text">Подробнее</span>
+  <span class="btn__icon">
+    <svg viewBox="0 0 18 18" fill="none">
+      <path d="M5 13L13 5M13 5H7M13 5V11"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"/>
+    </svg>
+  </span>
+</a>
+  </div>
+</article>
+
+  </div>
+</section>
+<section class="about" id="about">
+  <div class="container">
+
+    <!-- Заголовок -->
+    <div class="about__head">
+      <h2 class="display-2 about__title">О проекте</h2>
+    </div>
+
+    <!-- Контент -->
+    <div class="about__grid">
+
+
+
+      <!-- ЦЕНТР -->
+      <div class="about__content">
+        <p class="about__eyebrow">Почему это работает</p>
+        <p class="about__quote">
+          “Самый важный звук детства — это вы. Давайте сохраним его.”
+        </p>
+<div class="about__eyebrow">Технология с человеческим смыслом</div>
+        <div class="about__text">
+          <p>
+           Есть то, что не сфотографировать и не положить на полку. Тихий смех мамы, когда герой сказки попадает впросак. Уверенное бормотание папы, читающего про паровозы. Шёпот бабушки, от которого ресницы сами становятся тяжелыми. 
+          </p>
+
+          <p>
+            Это звуковой портрет любви, который ваш ребёнок будет помнить всю жизнь. Но реальность вносит поправки. Рейс отменяется. Совещание затягивается. Вы смотрите на часы — и понимаете, что опять пропускаете самый важный ритуал. А там дома, ждёт ваш самый строгий судья. Мы не нашли волшебной палочки, чтобы быть в двух местах сразу. 
+          </p>
+
+          <p>
+           Но мы нашли способ отправить ваше спокойствие — вперёд вас самих. Скопировать ту самую интонацию, которая работает безотказно. И доставить её ребёнку ровно в 21:00, даже если вы в это время будете смотреть в иллюминатор.
+          </p>
+        </div>
+
+      </div>
+
+      <!-- ПРАВАЯ КОЛОНКА -->
+      <div class="about__content about__content--right">
+
+        <div class="about__text">
+          <p>
+            Наша технология — это не клон. Это — эхо. Ваше личное, запрограммированное эхо, которое всегда найдёт дорогу к детской кроватке, чтобы шепнуть:  <strong>«Спокойной ночи. Я рядом».</strong>
+          </p>
+
+          <p>
+            <strong>«Родные голоса» — </strong>это технология, которую мы наполнили смыслом. Это цифровой слепок вашего уникального голоса, который становится мостом между вами и вашим ребёнком.
+          </p>
+
+          <p class="about__note">
+       
+Это не холодный искусственный интеллект — это ваши интонации, ваша манера говорить, ваше тепло, преобразованное в данные и возвращённое обратно в мир — в виде сказок, бесед и успокоения
+          </p>
+          <p class="about__add">
+  И это не про технологии. то про связь, которая не обрывается.
+  Про возможность быть рядом — даже когда расстояние между вами
+  измеряется не шагами, а километрами.  
+  Это про ощущение, которое остаётся с ребёнком — тихое,
+  устойчивое, настоящее: что его любят, слышат и никогда
+  по-настоящему не оставляют.
+</p>
+        </div>
+
+
+      </div>
+
+    </div>
+  </div>
+</section>
+<section class="guarantees" id="guarantees">
+  <div class="container">
+    <div class="guarantees__head">
+      <h2 class="display-2 guarantees__title">Наши гарантии</h2>
+    </div>
+
+    <div class="guarantees__grid">
+      <article class="guarantee-card guarantee-card--outline">
+
+<div class="guarantee-card__num">01</div>
+        <div class="guarantee-card__body">
+          <h3 class="heading-3 guarantee-card__title">
+            3 ДНЯ БЕСПЛАТНОГО
+            <br />
+            ТЕСТА ДЛЯ ГОДОВОЙ
+            <br />
+            ПОДПИСКИ
+          </h3>
+
+          <p class="text-md guarantee-card__text">
+            Попробуйте все возможности сервиса и убедитесь, что он подходит вашей
+            семье — прежде чем оформить подписку.
+          </p>
+        </div>
+      </article>
+
+      <article class="guarantee-card guarantee-card--soft">
+ <div class="guarantee-card__num">02</div>
+
+        <div class="guarantee-card__body">
+          <h3 class="heading-3 guarantee-card__title">
+            ВОЗВРАТ ДЕНЕГ
+            <br />
+            ЗА НЕИСПОЛЬЗОВАННЫЙ
+            <br />
+            ПЕРИОД ПРИ ОТМЕНЕ
+          </h3>
+
+          <p class="text-md guarantee-card__text">
+            Если вы решите отменить подписку, мы вернём деньги за оставшийся
+            неиспользованный период — честно и без лишних вопросов.
+          </p>
+        </div>
+      </article>
+
+      <article class="guarantee-card guarantee-card--accent">
+   <div class="guarantee-card__num">03</div>
+
+        <div class="guarantee-card__body">
+          <h3 class="heading-3 guarantee-card__title">
+            ЗАМОРОЗКА ПОДПИСКИ НА 60
+            <br />
+            ДНЕЙ В ГОДУ
+          </h3>
+
+          <p class="text-md guarantee-card__text">
+            При необходимости вы можете приостановить подписку до 60 дней в году
+            — удобно для длительных поездок, отпусков или пауз без потери доступа.
+          </p>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+<section class="contact-block" id="forms">
+
+
+  <div class="contact-block__body">
+    <div class="container">
+      <div class="contact-block__inner">
+        <!-- LEFT -->
+        <div class="contact-block__content">
+          <div class="contact-block__intro">
+            <h2 class="display-2 contact-block__title">Свяжитесь с нами</h2>
+
+            <p class="text-lg contact-block__text">
+              Напишите нам — мы ответим на любые вопросы, поможем разобраться
+              и подскажем лучшее решение именно для вас. Мы всегда рядом
+              и готовы помочь.
+            </p>
+          </div>
+
+          <div class="contact-block__illustration" aria-hidden="true">
+            <video
+          class="why-tech__video"
+          autoplay
+          muted
+          loop
+          playsinline
+          preload="metadata"
+          poster="/src/assets/video/dracon3.mov"
+        >
+          <source src="/src/assets/video/dracon3.mov" type="video/mp4" />
+          Ваш браузер не поддерживает видео.
+        </video>
+          </div>
+        </div>
+
+        <!-- RIGHT -->
+        <div class="contact-block__form-wrap">
+          <form class="contact-form" action="#" method="post">
+            <div class="contact-form__field">
+              <label class="text-md contact-form__label" for="contact-name">Имя</label>
+              <input
+                class="contact-form__input"
+                type="text"
+                id="contact-name"
+                name="name"
+                placeholder="Ваше имя"
+                autocomplete="name"
+              />
+            </div>
+
+            <div class="contact-form__field">
+              <label class="text-md contact-form__label" for="contact-email">E-mail</label>
+              <input
+                class="contact-form__input"
+                type="email"
+                id="contact-email"
+                name="email"
+                placeholder="Ваш e-mail"
+                autocomplete="email"
+              />
+            </div>
+
+            <div class="contact-form__field">
+              <label class="text-md contact-form__label" for="contact-phone">Телефон</label>
+              <input
+                class="contact-form__input"
+                type="tel"
+                id="contact-phone"
+                name="phone"
+                placeholder="Ваш телефон"
+                autocomplete="tel"
+              />
+            </div>
+
+            <div class="contact-form__actions">
+             <button
+  type="button"
+  class="btn btn--secondary btn--arrow label-md pricing-card__btn cadr-btn__one"
+  data-modal="plan-3"
+  aria-label="Оформить подписку на пакет Волшебник"
+>
+  <span class="btn__text">Связаться с нами</span>
+
+  <span class="btn__icon">
+    <svg viewBox="0 0 18 18" fill="none">
+      <path
+        d="M5 13L13 5M13 5H7M13 5V11"
+        stroke="currentColor"
+        stroke-width="1.8"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  </span>
+</button>
+            </div>
+
+            <label class="contact-form__agree">
+              <input
+                class="contact-form__checkbox"
+                type="checkbox"
+                name="policy"
+                required
+              />
+              <span class="contact-form__checkbox-ui" aria-hidden="true"></span>
+              <span class="text-sm contact-form__agree-text">
+                Отправляя форму, вы подтверждаете согласие на обработку
+                персональных данных согласно политике сайта
+              </span>
+            </label>
+          </form>
+        </div>
+      </div>
+
+
+    </div>
+  </div>
+
+
+</section>
+<section class="faq" id="faq">
+  <div class="faq__container">
+    <h2 class="display-2 faq__title">Часто задаваемые вопросы</h2>
+
+    <div class="faq__list" data-accordion>
+      <article class="faq-item">
+        <button
+          class="faq-item__trigger"
+          type="button"
+          aria-expanded="false"
+          aria-controls="faq-content-1"
+          id="faq-trigger-1"
+        >
+          <span class="faq-item__question">Это безопасно?</span>
+          <span class="faq-item__icon" aria-hidden="true"></span>
+        </button>
+
+        <div
+          class="faq-item__content"
+          id="faq-content-1"
+          role="region"
+          aria-labelledby="faq-trigger-1"
+        >
+          <div class="faq-item__content-inner">
+            <p>
+              Да. Данные пользователя обрабатываются в защищённой среде, а доступ
+              к ним строго ограничен. Мы используем современные меры безопасности
+              и не передаём голосовые данные третьим лицам без согласия.
+            </p>
+          </div>
+        </div>
+      </article>
+
+      <article class="faq-item">
+        <button
+          class="faq-item__trigger"
+          type="button"
+          aria-expanded="false"
+          aria-controls="faq-content-2"
+          id="faq-trigger-2"
+        >
+          <span class="faq-item__question">Где хранится мой голос?</span>
+          <span class="faq-item__icon" aria-hidden="true"></span>
+        </button>
+
+        <div
+          class="faq-item__content"
+          id="faq-content-2"
+          role="region"
+          aria-labelledby="faq-trigger-2"
+        >
+          <div class="faq-item__content-inner">
+            <p>
+              Голосовые данные хранятся на защищённых серверах с ограниченным
+              доступом. Архитектура хранения организована так, чтобы минимизировать
+              риски несанкционированного доступа.
+            </p>
+          </div>
+        </div>
+      </article>
+
+      <article class="faq-item">
+        <button
+          class="faq-item__trigger"
+          type="button"
+          aria-expanded="false"
+          aria-controls="faq-content-3"
+          id="faq-trigger-3"
+        >
+          <span class="faq-item__question">Насколько голос похож?</span>
+          <span class="faq-item__icon" aria-hidden="true"></span>
+        </button>
+
+        <div
+          class="faq-item__content"
+          id="faq-content-3"
+          role="region"
+          aria-labelledby="faq-trigger-3"
+        >
+          <div class="faq-item__content-inner">
+            <p>
+              Сходство зависит от качества исходной записи, но при хорошем
+              материале результат получается очень близким по тембру, интонации
+              и общей подаче.
+            </p>
+          </div>
+        </div>
+      </article>
+
+      <article class="faq-item">
+        <button
+          class="faq-item__trigger"
+          type="button"
+          aria-expanded="false"
+          aria-controls="faq-content-4"
+          id="faq-trigger-4"
+        >
+          <span class="faq-item__question">Что если не понравится?</span>
+          <span class="faq-item__icon" aria-hidden="true"></span>
+        </button>
+
+        <div
+          class="faq-item__content"
+          id="faq-content-4"
+          role="region"
+          aria-labelledby="faq-trigger-4"
+        >
+          <div class="faq-item__content-inner">
+            <p>
+              В таком случае можно внести корректировки, улучшить исходный материал
+              или пересобрать результат с учётом ваших пожеланий.
+            </p>
+          </div>
+        </div>
+      </article>
+
+      <article class="faq-item">
+        <button
+          class="faq-item__trigger"
+          type="button"
+          aria-expanded="false"
+          aria-controls="faq-content-5"
+          id="faq-trigger-5"
+        >
+          <span class="faq-item__question">А если я передумаю?</span>
+          <span class="faq-item__icon" aria-hidden="true"></span>
+        </button>
+
+        <div
+          class="faq-item__content"
+          id="faq-content-5"
+          role="region"
+          aria-labelledby="faq-trigger-5"
+        >
+          <div class="faq-item__content-inner">
+            <p>
+              Вы сможете запросить удаление данных и остановить использование
+              голоса в рамках действующих условий сервиса.
+            </p>
+          </div>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+<footer class="footer" id="contacts">
+  <div class="footer__wave" aria-hidden="true">
+    <svg viewBox="0 0 1440 120" preserveAspectRatio="none">
+      <path
+        d="M0,20 
+           C60,40 90,75 140,70
+           C190,65 220,20 300,20
+           C380,20 420,65 480,65
+           C540,65 570,20 660,20
+           C750,20 780,65 840,65
+           C900,65 930,20 1020,20
+           C1110,20 1140,65 1200,70
+           C1260,75 1320,40 1440,0
+           L1440,120 L0,120 Z"
+        fill="#18181b"
+      />
+    </svg>
+  </div>
+
+  <div class="footer__body">
+    <div class="footer__container">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <h2 class="footer__title">Родные голоса</h2>
+          <p class="footer__subtitle">
+            Для тех, кто верит, что любовь можно записать.
+            <br />
+            И проиграть снова.
+          </p>
+        </div>
+
+        <nav class="footer__nav" aria-label="Навигация по сайту">
+          <ul class="footer__menu">
+            <li class="footer__menu-item"><a href="#about">О проекте</a></li>
+            <li class="footer__menu-item"><a href="#advantages">Преимущества</a></li>
+            <li class="footer__menu-item"><a href="#tariffs">Тарифы</a></li>
+            <li class="footer__menu-item"><a href="#how-it-works">Как это работает</a></li>
+            <li class="footer__menu-item"><a href="#contacts">Контакты</a></li>
+          </ul>
+        </nav>
+
+        <div class="footer__details">
+          <p>Индивидуальный предприниматель</p>
+          <p>Бабочкин Вячеслав Вячеславович</p>
+          <p>ИНН 343534427084</p>
+          <p>Расчетный счет</p>
+          <p>40802810000008656886</p>
+          <p>АО «Т-Банк»</p>
+        </div>
+
+        <div class="footer__cta">
+          <div class="footer__socials">
+            <a href="#" class="footer__social" aria-label="Позвонить">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M21 16.42V19A2 2 0 0 1 18.82 21C9.87 21 3 14.13 3 5.18A2 2 0 0 1 5 3h2.58a2 2 0 0 1 1.98 1.72l.38 2.65a2 2 0 0 1-.57 1.72l-1.27 1.27a16 16 0 0 0 5.66 5.66l1.27-1.27a2 2 0 0 1 1.72-.57l2.65.38A2 2 0 0 1 21 16.42Z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+
+          </div>
+
+          <a href="#" class="footer__button">
+            <span>Попробовать</span>
+            <span class="footer__button-icon">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <path d="M5 13L13 5M13 5H7M13 5V11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </a>
+
+          <p class="footer__note">
+            Подарите ребёнку главный звук детства.
+            <br />
+            Начните бесплатно прямо сейчас
+          </p>
+        </div>
+      </div>
+
+      <div class="footer__bottom">
+        <div class="footer__copyright">
+          <p>Все права защищены. 2026</p>
+          <p>
+            Весь контент сайта защищен авторским правом
+            <br />
+            и принадлежит правообладателю.
+          </p>
+        </div>
+
+        <a href="#" class="footer__policy">Политика конфиденциальности данных</a>
+      </div>
+    </div>
+  </div>
+</footer>
+    </div>
+   </body>
+</html>
