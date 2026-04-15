@@ -1,0 +1,33 @@
+import { Navigate, Routes, Route } from 'react-router-dom';
+import Dashboard from './pages/Dashboard';
+import Library from './pages/Library';
+import Voice from './pages/Voice';
+import Subscription from './pages/Subscription';
+
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<Navigate to="/dashboard/progress" replace />} />
+
+      <Route path="/dashboard/progress" element={<Dashboard />} />
+      <Route path="/dashboard/activity" element={<Dashboard />} />
+      <Route path="/dashboard/support" element={<Dashboard />} />
+
+      <Route path="/library/stories" element={<Library />} />
+      <Route path="/library/lullabies" element={<Library />} />
+      <Route path="/library/therapy" element={<Library />} />
+      <Route path="/library/family" element={<Library />} />
+
+      <Route path="/voice/my" element={<Voice />} />
+      <Route path="/voice/manage" element={<Voice />} />
+      <Route path="/voice/analytics" element={<Voice />} />
+
+      <Route path="/subscription/tariff" element={<Subscription />} />
+      <Route path="/subscription/payments" element={<Subscription />} />
+      <Route path="/subscription/manage" element={<Subscription />} />
+      <Route path="/subscription/bonus" element={<Subscription />} />
+    </Routes>
+  );
+}
+
+export default App;

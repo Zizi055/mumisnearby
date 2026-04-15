@@ -27,7 +27,7 @@
   backdrop-filter: blur(12px);
 }
 
-/* ПРЕМИАЛЬНОЕ ОКНО */
+
 .modal__dialog {
   position: relative;
 
@@ -91,21 +91,20 @@
   }
 }
 
-/* ЗАГОЛОВОК */
+
 .modal__title {
   font-size: 22px;
   font-weight: 600;
   margin-bottom: 10px;
 }
 
-/* ТЕКСТ */
+
 .modal__text {
   margin-bottom: 22px;
   opacity: 0.65;
   line-height: 1.5;
 }
 
-/* ФОРМА */
 .modal-form {
   display: flex;
   flex-direction: column;
@@ -136,7 +135,6 @@
   }
 }
 
-/* КНОПКА */
 .modal-form .btn {
   margin-top: 10px;
   border-radius: 16px;

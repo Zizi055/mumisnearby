@@ -1,0 +1,105 @@
+@use '../abstracts/lk-tokens' as *;
+
+.lk-hero-card {
+  width: 100%;
+  max-width: 810px;
+  min-height: 230px;
+  border-radius: $lk-radius-32;
+  overflow: hidden;
+  position: relative;
+  background:
+    linear-gradient(90deg, rgba(16, 25, 22, 0.82) 0%, rgba(16, 25, 22, 0.45) 38%, rgba(16, 25, 22, 0.08) 100%),
+    radial-gradient(circle at 20% 30%, rgba(232, 194, 116, 0.18), transparent 30%),
+    linear-gradient(135deg, #243228 0%, #51432d 40%, #856a3d 100%);
+  box-shadow: $lk-shadow-card;
+  backdrop-filter: blur(6px);
+}
+
+.lk-hero-card__overlay {
+  min-height: 230px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: $lk-space-24;
+}
+
+.lk-hero-card__content {
+  max-width: 320px;
+  color: $lk-white;
+}
+
+.lk-hero-card__eyebrow {
+  font-size: 14px;
+  line-height: 1.3;
+  margin-bottom: $lk-space-8;
+  opacity: 0.92;
+}
+
+.lk-hero-card__title {
+  margin: 0 0 $lk-space-12;
+  font-size: 36px;
+  line-height: 1;
+  font-weight: 500;
+}
+
+.lk-hero-card__meta {
+  display: flex;
+  flex-direction: column;
+  gap: $lk-space-8;
+  margin-bottom: $lk-space-16;
+}
+
+.lk-hero-card__age,
+.lk-hero-card__time {
+  font-size: 16px;
+  line-height: 1.2;
+}
+
+.lk-hero-card__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 24px;
+  padding: 0 10px;
+  border-radius: $lk-radius-pill;
+  background: rgba(255, 255, 255, 0.18);
+  font-size: 12px;
+  line-height: 1;
+}
+
+.lk-hero-card__actions {
+  display: flex;
+  align-items: center;
+  gap: $lk-space-8;
+}
+
+.lk-icon-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.65);
+  background: rgba(255, 255, 255, 0.06);
+  color: $lk-white;
+  cursor: pointer;
+}
+.lk-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+.lk-page--dashboard .lk-section {
+  max-width: 820px;
+}
+
+.lk-page--dashboard .lk-story-grid {
+  max-width: 820px;
+}
+.lk-page--dashboard .lk-section + .lk-section {
+  margin-top: 28px;
+}
+
+.lk-page--dashboard .lk-section__title {
+  font-size: 18px;
+}
+
+.lk-page--dashboard .lk-section__text {
+  margin-top: 6px;
+}

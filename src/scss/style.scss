@@ -3,6 +3,7 @@
 @use './abstracts/variables' as *;
 @use './abstracts/mixins';
 @use './abstracts/media';
+@use './abstracts/lk-tokens.scss' as *;
 
 @use './base/typography';
 @use './components/buttons';
@@ -23,6 +24,22 @@
 @use './pages/constructor.scss';
 @use './layout/builder-modal.scss';
 @use './layout/modalform.scss';
+@use './layout/lk-layout.scss';
+@use './layout/lk-header.scss';
+@use './layout/lk-menu.scss';
+@use './layout/lk-card.scss';
+@use './layout/lk-dashboard.scss';
+@use './layout/lk-filters.scss';
+@use './layout/lk-panel.scss';
+@use './layout/lk-search.scss';
+@use './layout/lk-story-card.scss';
+@use './layout/lk-table.scss';
+@use './layout/lk-tabs.scss';
+@use './layout/lk-voice-card.scss';
+@use './layout/lk-sidebar.scss';
+@use './components/lk-stats.scss';
+
+
 
 html {
   box-sizing: border-box;
