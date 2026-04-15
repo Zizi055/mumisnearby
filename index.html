@@ -111,9 +111,15 @@
     </nav>
 
     <div class="header__actions">
-      <button class="header__profile" aria-label="Профиль">
-        <img src="/src/assets/img/index/account.svg" alt="" />
-      </button>
+     <button class="header__profile" onclick="openLK()" aria-label="Профиль">
+  <img src="/src/assets/img/index/account.svg" alt="" />
+</button>
+
+<script>
+  function openLK() {
+    window.location.href = '/lk';
+  }
+</script>
 
       <button
         class="header__burger"
