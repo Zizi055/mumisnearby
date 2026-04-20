@@ -110,28 +110,28 @@
       </div>
     </nav>
 
-    <div class="header__actions">
-     <button class="header__profile" onclick="openLK()" aria-label="Профиль">
-  <img src="/src/assets/img/index/account.svg" alt="" />
-</button>
+<div class="header__actions">
+  <button class="header__profile" type="button" onclick="openLK()" aria-label="Профиль">
+    <img src="/src/assets/img/index/account.svg" alt="" />
+  </button>
+
+  <button
+    class="header__burger"
+    type="button"
+    aria-label="Открыть меню"
+    aria-expanded="false"
+    aria-controls="mobileMenu"
+  >
+    <span></span>
+    <span></span>
+  </button>
+</div>
 
 <script>
   function openLK() {
-    window.location.href = '/lk';
+    window.location.href = '/#/dashboard/progress';
   }
 </script>
-
-      <button
-        class="header__burger"
-        type="button"
-        aria-label="Открыть меню"
-        aria-expanded="false"
-        aria-controls="mobileMenu"
-      >
-        <span></span>
-        <span></span>
-      </button>
-    </div>
   </div>
 
   <!-- MOBILE MENU -->
