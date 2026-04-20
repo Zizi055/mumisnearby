@@ -1,13 +1,14 @@
-import { Navigate, Routes, Route } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
+import Home from './pages/Home';
 import Library from './pages/Library';
-import Voice from './pages/Voice';
 import Subscription from './pages/Subscription';
+import Voice from './pages/Voice';
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Navigate to="/dashboard/progress" replace />} />
+      <Route path="/" element={<Home />} />
 
       <Route path="/dashboard/progress" element={<Dashboard />} />
       <Route path="/dashboard/activity" element={<Dashboard />} />
@@ -26,6 +27,8 @@ function App() {
       <Route path="/subscription/payments" element={<Subscription />} />
       <Route path="/subscription/manage" element={<Subscription />} />
       <Route path="/subscription/bonus" element={<Subscription />} />
+
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }
