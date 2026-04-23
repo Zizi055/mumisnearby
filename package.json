@@ -3,11 +3,11 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-"scripts": {
-  "dev": "vite",
-  "build": "vite build && cd lk && npm install && npm run build && cd .. && cp -r lk/dist dist/lk",
-  "preview": "vite preview"
-}
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && cd lk && npm install && npm run build && cd .. && cp -r lk/dist dist/lk",
+    "preview": "vite preview"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
