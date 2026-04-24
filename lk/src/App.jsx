@@ -8,7 +8,7 @@ import Voice from './pages/Voice';
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<Navigate to="/dashboard/progress" replace />} />
 
       <Route path="/dashboard/progress" element={<Dashboard />} />
       <Route path="/dashboard/activity" element={<Dashboard />} />
