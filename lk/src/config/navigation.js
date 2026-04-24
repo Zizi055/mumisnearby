@@ -1,6 +1,8 @@
+import { Home, Book, Mic, CreditCard, Settings, User } from 'lucide-react';
+
 export const navigation = [
   {
-    icon: '🏠',
+    icon: <Home size={20} strokeWidth={1.7} />,
     path: '/dashboard',
     label: 'Главная',
     children: [
@@ -10,7 +12,7 @@ export const navigation = [
     ],
   },
   {
-    icon: '📚',
+    icon: <Book size={20} strokeWidth={1.7} />,
     path: '/library',
     label: 'Библиотека',
     children: [
@@ -21,7 +23,7 @@ export const navigation = [
     ],
   },
   {
-    icon: '🎤',
+    icon: <Mic size={20} strokeWidth={1.7} />,
     path: '/voice',
     label: 'Голос',
     children: [
@@ -31,7 +33,7 @@ export const navigation = [
     ],
   },
   {
-    icon: '💳',
+    icon: <CreditCard size={20} strokeWidth={1.7} />,
     path: '/subscription',
     label: 'Подписка',
     children: [
@@ -42,7 +44,7 @@ export const navigation = [
     ],
   },
   {
-    icon: '⚙️',
+    icon: <Settings size={20} strokeWidth={1.7} />,
     path: '/settings',
     label: 'Настройки',
     children: [
@@ -53,7 +55,7 @@ export const navigation = [
     ],
   },
   {
-    icon: '👤',
+    icon: <User size={20} strokeWidth={1.7} />,
     path: '/profile',
     label: 'Профиль',
     children: [

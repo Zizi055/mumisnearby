@@ -1,45 +1,45 @@
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { navigation } from '../../config/navigation';
 
 export default function Sidebar() {
-  const location = useLocation();
-
   return (
     <aside className="lk-sidebar">
+      {/* TOP */}
       <div className="lk-sidebar__top">
         <nav className="lk-sidebar__nav">
-          {navigation.slice(0, 4).map((item) => {
-            const isActive = location.pathname.startsWith(item.path);
-
-            return (
-              <NavLink
-                key={item.path}
-                to={item.children[0].path}
-                className={`lk-sidebar__icon ${isActive ? 'is-active' : ''}`}
-                aria-label={item.label}
-              >
-                <span>{item.icon}</span>
-              </NavLink>
-            );
-          })}
-        </nav>
-      </div>
-
-      <div className="lk-sidebar__bottom">
-        {navigation.slice(4).map((item) => {
-          const isActive = location.pathname.startsWith(item.path);
-
-          return (
+          {navigation.slice(0, 4).map((item) => (
             <NavLink
               key={item.path}
               to={item.children[0].path}
-              className={`lk-sidebar__icon ${isActive ? 'is-active' : ''}`}
               aria-label={item.label}
+              className={({ isActive }) =>
+                `lk-sidebar__icon ${isActive ? 'is-active' : ''}`
+              }
             >
-              <span>{item.icon}</span>
+              <span className="lk-sidebar__icon-inner">
+                {item.icon}
+              </span>
             </NavLink>
-          );
-        })}
+          ))}
+        </nav>
+      </div>
+
+      {/* BOTTOM */}
+      <div className="lk-sidebar__bottom">
+        {navigation.slice(4).map((item) => (
+          <NavLink
+            key={item.path}
+            to={item.children[0].path}
+            aria-label={item.label}
+            className={({ isActive }) =>
+              `lk-sidebar__icon ${isActive ? 'is-active' : ''}`
+            }
+          >
+            <span className="lk-sidebar__icon-inner">
+              {item.icon}
+            </span>
+          </NavLink>
+        ))}
       </div>
     </aside>
   );
