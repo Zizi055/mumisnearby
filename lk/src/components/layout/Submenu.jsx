@@ -4,7 +4,7 @@ import { navigation } from '../config/navigation';
 export default function Submenu() {
   const location = useLocation();
 
-  // находим текущий раздел
+ 
   const current = navigation.find((item) =>
     location.pathname.startsWith(item.path)
   );

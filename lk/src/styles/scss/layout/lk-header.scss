@@ -1,40 +1,51 @@
 @use '../abstracts/lk-tokens' as *;
 .lk-header {
-  height: 64px;
-  border-bottom: 1px solid $lk-line;
-
-
   display: flex;
-  align-items: center;
   justify-content: space-between;
+  align-items: center;
 
-  padding: 0 15px;
+  padding: 20px 24px;
+  border-bottom: 1px solid $lk-line;
+}
+
+/* LEFT */
+
+.lk-header__breadcrumb {
+  font-size: 12px;
+  color: #999;
+  margin-bottom: 4px;
 }
 
 .lk-header__title {
-  margin: 0;
-  font-size: 14px;
-  line-height: 1;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  color: #202020;
+  font-size: 20px;
+  font-weight: 600;
 }
+
+/* RIGHT */
 
 .lk-header__right {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 10px;
 }
 
-.lk-header__action,
-.lk-header__profile {
+.lk-header__icon-btn {
+  width: 38px;
+  height: 38px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 10px;
   border: none;
   background: transparent;
-  padding: 0;
-  margin: 0;
-
-  font-size: 12px;
-  line-height: 1;
-  color: #202020;
   cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.lk-header__icon-btn:hover {
+  background: rgba(93, 143, 114, 0.08);
+  color: #5d8f72;
 }

@@ -1,0 +1,16 @@
+x.lk-submenu {
+  width: 220px;
+  border-right: 1px solid $lk-line;
+  padding: 24px 16px;
+
+  opacity: 0;
+  transform: translateX(-10px);
+  animation: submenuFade 0.25s ease forwards;
+}
+
+@keyframes submenuFade {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
