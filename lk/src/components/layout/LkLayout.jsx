@@ -1,5 +1,6 @@
-import Sidebar from '../components/layout/Sidebar';
-import Submenu from '../components/layout/Submenu';
+import Sidebar from "./Sidebar";
+
+import Submenu from "./Submenu";
 
 export default function LkLayout({ children }) {
   return (

@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router-dom';
-import { navigation } from '../config/navigation';
+import { navigation } from "../../config/navigation";
 import { Bell, User } from 'lucide-react';
 
 export default function Header() {

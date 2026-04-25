@@ -1,5 +1,5 @@
 import { NavLink, useLocation } from 'react-router-dom';
-import { navigation } from '../config/navigation';
+import { navigation } from "../../config/navigation";
 
 export default function Submenu() {
   const location = useLocation();
