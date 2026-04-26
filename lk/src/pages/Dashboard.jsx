@@ -45,6 +45,20 @@ export default function Dashboard() {
         {activeTab === 'support' && <DashboardSupport />}
 
       </div>
+      
     </section>
+    
+
   );
+}
+function DashboardProgress() {
+  return <div>PROGRESS WORKS</div>;
+}
+
+function DashboardActivity() {
+  return <div>ACTIVITY WORKS</div>;
+}
+
+function DashboardSupport() {
+  return <div>SUPPORT WORKS</div>;
 }
