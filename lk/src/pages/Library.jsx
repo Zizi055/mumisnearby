@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
-import Layout from '../components/layout/Layout';
+import Layout from '../components/layout/LkLayout';
 import LibraryCard from '../components/library/LibraryCard';
 
 const categoryMeta = {
