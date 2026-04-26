@@ -1,3 +1,14 @@
+/* RESET + BASE */
+@use './base/reset';
+@use './base/typography';
+
+/* ROOT */
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+  background: #f5f6f7;
+  color: #202020;
+}
 
 // TOKENS
 @use './abstracts/lk-tokens.scss';

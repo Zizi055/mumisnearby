@@ -8,11 +8,13 @@ import LkLayout from "./components/layout/LkLayout";
 function App() {
   return (
     <Routes>
+
       {/* редирект */}
       <Route path="/" element={<Navigate to="/dashboard/progress" replace />} />
 
-      {/* ВСЁ внутри layout */}
+      {/* layout */}
       <Route element={<LkLayout />}>
+
         {/* dashboard */}
         <Route path="/dashboard/progress" element={<Dashboard />} />
         <Route path="/dashboard/activity" element={<Dashboard />} />
@@ -34,10 +36,12 @@ function App() {
         <Route path="/subscription/payments" element={<Subscription />} />
         <Route path="/subscription/manage" element={<Subscription />} />
         <Route path="/subscription/bonus" element={<Subscription />} />
+
       </Route>
 
       {/* fallback */}
       <Route path="*" element={<Navigate to="/dashboard/progress" replace />} />
+
     </Routes>
   );
 }

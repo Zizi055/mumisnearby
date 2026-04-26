@@ -1,16 +1,21 @@
 import Sidebar from "./Sidebar";
-
+import Header from "./Header";
 import Submenu from "./Submenu";
+import { Outlet } from "react-router-dom";
 
-export default function LkLayout({ children }) {
+export default function LkLayout() {
   return (
-    <div className="lk-layout">
+    <div className="lk">
       <Sidebar />
-      <Submenu />
 
-      <main className="lk-content">
-        {children}
-      </main>
+      <div className="lk-shell">
+        <Header />
+        <Submenu />
+
+        <main className="lk-content">
+          <Outlet />
+        </main>
+      </div>
     </div>
   );
 }
