@@ -3,12 +3,15 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import Dashboard from './pages/Dashboard';
 import Library from './pages/Library';
 import Subscription from './pages/Subscription';
-import Voice from './pages/Voice';
 
 import SubscriptionTariff from './pages/subscription/SubscriptionTariff';
 import SubscriptionPayments from './pages/subscription/SubscriptionPayments';
 import SubscriptionManage from './pages/subscription/SubscriptionManage';
 import SubscriptionBonus from './pages/subscription/SubscriptionBonus';
+import Voice from './pages/Voice';
+import VoiceMy from './pages/voice/VoiceMy';
+import VoiceManage from './pages/voice/VoiceManage';
+import VoiceAnalytics from './pages/voice/VoiceAnalytics';
 
 import LkLayout from './components/layout/LkLayout';
 
@@ -33,10 +36,12 @@ function App() {
         <Route path="/library/family" element={<Library />} />
 
         {/* voice */}
-        <Route path="/voice" element={<Navigate to="/voice/my" replace />} />
-        <Route path="/voice/my" element={<Voice />} />
-        <Route path="/voice/manage" element={<Voice />} />
-        <Route path="/voice/analytics" element={<Voice />} />
+       <Route path="/voice" element={<Voice />}>
+  <Route index element={<Navigate to="my" replace />} />
+  <Route path="my" element={<VoiceMy />} />
+  <Route path="manage" element={<VoiceManage />} />
+  <Route path="analytics" element={<VoiceAnalytics />} />
+</Route>
 
         {/* subscription — ВЛОЖЕННЫЕ */}
         <Route path="/subscription" element={<Subscription />}>
