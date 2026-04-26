@@ -1,0 +1,37 @@
+@use '../abstracts/lk-tokens' as *;
+.lk-card--premium {
+  position: relative;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+}
+
+.lk-badge {
+  position: absolute;
+  top: -10px;
+  right: 16px;
+  font-size: 12px;
+  background: #111;
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.lk-switch {
+  display: flex;
+  gap: 6px;
+  background: #f3f4f6;
+  padding: 4px;
+  border-radius: 10px;
+}
+
+.lk-switch button {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.lk-switch .is-active {
+  background: #111;
+  color: #fff;
+}
