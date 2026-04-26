@@ -1,22 +1,24 @@
 import { NavLink, useLocation } from 'react-router-dom';
-import { navigation } from "../../config/navigation";
+import { navigation } from '../../config/navigation';
 
 export default function Submenu() {
   const location = useLocation();
 
- 
-  const current = navigation.find((item) =>
+  // находим текущий раздел (dashboard / library / voice / subscription)
+  const currentSection = navigation.find((item) =>
     location.pathname.startsWith(item.path)
   );
 
-  if (!current) return null;
+  if (!currentSection) return null;
 
   return (
     <aside className="lk-submenu">
-      <div className="lk-submenu__title">{current.label}</div>
+      <div className="lk-submenu__title">
+        {currentSection.label}
+      </div>
 
       <nav className="lk-submenu__nav">
-        {current.children.map((child) => (
+        {currentSection.children.map((child) => (
           <NavLink
             key={child.path}
             to={child.path}
