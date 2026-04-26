@@ -17,11 +17,11 @@
 @use './components/lk-panel.scss';
 @use './components/lk-buttons.scss';
 @use './components/lk-table.scss';
-@use './components/lk-subscription.scss';
+@use './components/lk-subscription';
 
 // PAGES
-@use './pages/lk-dashboard.scss';
-@use './pages/lk-library.scss';
+@use './pages/lk-dashboard';
+@use './pages/lk-library';
 
 body {
 
