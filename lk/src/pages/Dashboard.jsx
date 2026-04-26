@@ -1,39 +1,17 @@
-import { useEffect, useState } from 'react';
-
-const DASHBOARD_TAB_KEY = 'lk-dashboard-tab-v1';
+import { useLocation } from 'react-router-dom';
 
 export default function Dashboard() {
-  const [activeTab, setActiveTab] = useState(() => {
-    return localStorage.getItem(DASHBOARD_TAB_KEY) || 'progress';
-  });
+  const location = useLocation();
 
-  useEffect(() => {
-    localStorage.setItem(DASHBOARD_TAB_KEY, activeTab);
-  }, [activeTab]);
+  const page = location.pathname.split('/').pop();
 
   return (
     <section className="lk-page">
       <div className="lk-page__inner">
 
-        {/* tabs */}
-        <div className="lk-tabs">
-          {['progress', 'activity', 'support'].map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`lk-tabs__btn ${activeTab === tab ? 'is-active' : ''}`}
-            >
-              {tab === 'progress' && 'Прогресс'}
-              {tab === 'activity' && 'Активность'}
-              {tab === 'support' && 'Поддержка'}
-            </button>
-          ))}
-        </div>
-
-        {/* content */}
-        {activeTab === 'progress' && <DashboardProgress />}
-        {activeTab === 'activity' && <DashboardActivity />}
-        {activeTab === 'support' && <DashboardSupport />}
+        {page === 'progress' && <DashboardProgress />}
+        {page === 'activity' && <DashboardActivity />}
+        {page === 'support' && <DashboardSupport />}
 
       </div>
     </section>
@@ -45,7 +23,6 @@ export default function Dashboard() {
 function DashboardProgress() {
   return (
     <>
-      {/* KPI */}
       <div className="lk-kpi">
         <Kpi title="Активных голосов" value="2" />
         <Kpi title="Прослушиваний" value="220" />
@@ -53,7 +30,6 @@ function DashboardProgress() {
         <Kpi title="Тариф" value="Хранитель" accent />
       </div>
 
-      {/* HERO */}
       <div className="lk-hero">
         <div>
           <span className="lk-hero__eyebrow">Продолжить</span>
@@ -64,7 +40,6 @@ function DashboardProgress() {
         <button className="lk-btn-primary">▶ Слушать</button>
       </div>
 
-      {/* STORIES */}
       <div className="lk-grid">
         <StoryCard title="Мальчик и лиса" />
         <StoryCard title="Спокойной ночи" />
