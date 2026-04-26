@@ -1,7 +1,7 @@
-import Sidebar from "./Sidebar";
-import Header from "./Header";
-import Submenu from "./Submenu";
-import { Outlet } from "react-router-dom";
+import { Outlet } from 'react-router-dom';
+import Sidebar from './Sidebar';
+import Header from './Header';
+import Submenu from './Submenu';
 
 export default function LkLayout() {
   return (
@@ -10,11 +10,14 @@ export default function LkLayout() {
 
       <div className="lk-shell">
         <Header />
-        <Submenu />
 
-        <main className="lk-content">
-          <Outlet />
-        </main>
+        <div className="lk-body">
+          <Submenu />
+
+          <main className="lk-content">
+            <Outlet />
+          </main>
+        </div>
       </div>
     </div>
   );

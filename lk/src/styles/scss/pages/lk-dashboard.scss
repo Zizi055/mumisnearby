@@ -103,3 +103,22 @@
 .lk-page--dashboard .lk-section__text {
   margin-top: 6px;
 }
+.lk-tabs {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.lk-tabs button {
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: transparent;
+  border: 1px solid #e6e6e6;
+  cursor: pointer;
+}
+
+.lk-tabs button.is-active {
+  background: #5d8f72;
+  color: white;
+  border-color: #5d8f72;
+}
