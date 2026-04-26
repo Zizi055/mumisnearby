@@ -3,7 +3,7 @@ import Dashboard from './pages/Dashboard';
 import Library from './pages/Library';
 import Subscription from './pages/Subscription';
 import Voice from './pages/Voice';
-import LkLayout from './layout/LkLayout';
+import LkLayout from "./components/layout/LkLayout";
 
 function App() {
   return (
