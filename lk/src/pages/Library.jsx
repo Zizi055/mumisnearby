@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import LibraryCard from '../components/library/LibraryCard';
 
 const categoryMeta = {
@@ -45,7 +46,14 @@ const filterLabels = {
 };
 
 export default function Library() {
-  const [activeCategory, setActiveCategory] = useState('stories');
+  const location = useLocation();
+
+  const categoryFromUrl = location.pathname.split('/').pop();
+
+  const activeCategory = categoryMeta[categoryFromUrl]
+    ? categoryFromUrl
+    : 'stories';
+
   const [activeMode, setActiveMode] = useState('all');
   const [searchValue, setSearchValue] = useState('');
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
@@ -58,27 +66,138 @@ export default function Library() {
 
     try {
       const parsed = JSON.parse(saved);
-      setAppliedFilters(parsed);
-      setDraftFilters(parsed);
-    } catch {}
+
+      const nextFilters = {
+        ageGroups: parsed.ageGroups || [],
+        durationGroups: parsed.durationGroups || [],
+        emotions: parsed.emotions || [],
+        themes: parsed.themes || [],
+      };
+
+      setAppliedFilters(nextFilters);
+      setDraftFilters(nextFilters);
+    } catch (error) {
+      console.error('Не удалось прочитать фильтры из localStorage', error);
+    }
   }, []);
 
   useEffect(() => {
     localStorage.setItem(FILTER_STORAGE_KEY, JSON.stringify(appliedFilters));
   }, [appliedFilters]);
 
+  useEffect(() => {
+    setActiveMode('all');
+    setSearchValue('');
+  }, [activeCategory]);
+
   const currentMeta = categoryMeta[activeCategory];
 
+  const activeFilterChips = useMemo(() => {
+    return [
+      ...appliedFilters.ageGroups.map((value) => ({
+        group: 'ageGroups',
+        value,
+        label: filterLabels.ageGroups[value],
+      })),
+      ...appliedFilters.durationGroups.map((value) => ({
+        group: 'durationGroups',
+        value,
+        label: filterLabels.durationGroups[value],
+      })),
+      ...appliedFilters.emotions.map((value) => ({
+        group: 'emotions',
+        value,
+        label: value,
+      })),
+      ...appliedFilters.themes.map((value) => ({
+        group: 'themes',
+        value,
+        label: value,
+      })),
+    ];
+  }, [appliedFilters]);
+
   const filteredItems = useMemo(() => {
-    return [];
+    let items = libraryData.filter((item) => item.category === activeCategory);
+
+    if (activeMode === 'favorites') {
+      items = items.filter((item) => item.isFavorite);
+    }
+
+    if (activeMode === 'new') {
+      items = items.filter((item) => item.isNew);
+    }
+
+    if (searchValue.trim()) {
+      const query = searchValue.trim().toLowerCase();
+      items = items.filter((item) => item.title.toLowerCase().includes(query));
+    }
+
+    if (appliedFilters.ageGroups.length) {
+      items = items.filter((item) =>
+        appliedFilters.ageGroups.includes(item.ageGroup)
+      );
+    }
+
+    if (appliedFilters.durationGroups.length) {
+      items = items.filter((item) =>
+        appliedFilters.durationGroups.includes(item.durationGroup)
+      );
+    }
+
+    if (appliedFilters.emotions.length) {
+      items = items.filter((item) =>
+        appliedFilters.emotions.every((emotion) =>
+          item.emotions.includes(emotion)
+        )
+      );
+    }
+
+    if (appliedFilters.themes.length) {
+      items = items.filter((item) =>
+        appliedFilters.themes.every((theme) =>
+          item.themes.includes(theme)
+        )
+      );
+    }
+
+    return items;
   }, [activeCategory, activeMode, searchValue, appliedFilters]);
+
+  const toggleDraftFilter = (group, value) => {
+    setDraftFilters((prev) => ({
+      ...prev,
+      [group]: prev[group].includes(value)
+        ? prev[group].filter((item) => item !== value)
+        : [...prev[group], value],
+    }));
+  };
+
+  const applyFilters = () => {
+    setAppliedFilters(draftFilters);
+  };
+
+  const resetFilters = () => {
+    setDraftFilters(initialFilters);
+    setAppliedFilters(initialFilters);
+  };
+
+  const removeAppliedFilter = (group, value) => {
+    setAppliedFilters((prev) => ({
+      ...prev,
+      [group]: prev[group].filter((item) => item !== value),
+    }));
+
+    setDraftFilters((prev) => ({
+      ...prev,
+      [group]: prev[group].filter((item) => item !== value),
+    }));
+  };
 
   return (
     <section className="lk-page lk-page--library">
       <div className="lk-page__inner">
-
         <div className="lk-library-content">
-
           <div className="lk-library-head">
             <h2 className="lk-library-head__title">{currentMeta.title}</h2>
             <div className="lk-library-head__count">{currentMeta.count}</div>
@@ -105,7 +224,62 @@ export default function Library() {
             >
               Фильтры ↓
             </button>
+
+            <button
+              type="button"
+              className="lk-library-quick-filters__item"
+              onClick={() => setIsFiltersOpen(true)}
+            >
+              Длительность
+            </button>
+
+            <button
+              type="button"
+              className="lk-library-quick-filters__item"
+              onClick={() => setIsFiltersOpen(true)}
+            >
+              Возраст
+            </button>
+
+            <button
+              type="button"
+              className="lk-library-quick-filters__item"
+              onClick={() => setIsFiltersOpen(true)}
+            >
+              Эмоции
+            </button>
+
+            <button
+              type="button"
+              className="lk-library-quick-filters__item"
+              onClick={() => setIsFiltersOpen(true)}
+            >
+              Тема
+            </button>
           </div>
+
+          {activeFilterChips.length > 0 && (
+            <div className="lk-library-active-filters">
+              {activeFilterChips.map((chip) => (
+                <button
+                  key={`${chip.group}-${chip.value}`}
+                  type="button"
+                  className="lk-library-active-filters__chip"
+                  onClick={() => removeAppliedFilter(chip.group, chip.value)}
+                >
+                  {chip.label} ×
+                </button>
+              ))}
+
+              <button
+                type="button"
+                className="lk-library-active-filters__reset"
+                onClick={resetFilters}
+              >
+                Очистить все
+              </button>
+            </div>
+          )}
 
           <div className="lk-library-modes">
             <button
@@ -113,7 +287,7 @@ export default function Library() {
               className={`lk-library-modes__item ${activeMode === 'all' ? 'is-active' : ''}`}
               onClick={() => setActiveMode('all')}
             >
-              Все
+              Все {currentMeta.title.toLowerCase()}
             </button>
 
             <button
@@ -138,58 +312,107 @@ export default function Library() {
               <LibraryCard key={item.id} item={item} />
             ))}
           </div>
-
         </div>
       </div>
 
       <aside className={`lk-library-sidebar ${isFiltersOpen ? 'is-open' : ''}`}>
         {isFiltersOpen && (
           <div className="lk-filters-panel">
+            <div className="lk-filters-panel__close-row">
+              <button
+                type="button"
+                className="lk-filters-panel__close"
+                onClick={() => setIsFiltersOpen(false)}
+              >
+                ×
+              </button>
+            </div>
 
-            <button
-              type="button"
-              className="lk-filters-panel__close"
-              onClick={() => setIsFiltersOpen(false)}
-            >
-              ×
+            <button type="button" className="lk-filters-panel__title-btn">
+              + Фильтры
             </button>
 
             <div className="lk-filters-panel__group">
-              <h4>Возраст</h4>
-              {Object.entries(filterLabels.ageGroups).map(([key, label]) => (
-                <label key={key}>
+              <h4 className="lk-filters-panel__group-title">Возраст</h4>
+
+              {Object.entries(filterLabels.ageGroups).map(([value, label]) => (
+                <label key={value} className="lk-filters-panel__check">
                   <input
                     type="checkbox"
-                    checked={draftFilters.ageGroups.includes(key)}
-                    onChange={() =>
-                      setDraftFilters((prev) => ({
-                        ...prev,
-                        ageGroups: prev.ageGroups.includes(key)
-                          ? prev.ageGroups.filter((i) => i !== key)
-                          : [...prev.ageGroups, key],
-                      }))
-                    }
+                    checked={draftFilters.ageGroups.includes(value)}
+                    onChange={() => toggleDraftFilter('ageGroups', value)}
                   />
                   {label}
                 </label>
               ))}
             </div>
 
+            <div className="lk-filters-panel__group">
+              <h4 className="lk-filters-panel__group-title">Длительность</h4>
+
+              {Object.entries(filterLabels.durationGroups).map(([value, label]) => (
+                <label key={value} className="lk-filters-panel__check">
+                  <input
+                    type="checkbox"
+                    checked={draftFilters.durationGroups.includes(value)}
+                    onChange={() => toggleDraftFilter('durationGroups', value)}
+                  />
+                  {label}
+                </label>
+              ))}
+            </div>
+
+            <div className="lk-filters-panel__group">
+              <h4 className="lk-filters-panel__group-title">Эмоции</h4>
+
+              <div className="lk-filters-panel__chips">
+                {['Счастье', 'Сон', 'Уют', 'Спокойствие', 'Тепло', 'Радость', 'Смелость', 'Любовь'].map((emotion) => (
+                  <button
+                    key={emotion}
+                    type="button"
+                    className={`lk-filters-panel__chip ${draftFilters.emotions.includes(emotion) ? 'is-active' : ''}`}
+                    onClick={() => toggleDraftFilter('emotions', emotion)}
+                  >
+                    {emotion}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="lk-filters-panel__group">
+              <h4 className="lk-filters-panel__group-title">Тема</h4>
+
+              <div className="lk-filters-panel__chips">
+                {['Дружба', 'Космос', 'Животные', 'Семья'].map((theme) => (
+                  <button
+                    key={theme}
+                    type="button"
+                    className={`lk-filters-panel__chip ${draftFilters.themes.includes(theme) ? 'is-active' : ''}`}
+                    onClick={() => toggleDraftFilter('themes', theme)}
+                  >
+                    {theme}
+                  </button>
+                ))}
+              </div>
+            </div>
+
             <div className="lk-filters-panel__footer">
-              <button onClick={() => setAppliedFilters(draftFilters)}>
+              <button
+                type="button"
+                className="lk-filters-panel__apply"
+                onClick={applyFilters}
+              >
                 Применить
               </button>
 
               <button
-                onClick={() => {
-                  setDraftFilters(initialFilters);
-                  setAppliedFilters(initialFilters);
-                }}
+                type="button"
+                className="lk-filters-panel__reset"
+                onClick={resetFilters}
               >
                 Сбросить
               </button>
             </div>
-
           </div>
         )}
       </aside>
