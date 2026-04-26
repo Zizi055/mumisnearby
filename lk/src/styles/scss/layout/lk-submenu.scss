@@ -1,4 +1,5 @@
-x.lk-submenu {
+@use '../abstracts/lk-tokens' as *;
+.lk-submenu {
   width: 220px;
   border-right: 1px solid $lk-line;
   padding: 24px 16px;
