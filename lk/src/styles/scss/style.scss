@@ -21,7 +21,7 @@
 
 // PAGES
 @use './pages/lk-dashboard';
-@use './pages/lk-library';
+@import './pages/lk-library.scss';
 
 body {
 
