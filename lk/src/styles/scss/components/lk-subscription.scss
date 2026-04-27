@@ -1,37 +1,143 @@
 @use '../abstracts/lk-tokens' as *;
-.lk-card--premium {
+.lk-tariffs {
+  max-width: 1100px;
+}
+
+/* заголовок */
+.lk-tariffs .lk-title {
+  margin-bottom: 6px;
+}
+
+.lk-tariffs .lk-text {
+  color: $lk-text-muted;
+  margin-bottom: 24px;
+}
+
+/* сетка */
+.lk-tariffs-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+/* карточка */
+.lk-tariff-card {
   position: relative;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+  border-radius: 20px;
+  padding: 22px;
+  border: 1px solid $lk-border;
+  background: #f6f7f5;
+  transition: 0.25s ease;
 }
 
-.lk-badge {
+.lk-tariff-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
+}
+
+/* варианты */
+.lk-tariff-card--light {
+  background: #f6f7f5;
+}
+
+.lk-tariff-card--green {
+  background: linear-gradient(135deg, #edf5ef, #dfece4);
+  border-color: #cfe0d5;
+}
+
+.lk-tariff-card--gradient {
+  background: linear-gradient(135deg, #eef3ef, #d7e4db);
+}
+
+/* бейдж */
+.lk-tariff-badge {
   position: absolute;
-  top: -10px;
-  right: 16px;
-  font-size: 12px;
-  background: #111;
-  color: #fff;
-  padding: 4px 10px;
-  border-radius: 999px;
-}
-
-.lk-switch {
-  display: flex;
-  gap: 6px;
-  background: #f3f4f6;
-  padding: 4px;
-  border-radius: 10px;
-}
-
-.lk-switch button {
+  top: 14px;
+  left: 14px;
+  background: #e3efe8;
+  color: #4f7a63;
   padding: 6px 12px;
-  border-radius: 8px;
-  border: none;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* header */
+.lk-tariff-card__head h3 {
+  font-size: 18px;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.lk-tariff-card__head span {
+  font-weight: 600;
+}
+
+.lk-tariff-card__head p {
+  font-size: 14px;
+  color: $lk-text-muted;
+  margin-bottom: 14px;
+}
+
+/* список */
+.lk-tariff-card__list {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* футер */
+.lk-tariff-card__footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 18px;
+}
+
+.lk-tariff-card__label {
+  font-size: 12px;
+  color: $lk-text-muted;
+}
+
+.lk-tariff-card__price {
+  font-size: 20px;
+  font-weight: 600;
+}
+
+/* кнопка */
+.lk-tariff-card__button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: 1px solid $lk-border;
   background: transparent;
   cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s ease;
 }
 
-.lk-switch .is-active {
-  background: #111;
+.lk-tariff-card__button:hover {
+  background: rgba(108, 141, 121, 0.08);
+}
+
+/* primary кнопка */
+.lk-tariff-card--green .lk-tariff-card__button,
+.lk-tariff-card--gradient .lk-tariff-card__button {
+  background: $lk-brand;
   color: #fff;
+  border: none;
+}
+
+/* адаптив */
+@media (max-width: 900px) {
+  .lk-tariffs-grid {
+    grid-template-columns: 1fr;
+  }
 }

@@ -4,7 +4,6 @@ import { navigation } from '../../config/navigation';
 export default function Submenu() {
   const location = useLocation();
 
-  // находим текущий раздел (dashboard / library / voice / subscription)
   const currentSection = navigation.find((item) =>
     location.pathname.startsWith(item.path)
   );

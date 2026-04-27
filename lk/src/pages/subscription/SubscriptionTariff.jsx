@@ -1,76 +1,90 @@
 import { useState } from 'react';
+import { tariffs } from '../../data/tariffs.data';
 
 export default function SubscriptionTariff() {
-  const [isYear, setIsYear] = useState(true);
 
   return (
-    <div className="lk-subscription">
 
-      <div className="lk-subscription-head">
-        <h2 className="lk-title">Выберите тариф</h2>
+    <section className="lk-tariffs">
 
-        <div className="lk-switch">
-          <button
-            className={!isYear ? 'is-active' : ''}
-            onClick={() => setIsYear(false)}
-          >
-            Месяц
-          </button>
+      <h2 className="lk-title">Тарифы</h2>
 
-          <button
-            className={isYear ? 'is-active' : ''}
-            onClick={() => setIsYear(true)}
-          >
-            Год
-          </button>
-        </div>
-      </div>
+      <p className="lk-text">Выберите подходящий для вас, остальное сделаем мы</p>
 
-      <div className="lk-subscription-grid">
+      <div className="lk-tariffs-grid">
 
-        <div className="lk-card lk-card--hover">
-          <div className="lk-subscription-card__name">Базовый</div>
-          <div className="lk-subscription-card__price">
-            {isYear ? '6 000 ₽ / год' : '590 ₽ / мес'}
-          </div>
-          <ul className="lk-subscription-list">
-            <li>1 голос</li>
-            <li>15 сказок</li>
-            <li>Базовая библиотека</li>
-          </ul>
-          <button className="lk-btn-secondary">Выбрать</button>
-        </div>
+        {tariffs.map((tariff) => (
 
-        <div className="lk-card lk-card--accent lk-card--premium">
-          <div className="lk-badge">Популярный</div>
-          <div className="lk-subscription-card__name">Хранитель</div>
-          <div className="lk-subscription-card__price">
-            {isYear ? '14 400 ₽ / год' : '1 490 ₽ / мес'}
-          </div>
-          <ul className="lk-subscription-list">
-            <li>1 голос</li>
-            <li>100+ материалов</li>
-            <li>Обновления каждый месяц</li>
-            <li>Терапия</li>
-          </ul>
-          <button className="lk-btn-primary">Текущий тариф</button>
-        </div>
+          <TariffCard key={tariff.id} tariff={tariff} />
 
-        <div className="lk-card lk-card--hover">
-          <div className="lk-subscription-card__name">Премиум</div>
-          <div className="lk-subscription-card__price">
-            {isYear ? '24 900 ₽ / год' : '2 490 ₽ / мес'}
-          </div>
-          <ul className="lk-subscription-list">
-            <li>3 голоса</li>
-            <li>Вся библиотека</li>
-            <li>Терапия + сценарии</li>
-            <li>AI генерация историй</li>
-          </ul>
-          <button className="lk-btn-secondary">Выбрать</button>
-        </div>
+        ))}
 
       </div>
-    </div>
+
+    </section>
+
   );
+
+}
+
+function TariffCard({ tariff }) {
+
+  return (
+
+    <article className={`lk-tariff-card lk-tariff-card--${tariff.accent}`}>
+
+      {tariff.badge && <span className="lk-tariff-badge">{tariff.badge}</span>}
+
+      <div className="lk-tariff-card__head">
+
+        <h3>
+
+          {tariff.isBuilder ? 'Конструктор: ' : 'Пакет: '}
+
+          <span>{tariff.name.toUpperCase()}</span>
+
+        </h3>
+
+        <p>{tariff.description}</p>
+
+      </div>
+
+      <ol className="lk-tariff-card__list">
+
+        {tariff.features.map((feature) => (
+
+          <li key={feature}>{feature}</li>
+
+        ))}
+
+      </ol>
+
+      <div className="lk-tariff-card__footer">
+
+        {tariff.price && (
+
+          <div>
+
+            <span className="lk-tariff-card__label">Подписка</span>
+
+            <div className="lk-tariff-card__price">{tariff.price}</div>
+
+          </div>
+
+        )}
+
+        <button className="lk-tariff-card__button">
+
+          {tariff.isBuilder ? 'Подробнее' : 'Оформить подписку'}
+
+          <span>↗</span>
+
+        </button>
+
+      </div>
+
+    </article>
+
+  );
+
 }
