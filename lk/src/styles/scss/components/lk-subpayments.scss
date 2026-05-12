@@ -1,0 +1,350 @@
+@use '../abstracts/lk-tokens' as *;
+.lk-payments {
+  display: flex;
+  flex-direction: column;
+  gap: $lk-space-20;
+}
+
+
+.lk-payments__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+
+.lk-payments-summary {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  border-radius: $lk-radius-20;
+  background: $lk-surface;
+  border: 1px solid $lk-border;
+  overflow: hidden;
+}
+
+.lk-payments-summary__item {
+  padding: 16px 24px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lk-payments-summary__item:not(:last-child) {
+  border-right: 1px solid $lk-border;
+}
+
+.lk-payments-summary__label {
+  font-size: 12px;
+  color: $lk-text-muted;
+}
+
+.lk-payments-summary__value {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.lk-payments-summary__value.is-success {
+  color: $lk-brand;
+}
+
+
+.lk-payments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+
+.lk-payments-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 14px 16px;
+  border-radius: $lk-radius-16;
+
+  background: $lk-surface;
+  border: 1px solid $lk-border;
+
+  transition: all 0.2s ease;
+}
+
+.lk-payments-item:hover {
+  border-color: $lk-line;
+  box-shadow: $lk-shadow-card;
+}
+
+
+.lk-payments-item.is-active {
+  border-color: $lk-brand;
+  background: $lk-surface-soft;
+  box-shadow: 0 0 0 1px rgba(93, 143, 114, 0.15);
+}
+
+
+.lk-payments-item__left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+
+.lk-payments-item__icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: linear-gradient(
+    135deg,
+    rgba(93, 143, 114, 0.12),
+    rgba(93, 143, 114, 0.05)
+  );
+
+  color: $lk-brand;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.lk-payments-item__icon:hover {
+  transform: scale(1.08);
+  background: rgba(93, 143, 114, 0.18);
+}
+
+
+.lk-payments-item__info {
+  display: flex;
+  flex-direction: column;
+}
+
+.lk-payments-item__info strong {
+  font-size: 14px;
+}
+
+.lk-payments-item__info span {
+  font-size: 12px;
+  color: $lk-text-muted;
+}
+
+
+.lk-payments-item__right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.lk-payments-item__right strong {
+  font-size: 14px;
+}
+
+
+.lk-payments-status {
+  font-size: 11px;
+  padding: 4px 10px;
+  border-radius: $lk-radius-pill;
+  font-weight: 500;
+}
+
+.lk-payments-status.is-success {
+  background: rgba(93, 143, 114, 0.12);
+  color: $lk-brand;
+}
+
+
+.lk-payments-more {
+  font-size: 12px;
+  color: $lk-text-muted;
+  margin-top: 4px;
+}
+
+.lk-payments-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+
+.lk-invoice {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+}
+
+.lk-invoice__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+}
+
+.lk-invoice__panel {
+  position: relative;
+  width: 420px;
+  max-width: 90%;
+  margin: 80px auto;
+
+  background: $lk-white;
+  border-radius: $lk-radius-20;
+  padding: 20px;
+
+  box-shadow: 0 20px 50px rgba(0,0,0,0.15);
+
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.lk-invoice__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.lk-invoice-status {
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: $lk-radius-pill;
+}
+
+.lk-invoice-status.is-paid {
+  background: rgba(93, 143, 114, 0.12);
+  color: $lk-brand;
+}
+
+.lk-invoice__main {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.lk-invoice__row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.lk-invoice__row span {
+  color: $lk-text-muted;
+}
+
+.lk-invoice__breakdown {
+  border-top: 1px solid $lk-border;
+  padding-top: 10px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.lk-invoice__line {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+}
+
+.lk-invoice__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.lk-payments-status,
+.lk-invoice-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.lk-payments-status.is-paid,
+.lk-invoice-status.is-paid {
+  background: rgba(93, 143, 114, 0.12);
+  color: $lk-brand;
+}
+
+
+.lk-payments-status.is-pending,
+.lk-invoice-status.is-pending {
+  background: rgba(245, 166, 35, 0.14);
+  color: $lk-warning;
+}
+
+
+.lk-payments-status.is-failed,
+.lk-invoice-status.is-failed {
+  background: rgba(229, 72, 72, 0.12);
+  color: $lk-danger;
+}
+.lk-payments-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: $lk-space-12;
+}
+
+.lk-payments-filter {
+  display: inline-flex;
+  gap: 4px;
+
+  padding: 4px;
+
+  border-radius: $lk-radius-pill;
+  background: $lk-surface-soft;
+}
+
+.lk-payments-filter button {
+  height: 32px;
+  padding: 0 12px;
+
+  border: none;
+  border-radius: $lk-radius-pill;
+
+  background: transparent;
+  color: $lk-text-muted;
+
+  font-size: 13px;
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+}
+
+.lk-payments-filter button:hover {
+  color: $lk-text;
+}
+
+.lk-payments-filter button.is-active {
+  background: $lk-white;
+  color: $lk-text;
+
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.lk-payments-sort {
+  height: 36px;
+  padding: 0 12px;
+
+  border-radius: $lk-radius-pill;
+  border: 1px solid $lk-border;
+
+  background: $lk-surface;
+  color: $lk-text;
+
+  font-size: 13px;
+  outline: none;
+}
+
+.lk-payments-empty {
+  padding: 18px;
+
+  border-radius: $lk-radius-16;
+  border: 1px dashed $lk-border;
+
+  background: $lk-surface;
+  color: $lk-text-muted;
+
+  font-size: 14px;
+}

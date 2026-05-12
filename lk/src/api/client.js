@@ -1,0 +1,33 @@
+const BASE_URL = import.meta.env.VITE_API_URL || ''; // '' для mock / относительных путей
+
+async function request(path, options = {}) {
+  const res = await fetch(`${BASE_URL}${path}`, {
+    headers: {
+      'Content-Type': 'application/json',
+      ...(options.headers || {}),
+    },
+    credentials: 'include', // если будет сессия/куки
+    ...options,
+  });
+
+  if (!res.ok) {
+    const text = await res.text().catch(() => '');
+    throw new Error(`HTTP ${res.status}: ${text}`);
+  }
+
+  // 204 
+  if (res.status === 204) return null;
+
+  return res.json();
+}
+
+export const api = {
+  get: (path) => request(path),
+  post: (path, body) =>
+    request(path, { method: 'POST', body: JSON.stringify(body) }),
+  put: (path, body) =>
+    request(path, { method: 'PUT', body: JSON.stringify(body) }),
+  patch: (path, body) =>
+    request(path, { method: 'PATCH', body: JSON.stringify(body) }),
+  del: (path) => request(path, { method: 'DELETE' }),
+};

@@ -1,0 +1,1314 @@
+@use '../abstracts/lk-tokens' as *;
+
+
+.lk-support {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+
+
+.lk-support-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 24px;
+}
+
+.lk-support-hero__content {
+  padding: 40px;
+
+  border: 1px solid $lk-border;
+  border-radius: 32px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f7faf8 0%,
+      #eef5f0 100%
+    );
+
+  box-shadow: $lk-shadow-card;
+}
+
+.lk-support-hero__content > span {
+  display: inline-flex;
+  align-items: center;
+
+  margin-bottom: 18px;
+  padding: 10px 16px;
+
+  border-radius: 999px;
+
+  background:
+    rgba(93,143,114,0.08);
+
+  color: $lk-brand;
+
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.lk-support-hero__content h1 {
+  max-width: 540px;
+
+  margin: 0 0 20px;
+
+  color: $lk-text;
+
+  font-size: 38px;
+  line-height: 0.95;
+  font-weight: 700;
+  letter-spacing: -0.06em;
+}
+
+.lk-support-hero__content p {
+  max-width: 520px;
+
+  margin: 0 0 32px;
+
+  color: $lk-text-soft;
+
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+
+
+.lk-support-search {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  height: 60px;
+
+  padding: 0 20px;
+
+  border: 1px solid $lk-border;
+  border-radius: 20px;
+
+  background: $lk-white;
+}
+
+.lk-support-search svg {
+  color: $lk-text-muted;
+}
+
+.lk-support-search input {
+  width: 100%;
+
+  border: none;
+  outline: none;
+  background: transparent;
+
+  color: $lk-text;
+
+  font-size: 15px;
+}
+
+.lk-support-search input::placeholder {
+  color: $lk-text-muted;
+}
+
+
+
+.lk-support-hero__card {
+  display: flex;
+  flex-direction: column;
+
+  padding: 32px;
+
+  border: 1px solid $lk-border;
+  border-radius: 32px;
+
+  background: #fff;
+
+  box-shadow: $lk-shadow-card;
+}
+
+.lk-support-hero__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 56px;
+  height: 56px;
+
+  margin-bottom: 22px;
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(93,143,114,0.12) 0%,
+      rgba(93,143,114,0.05) 100%
+    );
+
+  color: $lk-brand;
+}
+
+.lk-support-hero__card strong {
+  margin-bottom: 14px;
+
+  color: $lk-text;
+
+  font-size: 28px;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+.lk-support-hero__card p {
+  margin: 0 0 28px;
+
+  color: $lk-text-soft;
+
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.lk-support-hero__card button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  
+
+  margin-top: auto;
+
+  border: none;
+ 
+
+  color: $lk-white;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.lk-support-hero__card button:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 14px 28px rgba(93,143,114,0.18);
+}
+
+
+
+.lk-support-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 24px;
+}
+
+.lk-support-main {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.lk-support-side {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+
+
+.lk-support-categories {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+.lk-support-categories button {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  height: 72px;
+
+  padding: 0 24px;
+
+  border: 1px solid $lk-border;
+  border-radius: 24px;
+
+  background: #fff;
+
+  color: $lk-text;
+
+  font-size: 15px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.lk-support-categories button:hover {
+  transform: translateY(-2px);
+
+  border-color: rgba(93,143,114,0.18);
+
+  box-shadow:
+    0 12px 24px rgba(93,143,114,0.08);
+}
+
+.lk-support-categories svg {
+  color: $lk-brand;
+}
+
+
+
+.lk-support-faq {
+  padding: 32px;
+
+  border: 1px solid $lk-border;
+  border-radius: 32px;
+
+  background: #fff;
+
+  box-shadow: $lk-shadow-card;
+}
+
+.lk-support-faq__head {
+  margin-bottom: 28px;
+}
+
+.lk-support-faq__head h2 {
+  margin: 0 0 10px;
+
+  color: $lk-text;
+
+  font-size: 28px;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+.lk-support-faq__head p {
+  margin: 0;
+
+  color: $lk-text-muted;
+
+  font-size: 14px;
+}
+
+.lk-support-faq__list {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.lk-support-faq__item {
+  border: 1px solid $lk-border;
+  border-radius: 24px;
+
+  overflow: hidden;
+
+  background: $lk-white;
+}
+
+.lk-support-faq__trigger {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+
+  padding: 24px;
+
+  border: none;
+  background: transparent;
+
+  cursor: pointer;
+}
+
+.lk-support-faq__trigger strong {
+  color: $lk-text;
+
+  font-size: 17px;
+  line-height: 1.4;
+  font-weight: 600;
+
+  text-align: left;
+}
+
+.lk-support-faq__trigger svg {
+  flex-shrink: 0;
+
+  color: $lk-text-muted;
+
+  transition: transform 0.2s ease;
+}
+
+.lk-support-faq__item.is-open svg {
+  transform: rotate(180deg);
+}
+
+.lk-support-faq__content {
+  padding:
+    0 24px 24px;
+}
+
+.lk-support-faq__content p {
+  margin: 0;
+
+  color: $lk-text-soft;
+
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+
+
+.lk-support-help,
+.lk-support-status {
+  padding: 32px;
+
+  border: 1px solid $lk-border;
+  border-radius: 32px;
+
+ background:
+    linear-gradient(
+      135deg,
+      #f7faf8 0%,
+      #eef5f0 100%
+    );
+
+  box-shadow: $lk-shadow-card;
+}
+
+.lk-support-help__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 56px;
+  height: 56px;
+
+  margin-bottom: 22px;
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(93,143,114,0.12) 0%,
+      rgba(93,143,114,0.05) 100%
+    );
+
+  color: $lk-brand;
+}
+
+.lk-support-help strong {
+  display: block;
+
+  margin-bottom: 14px;
+
+  color: $lk-text;
+
+  font-size: 26px;
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+
+.lk-support-help p {
+  margin: 0 0 28px;
+
+  color: $lk-text-soft;
+
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.lk-support-help button {
+  width: 100%;
+  height: 52px;
+
+  border: none;
+
+
+  background:
+    linear-gradient(
+      135deg,
+      #5d8f72 0%,
+      #79ab89 100%
+    );
+
+  color: $lk-white;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.lk-support-help button:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 14px 28px rgba(93,143,114,0.18);
+}
+
+
+
+.lk-support-status span {
+  display: block;
+
+  margin-bottom: 16px;
+
+  color: $lk-text-muted;
+
+  font-size: 13px;
+}
+
+.lk-support-status strong {
+  display: block;
+
+  margin-bottom: 20px;
+
+  color: $lk-text;
+
+  font-size: 22px;
+  line-height: 1.3;
+  font-weight: 700;
+}
+
+.lk-support-status__dot {
+  width: 14px;
+  height: 14px;
+
+  border-radius: 50%;
+
+  background: #5d8f72;
+
+  box-shadow:
+    0 0 0 8px rgba(93,143,114,0.12);
+}
+
+/* 
+  ВСПЛЫВАЮЩЕЕ МОДАЛЬНОЕ ОКНО ПОДДЕРКЖИ
+ */
+
+
+$lk-gradient-brand: linear-gradient(135deg, #5d8f72 0%, #79ab89 100%);
+
+
+.lk-support-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+
+  background: rgba(15, 18, 16, 0.48);
+
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+
+
+.lk-support-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 100;
+
+  width: 100%;
+  max-width: 620px;
+  max-height: 88vh;
+
+  overflow-y: auto;
+  overscroll-behavior: contain;
+
+  transform: translate(-50%, -50%);
+
+  padding: 34px;
+
+  border: 1px solid $lk-border;
+  border-radius: 32px;
+
+  background: $lk-surface;
+
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.18);
+}
+
+
+
+.lk-support-modal__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 20px;
+
+  margin-bottom: 32px;
+}
+
+.lk-support-modal__head span {
+  display: inline-flex;
+  align-items: center;
+
+  margin-bottom: 12px;
+  padding: 8px 14px;
+
+  border-radius: 999px;
+
+  background: rgba(93, 143, 114, 0.08);
+
+  color: $lk-brand;
+
+  font-size: 12px; 
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.lk-support-modal__head h2 {
+  margin: 0;
+
+  color: $lk-text;
+
+  font-size: 34px;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: -0.05em;
+}
+
+.lk-support-modal__head button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 42px;
+  height: 42px;
+
+  flex-shrink: 0;
+
+  border: none;
+  border-radius: 14px;
+
+  background: rgba(93, 143, 114, 0.06);
+
+  color: $lk-text;
+
+  font-size: 24px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+
+  &:hover {
+    transform: rotate(90deg);
+
+    background: rgba(93, 143, 114, 0.12);
+  }
+}
+
+
+
+.lk-support-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px; 
+}
+
+.lk-support-form__group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px; 
+
+  label {
+    color: $lk-text-muted; 
+    font-size: 12px;        
+    font-weight: 500;       
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    box-sizing: border-box; 
+
+    border: 1px solid $lk-border;
+    border-radius: $lk-radius-12; 
+
+    background: $lk-white;
+
+    color: $lk-text;
+
+    font-size: 14px; 
+    line-height: 1.5;
+
+    outline: none;
+
+    transition: all 0.2s ease; 
+
+    &:hover {
+      border-color: $lk-line; 
+    }
+
+    &:focus {
+      border-color: $lk-brand;                         
+      box-shadow: 0 0 0 3px rgba(93, 143, 114, 0.12); 
+    }
+
+    &::placeholder {
+      color: $lk-text-muted;
+    }
+  }
+
+  input,
+  select {
+    height: 44px;   
+    padding: 0 14px; 
+  }
+
+  textarea {
+    min-height: 140px;
+    max-height: 320px; 
+
+    resize: vertical;
+
+    padding: 14px; 
+  }
+}
+
+
+
+.lk-support-form__group input[type='file'] {
+  display: flex;
+  align-items: center;
+
+  padding: 14px;
+
+  cursor: pointer;
+}
+
+
+
+.lk-support-form__actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  gap: 14px;
+
+  margin-top: 12px;
+}
+
+.lk-support-form__cancel,
+.lk-support-form__submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 52px;
+
+  padding: 0 45px;
+
+  border-radius: 90px;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.lk-support-form__cancel {
+  border: 1px solid $lk-border;
+
+  background: transparent;
+
+  color: $lk-text-muted;
+
+  &:hover {
+    border-color: rgba(93, 143, 114, 0.2);
+
+    color: $lk-text;
+  }
+}
+
+.lk-support-form__submit {
+  border: none;
+
+  background: $lk-gradient-brand;
+
+  color: $lk-white;
+
+  box-shadow: 0 14px 28px rgba(93, 143, 114, 0.18);
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+
+.lk-support-success {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  text-align: center;
+}
+
+.lk-support-success__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 74px;
+  height: 74px;
+
+  margin-bottom: 24px;
+
+  border-radius: 24px;
+
+  background: $lk-gradient-brand;
+
+  color: $lk-white;
+
+  font-size: 34px;
+  font-weight: 700;
+
+  box-shadow: 0 18px 34px rgba(93, 143, 114, 0.2);
+}
+
+.lk-support-success strong {
+  margin-bottom: 14px;
+
+  color: $lk-text;
+
+  font-size: 32px;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: -0.05em;
+}
+
+.lk-support-success p {
+  max-width: 320px;
+
+  margin: 0 0 28px;
+
+  color: $lk-text-soft;
+
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.lk-support-success button {
+  height: 52px;
+
+  padding: 0 45px;
+
+  border: none;
+  border-radius: 90px;
+
+  background: $lk-gradient-brand;
+
+  color: $lk-white;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+
+    box-shadow: 0 14px 28px rgba(93, 143, 114, 0.18);
+  }
+}
+// ========================================
+//   ТАБЫ
+// ========================================
+
+.lk-support-tabs {
+  display: flex;
+  gap: 6px;
+
+  margin-bottom: 28px;
+}
+
+.lk-support-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+
+  height: 40px;
+
+  padding: 0 18px;
+
+  border: 1px solid $lk-border;
+  border-radius: 999px;
+
+  background: transparent;
+
+  color: $lk-text-muted;
+
+  font-size: 13px;
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: rgba(93, 143, 114, 0.2);
+    color: $lk-text;
+  }
+
+  &.is-active {
+    border-color: transparent;
+    background: rgba(93, 143, 114, 0.08);
+    color: $lk-brand;
+    font-weight: 600;
+  }
+}
+
+// ========================================
+//   СПИСОК ТИКЕТОВ
+// ========================================
+
+.lk-tickets {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.lk-tickets__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+
+  h2 {
+    margin: 0 0 4px;
+
+    color: $lk-text;
+
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+  }
+
+  p {
+    margin: 0;
+
+    color: $lk-text-muted;
+
+    font-size: 13px;
+  }
+}
+
+.lk-tickets__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  flex-shrink: 0;
+}
+
+.lk-tickets__refresh {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 36px;
+  height: 36px;
+
+  border: 1px solid $lk-border;
+  border-radius: 12px;
+
+  background: transparent;
+
+  color: $lk-text-muted;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: rgba(93, 143, 114, 0.2);
+    color: $lk-text;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+// ========================================
+//   ФИЛЬТРЫ
+// ========================================
+
+.lk-tickets__filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.lk-tickets__filter {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  height: 32px;
+
+  padding: 0 14px;
+
+  border: 1px solid $lk-border;
+  border-radius: 999px;
+
+  background: transparent;
+
+  color: $lk-text-muted;
+
+  font-size: 12px;
+  font-weight: 500;
+
+  cursor: pointer;
+
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: rgba(93, 143, 114, 0.2);
+    color: $lk-text;
+  }
+
+  &.is-active {
+    border-color: transparent;
+    background: rgba(93, 143, 114, 0.08);
+    color: $lk-brand;
+    font-weight: 600;
+  }
+}
+
+.lk-tickets__filter-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 18px;
+  height: 18px;
+
+  padding: 0 5px;
+
+  border-radius: 999px;
+
+  background: rgba(93, 143, 114, 0.12);
+
+  color: $lk-brand;
+
+  font-size: 11px;
+  font-weight: 700;
+}
+
+// ========================================
+//   СПИСОК КАРТОЧЕК
+// ========================================
+
+.lk-tickets__list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+// ========================================
+//   КАРТОЧКА ТИКЕТА
+// ========================================
+
+.lk-ticket-card {
+  border: 1px solid $lk-border;
+  border-radius: 18px;
+
+  background: $lk-white;
+
+  overflow: hidden;
+
+  transition: border-color 0.2s ease;
+
+  &:hover {
+    border-color: rgba(93, 143, 114, 0.2);
+  }
+
+  &.is-open {
+    border-color: rgba(93, 143, 114, 0.25);
+  }
+}
+
+.lk-ticket-card__head {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+
+  width: 100%;
+
+  padding: 18px 20px;
+
+  border: none;
+
+  background: transparent;
+
+  text-align: left;
+
+  cursor: pointer;
+}
+
+.lk-ticket-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lk-ticket-card__type {
+  color: $lk-text-muted;
+
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.lk-ticket-card__subject {
+  color: $lk-text;
+
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.lk-ticket-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+}
+
+.lk-ticket-card__date {
+  color: $lk-text-muted;
+
+  font-size: 12px;
+}
+
+.lk-ticket-card__chevron {
+  color: $lk-text-muted;
+
+  transition: transform 0.2s ease;
+
+  .is-open & {
+    transform: rotate(180deg);
+  }
+}
+
+.lk-ticket-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  padding: 0 20px 18px;
+
+  border-top: 1px solid $lk-border;
+}
+
+.lk-ticket-card__message {
+  margin: 0;
+  padding-top: 16px;
+
+  color: $lk-text-soft;
+
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.lk-ticket-card__attachment {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  color: $lk-brand;
+
+  font-size: 13px;
+  font-weight: 500;
+
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.lk-ticket-card__id {
+  color: $lk-text-muted;
+
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+// ========================================
+//   БЕЙДЖ СТАТУСА
+// ========================================
+
+.lk-ticket-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+
+  height: 22px;
+
+  padding: 0 10px;
+
+  border-radius: 999px;
+
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+
+  &--new {
+    background: rgba(93, 143, 114, 0.08);
+    color: $lk-brand;
+  }
+
+  &--progress {
+    background: rgba(234, 179, 8, 0.1);
+    color: #a16207;
+  }
+
+  &--resolved {
+    background: rgba(34, 197, 94, 0.1);
+    color: #15803d;
+  }
+
+  &--closed {
+    background: rgba(0, 0, 0, 0.05);
+    color: $lk-text-muted;
+  }
+}
+
+// ========================================
+//   СОСТОЯНИЯ
+// ========================================
+
+.lk-tickets__loader,
+.lk-tickets__error,
+.lk-tickets-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 12px;
+
+  padding: 60px 20px;
+
+  text-align: center;
+}
+
+.lk-tickets__loader {
+  color: $lk-text-muted;
+}
+
+.lk-tickets__error {
+  color: $lk-text-muted;
+
+  font-size: 14px;
+
+  button {
+    height: 48px;
+
+    padding: 0 20px;
+
+    border: 1px solid $lk-border;
+    border-radius: $lk-radius-pill;
+
+    background: transparent;
+
+    color: $lk-text;
+
+    font-size: 12px;
+    font-weight: 500;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+
+    &:hover {
+      border-color: rgba(93, 143, 114, 0.2);
+    }
+  }
+}
+
+.lk-tickets-empty__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 56px;
+  height: 56px;
+
+  border-radius: 18px;
+
+  background: rgba(93, 143, 114, 0.06);
+
+  color: $lk-brand;
+}
+
+.lk-tickets-empty strong {
+  color: $lk-text;
+
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.lk-tickets-empty p {
+  max-width: 280px;
+
+  margin: 0;
+
+  color: $lk-text-muted;
+
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+// ========================================
+//   СПИННЕР (утилита)
+// ========================================
+
+@keyframes lk-spin {
+  to { transform: rotate(360deg); }
+}
+
+.is-spinning {
+  animation: lk-spin 0.8s linear infinite;
+}

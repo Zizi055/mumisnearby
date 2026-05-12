@@ -1,0 +1,21 @@
+@use '../abstracts/lk-tokens' as *;
+.lk-checkout {
+  display: flex;
+  justify-content: center;
+  padding: 60px 0;
+}
+
+.lk-checkout-card {
+  width: 420px;
+  padding: $lk-space-24;
+  border-radius: $lk-radius-24;
+  background: $lk-surface;
+  border: 1px solid $lk-border;
+}
+
+.lk-checkout-summary {
+  display: flex;
+  flex-direction: column;
+  gap: $lk-space-12;
+  margin: $lk-space-20 0;
+}

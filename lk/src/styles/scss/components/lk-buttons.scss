@@ -1,0 +1,198 @@
+@use '../abstracts/lk-tokens' as *;
+
+/* ======================================== */
+/* BASE */
+/* ======================================== */
+
+.lk-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  position: relative;
+
+  border-radius: $lk-radius-pill;
+  cursor: pointer;
+
+  font-size: 14px;
+  line-height: 1;
+  font-weight: 500;
+
+  border: 1px solid transparent;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    transform 0.1s ease;
+
+  white-space: nowrap;
+}
+
+/* ======================================== */
+/* SIZES */
+/* ======================================== */
+
+.lk-btn--sm {
+  height: 32px;
+  padding: 0 12px;
+}
+
+.lk-btn--md {
+  height: 40px;
+  padding: 0 16px;
+}
+
+.lk-btn--lg {
+  height: 48px;
+  padding: 0 20px;
+  font-size: 15px;
+}
+
+/* ======================================== */
+/* PRIMARY */
+/* ======================================== */
+
+.lk-btn--primary {
+  background: $lk-brand;
+  color: $lk-white;
+  box-shadow: 0 4px 12px rgba(93, 143, 114, 0.18);
+}
+
+.lk-btn--primary:hover {
+  background: $lk-brand-dark;
+  transform: translateY(-1px);
+}
+
+.lk-btn--primary:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+.lk-btn--primary:disabled {
+  background: rgba(93, 143, 114, 0.35);
+  color: rgba(255, 255, 255, 0.8);
+  box-shadow: none;
+}
+
+/* ======================================== */
+/* SECONDARY */
+/* ======================================== */
+
+.lk-btn--secondary {
+  background: $lk-surface;
+  border: 1px solid $lk-border;
+  color: $lk-text;
+}
+
+.lk-btn--secondary:hover {
+  background: rgba(93, 143, 114, 0.06);
+  border-color: $lk-line;
+}
+
+.lk-btn--secondary:active {
+  background: rgba(93, 143, 114, 0.1);
+}
+
+.lk-btn--secondary:disabled {
+  background: $lk-surface-soft;
+  color: $lk-text-muted;
+  border-color: $lk-line-soft;
+}
+
+/* ======================================== */
+/* GHOST */
+/* ======================================== */
+
+.lk-btn--ghost {
+  background: transparent;
+  color: $lk-text-muted;
+}
+
+.lk-btn--ghost:hover {
+  color: $lk-text;
+  background: rgba(93, 143, 114, 0.05);
+}
+
+.lk-btn--ghost:disabled {
+  opacity: 0.6;
+}
+
+/* ======================================== */
+/* DANGER */
+/* ======================================== */
+
+.lk-btn--danger {
+  background: transparent;
+  border: 1px solid rgba(229, 72, 72, 0.35);
+  color: $lk-danger;
+}
+
+.lk-btn--danger:hover {
+  background: rgba(229, 72, 72, 0.08);
+  border-color: rgba(229, 72, 72, 0.5);
+}
+
+.lk-btn--danger:active {
+  background: rgba(229, 72, 72, 0.15);
+}
+
+.lk-btn--danger:disabled {
+  color: rgba(229, 72, 72, 0.4);
+  border-color: rgba(229, 72, 72, 0.2);
+}
+
+/* ======================================== */
+/* DISABLED GLOBAL */
+/* ======================================== */
+
+.lk-btn:disabled {
+  cursor: not-allowed;
+  pointer-events: none;
+  transform: none;
+}
+
+/* ======================================== */
+/* CONTENT */
+/* ======================================== */
+
+.lk-btn__content {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ======================================== */
+/* LOADING */
+/* ======================================== */
+
+.lk-btn.is-loading {
+  pointer-events: none;
+}
+
+.lk-btn.is-loading .lk-btn__content {
+  opacity: 0.4;
+}
+
+/* loader */
+.lk-btn__loader {
+  position: absolute;
+
+  width: 16px;
+  height: 16px;
+
+  border-radius: 50%;
+  border: 2px solid transparent;
+  border-top-color: currentColor;
+
+  animation: lk-spin 0.6s linear infinite;
+}
+
+/* animation */
+@keyframes lk-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

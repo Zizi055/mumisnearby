@@ -1,0 +1,8 @@
+fastapi
+uvicorn
+asyncpg
+sqlalchemy[asyncio]
+alembic
+aiosmtplib
+python-multipart
+aiofiles

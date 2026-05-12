@@ -1,144 +1,395 @@
 @use '../abstracts/lk-tokens' as *;
 
+
+
+
+
 .lk-tariffs {
-  max-width: 1100px;
+  display: flex;
+  flex-direction: column;
+  gap: $lk-space-32;
 }
 
-/* заголовок */
-.lk-tariffs .lk-title {
-  margin-bottom: 6px;
+
+.lk-tariffs__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
-.lk-tariffs .lk-text {
-  color: $lk-text-muted;
-  margin-bottom: 24px;
-}
 
-/* сетка */
 .lk-tariffs-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 20px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: $lk-space-20;
 }
 
-/* карточка */
+
+
 .lk-tariff-card {
-  position: relative;
-  border-radius: 20px;
-  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: $lk-space-16;
+
+  padding: $lk-space-24;
+  border-radius: $lk-radius-24;
+
+  background: $lk-surface;
   border: 1px solid $lk-border;
-  background: #f6f7f5;
-  transition: 0.25s ease;
+
+  position: relative;
+
+  transition: all 0.3s ease;
 }
+
 
 .lk-tariff-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
+  transform: translateY(-6px);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.06);
+  border-color: $lk-line;
 }
 
-/* варианты */
-.lk-tariff-card--light {
-  background: #f6f7f5;
+
+.lk-tariff-card.is-current {
+  border: 1px solid $lk-brand;
+  background: rgba(93, 143, 114, 0.05);
 }
 
-.lk-tariff-card--green {
-  background: linear-gradient(135deg, #edf5ef, #dfece4);
-  border-color: #cfe0d5;
+
+.lk-tariff-card.is-upgrade {
+  transform: scale(1.05);
+  z-index: 2;
+
+  border: 1px solid $lk-brand;
+
+  background: linear-gradient(
+    180deg,
+    rgba(93, 143, 114, 0.12) 0%,
+    rgba(93, 143, 114, 0.03) 100%
+  );
+
+  box-shadow:
+    0 0 0 1px rgba(93,143,114,0.1),
+    0 20px 60px rgba(93,143,114,0.2);
 }
 
-.lk-tariff-card--gradient {
-  background: linear-gradient(135deg, #eef3ef, #d7e4db);
-}
 
-/* бейдж */
 .lk-tariff-badge {
   position: absolute;
-  top: 14px;
-  left: 14px;
-  background: #e3efe8;
-  color: #4f7a63;
-  padding: 6px 12px;
-  border-radius: 999px;
-  font-size: 12px;
+  top: -10px;
+  left: 20px;
+
+  display: inline-flex;
+  align-items: center;
+  gap: $lk-space-4;
+
+  padding: 4px 10px;
+  border-radius: $lk-radius-pill;
+
+  font-size: 11px;
   font-weight: 500;
+
+  background: $lk-brand;
+  color: $lk-white;
 }
 
-/* header */
+
+.lk-tariff-card__head {
+  display: flex;
+  flex-direction: column;
+  gap: $lk-space-8;
+}
+
 .lk-tariff-card__head h3 {
-  font-size: 18px;
-  margin-bottom: 6px;
-  font-weight: 500;
-}
-
-.lk-tariff-card__head span {
+  font-size: 17px;
   font-weight: 600;
+  letter-spacing: -0.01em;
 }
 
 .lk-tariff-card__head p {
-  font-size: 14px;
+  font-size: 13px;
   color: $lk-text-muted;
-  margin-bottom: 14px;
+}
+
+
+
+.lk-tariff-price {
+  display: flex;
+  align-items: baseline;
+  gap: $lk-space-8;
+}
+
+.lk-tariff-price__value {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.lk-tariff-price__period {
+  font-size: 13px;
+  color: $lk-text-muted;
+}
+
+
+.lk-tariff-features {
+  display: flex;
+  flex-direction: column;
+  gap: $lk-space-12;
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
 /* список */
-.lk-tariff-card__list {
-  margin: 0;
+.lk-tariff-features li {
+  position: relative;
   padding-left: 18px;
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  font-size: 14px;
-  line-height: 1.5;
-}
 
-/* футер */
-.lk-tariff-card__footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 18px;
-}
-
-.lk-tariff-card__label {
-  font-size: 12px;
+  font-size: 13px;
   color: $lk-text-muted;
 }
 
-.lk-tariff-card__price {
-  font-size: 20px;
-  font-weight: 600;
+.lk-tariff-features li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 6px;
+
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+
+  background: $lk-brand;
 }
 
-/* кнопка */
-.lk-tariff-card__button {
+/* FOOTER */
+.lk-tariff-footer {
+  margin-top: auto;
+}
+
+
+
+.lk-billing {
+ 
+  gap: $lk-space-8;
+}
+
+.lk-billing__switch {
   display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  height: 40px;
-  padding: 0 16px;
-  border-radius: 999px;
-  border: 1px solid $lk-border;
+  padding: 4px;
+  border-radius: $lk-radius-pill;
+  background: $lk-surface-soft;
+}
+
+.lk-billing__switch button {
+  padding: 6px 14px;
+  border-radius: $lk-radius-pill;
+  border: none;
   background: transparent;
   cursor: pointer;
-  font-size: 14px;
-  transition: 0.2s ease;
+
+  font-size: 13px;
+  color: $lk-text-soft;
+
+  transition: all 0.2s ease;
 }
 
-.lk-tariff-card__button:hover {
-  background: rgba(108, 141, 121, 0.08);
+.lk-billing__switch button:hover {
+  background: $lk-surface-accent-soft;
 }
 
-/* primary кнопка */
-.lk-tariff-card--green .lk-tariff-card__button,
-.lk-tariff-card--gradient .lk-tariff-card__button {
+.lk-billing__switch button.is-active {
   background: $lk-brand;
-  color: #fff;
-  border: none;
+  color: $lk-white;
 }
 
-/* адаптив */
-@media (max-width: 900px) {
-  .lk-tariffs-grid {
-    grid-template-columns: 1fr;
-  }
+/* CURRENT PLAN */
+.lk-current-plan {
+  display: inline-flex;
+  gap: $lk-space-8;
+  font-size: 13px;
+}
+
+
+
+.lk-tariff-compare {
+  display: flex;
+  flex-direction: column;
+  gap: $lk-space-20;
+}
+
+.lk-compare-table {
+  border-radius: $lk-radius-20;
+  border: 1px solid $lk-border;
+  background: $lk-surface;
+
+  overflow-x: auto;
+  position: relative;
+}
+
+/* таблица */
+.lk-compare-row {
+  display: grid;
+  grid-template-columns: 220px repeat(4, 1fr);
+  min-width: 900px;
+
+  border-top: 1px solid $lk-line-soft;
+  transition: background 0.2s ease;
+}
+
+.lk-compare-row:hover {
+  background: $lk-surface-soft;
+}
+
+.lk-compare-row.is-head {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+
+  background: $lk-surface;
+  border-bottom: 1px solid $lk-border;
+}
+
+
+.lk-compare-feature {
+  padding: $lk-space-16;
+  font-size: 13px;
+  color: $lk-text-soft;
+
+  position: sticky;
+  left: 0;
+  z-index: 2;
+
+  background: $lk-surface;
+  border-right: 1px solid $lk-border;
+}
+
+.lk-compare-plan {
+  padding: $lk-space-16;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+  text-align: center;
+}
+
+.lk-compare-plan strong {
+  font-size: 14px;
+}
+
+.lk-compare-value {
+  padding: $lk-space-16;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+
+  border-left: 1px solid $lk-line-soft;
+}
+
+.lk-compare-action {
+  padding: $lk-space-12;
+  display: flex;
+  justify-content: center;
+
+  border-left: 1px solid $lk-line-soft;
+}
+
+
+.lk-compare-plan:hover,
+.lk-compare-plan:hover ~ .lk-compare-value {
+  background: rgba(93, 143, 114, 0.06);
+}
+
+
+.lk-compare-row.is-actions {
+  background: $lk-surface-soft;
+}
+
+
+.lk-compare-row:nth-child(even):not(.is-head):not(.is-actions) {
+  background: rgba(0, 0, 0, 0.01);
+}
+
+
+
+.lk-tariff-access {
+  display: flex;
+  flex-direction: column;
+  gap: $lk-space-20;
+}
+
+.lk-tariff-access__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: $lk-space-16;
+}
+
+/* карточки доступа */
+.lk-tariff-access-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: $lk-space-16;
+  border-radius: $lk-radius-20;
+  border: 1px solid $lk-border;
+  background: $lk-surface;
+
+  transition: all 0.2s ease;
+}
+
+.lk-tariff-access-item.is-locked {
+  background: rgba(229, 72, 72, 0.04);
+  border-color: rgba(229, 72, 72, 0.2);
+}
+
+.lk-tariff-access-item.is-open {
+  background: rgba(93, 143, 114, 0.06);
+}
+
+.lk-tariff-access__status {
+  font-size: 12px;
+  color: $lk-brand;
+}
+
+.lk-tariff-access__note {
+  font-size: 12px;
+  color: $lk-text-muted;
+}
+.lk-tariff-card.is-upgrade {
+  transform: scale(1.04);
+  z-index: 2;
+
+  border: 1px solid $lk-brand;
+
+  background: linear-gradient(
+    180deg,
+    rgba(93, 143, 114, 0.10) 0%,
+    rgba(93, 143, 114, 0.02) 100%
+  );
+}
+.lk-tariff-price__note {
+  font-size: 12px;
+  color: $lk-text-muted;
+  margin-top: 2px;
+}
+.lk-tariff-access__grid {
+  display: grid;
+  gap: 12px; 
+}
+
+.lk-tariff-access-item.is-locked {
+  background: #fafafa;
+  border: 1px solid #ececec;
+}
+
+.lk-tariff-access-item.is-open {
+  background: #f6fbf8;
+  border: 1px solid #d8f2e3;
+}
+.lk-tariff-access-item > div {
+  display: flex;
+  flex-direction: column; 
+  gap: 4px;
 }

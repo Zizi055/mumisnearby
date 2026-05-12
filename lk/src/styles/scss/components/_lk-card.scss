@@ -1,0 +1,391 @@
+@use '../abstracts/lk-tokens' as *;
+
+/* контейнер */
+.lk-card {
+  width: 100%;
+  max-width: 420px;
+  height: 200px;
+
+  position: relative;
+  perspective: 1000px;
+
+  margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+
+.lk-card:hover {
+
+  transform: translateY(-2px);
+
+  box-shadow:
+
+    0 10px 30px rgba(0,0,0,0.2),
+
+    0 0 0 1px rgba(255,255,255,0.05);
+
+}
+.lk-card.is-active {
+
+  box-shadow:
+
+    0 0 0 2px rgba(93, 143, 114, 0.4),
+
+    0 10px 40px rgba(93, 143, 114, 0.3);
+
+}
+/* ОБЩИЕ СТОРОНЫ */
+.lk-card__face {
+  position: absolute;
+  inset: 0;
+
+  border-radius: $lk-radius-20;
+  padding: 20px;
+
+  color: $lk-white;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  backface-visibility: hidden;
+  transition: transform 0.6s ease;
+
+  box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+
+  background: linear-gradient(135deg, #5d8f72, #4e7d63);
+}
+.lk-card__face::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+
+  background: radial-gradient(
+    circle at 20% 20%,
+    rgba(255,255,255,0.1),
+    transparent 40%
+  );
+
+  pointer-events: none;
+}
+/* FRONT */
+.lk-card__front {
+  transform: rotateY(0);
+}
+
+/* BACK */
+.lk-card__back {
+  transform: rotateY(180deg);
+}
+
+/* flip */
+.lk-card.is-flipped .lk-card__front {
+  transform: rotateY(180deg);
+}
+
+.lk-card.is-flipped .lk-card__back {
+  transform: rotateY(0);
+}
+
+/* TOP */
+.lk-card__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* CHIP (улучшенный) */
+.lk-card__chip {
+  width: 42px;
+  height: 28px;
+  border-radius: 6px;
+
+  background: linear-gradient(135deg, #e5e5e5, #cfcfcf);
+
+  position: relative;
+  overflow: hidden;
+}
+
+/* линии чипа */
+.lk-card__chip::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  top: 10px;
+  background: rgba(0,0,0,0.15);
+}
+
+.lk-card__chip::after {
+  content: '';
+  position: absolute;
+  width: 2px;
+  height: 100%;
+  left: 14px;
+  background: rgba(0,0,0,0.15);
+}
+
+/* BRAND */
+.lk-card__brand {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+   display: flex;
+
+  align-items: center;
+
+  justify-content: flex-end;
+
+  min-width: 64px;
+
+  color: $lk-white;
+
+  opacity: 0.95;
+}
+.lk-card__logo {
+
+  width: 64px;
+
+  height: auto;
+
+  display: block;
+
+}
+
+.lk-card__brand--mastercard .lk-card__logo {
+
+  width: 58px;
+
+}
+/* VISA */
+.lk-card__brand--visa ~ .lk-card__number,
+.lk-card__brand--visa {
+  color: #fff;
+}
+
+.lk-card.lk-card--visa .lk-card__face {
+  background: linear-gradient(135deg, #1a1f71, #3a47d5);
+}
+
+/* MASTERCARD */
+.lk-card.lk-card--mastercard .lk-card__face {
+  background: linear-gradient(135deg, #3a1c1c, #b91c1c);
+}
+
+/* DEFAULT */
+.lk-card.lk-card--unknown .lk-card__face {
+  background: linear-gradient(135deg, #5d8f72, #4e7d63);
+}
+/* NUMBER */
+.lk-card__number {
+  font-size: 20px;
+  letter-spacing: 2px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+    transition: all 0.2s ease;
+}
+
+/* BOTTOM */
+.lk-card__bottom {
+  display: flex;
+  justify-content: space-between;
+}
+
+.lk-card__bottom span {
+  font-size: 10px;
+  opacity: 0.7;
+}
+
+.lk-card__bottom strong {
+  font-size: 14px;
+}
+
+
+.lk-card__stripe {
+  height: 40px;
+  background: rgba(0,0,0,0.2);
+  margin-top: 10px;
+  border-radius: 4px;
+}
+
+
+.lk-card__cvc {
+  margin-top: 20px;
+
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+}
+
+.lk-card__cvc strong {
+  background: #fff;
+  color: #000;
+
+  padding: 4px 10px;
+  border-radius: 4px;
+
+  font-size: 12px;
+}
+
+//Payment list
+
+.lk-payment-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: $lk-space-16;
+}
+
+
+.lk-payment-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 14px 16px;
+  border-radius: $lk-radius-16;
+
+  background: $lk-surface;
+  border: 1px solid $lk-border;
+
+  transition: all 0.2s ease;
+}
+
+/* hover */
+.lk-payment-item:hover {
+  transform: translateY(-1px);
+  border-color: $lk-brand;
+  box-shadow: $lk-shadow-card;
+}
+
+/* default карта */
+.lk-payment-item.is-default {
+  border-color: $lk-brand;
+  background: rgba(93, 143, 114, 0.06);
+}
+
+/* левая часть */
+.lk-payment-item__left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0; 
+}
+
+/* бренд */
+.lk-payment-brand {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: $lk-text-muted;
+}
+
+/* инфо */
+.lk-payment-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+.lk-payment-info strong {
+  font-size: 14px;
+  color: $lk-text;
+
+  display: flex;
+  align-items: center;
+  gap: 8px; 
+}
+
+.lk-payment-info span {
+  font-size: 12px;
+  color: $lk-text-muted;
+}
+
+/* линия (номер + бейдж) */
+.lk-payment-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap; 
+}
+
+/* бейдж */
+.lk-payment-badge {
+  font-size: 11px;
+  padding: 3px 8px;
+
+  border-radius: 999px;
+
+  background: rgba(93, 143, 114, 0.14);
+  color: $lk-brand;
+
+  font-weight: 500;
+  white-space: nowrap; 
+}
+
+/* правая зона */
+.lk-payment-item__right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* крестик удаления */
+.lk-payment-remove {
+  width: 28px;
+  height: 28px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+  border: none;
+
+  background: transparent;
+  color: $lk-text-muted;
+
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  flex-shrink: 0; 
+}
+
+/* hover delete */
+.lk-payment-remove:hover {
+  background: rgba(229, 72, 72, 0.1);
+  color: $lk-danger;
+}
+
+/* чек */
+.lk-payment-check {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+
+  border: 2px solid $lk-line;
+  position: relative;
+  transition: all 0.2s ease;
+
+  flex-shrink: 0;
+}
+
+/* активный чек */
+.lk-payment-check.is-active {
+  border-color: $lk-brand;
+  background: $lk-brand;
+}
+
+/* точка внутри */
+.lk-payment-check.is-active::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  background: $lk-white;
+}
+.lk-input__error{
+   font-size: 8px;
+   color:$lk-danger;
+}

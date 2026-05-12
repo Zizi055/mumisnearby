@@ -1,17 +1,78 @@
 @use '../abstracts/lk-tokens' as *;
+
+
 .lk-submenu {
   width: 220px;
+  background: $lk-white;
   border-right: 1px solid $lk-line;
-  padding: 24px 16px;
-
-  opacity: 0;
-  transform: translateX(-10px);
-  animation: submenuFade 0.25s ease forwards;
+  padding: $lk-space-24 $lk-space-16;
 }
 
-@keyframes submenuFade {
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+.lk-submenu__title {
+  margin-bottom: $lk-space-20;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: $lk-text-muted;
+}
+
+
+.lk-submenu__nav {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+
+.lk-submenu__link {
+  display: flex;
+  align-items: center;
+  padding: 10px 14px;
+
+  border-radius: $lk-radius-12;
+  color: $lk-text-soft;
+  text-decoration: none;
+
+  position: relative;
+  transition: all 0.2s ease;
+  will-change: transform;
+}
+
+
+.lk-submenu__link:hover {
+  background: rgba(93, 143, 114, 0.08);
+  color: $lk-text;
+  transform: translateX(2px);
+}
+
+
+.lk-submenu__link.is-active {
+  background: $lk-brand;
+  color: $lk-white;
+  box-shadow: $lk-shadow-card;
+}
+
+/* индикатор */
+.lk-submenu__link::before {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 50%;
+  transform: translateY(-50%) scaleY(0);
+
+  width: 2px;
+  height: 60%;
+  border-radius: 3px;
+  background: $lk-white;
+
+  transition: transform 0.2s ease;
+}
+
+.lk-submenu__link.is-active::before {
+  transform: translateY(-50%) scaleY(1);
+}
+
+
+.lk-submenu__link.is-active:hover {
+  background: $lk-brand-dark;
 }

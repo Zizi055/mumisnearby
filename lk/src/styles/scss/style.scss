@@ -9,6 +9,8 @@
 @use './layout/lk-menu.scss';
 @use './layout/lk-submenu.scss';
 @use './layout/voice.scss';
+@use './layout/lk-subscription-manage.scss';
+@use './layout/lk-bonus.scss';
 
 
 // COMPONENTS
@@ -18,10 +20,26 @@
 @use './components/lk-buttons.scss';
 @use './components/lk-table.scss';
 @use './components/lk-subscription';
+@use './components/lk-modal';
+@use './components/lk-form';
+@use './components/lk-card.scss';
+@use './components/lk-subpayments.scss';
+@use './components/subscriptionSuccess.scss';
+@use './components/lk-checkout.scss';
+@use './components/library-filters.scss';
+@use './components/lk-library-card.scss';
+
+
+
 
 // PAGES
 @use './pages/lk-dashboard';
 @use './pages/lk-library';
+@use './pages/voicemanage.scss';
+@use './pages/lk-voice-analytics.scss';
+@use './pages/lk-activity.scss';
+@use './pages/lk-support.scss';
+
 
 body {
 
@@ -32,5 +50,5 @@ body {
   background: #f8f5f0;
 
   color: #202020;
-width: 1240px;
+
 }

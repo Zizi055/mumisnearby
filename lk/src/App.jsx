@@ -12,8 +12,13 @@ import Voice from './pages/Voice';
 import VoiceMy from './pages/voice/VoiceMy';
 import VoiceManage from './pages/voice/VoiceManage';
 import VoiceAnalytics from './pages/voice/VoiceAnalytics';
+import Checkout from './pages/subscription/Checkout';
+import Constructor from './pages/subscription/Constructor';
 
 import LkLayout from './components/layout/LkLayout';
+import Activity from './pages/Activity.jsx';
+
+import Support from './pages/Support.jsx';
 
 function App() {
   return (
@@ -25,8 +30,8 @@ function App() {
         {/* dashboard */}
         <Route path="/dashboard" element={<Navigate to="/dashboard/progress" replace />} />
         <Route path="/dashboard/progress" element={<Dashboard />} />
-        <Route path="/dashboard/activity" element={<Dashboard />} />
-        <Route path="/dashboard/support" element={<Dashboard />} />
+        <Route path="/dashboard/activity" element={<Activity />} />
+        <Route path="/dashboard/support" element={<Support />} />
 
         {/* library */}
         <Route path="/library" element={<Navigate to="/library/stories" replace />} />
@@ -50,6 +55,9 @@ function App() {
           <Route path="payments" element={<SubscriptionPayments />} />
           <Route path="manage" element={<SubscriptionManage />} />
           <Route path="bonus" element={<SubscriptionBonus />} />
+          <Route path="/subscription/checkout" element={<Checkout />} />
+<Route path="/subscription/constructor" element={<Constructor />} />
+
         </Route>
 
       </Route>

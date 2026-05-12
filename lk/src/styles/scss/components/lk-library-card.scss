@@ -1,0 +1,280 @@
+@use '../abstracts/lk-tokens' as *;
+.lk-library-card {
+  position: relative;
+
+  overflow: hidden;
+
+  border-radius: 28px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,0.88),
+      rgba(255,255,255,0.72)
+    );
+
+  border: 1px solid rgba(255,255,255,0.5);
+
+  backdrop-filter: blur(24px);
+
+  box-shadow:
+    0 14px 40px rgba(15,23,42,0.05),
+    inset 0 1px 0 rgba(255,255,255,0.75);
+
+  transition:
+    transform 0.28s ease,
+    box-shadow 0.28s ease;
+}
+
+.lk-library-card:hover {
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 24px 60px rgba(15,23,42,0.08),
+    inset 0 1px 0 rgba(255,255,255,0.8);
+}
+
+.lk-library-card__media {
+  position: relative;
+
+  height: 280px;
+
+  overflow: hidden;
+}
+
+.lk-library-card__media img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  transition:
+    transform 0.5s ease;
+}
+
+.lk-library-card:hover
+.lk-library-card__media img {
+  transform: scale(1.04);
+}
+
+.lk-library-card__overlay {
+  position: absolute;
+  inset: 0;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(15,23,42,0.04) 0%,
+      rgba(15,23,42,0.46) 100%
+    );
+}
+
+.lk-library-card__top {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  right: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  z-index: 2;
+}
+
+.lk-library-card__type {
+  height: 34px;
+
+  padding: 0 14px;
+
+  border-radius: 999px;
+
+  background:
+    rgba(255,255,255,0.18);
+
+  backdrop-filter: blur(16px);
+
+  border:
+    1px solid rgba(255,255,255,0.2);
+
+  display: inline-flex;
+  align-items: center;
+
+  font-size: 13px;
+  font-weight: 500;
+
+  color: white;
+}
+
+.lk-library-card__favorite {
+  width: 36px;
+  height: 36px;
+
+  border: none;
+  border-radius: 50%;
+
+  background:
+    rgba(255,255,255,0.16);
+
+  backdrop-filter: blur(16px);
+
+  color: white;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.lk-library-card__favorite.is-active {
+  background:
+    rgba(255,255,255,0.95);
+
+  color: #ef4444;
+}
+
+.lk-library-card__play {
+  position: absolute;
+  left: 24px;
+  bottom: 24px;
+
+  width: 58px;
+  height: 58px;
+
+  border: none;
+  border-radius: 50%;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255,255,255,0.96),
+      rgba(255,255,255,0.84)
+    );
+
+  color: $lk-brand;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+
+  z-index: 2;
+
+  transition:
+    transform 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+.lk-library-card__play:hover {
+  transform: scale(1.04);
+
+  box-shadow:
+    0 12px 28px rgba(255,255,255,0.22);
+}
+
+.lk-library-card__premium {
+  position: absolute;
+  right: 20px;
+  bottom: 24px;
+
+  height: 34px;
+
+  padding: 0 14px;
+
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(15,23,42,0.82),
+      rgba(15,23,42,0.64)
+    );
+
+  color: white;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  font-size: 12px;
+  font-weight: 500;
+
+  z-index: 2;
+}
+
+.lk-library-card__content {
+  padding: 22px;
+}
+
+.lk-library-card__meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  margin-bottom: 12px;
+}
+
+.lk-library-card__meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  font-size: 13px;
+  color: $lk-text-muted;
+}
+
+.lk-library-card h3 {
+  margin: 0 0 10px;
+
+  font-size: 22px;
+  line-height: 1.15;
+  font-weight: 600;
+
+  letter-spacing: -0.03em;
+
+  color: $lk-text;
+}
+
+.lk-library-card p {
+  margin: 0;
+
+  font-size: 14px;
+  line-height: 1.65;
+
+  color: $lk-text-soft;
+}
+
+.lk-library-card__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  margin-top: 18px;
+}
+
+.lk-library-card__tags span {
+  height: 34px;
+
+  padding: 0 14px;
+
+  border-radius: 999px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(93,143,114,0.12),
+      rgba(93,143,114,0.08)
+    );
+
+  color: $lk-brand;
+
+  display: inline-flex;
+  align-items: center;
+
+  font-size: 12px;
+  font-weight: 500;
+}

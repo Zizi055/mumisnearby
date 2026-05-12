@@ -1,0 +1,66 @@
+@use '../abstracts/lk-tokens' as *;
+.lk-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* input wrapper */
+.lk-input {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* label */
+.lk-input label {
+  font-size: 12px;
+  color: $lk-text-muted;
+  font-weight: 500;
+}
+
+/* input */
+.lk-input input {
+  height: 44px;
+  padding: 0 14px;
+
+  border-radius: $lk-radius-12;
+  border: 1px solid $lk-border;
+
+  background: $lk-white;
+  color: $lk-text;
+
+  font-size: 14px;
+
+  transition: all 0.2s ease;
+}
+
+/* hover */
+.lk-input input:hover {
+  border-color: $lk-line;
+}
+
+/* focus */
+.lk-input input:focus {
+  outline: none;
+  border-color: $lk-brand;
+
+  box-shadow: 0 0 0 3px rgba(93, 143, 114, 0.12);
+}
+
+/* placeholder */
+.lk-input input::placeholder {
+  color: $lk-text-muted;
+}
+
+/* row */
+.lk-form__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  
+}.lk-input input:focus {
+  outline: none;
+  border-color: $lk-brand;
+  box-shadow: 0 0 0 3px rgba(93, 143, 114, 0.12);
+}
