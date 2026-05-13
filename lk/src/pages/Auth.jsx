@@ -148,7 +148,7 @@ export default function Auth() {
 <button
   type="button"
   className={`
-   ё
+   
     auth__tab
     ${tab === 'register' ? 'is-active' : ''}
   `}
