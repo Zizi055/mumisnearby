@@ -86,6 +86,25 @@ export default function Auth() {
     <div className="auth">
 
       <div className="auth__left">
+         <div className="auth__bg">
+
+  <span className="auth__orb auth__orb--1" />
+
+  <span className="auth__orb auth__orb--2" />
+
+  <span className="auth__orb auth__orb--3" />
+
+  <span className="auth__star auth__star--1" />
+
+  <span className="auth__star auth__star--2" />
+
+  <span className="auth__star auth__star--3" />
+
+  <span className="auth__star auth__star--4" />
+
+  <span className="auth__star auth__star--5" />
+
+</div>
         <div className="auth__brand">
           <Sparkles size={20} />
           <span>Momis</span>
@@ -116,20 +135,35 @@ export default function Auth() {
         <div className="auth__card">
 
           <div className="auth__tabs">
-            <button
-              type="button"
-              className={`auth__tab ${tab === 'login' ? 'is-active' : ''}`}
-              onClick={() => handleTabSwitch('login')}
-            >
-              Войти
-            </button>
-            <button
-              type="button"
-              className={`auth__tab ${tab === 'register' ? 'is-active' : ''}`}
-              onClick={() => handleTabSwitch('register')}
-            >
-              Регистрация
-            </button>
+       <button
+  type="button"
+  className={`
+    lk-btn
+    lk-btn--ghost
+    auth__tab
+    ${tab === 'login' ? 'is-active' : ''}
+  `}
+  onClick={() =>
+    handleTabSwitch('login')
+  }
+>
+  Войти
+</button>
+
+<button
+  type="button"
+  className={`
+    lk-btn
+    lk-btn--ghost
+    auth__tab
+    ${tab === 'register' ? 'is-active' : ''}
+  `}
+  onClick={() =>
+    handleTabSwitch('register')
+  }
+>
+  Регистрация
+</button>
           </div>
 
           <div className="auth__form">
