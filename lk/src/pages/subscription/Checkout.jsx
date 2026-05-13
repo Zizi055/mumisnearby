@@ -4,8 +4,7 @@ import { ArrowLeft, CheckCircle, AlertCircle, ShieldCheck } from 'lucide-react';
 import { tariffs } from '../../data/tariffs.data';
 import LkButton from '../../components/ui/LkButton';
 import { createSubscriptionCheckout } from '../../api/subscription.service';
-import { addPayment } from '../../store/subscription.store';
-const CURRENT_PLAN_ID = 'guardian';
+import { useSubscription } from '../../hooks/useSubscription';
 
 function formatPrice(value) {
   if (!value) return '—';
@@ -14,9 +13,7 @@ function formatPrice(value) {
 
 function getMonthlyFromYear(priceYear) {
   if (!priceYear) return '';
-
   const monthly = Math.round(priceYear / 12);
-
   return `${monthly.toLocaleString('ru-RU')} ₽ / мес`;
 }
 
@@ -27,21 +24,16 @@ function getEffectivePeriod(plan, period) {
 
 function getPlanPrice(plan, period) {
   if (!plan || plan.isBuilder) return null;
-
   const effectivePeriod = getEffectivePeriod(plan, period);
-
   if (effectivePeriod === 'year') return plan.priceYear;
-
   return plan.priceMonth || plan.priceYear;
 }
 
 function getChangeType(plan, currentPlan) {
   if (!plan || !currentPlan) return 'new';
-
   if (plan.id === currentPlan.id) return 'current';
   if (plan.level > currentPlan.level) return 'upgrade';
   if (plan.level < currentPlan.level) return 'downgrade';
-
   return 'change';
 }
 
@@ -63,9 +55,11 @@ export default function Checkout() {
   const planId = params.get('plan');
   const requestedPeriod = params.get('period') || 'year';
 
+  const { planId: currentPlanId } = useSubscription();
+
   const currentPlan = useMemo(() => {
-    return tariffs.find((tariff) => tariff.id === CURRENT_PLAN_ID) || null;
-  }, []);
+    return tariffs.find((tariff) => tariff.id === currentPlanId) || null;
+  }, [currentPlanId]);
 
   const plan = useMemo(() => {
     return tariffs.find((tariff) => tariff.id === planId) || tariffs[0];
@@ -79,41 +73,29 @@ export default function Checkout() {
   const isSuccess = status === 'success';
   const isError = status === 'error';
 
-const handlePay = async () => {
-  if (!plan || !price || changeType === 'current') return;
+  const handlePay = async () => {
+    if (!plan || !price || changeType === 'current') return;
 
-  setStatus('loading');
-  setError('');
+    setStatus('loading');
+    setError('');
 
-  try {
-    const response = await createSubscriptionCheckout({
-      planId: plan.id,
-      planName: plan.name,
-      period: effectivePeriod,
-      amount: price,
-      changeType,
-      currentPlanId: currentPlan?.id || null,
-    });
+    try {
+      const response = await createSubscriptionCheckout({
+        planId: plan.id,
+        planName: plan.name,
+        period: effectivePeriod,
+        amount: price,
+        changeType,
+        currentPlanId: currentPlan?.id || null,
+      });
 
-
-    addPayment({
-      id: response.id || `pay_${Date.now()}`,
-      planId: plan.id,
-      planName: plan.name,
-      amount: price,
-      status: 'success',
-      date: new Date().toISOString(),
-      type: changeType,
-    });
-
-    setResult(response);
-    setStatus('success');
-
-  } catch (e) {
-    setError(e.message || 'Ошибка оплаты');
-    setStatus('error');
-  }
-};
+      setResult(response);
+      setStatus('success');
+    } catch (e) {
+      setError(e.message || 'Ошибка оплаты');
+      setStatus('error');
+    }
+  };
 
   if (isSuccess) {
     return (
@@ -128,7 +110,6 @@ const handlePay = async () => {
 
             <div className="lk-checkout-success__content">
               <h2>Подписка обновлена</h2>
-
               <p>
                 Тариф «{plan.name}» активирован. Следующее списание:
                 {' '}
@@ -141,7 +122,6 @@ const handlePay = async () => {
                 <span>Платёж</span>
                 <strong>{result?.paymentId}</strong>
               </div>
-
               <div>
                 <span>Сумма</span>
                 <strong>{formatPrice(result?.amount)}</strong>
@@ -186,12 +166,10 @@ const handlePay = async () => {
           </div>
 
           <div className="lk-checkout-card">
-
             <div className="lk-checkout-card__head">
               <span className="lk-checkout-card__label">
                 {getChangeLabel(changeType)}
               </span>
-
               <h3>{plan.name}</h3>
               <p>{plan.description}</p>
             </div>
@@ -201,13 +179,11 @@ const handlePay = async () => {
                 <li key={feature}>{feature}</li>
               ))}
             </ul>
-
           </div>
 
           {changeType === 'downgrade' && (
             <div className="lk-checkout-warning">
               <AlertCircle size={18} />
-
               <div>
                 <strong>После смены тарифа часть функций станет недоступна</strong>
                 <span>
@@ -225,7 +201,6 @@ const handlePay = async () => {
 
             <div className="lk-summary__head">
               <h3 className="lk-summary__title">Итого</h3>
-
               <span className="lk-summary__secure">
                 <ShieldCheck size={14} />
                 Безопасно

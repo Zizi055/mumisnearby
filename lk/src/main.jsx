@@ -11,3 +11,8 @@ createRoot(document.getElementById('root')).render(
     </HashRouter>
   </StrictMode>
 );
+import { AuthProvider } from './context/AuthContext';
+
+<AuthProvider>
+  <App />
+</AuthProvider>

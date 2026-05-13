@@ -19,10 +19,18 @@ import LkLayout from './components/layout/LkLayout';
 import Activity from './pages/Activity.jsx';
 
 import Support from './pages/Support.jsx';
+import Auth from './pages/Auth.jsx';
 
 function App() {
   return (
     <Routes>
+      <Route
+
+  path="/auth"
+
+  element={<Auth />}
+
+/>
       <Route path="/" element={<Navigate to="/dashboard/progress" replace />} />
 
       <Route element={<LkLayout />}>
@@ -65,6 +73,7 @@ function App() {
       <Route path="*" element={<Navigate to="/dashboard/progress" replace />} />
     </Routes>
   );
+ 
 }
 
 export default App;

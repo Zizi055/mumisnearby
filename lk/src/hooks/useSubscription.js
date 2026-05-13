@@ -1,20 +1,21 @@
-import { useEffect, useState } from 'react';
-import { getSubscription } from '../store/subscription.store';
+import { useState, useEffect } from 'react';
+import { getSubscription } from '../api/subscription.service';
 
 export function useSubscription() {
-  const [subscription, setSubscription] = useState(getSubscription());
+  const [data, setData] = useState({ planId: null, payments: [] });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const update = () => {
-      setSubscription(getSubscription());
-    };
+    let mounted = true;
 
-    window.addEventListener('subscription:updated', update);
+    getSubscription()
+      .then((res) => { if (mounted) setData(res); })
+      .catch((e) => { if (mounted) setError(e.message); })
+      .finally(() => { if (mounted) setLoading(false); });
 
-    return () => {
-      window.removeEventListener('subscription:updated', update);
-    };
+    return () => { mounted = false; };
   }, []);
 
-  return subscription;
+  return { ...data, loading, error };
 }

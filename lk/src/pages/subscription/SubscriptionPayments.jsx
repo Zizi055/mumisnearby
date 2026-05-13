@@ -1,8 +1,6 @@
 import { useState, useEffect } from 'react';
 import { tariffs } from '../../data/tariffs.data';
 import { useSubscription } from '../../hooks/useSubscription';
-import jsPDF from 'jspdf';
-
 import { generateReceipt } from '../../utils/generateReceipt';
 import {
   ArrowUpRight,
@@ -13,71 +11,27 @@ import {
 } from 'lucide-react';
 import LkButton from '../../components/ui/LkButton';
 
-const paymentsMock = [
-  {
-    id: 1,
-    title: 'Хранитель',
+export default function SubscriptionPayments() {
+
+  const subscription = useSubscription();
+
+  const payments = (subscription.payments || []).map((p) => ({
+    id: p.id,
+    title: tariffs.find(t => t.id === p.planId)?.name || 'Тариф',
     type: 'Подписка',
-    date: '12.01.2026',
-    amount: '14 400 ₽',
-    status: 'paid',
+    date: new Date(p.date).toLocaleDateString('ru-RU'),
+    amount: `${p.amount.toLocaleString('ru-RU')} ₽`,
+    status: p.status === 'success' ? 'paid' : p.status,
     method: 'VISA •••• 4242',
     receiptUrl: '#',
     items: [
-      { label: 'Подписка', value: '12 000 ₽' },
-      { label: 'НДС', value: '2 400 ₽' },
+      { label: 'Подписка', value: `${p.amount.toLocaleString('ru-RU')} ₽` },
     ],
-  },
-  {
-    id: 2,
-    title: 'Хранитель',
-    type: 'Автосписание',
-    date: '12.02.2026',
-    amount: '14 400 ₽',
-    status: 'pending',
-    method: 'VISA •••• 4242',
-    receiptUrl: null,
-    items: [
-      { label: 'Подписка', value: '12 000 ₽' },
-      { label: 'НДС', value: '2 400 ₽' },
-    ],
-  },
-  {
-    id: 3,
-    title: 'Хранитель',
-    type: 'Ошибка оплаты',
-    date: '12.03.2026',
-    amount: '14 400 ₽',
-    status: 'failed',
-    method: 'VISA •••• 4242',
-    receiptUrl: null,
-    items: [
-      { label: 'Подписка', value: '12 000 ₽' },
-      { label: 'НДС', value: '2 400 ₽' },
-    ],
-  },
-];
+  }));
 
-export default function SubscriptionPayments() {
-
-const subscription = useSubscription();
-
-const payments = (subscription.payments || []).map((p) => ({
-  id: p.id,
-  title: tariffs.find(t => t.id === p.planId)?.name || 'Тариф',
-  type: 'Подписка',
-  date: new Date(p.date).toLocaleDateString('ru-RU'),
-  amount: `${p.amount.toLocaleString('ru-RU')} ₽`,
-  status: p.status === 'success' ? 'paid' : p.status,
-  method: 'VISA •••• 4242',
-  receiptUrl: '#',
-  items: [
-    { label: 'Подписка', value: `${p.amount.toLocaleString('ru-RU')} ₽` },
-  ],
-}));
   const [selectedPayment, setSelectedPayment] = useState(null);
 
-const lastPayment = payments[0] || null;
+  const lastPayment = payments[0] || null;
 
   useEffect(() => {
     const handleKey = (e) => {
@@ -104,11 +58,10 @@ const lastPayment = payments[0] || null;
     return null;
   };
 
-const handleDownloadReceipt = (payment) => {
-  if (!payment) return;
-
-  generateReceipt(payment);
-};
+  const handleDownloadReceipt = (payment) => {
+    if (!payment) return;
+    generateReceipt(payment);
+  };
 
   const handleRetryPayment = (payment) => {
     console.log('Повторить оплату:', payment.id);
@@ -143,7 +96,7 @@ const handleDownloadReceipt = (payment) => {
             Последний платеж
           </span>
           <strong className="lk-payments-summary__value">
-        {lastPayment ? lastPayment.amount : '—'}
+            {lastPayment ? lastPayment.amount : '—'}
           </strong>
         </div>
 
@@ -161,10 +114,14 @@ const handleDownloadReceipt = (payment) => {
             Статус
           </span>
 
-          <span className={`lk-payments-status is-${lastPayment.status}`}>
-            {getStatusIcon(lastPayment.status)}
-            {getStatusLabel(lastPayment.status)}
-          </span>
+          {lastPayment ? (
+            <span className={`lk-payments-status is-${lastPayment.status}`}>
+              {getStatusIcon(lastPayment.status)}
+              {getStatusLabel(lastPayment.status)}
+            </span>
+          ) : (
+            <span>—</span>
+          )}
 
         </div>
 

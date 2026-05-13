@@ -11,6 +11,7 @@
 @use './layout/voice.scss';
 @use './layout/lk-subscription-manage.scss';
 @use './layout/lk-bonus.scss';
+@use './layout/subscription-sbp.scss';
 
 
 // COMPONENTS
@@ -39,6 +40,7 @@
 @use './pages/lk-voice-analytics.scss';
 @use './pages/lk-activity.scss';
 @use './pages/lk-support.scss';
+@use './pages/auth.scss';
 
 
 body {
