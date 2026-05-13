@@ -88,21 +88,17 @@ export default function Auth() {
       <div className="auth__left">
          <div className="auth__bg">
 
-  <span className="auth__orb auth__orb--1" />
+ <div className="auth__galaxy" />
 
-  <span className="auth__orb auth__orb--2" />
+  <div className="auth__nebula auth__nebula--1" />
 
-  <span className="auth__orb auth__orb--3" />
+  <div className="auth__nebula auth__nebula--2" />
 
-  <span className="auth__star auth__star--1" />
+  <div className="auth__nebula auth__nebula--3" />
 
-  <span className="auth__star auth__star--2" />
+  <div className="auth__dust" />
 
-  <span className="auth__star auth__star--3" />
-
-  <span className="auth__star auth__star--4" />
-
-  <span className="auth__star auth__star--5" />
+  <div className="auth__grid-light" />
 
 </div>
         <div className="auth__brand">

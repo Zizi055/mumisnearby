@@ -411,126 +411,170 @@
   overflow: hidden;
   pointer-events: none;
 }
-.auth__orb {
+
+.auth__brand,
+.auth__tagline,
+.auth__features {
+  position: relative;
+  z-index: 2;
+}
+.auth__galaxy {
+  position: absolute;
+  inset: -20%;
+
+  opacity: 0.55;
+
+  background:
+    radial-gradient(
+      circle at 30% 40%,
+      rgba(255,255,255,0.12) 0%,
+      transparent 12%
+    ),
+    radial-gradient(
+      circle at 70% 30%,
+      rgba(196,155,97,0.18) 0%,
+      transparent 18%
+    ),
+    radial-gradient(
+      circle at 50% 70%,
+      rgba(120,180,255,0.12) 0%,
+      transparent 20%
+    ),
+    radial-gradient(
+      circle at center,
+      rgba(255,255,255,0.04) 0%,
+      transparent 60%
+    );
+
+  filter:
+    blur(40px)
+    saturate(140%);
+
+  transform: scale(1.2);
+
+  animation:
+    galaxyMove 28s linear infinite;
+}
+.auth__nebula {
   position: absolute;
 
   border-radius: 50%;
 
   filter: blur(90px);
 
-  opacity: 0.45;
+  mix-blend-mode: screen;
 }
 
-.auth__orb--1 {
-  top: 12%;
-  left: 12%;
+.auth__nebula--1 {
+  top: -10%;
+  right: -10%;
 
-  width: 220px;
-  height: 220px;
+  width: 420px;
+  height: 420px;
 
-  background: rgba(255, 214, 153, 0.08);
+  background:
+    radial-gradient(
+      circle,
+      rgba(196,155,97,0.2) 0%,
+      transparent 70%
+    );
 
   animation:
-    authFloat 14s ease-in-out infinite;
+    nebulaFloat 18s ease-in-out infinite;
 }
 
-.auth__orb--2 {
-  right: 8%;
-  top: 42%;
+.auth__nebula--2 {
+  bottom: -10%;
+  left: -10%;
+
+  width: 380px;
+  height: 380px;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(120,180,255,0.16) 0%,
+      transparent 70%
+    );
+
+  animation:
+    nebulaFloatReverse 22s ease-in-out infinite;
+}
+
+.auth__nebula--3 {
+  top: 40%;
+  left: 30%;
 
   width: 260px;
   height: 260px;
 
-  background: rgba(196, 155, 97, 0.1);
+  background:
+    radial-gradient(
+      circle,
+      rgba(255,255,255,0.08) 0%,
+      transparent 70%
+    );
 
   animation:
-    authFloat 18s ease-in-out infinite;
-
-  animation-delay: 2s;
+    nebulaPulse 12s ease-in-out infinite;
 }
+.auth__dust {
+  position: absolute;
+  inset: 0;
 
-.auth__orb--3 {
-  bottom: 6%;
-  left: 30%;
+  opacity: 0.25;
 
-  width: 180px;
-  height: 180px;
+  background-image:
+    radial-gradient(
+      rgba(255,255,255,0.8) 1px,
+      transparent 1px
+    );
 
-  background: rgba(255,255,255,0.04);
+  background-size: 120px 120px;
 
   animation:
-    authFloat 16s ease-in-out infinite;
-
-  animation-delay: 5s;
+    dustMove 40s linear infinite;
 }
-.auth__star {
+.auth__grid-light {
   position: absolute;
 
-  width: 3px;
-  height: 3px;
+  inset: 0;
 
-  border-radius: 50%;
+  background:
+    linear-gradient(
+      130deg,
+      transparent 0%,
+      rgba(255,255,255,0.03) 50%,
+      transparent 100%
+    );
 
-  background: rgba(255,255,255,0.9);
-
-  box-shadow:
-    0 0 10px rgba(255,255,255,0.6);
+  transform:
+    translateX(-100%);
 
   animation:
-    authStar 4s ease-in-out infinite;
+    lightSweep 12s linear infinite;
 }
-
-.auth__star--1 {
-  top: 16%;
-  left: 22%;
-}
-
-.auth__star--2 {
-  top: 28%;
-  right: 18%;
-}
-
-.auth__star--3 {
-  bottom: 22%;
-  left: 18%;
-}
-
-.auth__star--4 {
-  top: 54%;
-  right: 32%;
-}
-
-.auth__star--5 {
-  bottom: 12%;
-  right: 12%;
-}
-@keyframes authFloat {
+@keyframes galaxyMove {
   0% {
     transform:
-      translateY(0)
-      scale(1);
-  }
-
-  50% {
-    transform:
-      translateY(-18px)
-      scale(1.04);
+      scale(1.2)
+      rotate(0deg);
   }
 
   100% {
     transform:
-      translateY(0)
-      scale(1);
+      scale(1.2)
+      rotate(360deg);
   }
 }
 
-@keyframes authGlowFloat {
+@keyframes nebulaFloat {
   0% {
     transform: translate3d(0,0,0);
   }
 
   50% {
-    transform: translate3d(-20px, 20px, 0);
+    transform: translate3d(-30px,20px,0);
   }
 
   100% {
@@ -538,13 +582,13 @@
   }
 }
 
-@keyframes authGlowFloatReverse {
+@keyframes nebulaFloatReverse {
   0% {
     transform: translate3d(0,0,0);
   }
 
   50% {
-    transform: translate3d(20px,-20px,0);
+    transform: translate3d(30px,-20px,0);
   }
 
   100% {
@@ -552,25 +596,41 @@
   }
 }
 
-@keyframes authStar {
+@keyframes nebulaPulse {
   0% {
-    opacity: 0.2;
     transform: scale(1);
+    opacity: 0.5;
   }
 
   50% {
-    opacity: 1;
-    transform: scale(1.8);
+    transform: scale(1.08);
+    opacity: 0.9;
   }
 
   100% {
-    opacity: 0.2;
     transform: scale(1);
+    opacity: 0.5;
   }
 }
-.auth__brand,
-.auth__tagline,
-.auth__features {
-  position: relative;
-  z-index: 2;
+
+@keyframes dustMove {
+  0% {
+    transform: translateY(0);
+  }
+
+  100% {
+    transform: translateY(-120px);
+  }
+}
+
+@keyframes lightSweep {
+  0% {
+    transform:
+      translateX(-100%);
+  }
+
+  100% {
+    transform:
+      translateX(100%);
+  }
 }
