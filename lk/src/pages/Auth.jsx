@@ -134,8 +134,7 @@ export default function Auth() {
        <button
   type="button"
   className={`
-    lk-btn
-    lk-btn--ghost
+   
     auth__tab
     ${tab === 'login' ? 'is-active' : ''}
   `}
@@ -149,8 +148,7 @@ export default function Auth() {
 <button
   type="button"
   className={`
-    lk-btn
-    lk-btn--ghost
+   ё
     auth__tab
     ${tab === 'register' ? 'is-active' : ''}
   `}
