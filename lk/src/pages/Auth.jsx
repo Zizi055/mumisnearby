@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, ArrowRight, Sparkles } from 'lucide-react';
-import { login, register } from '../../api/auth.service';
-import { useAuth } from '../../context/AuthContext';
+import { login, register } from '../api/auth.service';
+import { useAuth } from '../context/AuthContext';
 import AuthDNA from './AuthDNA';
 
 function validateEmail(email) {
