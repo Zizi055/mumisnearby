@@ -5,7 +5,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   min-height: 100vh;
-  background: #f7f8f7;
+  background: $lk-bg;
 
 }
 
@@ -20,8 +20,7 @@
 
 /* ========================================
    AUTH — LEFT PANEL
-   position: relative — чтобы canvas
-   с position: absolute покрыл всю панель
+   
 ======================================== */
 
 .auth__left {
@@ -36,7 +35,7 @@
   z-index: 2;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-around;
   height: 100%;
   padding: 52px 56px;
 }
@@ -45,22 +44,23 @@
   display: flex;
   align-items: center;
   gap: 9px;
-  color: rgba(220, 238, 226, 0.88);
+  color: $lk-brand;
   font-size: 17px;
   font-weight: 500;
+  margin-top: -125px;
 
   letter-spacing: 0.03em;
 }
 
-.auth__tagline {
-  max-width: 460px;
+.auth__tagline{
+   max-width: 600px;
 }
 
 .auth__tagline h1 {
 
   font-size: 46px;
   font-weight: 400;
-  color: #eef4f0;
+  color: $lk-surface;
   line-height: 1.12;
   letter-spacing: -0.025em;
   margin: 0 0 18px;
@@ -71,7 +71,7 @@
   font-size: 15px;
   line-height: 1.85;
   font-weight: 300;
-  color: rgba(190, 215, 200, 0.55);
+  color: $lk-text-muted;
   margin: 0;
   max-width: 380px;
 }
@@ -88,14 +88,14 @@
   gap: 11px;
   font-size: 14px;
   font-weight: 400;
-  color: rgba(200, 222, 210, 0.65);
+  color: $lk-text-muted;
 }
 
 .auth__feature-dot {
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: #8db89c;
+  background: $lk-brand;
   box-shadow: 0 0 10px rgba(141, 184, 156, 0.8), 0 0 20px rgba(141, 184, 156, 0.3);
   flex-shrink: 0;
 }
@@ -130,27 +130,27 @@
 
 .auth__tab {
   height: 46px;
-  border: 1px solid #d4dbd6;
+  border: 1px solid $lk-surface-accent;
   border-radius: 100px;
   background: rgba(255, 255, 255, 0.7);
   font-size: 14px;
   font-weight: 500;
 
-  color: #7a857e;
+  color: $lk-text-muted;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .auth__tab:hover {
-  border-color: #8db89c;
-  color: #2e3a32;
+  border-color: $lk-brand-dark;
+  color: $lk-text-muted;
 }
 
 .auth__tab.is-active {
-  background: #1a2119;
-  border-color: #1a2119;
-  color: #eef4f0;
-  box-shadow: 0 8px 24px rgba(26, 33, 25, 0.18);
+  background: $lk-brand-dark;
+
+  color: $lk-surface;
+  box-shadow: 0 8px 24px rgba(171, 196, 168, 0.18);
 }
 
 /* ========================================
@@ -201,13 +201,13 @@
 }
 
 .auth__input:focus {
-  border-color: #8db89c;
-  background: #ffffff;
+  border-color: $lk-brand;
+  background: $lk-surface;
   box-shadow: 0 0 0 4px rgba(141, 184, 156, 0.14);
 }
 
 .auth__field.is-error .auth__input {
-  border-color: #d49090;
+  border-color: $lk-error;
 }
 
 .auth__field.is-error .auth__input:focus {
@@ -216,7 +216,7 @@
 
 .auth__error {
   font-size: 12px;
-  color: #b85c5c;
+  color: $lk-error;
   padding-left: 6px;
 }
 
@@ -260,13 +260,13 @@
   font-size: 13px;
   font-weight: 500;
 
-  color: #8db89c;
+  color: $lk-brand;
   cursor: pointer;
   transition: color 0.15s ease;
 }
 
 .auth__forgot button:hover {
-  color: #5a8a6e;
+  color: $lk-brand-dark;
 }
 
 /* ========================================
@@ -275,12 +275,12 @@
 
 .auth__server-error {
   padding: 12px 16px;
-  border: 1px solid #eac8c8;
+  border: 1px solid $lk-error;
   border-radius: 14px;
   background: #fdf5f5;
   font-size: 13px;
   line-height: 1.5;
-  color: #b05858;
+  color: $lk-error;
 }
 
 /* ========================================
@@ -301,7 +301,7 @@
   font-size: 15px;
   font-weight: 500;
 
-  color: #eef4f0;
+  color:$lk-surface;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
   letter-spacing: 0.01em;
@@ -331,11 +331,11 @@
   font-size: 12px;
   line-height: 1.7;
   text-align: center;
-  color: #8a9590;
+  color: $lk-text-muted;
 }
 
 .auth__agree a {
-  color: #6da882;
+  color: $lk-brand;
   text-decoration: none;
 }
 
@@ -350,8 +350,8 @@
 .auth__spinner {
   width: 18px;
   height: 18px;
-  border: 2px solid rgba(238, 244, 240, 0.3);
-  border-top-color: #eef4f0;
+  border: 2px solid $lk-brand;
+  border-top-color: $lk-surface;
   border-radius: 50%;
   animation: authSpin 0.7s linear infinite;
 }

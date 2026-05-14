@@ -88,11 +88,11 @@ export default function Auth() {
 
           <div className="auth__brand">
             <Sparkles size={16} />
-            Momis
+            Родные голоса
           </div>
 
           <div className="auth__tagline">
-            <h1>Голос близких —<br />в каждой сказке</h1>
+            <h1>Голос близких — в каждой сказке</h1>
             <p>
               Создайте голосового двойника и подарите ребёнку
               сказки, рассказанные именно вами.
