@@ -45,7 +45,7 @@
   align-items: center;
   gap: 9px;
   color: $lk-surface-soft;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 500;
   margin-top: -125px;
 
@@ -58,18 +58,18 @@
 
 .auth__tagline h1 {
 
-  font-size: 46px;
+  font-size: 36px;
   font-weight: 400;
   color: $lk-surface;
   line-height: 1.12;
-  letter-spacing: -0.025em;
+
   margin: 0 0 18px;
   text-shadow: 0 4px 40px rgba(0, 0, 0, 0.35);
 }
 
 .auth__tagline p {
   font-size: 15px;
-  line-height: 1.85;
+  line-height: 1.5;
   font-weight: 300;
   color: $lk-surface-soft;
   margin: 0;
@@ -79,7 +79,7 @@
 .auth__features {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
 }
 
 .auth__feature {
