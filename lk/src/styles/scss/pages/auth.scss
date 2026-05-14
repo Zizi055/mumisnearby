@@ -1,391 +1,179 @@
 @use '../abstracts/lk-tokens' as *;
-/* ========================================
-   AUTH — LAYOUT
-======================================== */
 
-/* ========================================
-   AUTH — LAYOUT
-======================================== */
 
 .auth {
   display: grid;
   grid-template-columns: 1fr 1fr;
-
   min-height: 100vh;
-
   background: #f7f8f7;
 
-  font-family: 'Geologica', sans-serif;
 }
 
 @media (max-width: 768px) {
   .auth {
     grid-template-columns: 1fr;
   }
-
   .auth__left {
     display: none;
   }
 }
 
 /* ========================================
-   AUTH — LEFT
+   AUTH — LEFT PANEL
+   position: relative — чтобы canvas
+   с position: absolute покрыл всю панель
 ======================================== */
 
 .auth__left {
   position: relative;
-
   overflow: hidden;
+  background: linear-gradient(160deg, #161c18 0%, #1a2119 50%, #141a16 100%);
+}
 
-  isolation: isolate;
-
+/* Контент поверх canvas */
+.auth__left-content {
+  position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-
-  padding: 56px;
-
-  background:
-    linear-gradient(
-      180deg,
-      #0d1510 0%,
-      #151d17 100%
-    );
-}
-
-/* ========================================
-   BG
-======================================== */
-
-.auth__bg {
-  position: absolute;
-  inset: 0;
-
-  z-index: 0;
-
-  overflow: hidden;
-
-  pointer-events: none;
-}
-
-/* ========================================
-   GALAXY
-======================================== */
-
-.auth__galaxy {
-  position: absolute;
-  inset: -30%;
-
-  opacity: 0.9;
-
-  background:
-    radial-gradient(
-      circle at 20% 30%,
-      rgba(93,143,114,0.24) 0%,
-      transparent 22%
-    ),
-    radial-gradient(
-      circle at 80% 20%,
-      rgba(93,143,114,0.18) 0%,
-      transparent 26%
-    ),
-    radial-gradient(
-      circle at 50% 70%,
-      rgba(255,255,255,0.04) 0%,
-      transparent 34%
-    );
-
-  filter:
-    blur(90px)
-    saturate(140%);
-
-  animation:
-    authGalaxyMove 24s linear infinite;
-}
-
-/* ========================================
-   NEBULA
-======================================== */
-
-.auth__nebula {
-  position: absolute;
-
-  border-radius: 50%;
-
-  filter: blur(120px);
-
-  mix-blend-mode: screen;
-}
-
-.auth__nebula--1 {
-  top: -10%;
-  right: -10%;
-
-  width: 480px;
-  height: 480px;
-
-  background:
-    radial-gradient(
-      circle,
-      rgba(93,143,114,0.22) 0%,
-      transparent 70%
-    );
-
-  animation:
-    authNebulaFloat 18s ease-in-out infinite;
-}
-
-.auth__nebula--2 {
-  bottom: -20%;
-  left: -10%;
-
-  width: 420px;
-  height: 420px;
-
-  background:
-    radial-gradient(
-      circle,
-      rgba(93,143,114,0.16) 0%,
-      transparent 70%
-    );
-
-  animation:
-    authNebulaFloatReverse 22s ease-in-out infinite;
-}
-
-.auth__nebula--3 {
-  top: 38%;
-  left: 40%;
-
-  width: 260px;
-  height: 260px;
-
-  background:
-    radial-gradient(
-      circle,
-      rgba(255,255,255,0.06) 0%,
-      transparent 70%
-    );
-
-  animation:
-    authNebulaPulse 10s ease-in-out infinite;
-}
-
-/* ========================================
-   STAR DUST
-======================================== */
-
-.auth__dust {
-  position: absolute;
-  inset: 0;
-
-  opacity: 0.12;
-
-  background-image:
-    radial-gradient(
-      rgba(255,255,255,0.7) 1px,
-      transparent 1px
-    );
-
-  background-size: 140px 140px;
-
-  animation:
-    authDustMove 40s linear infinite;
-}
-
-/* ========================================
-   LIGHT SWEEP
-======================================== */
-
-.auth__grid-light {
-  position: absolute;
-  inset: 0;
-
-  background:
-    linear-gradient(
-      120deg,
-      transparent 0%,
-      rgba(255,255,255,0.03) 50%,
-      transparent 100%
-    );
-
-  transform:
-    translateX(-100%);
-
-  animation:
-    authLightSweep 10s linear infinite;
-}
-
-/* ========================================
-   CONTENT
-======================================== */
-
-.auth__brand,
-.auth__tagline,
-.auth__features {
-  position: relative;
-  z-index: 2;
+  height: 100%;
+  padding: 52px 56px;
 }
 
 .auth__brand {
   display: flex;
   align-items: center;
-  gap: 10px;
-
-  color: #f3f5f3;
-
-  font-size: 18px;
+  gap: 9px;
+  color: rgba(220, 238, 226, 0.88);
+  font-size: 17px;
   font-weight: 500;
+
+  letter-spacing: 0.03em;
 }
 
 .auth__tagline {
-  max-width: 520px;
+  max-width: 460px;
 }
 
 .auth__tagline h1 {
-  margin: 0 0 20px;
 
-  font-size: 52px;
-  line-height: 1.08;
-  font-weight: 500;
-  letter-spacing: -0.03em;
-
-  color: #ffffff;
+  font-size: 46px;
+  font-weight: 400;
+  color: #eef4f0;
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+  margin: 0 0 18px;
+  text-shadow: 0 4px 40px rgba(0, 0, 0, 0.35);
 }
 
 .auth__tagline p {
-  margin: 0;
-
-  max-width: 420px;
-
-  font-size: 16px;
-  line-height: 1.8;
+  font-size: 15px;
+  line-height: 1.85;
   font-weight: 300;
-
-  color: rgba(255,255,255,0.64);
+  color: rgba(190, 215, 200, 0.55);
+  margin: 0;
+  max-width: 380px;
 }
 
 .auth__features {
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 12px;
 }
 
 .auth__feature {
   display: flex;
   align-items: center;
-  gap: 12px;
-
+  gap: 11px;
   font-size: 14px;
   font-weight: 400;
-
-  color: rgba(255,255,255,0.72);
+  color: rgba(200, 222, 210, 0.65);
 }
 
 .auth__feature-dot {
-  width: 6px;
-  height: 6px;
-
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
-
-  background: #5d8f72;
-
-  box-shadow:
-    0 0 12px rgba(93,143,114,0.7);
-
+  background: #8db89c;
+  box-shadow: 0 0 10px rgba(141, 184, 156, 0.8), 0 0 20px rgba(141, 184, 156, 0.3);
   flex-shrink: 0;
 }
 
 /* ========================================
-   RIGHT
+   AUTH — RIGHT PANEL
 ======================================== */
 
 .auth__right {
   display: flex;
   align-items: center;
   justify-content: center;
-
   padding: 48px 32px;
+  background: #f7f8f7;
 }
 
 .auth__card {
   width: 100%;
-  max-width: 420px;
+  max-width: 400px;
 }
 
 /* ========================================
-   TABS
+   AUTH — TABS
 ======================================== */
 
 .auth__tabs {
   display: grid;
   grid-template-columns: 1fr 1fr;
-
-  gap: 12px;
-
-  margin-bottom: 36px;
+  gap: 10px;
+  margin-bottom: 34px;
 }
 
 .auth__tab {
-  height: 48px;
-
-  border: 1px solid #d8ddd9;
-  border-radius: $lk-radius-pill;
-
-  background: rgba(255,255,255,0.72);
-
+  height: 46px;
+  border: 1px solid #d4dbd6;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.7);
   font-size: 14px;
   font-weight: 500;
 
-  color: $lk-text-muted;
-
+  color: #7a857e;
   cursor: pointer;
-
-  transition:
-    background 0.2s ease,
-    border-color 0.2s ease,
-    color 0.2s ease,
-    transform 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .auth__tab:hover {
-  transform: translateY(-1px);
-
-  border-color: #5d8f72;
+  border-color: #8db89c;
+  color: #2e3a32;
 }
 
 .auth__tab.is-active {
-  background: $lk-brand-dark;
-  border-color: $lk-brand-dark;
-
-
-  color: #ffffff;
-
-  box-shadow:
-    0 10px 30px rgba(22,32,25,0.18);
+  background: #1a2119;
+  border-color: #1a2119;
+  color: #eef4f0;
+  box-shadow: 0 8px 24px rgba(26, 33, 25, 0.18);
 }
 
 /* ========================================
-   FORM
+   AUTH — FORM
 ======================================== */
 
 .auth__form {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 18px;
 }
 
 .auth__field {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 7px;
 }
 
 .auth__label {
   font-size: 13px;
   font-weight: 500;
-
   color: #6a726d;
+  letter-spacing: 0.01em;
 }
 
 .auth__input-wrap {
@@ -394,51 +182,42 @@
 
 .auth__input {
   width: 100%;
-  height: 54px;
-
+  height: 52px;
   padding: 0 18px;
-
-  border: 1px solid #d8ddd9;
-  border-radius: $lk-radius-32;
-
-  background: rgba(255,255,255,0.82);
-
+  border: 1px solid #d4dbd6;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, 0.85);
   font-size: 15px;
-  font-weight: 400;
-
-  color: #101612;
-
+  font-weight: 300;
+  
+  color: #111612;
   outline: none;
-
-  transition:
-    border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    background 0.2s ease;
-
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
   box-sizing: border-box;
 }
 
 .auth__input::placeholder {
-  color: $lk-text-muted;
+  color: #b0bab4;
 }
 
 .auth__input:focus {
-  border-color: #5d8f72;
-
+  border-color: #8db89c;
   background: #ffffff;
-
-  box-shadow:
-    0 0 0 4px rgba(93,143,114,0.12);
+  box-shadow: 0 0 0 4px rgba(141, 184, 156, 0.14);
 }
 
 .auth__field.is-error .auth__input {
-  border-color: #d97878;
+  border-color: #d49090;
+}
+
+.auth__field.is-error .auth__input:focus {
+  box-shadow: 0 0 0 4px rgba(212, 144, 144, 0.12);
 }
 
 .auth__error {
   font-size: 12px;
-
-  color: #c25b5b;
+  color: #b85c5c;
+  padding-left: 6px;
 }
 
 .auth__input-wrap .auth__input {
@@ -449,60 +228,63 @@
   position: absolute;
   top: 50%;
   right: 16px;
-
   transform: translateY(-50%);
-
   border: none;
   background: transparent;
-
-  color: #7b847e;
-
+  color: #8a9590;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  transition: color 0.15s ease;
+}
+
+.auth__eye:hover {
+  color: #2e3a32;
 }
 
 /* ========================================
-   FORGOT
+   AUTH — FORGOT
 ======================================== */
 
 .auth__forgot {
   display: flex;
   justify-content: flex-end;
+  margin-top: -4px;
 }
 
 .auth__forgot button {
   border: none;
   background: transparent;
-
   padding: 0;
-
   font-size: 13px;
   font-weight: 500;
 
-  color: #5d8f72;
-
+  color: #8db89c;
   cursor: pointer;
+  transition: color 0.15s ease;
+}
+
+.auth__forgot button:hover {
+  color: #5a8a6e;
 }
 
 /* ========================================
-   SERVER ERROR
+   AUTH — SERVER ERROR
 ======================================== */
 
 .auth__server-error {
-  padding: 14px 16px;
-
-  border: 1px solid #efcaca;
+  padding: 12px 16px;
+  border: 1px solid #eac8c8;
   border-radius: 14px;
-
-  background: #fff5f5;
-
+  background: #fdf5f5;
   font-size: 13px;
   line-height: 1.5;
-
-  color: #bf5b5b;
+  color: #b05858;
 }
 
 /* ========================================
-   SUBMIT
+   AUTH — SUBMIT
 ======================================== */
 
 .auth__submit {
@@ -510,36 +292,24 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
-
   width: 100%;
-  height: 56px;
-
+  height: 54px;
   border: none;
-  border-radius: $lk-radius-pill;
-
-  background: $lk-brand;
-
-  box-shadow:
-    0 18px 40px rgba(139, 179, 151, 0.18);
-
+  border-radius: 100px;
+  background: linear-gradient(135deg, #2e3a32 0%, #1a2119 100%);
+  box-shadow: 0 12px 32px rgba(26, 33, 25, 0.22);
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 500;
 
-  color: #ffffff;
-
+  color: #eef4f0;
   cursor: pointer;
-
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    opacity 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  letter-spacing: 0.01em;
 }
 
 .auth__submit:hover {
   transform: translateY(-2px);
-
-  box-shadow:
-    0 24px 50px rgba(22,32,25,0.24);
+  box-shadow: 0 18px 40px rgba(26, 33, 25, 0.28);
 }
 
 .auth__submit:active {
@@ -547,142 +317,45 @@
 }
 
 .auth__submit:disabled {
-  opacity: 0.6;
-
+  opacity: 0.55;
   cursor: not-allowed;
+  transform: none;
 }
 
 /* ========================================
-   AGREEMENT
+   AUTH — AGREE
 ======================================== */
 
 .auth__agree {
   margin: 0;
-
   font-size: 12px;
   line-height: 1.7;
-
   text-align: center;
-
-  color: #7d857f;
+  color: #8a9590;
 }
 
 .auth__agree a {
-  color: #5d8f72;
-
+  color: #6da882;
   text-decoration: none;
 }
 
+.auth__agree a:hover {
+  text-decoration: underline;
+}
+
 /* ========================================
-   SPINNER
+   AUTH — SPINNER
 ======================================== */
 
 .auth__spinner {
   width: 18px;
   height: 18px;
-
-  border: 2px solid rgba(255,255,255,0.3);
-  border-top-color: #ffffff;
-
+  border: 2px solid rgba(238, 244, 240, 0.3);
+  border-top-color: #eef4f0;
   border-radius: 50%;
-
-  animation:
-    authSpin 0.7s linear infinite;
+  animation: authSpin 0.7s linear infinite;
 }
-
-/* ========================================
-   ANIMATIONS
-======================================== */
 
 @keyframes authSpin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes authGalaxyMove {
-  0% {
-    transform:
-      rotate(0deg)
-      scale(1.1);
-  }
-
-  100% {
-    transform:
-      rotate(360deg)
-      scale(1.1);
-  }
-}
-
-@keyframes authNebulaFloat {
-  0% {
-    transform:
-      translate3d(0,0,0);
-  }
-
-  50% {
-    transform:
-      translate3d(-40px,20px,0);
-  }
-
-  100% {
-    transform:
-      translate3d(0,0,0);
-  }
-}
-
-@keyframes authNebulaFloatReverse {
-  0% {
-    transform:
-      translate3d(0,0,0);
-  }
-
-  50% {
-    transform:
-      translate3d(40px,-20px,0);
-  }
-
-  100% {
-    transform:
-      translate3d(0,0,0);
-  }
-}
-
-@keyframes authNebulaPulse {
-  0% {
-    opacity: 0.4;
-    transform: scale(1);
-  }
-
-  50% {
-    opacity: 0.8;
-    transform: scale(1.12);
-  }
-
-  100% {
-    opacity: 0.4;
-    transform: scale(1);
-  }
-}
-
-@keyframes authDustMove {
-  0% {
-    transform: translateY(0);
-  }
-
-  100% {
-    transform: translateY(-140px);
-  }
-}
-
-@keyframes authLightSweep {
-  0% {
-    transform:
-      translateX(-100%);
-  }
-
-  100% {
-    transform:
-      translateX(100%);
-  }
+  to { transform: rotate(360deg); }
 }

@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, ArrowRight, Sparkles } from 'lucide-react';
-import { login, register } from '../api/auth.service';
-import { useAuth } from '../context/AuthContext';
+import { login, register } from '../../api/auth.service';
+import { useAuth } from '../../context/AuthContext';
+import AuthDNA from './AuthDNA';
 
 function validateEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -21,18 +22,11 @@ export default function Auth() {
   const { setUser } = useAuth();
 
   const [tab, setTab] = useState('login');
-
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
-
-  const [touched, setTouched] = useState({
-    name: false,
-    email: false,
-    password: false,
-  });
-
+  const [touched, setTouched] = useState({ name: false, email: false, password: false });
   const [status, setStatus] = useState('idle');
   const [serverError, setServerError] = useState('');
 
@@ -51,9 +45,7 @@ export default function Auth() {
     ? !errors.name && !errors.email && !errors.password
     : !errors.email && !errors.password;
 
-  const handleBlur = (field) => {
-    setTouched((t) => ({ ...t, [field]: true }));
-  };
+  const handleBlur = (field) => setTouched((p) => ({ ...p, [field]: true }));
 
   const handleSubmit = async () => {
     setTouched({ name: true, email: true, password: true });
@@ -85,79 +77,65 @@ export default function Auth() {
   return (
     <div className="auth">
 
+      {/* ═══ ЛЕВАЯ ПАНЕЛЬ ═══ */}
       <div className="auth__left">
-         <div className="auth__bg">
 
- <div className="auth__galaxy" />
+        {/* ДНК-анимация — абсолютный фон, position: absolute */}
+        <AuthDNA />
 
-  <div className="auth__nebula auth__nebula--1" />
+        {/* Контент поверх анимации */}
+        <div className="auth__left-content">
 
-  <div className="auth__nebula auth__nebula--2" />
-
-  <div className="auth__nebula auth__nebula--3" />
-
-  <div className="auth__dust" />
-
-  <div className="auth__grid-light" />
-
-</div>
-        <div className="auth__brand">
-          <Sparkles size={20} />
-          <span>Momis</span>
-        </div>
-
-        <div className="auth__tagline">
-          <h1>Голос близких — в каждой сказке</h1>
-          <p>Создайте голосового двойника и подарите ребёнку сказки, рассказанные именно вами.</p>
-        </div>
-
-        <div className="auth__features">
-          <div className="auth__feature">
-            <span className="auth__feature-dot" />
-            Голосовые двойники родных
+          <div className="auth__brand">
+            <Sparkles size={16} />
+            Momis
           </div>
-          <div className="auth__feature">
-            <span className="auth__feature-dot" />
-            Библиотека из 100+ сказок
+
+          <div className="auth__tagline">
+            <h1>Голос близких —<br />в каждой сказке</h1>
+            <p>
+              Создайте голосового двойника и подарите ребёнку
+              сказки, рассказанные именно вами.
+            </p>
           </div>
-          <div className="auth__feature">
-            <span className="auth__feature-dot" />
-            Терапевтические сценарии
+
+          <div className="auth__features">
+            <div className="auth__feature">
+              <span className="auth__feature-dot" />
+              Голосовые двойники родных
+            </div>
+            <div className="auth__feature">
+              <span className="auth__feature-dot" />
+              Библиотека из 100+ сказок
+            </div>
+            <div className="auth__feature">
+              <span className="auth__feature-dot" />
+              Терапевтические сценарии
+            </div>
           </div>
+
         </div>
       </div>
 
+      {/* ═══ ПРАВАЯ ПАНЕЛЬ ═══ */}
       <div className="auth__right">
         <div className="auth__card">
 
           <div className="auth__tabs">
-       <button
-  type="button"
-  className={`
-   
-    auth__tab
-    ${tab === 'login' ? 'is-active' : ''}
-  `}
-  onClick={() =>
-    handleTabSwitch('login')
-  }
->
-  Войти
-</button>
-
-<button
-  type="button"
-  className={`
-   
-    auth__tab
-    ${tab === 'register' ? 'is-active' : ''}
-  `}
-  onClick={() =>
-    handleTabSwitch('register')
-  }
->
-  Регистрация
-</button>
+            <button
+              type="button"
+              className={`auth__tab ${tab === 'login' ? 'is-active' : ''}`}
+              onClick={() => handleTabSwitch('login')}
+            >
+              Войти
+            </button>
+            <button
+              type="button"
+              className={`auth__tab ${tab === 'register' ? 'is-active' : ''}`}
+              onClick={() => handleTabSwitch('register')}
+            >
+              Регистрация
+            </button>
           </div>
 
           <div className="auth__form">
@@ -260,10 +238,5 @@ export default function Auth() {
             )}
 
           </div>
-
         </div>
       </div>
-
-    </div>
-  );
-}
