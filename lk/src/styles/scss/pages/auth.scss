@@ -44,7 +44,7 @@
   display: flex;
   align-items: center;
   gap: 9px;
-  color: $lk-brand;
+  color: $lk-surface-soft;
   font-size: 17px;
   font-weight: 500;
   margin-top: -125px;
@@ -71,7 +71,7 @@
   font-size: 15px;
   line-height: 1.85;
   font-weight: 300;
-  color: $lk-text-muted;
+  color: $lk-surface-soft;
   margin: 0;
   max-width: 380px;
 }
@@ -88,7 +88,7 @@
   gap: 11px;
   font-size: 14px;
   font-weight: 400;
-  color: $lk-text-muted;
+  color: $lk-surface-soft;
 }
 
 .auth__feature-dot {
@@ -296,8 +296,8 @@
   height: 54px;
   border: none;
   border-radius: 100px;
-  background: linear-gradient(135deg, #2e3a32 0%, #1a2119 100%);
-  box-shadow: 0 12px 32px rgba(26, 33, 25, 0.22);
+  background: $lk-brand;
+
   font-size: 15px;
   font-weight: 500;
 
