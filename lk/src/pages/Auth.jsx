@@ -80,10 +80,10 @@ export default function Auth() {
       {/* ═══ ЛЕВАЯ ПАНЕЛЬ ═══ */}
       <div className="auth__left">
 
-        {/* ДНК-анимация — абсолютный фон, position: absolute */}
+        {/* Анимация  */}
         <AuthDNA />
 
-        {/* Контент поверх анимации */}
+        {/* Контент  */}
         <div className="auth__left-content">
 
           <div className="auth__brand">
