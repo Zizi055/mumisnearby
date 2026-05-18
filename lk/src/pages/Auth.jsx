@@ -48,24 +48,13 @@ export default function Auth() {
   const handleBlur = (field) => setTouched((p) => ({ ...p, [field]: true }));
 
   const handleSubmit = async () => {
-    setTouched({ name: true, email: true, password: true });
-    if (!isFormValid) return;
+  setTouched({ name: true, email: true, password: true });
+  if (!isFormValid) return;
 
-    setStatus('loading');
-    setServerError('');
-
-    try {
-      const user = isRegister
-        ? await register({ name, email, password })
-        : await login({ email, password });
-
-      setUser(user);
-      navigate('/subscription/manage');
-    } catch (e) {
-      setServerError(e.message || 'Что-то пошло не так');
-      setStatus('error');
-    }
-  };
+  // временный обход авторизации — убрать когда бэкенд заработает
+  setUser({ id: '1', name: name || 'Пользователь', email });
+  navigate('/dashboard/progress');
+};
 
   const handleTabSwitch = (newTab) => {
     setTab(newTab);

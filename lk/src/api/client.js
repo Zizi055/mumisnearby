@@ -1,4 +1,4 @@
-const BASE_URL = import.meta.env.VITE_API_URL || ''; 
+const BASE_URL = import.meta.env.VITE_API_URL || 'http://90.156.170.14:8000';
 
 async function request(path, options = {}) {
   const res = await fetch(`${BASE_URL}${path}`, {

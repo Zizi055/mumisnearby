@@ -1,0 +1,214 @@
+@use '../abstracts/lk-tokens' as *;
+
+.lk-header__user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px 5px 5px;
+  border: none;
+  border-radius: 100px;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.lk-header__user:hover {
+  background: var(--color-bg-secondary, #f4f5f3);
+}
+
+.lk-header__avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--lk-brand, #5d8f72);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.lk-header__username {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-primary, #111612);
+}
+
+/* ========================================
+   HEADER — NOTIFICATIONS
+======================================== */
+
+.lk-header__notif-wrap {
+  position: relative;
+}
+
+.lk-header__badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #e05c5c;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.lk-notif-panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  width: 320px;
+  background: #fff;
+  border: 1px solid var(--color-border, #e4e7e4);
+  border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.10);
+  z-index: 100;
+  overflow: hidden;
+  animation: notifFadeIn 0.15s ease;
+}
+
+@keyframes notifFadeIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.lk-notif-panel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid var(--color-border, #e4e7e4);
+}
+
+.lk-notif-panel__head span {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-primary, #111612);
+}
+
+.lk-notif-panel__head button {
+  font-size: 12px;
+  color: var(--lk-brand, #5d8f72);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.lk-notif-panel__list {
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.lk-notif-panel__empty {
+  font-size: 13px;
+  color: var(--color-text-secondary, #7a857e);
+  text-align: center;
+  padding: 24px 16px;
+  margin: 0;
+}
+
+.lk-notif-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: background 0.12s ease;
+  border-bottom: 1px solid var(--color-border, #f0f2f0);
+}
+
+.lk-notif-item:last-child {
+  border-bottom: none;
+}
+
+.lk-notif-item:hover {
+  background: var(--color-bg-secondary, #f7f8f7);
+}
+
+.lk-notif-item.is-read .lk-notif-item__dot {
+  background: transparent;
+  border: 1.5px solid var(--color-border, #d4dbd6);
+}
+
+.lk-notif-item.is-read .lk-notif-item__body p {
+  color: var(--color-text-secondary, #7a857e);
+  font-weight: 400;
+}
+
+.lk-notif-item__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--lk-brand, #5d8f72);
+  flex-shrink: 0;
+  margin-top: 5px;
+}
+
+.lk-notif-item__body {
+  flex: 1;
+}
+
+.lk-notif-item__body p {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-primary, #111612);
+  margin: 0 0 3px;
+  line-height: 1.5;
+}
+
+.lk-notif-item__body span {
+  font-size: 11px;
+  color: var(--color-text-tertiary, #9aa09c);
+}
+
+.lk-notif-item__check {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border, #d4dbd6);
+  background: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-secondary, #7a857e);
+  flex-shrink: 0;
+  transition: all 0.12s ease;
+}
+
+.lk-notif-item__check:hover {
+  background: var(--lk-brand, #5d8f72);
+  border-color: var(--lk-brand, #5d8f72);
+  color: #fff;
+}
+
+/* ========================================
+   SIDEBAR — AVATAR
+======================================== */
+
+.lk-sidebar__avatar {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: var(--lk-brand, #5d8f72);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lk-sidebar__icon--profile.is-active .lk-sidebar__avatar {
+  box-shadow: 0 0 0 2px var(--lk-brand, #5d8f72);
+  outline: 2px solid #fff;
+}

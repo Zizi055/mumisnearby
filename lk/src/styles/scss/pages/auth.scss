@@ -109,7 +109,7 @@
   align-items: center;
   justify-content: center;
   padding: 48px 32px;
-  background: #f7f8f7;
+  background: $lk-surface;
 }
 
 .auth__card {
@@ -276,7 +276,7 @@
 .auth__server-error {
   padding: 12px 16px;
   border: 1px solid $lk-error;
-  border-radius: 14px;
+  border-radius: $lk-radius-pill;
   background: #fdf5f5;
   font-size: 13px;
   line-height: 1.5;
@@ -309,7 +309,7 @@
 
 .auth__submit:hover {
   transform: translateY(-2px);
-  box-shadow: 0 18px 40px rgba(26, 33, 25, 0.28);
+
 }
 
 .auth__submit:active {
