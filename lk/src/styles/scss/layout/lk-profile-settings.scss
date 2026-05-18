@@ -437,3 +437,149 @@
     transform: translateX(20px);
   }
 }
+// ── ВЫХОД ──
+.lk-profile__logout {
+  margin-top: $lk-space-24;
+  padding-top: $lk-space-20;
+  border-top: 1px solid $lk-line-soft;
+}
+
+// ── ЧЛЕНЫ СЕМЬИ (дети и родители) ──
+.lk-profile__members {
+  display: flex;
+  flex-direction: column;
+  gap: $lk-space-10;
+  margin-bottom: $lk-space-16;
+}
+
+.lk-profile__member {
+  display: flex;
+  align-items: center;
+  gap: $lk-space-12;
+  padding: $lk-space-12 $lk-space-16;
+  background: $lk-bg;
+  border: 1px solid $lk-line-soft;
+  border-radius: $lk-radius-16;
+}
+
+.lk-profile__member-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+
+  &--kid {
+    background: rgba(93, 143, 114, 0.12);
+    color: $lk-brand;
+  }
+
+  &--parent {
+    background: rgba(100, 120, 200, 0.10);
+    color: #5a6db5;
+  }
+}
+
+.lk-profile__member-info {
+  flex: 1;
+
+  strong {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: $lk-text;
+    margin-bottom: 2px;
+  }
+
+  span {
+    font-size: 12px;
+    color: $lk-text-muted;
+  }
+}
+
+.lk-profile__member-remove {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid $lk-border;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $lk-text-muted;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+
+  &:hover {
+    background: rgba(229, 72, 72, 0.08);
+    border-color: rgba(229, 72, 72, 0.3);
+    color: $lk-danger;
+  }
+}
+
+// ── СТРОКА ДОБАВЛЕНИЯ ──
+.lk-profile__add-row {
+  display: flex;
+  align-items: center;
+  gap: $lk-space-10;
+  flex-wrap: wrap;
+}
+
+// ── ПРЕДПОЧТЕНИЯ ──
+.lk-profile__prefs {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.lk-profile__pref {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $lk-space-16;
+  padding: $lk-space-14 0;
+  border-bottom: 1px solid $lk-line-soft;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  div {
+    flex: 1;
+
+    strong {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      color: $lk-text;
+      margin-bottom: 3px;
+    }
+
+    p {
+      font-size: 12px;
+      color: $lk-text-muted;
+      margin: 0;
+    }
+  }
+}
+
+.lk-profile__select {
+  height: 36px;
+  padding: 0 $lk-space-12;
+  border: 1px solid $lk-border;
+  border-radius: $lk-radius-pill;
+  background: $lk-bg;
+  font-size: 13px;
+  color: $lk-text;
+  outline: none;
+  cursor: pointer;
+  flex-shrink: 0;
+
+  &:focus {
+    border-color: $lk-brand;
+    box-shadow: 0 0 0 3px rgba(93, 143, 114, 0.12);
+  }
+}

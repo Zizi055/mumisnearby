@@ -11,7 +11,7 @@ export async function register({ name, email, password }) {
     localStorage.setItem('token', data.token);
   }
 
-  // бэк возвращает username — переименовываем в name для фронта
+  // возвращает username — переименовываем в name для фронта
   return { ...data, name: data.username ?? data.name };
 }
 
