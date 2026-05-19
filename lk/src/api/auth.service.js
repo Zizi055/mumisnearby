@@ -2,7 +2,7 @@ import { api } from './client';
 
 export async function register({ name, email, password }) {
   const data = await api.post('/auth/register', {
-    username: name,   // ← бэк ждёт username
+    username: name,
     email,
     password,
   });
@@ -11,7 +11,6 @@ export async function register({ name, email, password }) {
     localStorage.setItem('token', data.token);
   }
 
-  // возвращает username — переименовываем в name для фронта
   return { ...data, name: data.username ?? data.name };
 }
 
@@ -32,5 +31,5 @@ export async function logout() {
 }
 
 export async function getMe() {
-  return api.get('/auth/me');
+  return api.get('/auth/who_am_i');
 }

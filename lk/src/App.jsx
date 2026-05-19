@@ -1,36 +1,12 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
-
-import Dashboard from './pages/Dashboard';
-import Library from './pages/Library';
-import Subscription from './pages/Subscription';
-
-import SubscriptionTariff from './pages/subscription/SubscriptionTariff';
-import SubscriptionPayments from './pages/subscription/SubscriptionPayments';
-import SubscriptionManage from './pages/subscription/SubscriptionManage';
-import SubscriptionBonus from './pages/subscription/SubscriptionBonus';
-import Checkout from './pages/subscription/Checkout';
-import Constructor from './pages/subscription/Constructor';
-
-import Voice from './pages/Voice';
-import VoiceMy from './pages/voice/VoiceMy';
-import VoiceManage from './pages/voice/VoiceManage';
-import VoiceAnalytics from './pages/voice/VoiceAnalytics';
-
-import Activity from './pages/Activity.jsx';
-import Support from './pages/Support.jsx';
-import Auth from './pages/Auth.jsx';
-import Profile from './pages/profile/Profile.jsx';
-import Settings from './pages/settings/Settings.jsx';
-
-import LkLayout from './components/layout/LkLayout';
-
 function App() {
   return (
     <Routes>
 
-      <Route path="/" element={<Navigate to="/dashboard/progress" replace />} />
+      {/* Auth —  до LkLayout */}
       <Route path="/auth" element={<Auth />} />
+      <Route path="/auth/reset" element={<Auth />} />
 
+      {/* ЛК */}
       <Route element={<LkLayout />}>
 
         <Route path="/profile/info" element={<Profile />} />
@@ -72,10 +48,10 @@ function App() {
 
       </Route>
 
-      <Route path="*" element={<Navigate to="/dashboard/progress" replace />} />
+      {/* Корень и 404 — в самом конце */}
+      <Route path="/" element={<Navigate to="/auth" replace />} />
+      <Route path="*" element={<Navigate to="/auth" replace />} />
 
     </Routes>
   );
 }
-
-export default App;
