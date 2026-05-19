@@ -1,41 +1,50 @@
 @use '../abstracts/lk-tokens' as *;
 
-/* ========================================
-   PROFILE
-======================================== */
 
 .lk-profile {
   display: flex;
   flex-direction: column;
   gap: $lk-space-24;
+
   max-width: 640px;
 }
 
-/* HERO */
+
+
 .lk-profile__hero {
   display: flex;
   align-items: center;
   gap: $lk-space-20;
+
   padding: $lk-space-24;
-  background:#fff;
+
+  background: #fff;
+
   border: 1px solid $lk-border;
   border-radius: $lk-radius-20;
+
   box-shadow: $lk-shadow-card;
 }
 
 .lk-profile__avatar-wrap {
   position: relative;
+
   flex-shrink: 0;
 }
 
 .lk-profile__avatar {
   width: 64px;
   height: 64px;
+
   border-radius: 50%;
+
   background: $lk-brand;
+
   color: $lk-white;
+
   font-size: 24px;
   font-weight: 500;
+
   display: flex;
   align-items: center;
   justify-content: center;
@@ -43,421 +52,199 @@
 
 .lk-profile__avatar-edit {
   position: absolute;
-  bottom: 0;
+
   right: 0;
+  bottom: 0;
+
   width: 24px;
   height: 24px;
+
   border-radius: 50%;
+
   background: $lk-surface;
+
   border: 1px solid $lk-border;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   cursor: pointer;
+
   color: $lk-text-muted;
-  transition: background 0.15s ease, color 0.15s ease;
+
+  transition:
+    background 0.15s ease,
+    color 0.15s ease;
 
   &:hover {
     background: $lk-surface-soft;
+
     color: $lk-brand;
   }
 }
 
 .lk-profile__hero-name {
+  margin: 0 0 4px;
+
   font-size: 18px;
   font-weight: 500;
+
   color: $lk-text;
-  margin: 0 0 4px;
 }
 
 .lk-profile__hero-email {
-  font-size: 13px;
-  color: $lk-text-muted;
   margin: 0;
+
+  font-size: 13px;
+
+  color: $lk-text-muted;
 }
 
 /* BLOCK */
+
 .lk-profile__block {
+  padding: $lk-space-24;
+
   background: #fff;
+
   border: 1px solid $lk-border;
   border-radius: $lk-radius-20;
-  padding: $lk-space-24;
+
   box-shadow: $lk-shadow-card;
 
   &--danger {
-    border-color: rgba(229, 72, 72, 0.2);
+    border-color:
+      rgba(229,72,72,0.2);
   }
 }
 
 .lk-profile__block-title {
+  margin: 0 0 $lk-space-20;
+
   font-size: 15px;
   font-weight: 500;
+
   color: $lk-text;
-  margin: 0 0 $lk-space-20;
 }
 
 .lk-profile__block-hint {
+  margin:
+    -$lk-space-14
+    0
+    $lk-space-16;
+
   font-size: 13px;
+
   color: $lk-text-muted;
-  margin: -$lk-space-14 0 $lk-space-16;
 }
 
 /* FORM */
+
 .lk-profile__form {
   display: flex;
   flex-direction: column;
+
   gap: $lk-space-16;
+
   margin-bottom: $lk-space-20;
 }
 
 .lk-profile__field {
   display: flex;
   flex-direction: column;
+
   gap: $lk-space-6;
 }
 
 .lk-profile__label {
   font-size: 13px;
   font-weight: 500;
+
   color: $lk-text-muted;
 }
 
 .lk-profile__input {
   width: 100%;
   height: 44px;
-  padding: 0 $lk-space-16;
+
+  padding:
+    0
+    $lk-space-16;
+
+  background: #fff;
+
   border: 1px solid $lk-border;
   border-radius: $lk-radius-pill;
-  background: #fff;
+
   font-size: 14px;
+
   color: $lk-text;
+
   outline: none;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+
   box-sizing: border-box;
 
-  &::placeholder { color: $lk-text-muted; }
+  transition:
+    border-color .15s ease,
+    box-shadow .15s ease;
+
+  &::placeholder {
+    color: $lk-text-muted;
+  }
 
   &:focus {
     border-color: $lk-brand;
-    box-shadow: 0 0 0 3px rgba(93, 143, 114, 0.12);
-    background: $lk-white;
+
+    box-shadow:
+      0 0 0 3px
+      rgba(93,143,114,.12);
   }
 
-  &--sm { height: 40px; }
+  &--sm {
+    height: 40px;
+  }
 
   &--age {
     width: 80px;
+
     flex-shrink: 0;
-    margin: 0 20px;
+
+  
   }
 }
 
 .lk-profile__actions {
   display: flex;
+
   gap: $lk-space-12;
+
   margin: 15px 0;
 }
-.lk-profile__add-row {
-  display: flex;
-  justify-content: space-between;
-}
 
-/* KIDS */
-.lk-profile__kids {
-  display: flex;
-  flex-direction: column;
-  gap: $lk-space-10;
-  margin-bottom: $lk-space-16;
-}
+/* FAMILY */
 
-.lk-profile__kid {
-  display: flex;
-  align-items: center;
-  gap: $lk-space-12;
-  padding: $lk-space-12 $lk-space-16;
-  background: #fff;
-  border: 1px solid $lk-line-soft;
-  border-radius: $lk-radius-16;
-}
-
-.lk-profile__kid-avatar {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: $lk-surface-accent;
-  color: $lk-brand-dark;
-  font-size: 14px;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.lk-profile__kid-info {
-  flex: 1;
-
-  strong {
-    display: block;
-    font-size: 14px;
-    font-weight: 500;
-    color: $lk-text;
-  }
-
-  span {
-    font-size: 12px;
-    color: $lk-text-muted;
-  }
-}
-
-.lk-profile__kid-remove {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
-  border: 1px solid $lk-border;
-  background: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: $lk-text-muted;
-  transition: all 0.15s ease;
-
-  &:hover {
-    background: rgba(229, 72, 72, 0.08);
-    border-color: rgba(229, 72, 72, 0.3);
-    color: $lk-danger;
-  }
-}
-
-.lk-profile__kid-add {
-  display: flex;
-  align-items: center;
-  gap: $lk-space-10;
-}
-
-/* PREFS */
-.lk-profile__prefs {
-  display: flex;
-  flex-direction: column;
-  gap: $lk-space-12;
-}
-
-.lk-profile__pref {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  span {
-    font-size: 14px;
-    color: $lk-text-soft;
-  }
-}
-
-.lk-profile__select {
-  height: 36px;
-  padding: 0 $lk-space-12;
-  border: 1px solid $lk-border;
-  border-radius: $lk-radius-pill;
-  background: $lk-bg;
-  font-size: 13px;
-  color: $lk-text;
-  outline: none;
-  cursor: pointer;
-
-  &:focus {
-    border-color: $lk-brand;
-  }
-}
-
-/* ========================================
-   SETTINGS
-======================================== */
-
-.lk-settings {
-  display: flex;
-  flex-direction: column;
-  gap: $lk-space-24;
-  max-width: 640px;
-}
-
-.lk-settings__block {
-  background:#fff;
-  border: 1px solid $lk-border;
-  border-radius: $lk-radius-20;
-  padding: $lk-space-24;
-  box-shadow: $lk-shadow-card;
-}
-
-.lk-settings__block-head {
-  display: flex;
-  align-items: center;
-  gap: $lk-space-10;
-  margin-bottom: $lk-space-20;
-
-  h3 {
-    font-size: 15px;
-    font-weight: 500;
-    color: $lk-text;
-    margin: 0;
-  }
-}
-
-.lk-settings__block-icon {
-  width: 32px;
-  height: 32px;
-  border-radius: $lk-radius-12;
-  background: $lk-surface-soft;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: $lk-brand;
-}
-
-.lk-settings__rows {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-
-.lk-settings__row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: $lk-space-16;
-  padding: $lk-space-14 0;
-  border-bottom: 1px solid $lk-line-soft;
-
-  &:last-child { border-bottom: none; }
-
-  div {
-    flex: 1;
-
-    strong {
-      display: block;
-      font-size: 14px;
-      font-weight: 500;
-      color: $lk-text;
-      margin-bottom: 2px;
-    }
-
-    p {
-      font-size: 12px;
-      color: $lk-text-muted;
-      margin: 0;
-    }
-  }
-}
-
-.lk-settings__select {
-  height: 36px;
-  padding: 0 $lk-space-12;
-  border: 1px solid $lk-border;
-  border-radius: $lk-radius-pill;
-
-  font-size: 13px;
-  color: $lk-text;
-  outline: none;
-  cursor: pointer;
-  flex-shrink: 0;
-
-  &:focus { border-color: $lk-brand; }
-}
-
-.lk-settings__input {
-  width: 100%;
-  height: 44px;
-  padding: 0 $lk-space-16;
-  border: 1px solid $lk-border;
-  border-radius: $lk-radius-pill;
-  background: $lk-bg;
-  font-size: 14px;
-  color: $lk-text;
-  outline: none;
-  box-sizing: border-box;
-  transition: border-color 0.15s ease, box-shadow 0.15s ease;
-
-  &::placeholder { color: $lk-text-muted; }
-
-  &:focus {
-    border-color: $lk-brand;
-    box-shadow: 0 0 0 3px rgba(93, 143, 114, 0.12);
-    background: $lk-white;
-  }
-}
-
-.lk-settings__password-form {
-  display: flex;
-  flex-direction: column;
-  gap: $lk-space-12;
-  padding: $lk-space-16 0;
-  border-bottom: 1px solid $lk-line-soft;
-}
-
-/* ========================================
-   SWITCH — общий для Profile и Settings
-======================================== */
-
-.lk-switch {
-  position: relative;
-  display: inline-block;
-  width: 44px;
-  height: 24px;
-  flex-shrink: 0;
-
-  input { opacity: 0; width: 0; height: 0; }
-
-  span {
-    position: absolute;
-    inset: 0;
-    border-radius: $lk-radius-pill;
-    background: $lk-border;
-    cursor: pointer;
-    transition: background 0.2s ease;
-
-    &::before {
-      content: '';
-      position: absolute;
-      width: 18px;
-      height: 18px;
-      left: 3px;
-      top: 3px;
-      border-radius: 50%;
-      background: $lk-white;
-      transition: transform 0.2s ease;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.15);
-    }
-  }
-
-  input:checked + span {
-    background: $lk-brand;
-  }
-
-  input:checked + span::before {
-    transform: translateX(20px);
-  }
-}
-// ── ВЫХОД ──
-.lk-profile__logout {
-  margin-top: $lk-space-24;
-  padding-top: $lk-space-20;
-  border-top: 1px solid $lk-line-soft;
-}
-
-// ── ЧЛЕНЫ СЕМЬИ (дети и родители) ──
 .lk-profile__members {
   display: flex;
   flex-direction: column;
+
   gap: $lk-space-10;
+
   margin-bottom: $lk-space-16;
 }
 
 .lk-profile__member {
   display: flex;
   align-items: center;
+
   gap: $lk-space-12;
-  padding: $lk-space-12 $lk-space-16;
+
+  padding:
+    $lk-space-12
+    $lk-space-16;
+
   background: $lk-bg;
+
   border: 1px solid $lk-line-soft;
   border-radius: $lk-radius-16;
 }
@@ -465,19 +252,26 @@
 .lk-profile__member-avatar {
   width: 36px;
   height: 36px;
+
   border-radius: 50%;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   flex-shrink: 0;
 
   &--kid {
-    background: rgba(93, 143, 114, 0.12);
+    background:
+      rgba(93,143,114,.12);
+
     color: $lk-brand;
   }
 
   &--parent {
-    background: rgba(100, 120, 200, 0.10);
+    background:
+      rgba(100,120,200,.10);
+
     color: #5a6db5;
   }
 }
@@ -487,14 +281,18 @@
 
   strong {
     display: block;
+
+    margin-bottom: 2px;
+
     font-size: 14px;
     font-weight: 500;
+
     color: $lk-text;
-    margin-bottom: 2px;
   }
 
   span {
     font-size: 12px;
+
     color: $lk-text-muted;
   }
 }
@@ -502,36 +300,49 @@
 .lk-profile__member-remove {
   width: 28px;
   height: 28px;
+
   border-radius: 50%;
+
   border: 1px solid $lk-border;
+
   background: none;
+
   cursor: pointer;
+
   display: flex;
   align-items: center;
   justify-content: center;
+
   color: $lk-text-muted;
-  transition: all 0.15s ease;
-  flex-shrink: 0;
+
+  transition: .15s ease;
 
   &:hover {
-    background: rgba(229, 72, 72, 0.08);
-    border-color: rgba(229, 72, 72, 0.3);
+    background:
+      rgba(229,72,72,.08);
+
+    border-color:
+      rgba(229,72,72,.3);
+
     color: $lk-danger;
   }
 }
 
-// ── СТРОКА ДОБАВЛЕНИЯ ──
 .lk-profile__add-row {
   display: flex;
   align-items: center;
+
   gap: $lk-space-10;
+
   flex-wrap: wrap;
 }
 
-// ── ПРЕДПОЧТЕНИЯ ──
+/* PREFS */
+
 .lk-profile__prefs {
   display: flex;
   flex-direction: column;
+
   gap: 0;
 }
 
@@ -539,9 +350,15 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+
   gap: $lk-space-16;
-  padding: $lk-space-14 0;
-  border-bottom: 1px solid $lk-line-soft;
+
+  padding:
+    $lk-space-14
+    0;
+
+  border-bottom:
+    1px solid $lk-line-soft;
 
   &:last-child {
     border-bottom: none;
@@ -552,34 +369,63 @@
 
     strong {
       display: block;
+
+      margin-bottom: 3px;
+
       font-size: 14px;
       font-weight: 500;
+
       color: $lk-text;
-      margin-bottom: 3px;
     }
 
     p {
-      font-size: 12px;
-      color: $lk-text-muted;
       margin: 0;
+
+      font-size: 12px;
+
+      color: $lk-text-muted;
     }
   }
 }
 
 .lk-profile__select {
   height: 36px;
-  padding: 0 $lk-space-12;
+
+  padding:
+    0
+    $lk-space-12;
+
+  background: $lk-bg;
+
   border: 1px solid $lk-border;
   border-radius: $lk-radius-pill;
-  background: $lk-bg;
+
   font-size: 13px;
+
   color: $lk-text;
+
   outline: none;
+
   cursor: pointer;
+
   flex-shrink: 0;
 
   &:focus {
     border-color: $lk-brand;
-    box-shadow: 0 0 0 3px rgba(93, 143, 114, 0.12);
+
+    box-shadow:
+      0 0 0 3px
+      rgba(93,143,114,.12);
   }
+}
+
+/* LOGOUT */
+
+.lk-profile__logout {
+  margin-top: $lk-space-24;
+
+  padding-top: $lk-space-20;
+
+  border-top:
+    1px solid $lk-line-soft;
 }

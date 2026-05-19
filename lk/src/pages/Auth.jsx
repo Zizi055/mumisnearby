@@ -4,6 +4,7 @@ import { Eye, EyeOff, ArrowRight, Sparkles } from 'lucide-react';
 import { login, register } from '../api/auth.service';
 import { useAuth } from '../context/AuthContext';
 import AuthDNA from './AuthDNA';
+import '../styles/auth.scss';
 
 function validateEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
@@ -48,13 +49,24 @@ export default function Auth() {
   const handleBlur = (field) => setTouched((p) => ({ ...p, [field]: true }));
 
   const handleSubmit = async () => {
-  setTouched({ name: true, email: true, password: true });
-  if (!isFormValid) return;
+    setTouched({ name: true, email: true, password: true });
+    if (!isFormValid) return;
 
-  // временный обход авторизации — убрать когда бэкенд заработает
-  setUser({ id: '1', name: name || 'Пользователь', email });
-  navigate('/dashboard/progress');
-};
+    setStatus('loading');
+    setServerError('');
+
+    try {
+      const user = isRegister
+        ? await register({ name, email, password })
+        : await login({ email, password });
+
+      setUser(user);
+      navigate('/dashboard/progress');
+    } catch (e) {
+      setServerError(e.message || 'Что-то пошло не так');
+      setStatus('error');
+    }
+  };
 
   const handleTabSwitch = (newTab) => {
     setTab(newTab);
@@ -69,10 +81,10 @@ export default function Auth() {
       {/* ═══ ЛЕВАЯ ПАНЕЛЬ ═══ */}
       <div className="auth__left">
 
-        {/* Анимация  */}
+        {/* ДНК-анимация */}
         <AuthDNA />
 
-        {/* Контент  */}
+        {/* Контент поверх */}
         <div className="auth__left-content">
 
           <div className="auth__brand">
@@ -81,7 +93,7 @@ export default function Auth() {
           </div>
 
           <div className="auth__tagline">
-            <h1>Голос близких — в каждой сказке</h1>
+            <h1>Голос близких —<br />в каждой сказке</h1>
             <p>
               Создайте голосового двойника и подарите ребёнку
               сказки, рассказанные именно вами.
@@ -220,15 +232,20 @@ export default function Auth() {
             {isRegister && (
               <p className="auth__agree">
                 Регистрируясь, вы принимаете{' '}
-                <a href="/terms" target="_blank" rel="noreferrer">условия использования</a>
+                <a href="/terms" target="_blank" rel="noreferrer">
+                  условия использования
+                </a>
                 {' '}и{' '}
-                <a href="/privacy" target="_blank" rel="noreferrer">политику конфиденциальности</a>
+                <a href="/privacy" target="_blank" rel="noreferrer">
+                  политику конфиденциальности
+                </a>
               </p>
             )}
 
           </div>
         </div>
       </div>
-       </div>   
+
+    </div>
   );
-} 
+}
