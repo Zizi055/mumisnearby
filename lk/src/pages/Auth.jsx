@@ -4,7 +4,7 @@ import { Eye, EyeOff, ArrowRight, Sparkles } from 'lucide-react';
 import { login, register } from '../api/auth.service';
 import { useAuth } from '../context/AuthContext';
 import AuthDNA from './AuthDNA';
-import '../styles/auth.scss';
+import '../styles/scss/pages/auth.scss';
 
 function validateEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
