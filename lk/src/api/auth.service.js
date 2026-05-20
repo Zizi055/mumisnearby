@@ -7,25 +7,36 @@ export async function register({ name, email, password }) {
     password,
   });
 
-  if (data.token) {
-    localStorage.setItem('token', data.token);
+  if (data.access_token) {
+    localStorage.setItem('token', data.access_token);
   }
 
-  return { ...data, name: data.username ?? data.name };
+  return { ...data, name: data.username ?? name };
 }
 
 export async function login({ email, password }) {
-  const data = await api.post('/auth/login', { email, password });
+  // FastAPI OAuth2 ждёт form-data, не JSON
+  const res = await fetch('/auth/login', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({ username: email, password }),
+  });
 
-  if (data.token) {
-    localStorage.setItem('token', data.token);
+  if (!res.ok) {
+    const text = await res.text();
+    throw new Error(`HTTP ${res.status}: ${text}`);
   }
 
-  return { ...data, name: data.username ?? data.name };
+  const data = await res.json();
+
+  if (data.access_token) {
+    localStorage.setItem('token', data.access_token);
+  }
+
+  return { ...data, name: data.username ?? email };
 }
 
 export async function logout() {
-  await api.post('/auth/logout', {});
   localStorage.removeItem('token');
   localStorage.removeItem('user');
 }
