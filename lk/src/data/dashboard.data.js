@@ -1,9 +1,4 @@
-import { icons } from "lucide-react";
-import {
-
-  Crown,
-
-} from 'lucide-react';
+import { Crown } from 'lucide-react';
 
 export const DASHBOARD_OVERVIEW = {
   stats: [
@@ -25,19 +20,13 @@ export const DASHBOARD_OVERVIEW = {
       label: 'Средняя сессия',
       hint: 'Лучшее время — вечер',
     },
-  {
-
-  id: 'plan',
-
-  icon: Crown,
-
-  value: 'Хранитель',
-
-  label: 'Тариф',
-
-  hint: 'Активен до 04.06.2026',
-
-},
+    {
+      id: 'plan',
+      icon: Crown,
+      value: 'Хранитель',
+      label: 'Тариф',
+      hint: 'Активен до 04.06.2026',
+    },
   ],
 
   continueListening: {
@@ -45,28 +34,17 @@ export const DASHBOARD_OVERVIEW = {
     category: 'Сказка',
     age: '3–6 лет',
     duration: '7 минут',
-    progress: 64,
+    progress: 0,
     voice: 'Мамин голос',
     mood: 'Спокойствие',
     image: `${import.meta.env.BASE_URL}img/owl.png`,
+    audioUrl: `${import.meta.env.BASE_URL}library/audio/dad.mp3`,
   },
 
   quickStories: [
-    {
-      id: 1,
-      title: 'Мальчик и лиса',
-      duration: '8 мин',
-    },
-    {
-      id: 2,
-      title: 'Спокойной ночи',
-      duration: '6 мин',
-    },
-    {
-      id: 3,
-      title: 'Верные друзья',
-      duration: '9 мин',
-    },
+    { id: 1, title: 'Мальчик и лиса', duration: '8 мин', audioUrl: `${import.meta.env.BASE_URL}library/audio/dad.mp3` },
+    { id: 2, title: 'Спокойной ночи', duration: '6 мин', audioUrl: `${import.meta.env.BASE_URL}library/audio/dad.mp3` },
+    { id: 3, title: 'Верные друзья',  duration: '9 мин', audioUrl: `${import.meta.env.BASE_URL}library/audio/dad.mp3` },
   ],
 
   aiInsights: [
@@ -76,20 +54,8 @@ export const DASHBOARD_OVERVIEW = {
   ],
 
   recentActivity: [
-    {
-      id: 1,
-      title: 'Прослушана сказка «Лесные друзья»',
-      time: 'Сегодня, 21:14',
-    },
-    {
-      id: 2,
-      title: 'Голосовая модель «Мамин голос» использована в колыбельной',
-      time: 'Сегодня, 20:42',
-    },
-    {
-      id: 3,
-      title: 'Добавлен сценарий «Спокойной ночи»',
-      time: 'Вчера, 22:08',
-    },
+    { id: 1, title: 'Прослушана сказка «Лесные друзья»',                              time: 'Сегодня, 21:14' },
+    { id: 2, title: 'Голосовая модель «Мамин голос» использована в колыбельной',       time: 'Сегодня, 20:42' },
+    { id: 3, title: 'Добавлен сценарий «Спокойной ночи»',                             time: 'Вчера, 22:08'   },
   ],
 };
