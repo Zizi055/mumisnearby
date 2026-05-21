@@ -81,12 +81,15 @@ export default function Settings() {
                 <strong>Скорость воспроизведения</strong>
                 <p>По умолчанию 1×</p>
               </div>
-              <select className="lk-settings__select">
-                <option>0.75×</option>
-                <option selected>1×</option>
-                <option>1.25×</option>
-                <option>1.5×</option>
-              </select>
+           <select
+  className="lk-settings__select"
+  defaultValue="1×"
+>
+  <option>0.75×</option>
+  <option value="1×">1×</option>
+  <option>1.25×</option>
+  <option>1.5×</option>
+</select>
             </div>
           </div>
         </div>
