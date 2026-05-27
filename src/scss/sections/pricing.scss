@@ -1,200 +1,167 @@
 @use '../abstracts/variables' as *;
 @use '../abstracts/media' as *;
 
-/* ========================================
-   PRICING — PREMIUM SAAS STYLE
-   светлые тени, чистая сетка, аккуратные акценты
-======================================== */
+
 
 .pricing {
   padding: 0 0 110px;
-  background: #f8f5f0;
+  background: $lk-bg;
 }
 
 .pricing .container {
   max-width: 1240px;
   margin: 0 auto;
-  padding: 0 40px;
+  padding: 0 $lk-space-40;
 }
 
-/* HEAD */
-
 .pricing__head {
-  margin-bottom: 36px;
+  margin-bottom: $lk-space-36;
 }
 
 .pricing__title {
-  margin: 0 0 12px;
+  margin: 0 0 $lk-space-12;
+  color: $lk-text;
 }
 
 .pricing__subtitle {
   margin: 0;
   max-width: 720px;
-  color: rgba(34, 34, 34, 0.68);
+  color: $lk-text-muted;
 }
-
-/* GRID */
 
 .pricing__grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 24px;
+  gap: $lk-space-24;
   align-items: stretch;
 }
 
-/* CARD BASE */
-
 .pricing-card {
   position: relative;
-  display: flex;
-  flex-direction: column;
-  min-height: 100%;
-  padding: 28px;
-  border-radius: 30px;
   overflow: hidden;
 
-  border: 1px solid rgba(79, 115, 95, 0.1);
-  background: linear-gradient(180deg, #ffffff 0%, #f6f8f6 100%);
+  display: flex;
+  flex-direction: column;
 
-  box-shadow:
-    0 18px 42px rgba(255, 255, 255, 0.98),
-    0 28px 70px rgba(111, 146, 127, 0.12),
-    inset 0 1px 0 rgba(255, 255, 255, 0.92);
+  min-height: 100%;
+  padding: $lk-space-28;
+
+  border: 1px solid $lk-border;
+  border-radius: $lk-radius-30;
+
+  background: $lk-white;
+  box-shadow: $lk-shadow-card;
 
   transition:
-    transform 0.28s ease,
-    box-shadow 0.28s ease,
-    border-color 0.28s ease,
-    background-color 0.28s ease;
-}
-
-.pricing-card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.28),
-    rgba(255, 255, 255, 0) 42%
-  );
-  pointer-events: none;
-}
-
-.pricing-card > * {
-  position: relative;
-  z-index: 1;
+    transform 0.24s ease,
+    box-shadow 0.24s ease,
+    border-color 0.24s ease;
 }
 
 .pricing-card:hover {
-  transform: translateY(-5px);
-  border-color: rgba(79, 115, 95, 0.16);
-  box-shadow:
-    0 26px 54px rgba(255, 255, 255, 1),
-    0 36px 92px rgba(111, 146, 127, 0.18),
-    inset 0 1px 0 rgba(255, 255, 255, 1);
+  transform: translateY(-4px);
+  border-color: $lk-brand;
 }
-
-/* VARIANTS */
 
 .pricing-card--soft {
   background:
-   radial-gradient(circle at top right, rgba(207, 222, 213, 0.6), transparent 42%), linear-gradient(180deg, #ffffff 0%, #f2efe8 100%)
+    radial-gradient(
+      circle at top right,
+      rgba(93, 143, 114, 0.10),
+      transparent 42%
+    ),
+    $lk-white;
 }
 
 .pricing-card--light {
   background:
-    radial-gradient(circle at top left, rgba(255,255,255,0.42), transparent 40%),
-    linear-gradient(180deg, #dfe8e2 0%, #d2ddd6 100%);
+    radial-gradient(
+      circle at top left,
+      rgba(93, 143, 114, 0.12),
+      transparent 42%
+    ),
+    $lk-surface;
 }
 
 .pricing-card--accent {
   background:
-    radial-gradient(circle at top left, rgba(255,255,255,0.52), transparent 38%),
-    linear-gradient(180deg, #eef3ef 0%, #dce6e0 100%);
-  border-color: rgba(255, 255, 255, 0.06);
-  box-shadow:
-    0 20px 50px rgba(255, 255, 255, 0.22),
-    0 24px 70px rgba(111, 146, 127, 0.16),
-    inset 0 1px 0 rgba(255,255,255,0.06);
-    color:#1c1c1c;
-}
-
-.pricing-card--accent:hover {
-  box-shadow:
-    0 28px 68px rgba(255, 255, 255, 0.28),
-    0 38px 100px rgba(111, 146, 127, 0.22),
-    inset 0 1px 0 rgba(255,255,255,0.08);
+    radial-gradient(
+      circle at top left,
+      rgba(93, 143, 114, 0.16),
+      transparent 40%
+    ),
+    $lk-surface-soft;
 }
 
 .pricing-card--builder {
   background:
-
-    radial-gradient(circle at top left, rgba(255,255,255,0.56), transparent 38%),
-    linear-gradient(180deg, #fdfefd 0%, #f3f6f4 100%);
-
+    radial-gradient(
+      circle at top right,
+      rgba(93, 143, 114, 0.08),
+      transparent 44%
+    ),
+    $lk-white;
 }
-
-/* BADGE */
 
 .pricing-card__badge {
   position: absolute;
-  top: 2px;
-  right: 18px;
+  top: $lk-space-18;
+  right: $lk-space-18;
+
   width: 82px;
   height: 82px;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 22px;
-  background: rgba(203, 202, 203, 0.46);
-  box-shadow:
-    0 12px 28px rgba(255, 255, 255, 0.9),
-    0 18px 42px rgba(111, 146, 127, 0.1),
-    inset 0 1px 0 rgba(255,255,255,0.92);
-}
 
-.pricing-card--accent .pricing-card__badge {
-  background: rgba(221, 221, 221, 0.46);
-  box-shadow:
-    inset 0 1px 0 rgba(255,255,255,0.08);
+  border-radius: $lk-radius-20;
+
+  background: $lk-white;
+  border: 1px solid $lk-border;
+  box-shadow: $lk-shadow-card;
 }
 
 .pricing-card__badge-image {
-  display: block;
-  width: 80px;
-  height: 80px;
+  width: 72px;
+  height: 72px;
   object-fit: contain;
 }
 
-/* TAG */
-
 .pricing-card__tag {
   position: absolute;
-  top: 18px;
-  left: 18px;
+  top: $lk-space-18;
+  left: $lk-space-18;
+
   min-height: 32px;
-  padding: 0 14px;
-  border-radius: 999px;
+  padding: 0 $lk-space-14;
+
   display: inline-flex;
   align-items: center;
-  background: rgba(79, 115, 95, 0.1);
-  color: #4f735f;
+
+  border-radius: $lk-radius-pill;
+
+  background: $lk-surface-accent;
+  color: $lk-brand;
+
   font-size: 13px;
   font-weight: 600;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.7);
 }
 
-/* BODY */
-
 .pricing-card__body {
-  margin-bottom: 24px;
-  padding-top: 8px;
+  padding-top: $lk-space-8;
+  margin-bottom: $lk-space-24;
+}
+
+.pricing-card--featured .pricing-card__body {
+  padding-top: $lk-space-36;
 }
 
 .pricing-card__title {
-  margin: 0 0 12px;
+  margin: 0 0 $lk-space-14;
   max-width: 420px;
+  padding-right: 96px;
+  color: $lk-text;
 }
 
 .pricing-card__title-strong {
@@ -205,85 +172,107 @@
   font-weight: 500;
 }
 
-.pricing-card__lead,
-.pricing-card__subtitle,
-.pricing-card__text {
-  margin: 0 0 16px;
-  color: rgba(34, 34, 34, 0.72);
-  line-height: 1.55;
+.pricing-card__lead {
+  margin: 0 0 $lk-space-24;
+  max-width: 520px;
+
+  color: $lk-text-soft;
+
+  line-height: 1.6;
 }
 
-
-
-/* LIST */
+.pricing-card__lead strong {
+  display: block;
+  margin-top: $lk-space-8;
+  color: $lk-brand;
+}
 
 .pricing-card__list {
+  display: flex;
+  flex-direction: column;
+  gap: $lk-space-16;
+
   margin: 0;
-  padding-left: 20px;
-  display: grid;
-  gap: 12px;
-  color: rgba(34, 34, 34, 0.8);
+  padding: 0;
+
+  color: $lk-text;
 }
 
-.pricing-card__list li {
-  line-height: 1.5;
+.pricing-card__feature {
+  position: relative;
+
+  padding-left: $lk-space-18;
 }
 
-.pricing-card__list strong {
+.pricing-card__feature::before {
+  content: '';
+
+  position: absolute;
+  left: 0;
+  top: 0.65em;
+
+  width: 6px;
+  height: 6px;
+
+  border-radius: 50%;
+
+  background: $lk-brand;
+}
+
+.pricing-card__feature strong {
+  display: block;
+
+  margin-bottom: $lk-space-6;
+
+  color: $lk-text;
+
+  font-size: 15px;
   font-weight: 700;
+  line-height: 1.35;
 }
 
-.pricing-card--accent .pricing-card__list {
-  color:#1c1c1c;
-}
+.pricing-card__feature p {
+  margin: 0;
 
-.pricing-card__note {
-  display: inline-block;
-  margin-top: 4px;
-  color: rgba(255, 255, 255, 0.82);
-  font-weight: 600;
-}
+  color: $lk-text-muted;
 
-/* FOOTER */
+  font-size: 14px;
+  line-height: 1.6;
+}
 
 .pricing-card__footer {
   margin-top: auto;
+
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: 18px;
+  gap: $lk-space-18;
 }
 
 .pricing-card__price-block {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: $lk-space-6;
 }
 
 .pricing-card__price-label {
   margin: 0;
+
+  color: $lk-text-muted;
+
   font-size: 14px;
   line-height: 1.3;
-  color: rgba(34, 34, 34, 0.55);
 }
 
 .pricing-card__price {
   margin: 0;
+
+  color: $lk-text;
+
   font-size: 30px;
   line-height: 1;
   font-weight: 700;
-  color: #1c1c1c;
 }
-
-.pricing-card--accent .pricing-card__price-label {
-color:#1c1c1c;
-}
-
-.pricing-card--accent .pricing-card__price {
- color:#1c1c1c;
-}
-
-/* BUTTONS */
 
 .pricing-card__btn,
 .card-btn__new {
@@ -292,110 +281,59 @@ color:#1c1c1c;
   white-space: nowrap;
 }
 
-.cadr-btn__one,
-.card-btn__new {
-  box-shadow:
-    0 12px 28px rgba(255, 255, 255, 0.8),
-    0 20px 42px rgba(111, 146, 127, 0.14),
-    inset 0 1px 0 rgba(255,255,255,0.22);
-}
-
-.cadr-btn__one:hover,
-.card-btn__new:hover {
-  box-shadow:
-    0 18px 36px rgba(255, 255, 255, 0.95),
-    0 28px 56px rgba(111, 146, 127, 0.18),
-    inset 0 1px 0 rgba(255,255,255,0.28);
-}
-
-/* FEATURED CARD SPECIAL BALANCE */
-
-.pricing-card--featured {
-  border-color: rgba(79, 115, 95, 0.14);
-}
-
-.pricing-card--featured .pricing-card__body {
-  padding-top: 22px;
-}
-
-/* BUILDER CARD */
-
 .pricing-card--builder .pricing-card__body {
-  max-width: 520px;
+  max-width: 560px;
 }
 
 .pricing-card--builder .pricing-card__footer {
   justify-content: flex-start;
 }
 
-/* RESPONSIVE */
-
 @media (max-width: 1024px) {
   .pricing {
-    padding: 72px 0 82px;
+    padding: $lk-space-72 0 $lk-space-82;
   }
 
   .pricing .container {
-    padding: 0 28px;
+    padding: 0 $lk-space-28;
   }
 
   .pricing__grid {
     grid-template-columns: 1fr;
   }
-
-  .pricing-card__badge {
-    width: 74px;
-    height: 74px;
-  }
-
-  .pricing-card__badge-image {
-    width: 56px;
-    height: 56px;
-  }
 }
 
 @media (max-width: 767px) {
   .pricing {
-    padding: 56px 0 64px;
+    padding: $lk-space-56 0 $lk-space-64;
   }
 
   .pricing .container {
-    padding: 0 20px;
+    padding: 0 $lk-space-20;
   }
 
   .pricing__head {
-    margin-bottom: 26px;
+    margin-bottom: $lk-space-26;
   }
 
   .pricing-card {
-    padding: 20px 18px;
-    border-radius: 22px;
+    padding: $lk-space-20 $lk-space-18;
+    border-radius: $lk-radius-22;
   }
 
   .pricing-card__badge {
-    top: 14px;
-    right: 14px;
     width: 62px;
     height: 62px;
-    border-radius: 18px;
+    border-radius: $lk-radius-18;
   }
 
   .pricing-card__badge-image {
-    width: 46px;
-    height: 46px;
+    width: 48px;
+    height: 48px;
   }
 
-  .pricing-card__tag {
-    top: 14px;
-    left: 14px;
-    min-height: 28px;
-    padding: 0 12px;
-    font-size: 12px;
-  }
-
-  .pricing-card__body {
-    margin-bottom: 20px;
-    padding-top: 10px;
+  .pricing-card__title {
+    padding-right: 76px;
   }
 
   .pricing-card__footer {

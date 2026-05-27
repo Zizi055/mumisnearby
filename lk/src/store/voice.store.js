@@ -1,56 +1,94 @@
 import { create } from 'zustand';
 
-export const useVoiceStore = create((set) => ({
-  voices: [
-    {
-      id: 1,
-      name: 'Мамин голос',
-      description: 'Голосовая модель готова',
-      status: 'ready',
-      createdAt: '04.05.2026',
-      audio: `${import.meta.env.BASE_URL}library/audio/mom.mp3`,
-      avatar: '',
+import {
+  getVoices,
+  uploadVoice,
+  deleteVoice as deleteVoiceRequest,
+  renameVoice,
+  uploadVoiceAvatar,
+  updateVoiceSettings as updateVoiceSettingsRequest,
+} from '../api/voice.service';
 
-      settings: {
-        softness: 70,
-        clarity: 82,
-        speed: 58,
-      },
-    },
+export const useVoiceStore = create((set, get) => ({
 
-    {
-      id: 2,
-      name: 'Папин голос',
-      description: 'Голосовая модель готова',
-      status: 'ready',
-      createdAt: '04.05.2026',
-      audio: `${import.meta.env.BASE_URL}library/audio/dad.mp3`,
-      avatar: '',
 
-      settings: {
-        softness: 74,
-        clarity: 76,
-        speed: 61,
-      },
-    },
-  ],
+  voices: [],
 
-  addVoice: (voice) =>
-    set((state) => ({
-      voices: [
-        {
-          ...voice,
+  loading: false,
 
-          settings: {
-            softness: 70,
-            clarity: 82,
-            speed: 58,
+  error: null,
+
+  initialized: false,
+
+
+
+  loadVoices: async () => {
+    try {
+      set({
+        loading: true,
+        error: null,
+      });
+
+      const data = await getVoices();
+
+      set({
+        voices: data || [],
+        loading: false,
+        initialized: true,
+      });
+    } catch (error) {
+      console.error(error);
+
+      set({
+        loading: false,
+        error: error.message,
+      });
+    }
+  },
+
+
+
+  createVoice: async (file) => {
+    try {
+      set({
+        loading: true,
+        error: null,
+      });
+
+      const newVoice = await uploadVoice(file);
+
+      set((state) => ({
+        voices: [
+          {
+            settings: {
+              softness: 70,
+              clarity: 82,
+              speed: 58,
+            },
+
+            ...newVoice,
           },
-        },
 
-        ...state.voices,
-      ],
-    })),
+          ...state.voices,
+        ],
+
+        loading: false,
+      }));
+
+      return newVoice;
+    } catch (error) {
+      console.error(error);
+
+      set({
+        loading: false,
+        error: error.message,
+      });
+
+      throw error;
+    }
+  },
+
+
 
   updateVoice: (id, data) =>
     set((state) => ({
@@ -64,24 +102,118 @@ export const useVoiceStore = create((set) => ({
       ),
     })),
 
-  updateVoiceSettings: (id, settings) =>
-    set((state) => ({
-      voices: state.voices.map((voice) =>
-        voice.id === id
-          ? {
-              ...voice,
 
-              settings: {
-                ...voice.settings,
-                ...settings,
-              },
-            }
-          : voice
-      ),
-    })),
 
-  removeVoice: (id) =>
-    set((state) => ({
-      voices: state.voices.filter((voice) => voice.id !== id),
-    })),
+  updateVoiceSettings: async (
+    id,
+    settings
+  ) => {
+    try {
+      await updateVoiceSettingsRequest(
+        id,
+        settings
+      );
+
+      set((state) => ({
+        voices: state.voices.map((voice) =>
+          voice.id === id
+            ? {
+                ...voice,
+
+                settings: {
+                  ...voice.settings,
+                  ...settings,
+                },
+              }
+            : voice
+        ),
+      }));
+    } catch (error) {
+      console.error(error);
+
+      set({
+        error: error.message,
+      });
+    }
+  },
+
+
+
+  renameVoiceById: async (
+    id,
+    name
+  ) => {
+    try {
+      await renameVoice(id, name);
+
+      set((state) => ({
+        voices: state.voices.map((voice) =>
+          voice.id === id
+            ? {
+                ...voice,
+                name,
+              }
+            : voice
+        ),
+      }));
+    } catch (error) {
+      console.error(error);
+
+      set({
+        error: error.message,
+      });
+    }
+  },
+
+
+
+  uploadAvatar: async (
+    id,
+    file
+  ) => {
+    try {
+      const updatedVoice =
+        await uploadVoiceAvatar(id, file);
+
+      set((state) => ({
+        voices: state.voices.map((voice) =>
+          voice.id === id
+            ? {
+                ...voice,
+
+                avatar:
+                  updatedVoice.avatar ||
+                  updatedVoice.avatar_url,
+              }
+            : voice
+        ),
+      }));
+    } catch (error) {
+      console.error(error);
+
+      set({
+        error: error.message,
+      });
+    }
+  },
+
+
+
+  removeVoice: async (id) => {
+    try {
+      await deleteVoiceRequest(id);
+
+      set((state) => ({
+        voices: state.voices.filter(
+          (voice) => voice.id !== id
+        ),
+      }));
+    } catch (error) {
+      console.error(error);
+
+      set({
+        error: error.message,
+      });
+    }
+  },
 }));

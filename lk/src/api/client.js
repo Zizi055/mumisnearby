@@ -1,33 +1,68 @@
 const BASE_URL = import.meta.env.VITE_API_URL || '';
 
 async function request(path, options = {}) {
+  const token = localStorage.getItem('token');
+
+  const headers = {
+    ...(options.headers || {}),
+  };
+
+  
+  if (!(options.body instanceof FormData)) {
+    headers['Content-Type'] = 'application/json';
+  }
+
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
   const res = await fetch(`${BASE_URL}${path}`, {
-    headers: {
-      'Content-Type': 'application/json',
-      ...(options.headers || {}),
-    },
-    credentials: 'include', // если будет сессия/куки
+    credentials: 'include',
     ...options,
+    headers,
   });
 
   if (!res.ok) {
     const text = await res.text().catch(() => '');
+
     throw new Error(`HTTP ${res.status}: ${text}`);
   }
 
-  // 204 
-  if (res.status === 204) return null;
+  if (res.status === 204) {
+    return null;
+  }
 
   return res.json();
 }
 
 export const api = {
-  get: (path) => request(path),
-  post: (path, body) =>
-    request(path, { method: 'POST', body: JSON.stringify(body) }),
+  get: (path) =>
+    request(path),
+
+  post: (path, body, options = {}) =>
+    request(path, {
+      method: 'POST',
+      body:
+        body instanceof FormData
+          ? body
+          : JSON.stringify(body),
+      ...options,
+    }),
+
   put: (path, body) =>
-    request(path, { method: 'PUT', body: JSON.stringify(body) }),
+    request(path, {
+      method: 'PUT',
+      body: JSON.stringify(body),
+    }),
+
   patch: (path, body) =>
-    request(path, { method: 'PATCH', body: JSON.stringify(body) }),
-  del: (path) => request(path, { method: 'DELETE' }),
+    request(path, {
+      method: 'PATCH',
+      body: JSON.stringify(body),
+    }),
+
+  del: (path) =>
+    request(path, {
+      method: 'DELETE',
+    }),
 };
