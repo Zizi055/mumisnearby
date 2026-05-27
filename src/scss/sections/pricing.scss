@@ -2,37 +2,36 @@
 @use '../abstracts/media' as *;
 
 
-
 .pricing {
   padding: 0 0 110px;
-  background: $lk-bg;
+  background: #f8f5f0;
 }
 
 .pricing .container {
   max-width: 1240px;
   margin: 0 auto;
-  padding: 0 $lk-space-40;
+  padding: 0 40px;
 }
 
 .pricing__head {
-  margin-bottom: $lk-space-36;
+  margin-bottom: 36px;
 }
 
 .pricing__title {
-  margin: 0 0 $lk-space-12;
-  color: $lk-text;
+  margin: 0 0 12px;
+  color: #1c1c1c;
 }
 
 .pricing__subtitle {
   margin: 0;
   max-width: 720px;
-  color: $lk-text-muted;
+  color: rgba(28, 28, 28, 0.68);
 }
 
 .pricing__grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: $lk-space-24;
+  gap: 24px;
   align-items: stretch;
 }
 
@@ -44,13 +43,16 @@
   flex-direction: column;
 
   min-height: 100%;
-  padding: $lk-space-28;
+  padding: 28px;
 
-  border: 1px solid $lk-border;
-  border-radius: $lk-radius-30;
+  border: 1px solid rgba(79, 115, 95, 0.12);
+  border-radius: 30px;
 
-  background: $lk-white;
-  box-shadow: $lk-shadow-card;
+  background: #ffffff;
+
+  box-shadow:
+    0 20px 50px rgba(111, 146, 127, 0.08),
+    0 8px 24px rgba(0, 0, 0, 0.03);
 
   transition:
     transform 0.24s ease,
@@ -60,7 +62,12 @@
 
 .pricing-card:hover {
   transform: translateY(-4px);
-  border-color: $lk-brand;
+
+  border-color: rgba(93, 143, 114, 0.42);
+
+  box-shadow:
+    0 28px 64px rgba(111, 146, 127, 0.14),
+    0 10px 30px rgba(0, 0, 0, 0.04);
 }
 
 .pricing-card--soft {
@@ -70,7 +77,7 @@
       rgba(93, 143, 114, 0.10),
       transparent 42%
     ),
-    $lk-white;
+    #ffffff;
 }
 
 .pricing-card--light {
@@ -80,7 +87,7 @@
       rgba(93, 143, 114, 0.12),
       transparent 42%
     ),
-    $lk-surface;
+    #f4f7f4;
 }
 
 .pricing-card--accent {
@@ -90,7 +97,7 @@
       rgba(93, 143, 114, 0.16),
       transparent 40%
     ),
-    $lk-surface-soft;
+    #eef3ef;
 }
 
 .pricing-card--builder {
@@ -100,13 +107,13 @@
       rgba(93, 143, 114, 0.08),
       transparent 44%
     ),
-    $lk-white;
+    #ffffff;
 }
 
 .pricing-card__badge {
   position: absolute;
-  top: $lk-space-18;
-  right: $lk-space-18;
+  top: 18px;
+  right: 18px;
 
   width: 82px;
   height: 82px;
@@ -115,11 +122,14 @@
   align-items: center;
   justify-content: center;
 
-  border-radius: $lk-radius-20;
+  border-radius: 20px;
 
-  background: $lk-white;
-  border: 1px solid $lk-border;
-  box-shadow: $lk-shadow-card;
+  background: #ffffff;
+
+  border: 1px solid rgba(79, 115, 95, 0.10);
+
+  box-shadow:
+    0 14px 32px rgba(111, 146, 127, 0.10);
 }
 
 .pricing-card__badge-image {
@@ -130,38 +140,40 @@
 
 .pricing-card__tag {
   position: absolute;
-  top: $lk-space-18;
-  left: $lk-space-18;
+  top: 18px;
+  left: 18px;
 
   min-height: 32px;
-  padding: 0 $lk-space-14;
+  padding: 0 14px;
 
   display: inline-flex;
   align-items: center;
 
-  border-radius: $lk-radius-pill;
+  border-radius: 999px;
 
-  background: $lk-surface-accent;
-  color: $lk-brand;
+  background: rgba(93, 143, 114, 0.12);
+
+  color: #5d8f72;
 
   font-size: 13px;
   font-weight: 600;
 }
 
 .pricing-card__body {
-  padding-top: $lk-space-8;
-  margin-bottom: $lk-space-24;
+  padding-top: 8px;
+  margin-bottom: 24px;
 }
 
 .pricing-card--featured .pricing-card__body {
-  padding-top: $lk-space-36;
+  padding-top: 36px;
 }
 
 .pricing-card__title {
-  margin: 0 0 $lk-space-14;
+  margin: 0 0 14px;
   max-width: 420px;
   padding-right: 96px;
-  color: $lk-text;
+
+  color: #1c1c1c;
 }
 
 .pricing-card__title-strong {
@@ -173,35 +185,34 @@
 }
 
 .pricing-card__lead {
-  margin: 0 0 $lk-space-24;
+  margin: 0 0 24px;
   max-width: 520px;
 
-  color: $lk-text-soft;
+  color: rgba(28, 28, 28, 0.74);
 
   line-height: 1.6;
 }
 
 .pricing-card__lead strong {
   display: block;
-  margin-top: $lk-space-8;
-  color: $lk-brand;
+  margin-top: 8px;
+
+  color: #5d8f72;
 }
 
 .pricing-card__list {
   display: flex;
   flex-direction: column;
-  gap: $lk-space-16;
+  gap: 16px;
 
   margin: 0;
   padding: 0;
-
-  color: $lk-text;
 }
 
 .pricing-card__feature {
   position: relative;
 
-  padding-left: $lk-space-18;
+  padding-left: 18px;
 }
 
 .pricing-card__feature::before {
@@ -216,15 +227,15 @@
 
   border-radius: 50%;
 
-  background: $lk-brand;
+  background: #5d8f72;
 }
 
 .pricing-card__feature strong {
   display: block;
 
-  margin-bottom: $lk-space-6;
+  margin-bottom: 6px;
 
-  color: $lk-text;
+  color: #1c1c1c;
 
   font-size: 15px;
   font-weight: 700;
@@ -234,7 +245,7 @@
 .pricing-card__feature p {
   margin: 0;
 
-  color: $lk-text-muted;
+  color: rgba(28, 28, 28, 0.66);
 
   font-size: 14px;
   line-height: 1.6;
@@ -246,19 +257,19 @@
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: $lk-space-18;
+  gap: 18px;
 }
 
 .pricing-card__price-block {
   display: flex;
   flex-direction: column;
-  gap: $lk-space-6;
+  gap: 6px;
 }
 
 .pricing-card__price-label {
   margin: 0;
 
-  color: $lk-text-muted;
+  color: rgba(28, 28, 28, 0.55);
 
   font-size: 14px;
   line-height: 1.3;
@@ -267,7 +278,7 @@
 .pricing-card__price {
   margin: 0;
 
-  color: $lk-text;
+  color: #1c1c1c;
 
   font-size: 30px;
   line-height: 1;
@@ -291,11 +302,11 @@
 
 @media (max-width: 1024px) {
   .pricing {
-    padding: $lk-space-72 0 $lk-space-82;
+    padding: 72px 0 82px;
   }
 
   .pricing .container {
-    padding: 0 $lk-space-28;
+    padding: 0 28px;
   }
 
   .pricing__grid {
@@ -305,26 +316,26 @@
 
 @media (max-width: 767px) {
   .pricing {
-    padding: $lk-space-56 0 $lk-space-64;
+    padding: 56px 0 64px;
   }
 
   .pricing .container {
-    padding: 0 $lk-space-20;
+    padding: 0 20px;
   }
 
   .pricing__head {
-    margin-bottom: $lk-space-26;
+    margin-bottom: 26px;
   }
 
   .pricing-card {
-    padding: $lk-space-20 $lk-space-18;
-    border-radius: $lk-radius-22;
+    padding: 20px 18px;
+    border-radius: 22px;
   }
 
   .pricing-card__badge {
     width: 62px;
     height: 62px;
-    border-radius: $lk-radius-18;
+    border-radius: 18px;
   }
 
   .pricing-card__badge-image {
