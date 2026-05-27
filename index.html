@@ -841,7 +841,8 @@ function openLK() {
     </div>
 
     <div class="pricing__grid">
-      <!-- ПАКЕТ 1 -->
+
+      <!-- ПАКЕТ 1 — СКАЗОЧНИК -->
       <article class="pricing-card pricing-card--soft" data-plan-card>
         <div class="pricing-card__badge" aria-hidden="true">
           <img src="/src/assets/img/index/вввв 1.svg" alt="" class="pricing-card__badge-image" />
@@ -858,19 +859,20 @@ function openLK() {
           </p>
 
           <div class="pricing-card__list text-md">
+
             <div class="pricing-card__feature">
-              <strong>80+ тёплых историй</strong>
+              <strong><span class="pricing-card__num">80+</span> тёплых историй</strong>
               <p>Сказки, стихи и колыбельные, которые ребёнку рассказываете именно вы.</p>
             </div>
 
             <div class="pricing-card__feature">
-              <strong>20 бережных практик</strong>
+              <strong><span class="pricing-card__num">20</span> бережных практик</strong>
               <p>Голосом родителя и через творчество.</p>
             </div>
 
             <div class="pricing-card__feature">
               <strong>Библиотека растёт с вами</strong>
-              <p>Каждый сезон — 15 новых добрых историй.</p>
+              <p>Каждый сезон — <span class="pricing-card__num">+15 новых</span> добрых историй.</p>
             </div>
 
             <div class="pricing-card__feature">
@@ -882,6 +884,7 @@ function openLK() {
               <strong>Вы не одни</strong>
               <p>Чат с нами и понятные ответы на все вопросы.</p>
             </div>
+
           </div>
         </div>
 
@@ -890,19 +893,23 @@ function openLK() {
             <p class="pricing-card__price-label">Подписка</p>
             <p class="pricing-card__price">14 400 ₽ / год</p>
           </div>
-
-          <button type="button" class="btn btn--secondary btn--arrow label-md pricing-card__btn cadr-btn__one" data-modal="plan-1">
+          <button
+            type="button"
+            class="btn btn--secondary btn--arrow label-md pricing-card__btn cadr-btn__one"
+            onclick="goToCheckout('fairy')"
+            aria-label="Оформить подписку на пакет Сказочник"
+          >
             <span class="btn__text">Оформить подписку</span>
             <span class="btn__icon">
               <svg viewBox="0 0 18 18" fill="none">
-                <path d="M5 13L13 5M13 5H7M13 5V11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M5 13L13 5M13 5H7M13 5V11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </span>
           </button>
         </div>
       </article>
 
-      <!-- ПАКЕТ 2 -->
+      <!-- ПАКЕТ 2 — ХРАНИТЕЛЬ -->
       <article class="pricing-card pricing-card--light pricing-card--featured" data-plan-card>
         <div class="pricing-card__badge" aria-hidden="true">
           <img src="/src/assets/img/index/character1.svg" alt="" class="pricing-card__badge-image" />
@@ -921,30 +928,32 @@ function openLK() {
           </p>
 
           <div class="pricing-card__list text-md">
+
             <div class="pricing-card__feature">
               <strong>Два родных голоса</strong>
               <p>Мама и папа. Или бабушка с дедушкой. Выбирать вам.</p>
             </div>
 
             <div class="pricing-card__feature">
-              <strong>130+ добрых историй</strong>
+              <strong><span class="pricing-card__num">130+</span> добрых историй</strong>
               <p>Сказки, стихи, рассказы и колыбельные на каждый вечер.</p>
             </div>
 
             <div class="pricing-card__feature">
-              <strong>40 бережных практик</strong>
+              <strong><span class="pricing-card__num">40</span> бережных практик</strong>
               <p>С голосом родителей и через творчество.</p>
             </div>
 
             <div class="pricing-card__feature">
               <strong>Библиотека растёт быстрее</strong>
-              <p>Каждый сезон — 30 новых историй.</p>
+              <p>Каждый сезон — <span class="pricing-card__num">+30 новых</span> историй.</p>
             </div>
 
             <div class="pricing-card__feature">
               <strong>Приоритетная помощь</strong>
               <p>Ответим на почте или в чате в течение дня.</p>
             </div>
+
           </div>
         </div>
 
@@ -953,19 +962,23 @@ function openLK() {
             <p class="pricing-card__price-label">Подписка</p>
             <p class="pricing-card__price">24 400 ₽ / год</p>
           </div>
-
-          <button type="button" class="btn btn--secondary btn--arrow label-md pricing-card__btn cadr-btn__one" data-modal="plan-2">
+          <button
+            type="button"
+            class="btn btn--secondary btn--arrow label-md pricing-card__btn cadr-btn__one"
+            onclick="goToCheckout('guardian')"
+            aria-label="Оформить подписку на пакет Хранитель"
+          >
             <span class="btn__text">Оформить подписку</span>
             <span class="btn__icon">
               <svg viewBox="0 0 18 18" fill="none">
-                <path d="M5 13L13 5M13 5H7M13 5V11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M5 13L13 5M13 5H7M13 5V11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </span>
           </button>
         </div>
       </article>
 
-      <!-- ПАКЕТ 3 -->
+      <!-- ПАКЕТ 3 — ВОЛШЕБНИК -->
       <article class="pricing-card pricing-card--accent" data-plan-card>
         <div class="pricing-card__badge" aria-hidden="true">
           <img src="/src/assets/img/index/character2.svg" alt="" class="pricing-card__badge-image" />
@@ -982,8 +995,9 @@ function openLK() {
           </p>
 
           <div class="pricing-card__list text-md">
+
             <div class="pricing-card__feature">
-              <strong>До пяти родных голосов</strong>
+              <strong>До <span class="pricing-card__num">пяти</span> родных голосов</strong>
               <p>Мама, папа, бабушки, дедушки, няня — все, кто важен.</p>
             </div>
 
@@ -999,7 +1013,7 @@ function openLK() {
 
             <div class="pricing-card__feature">
               <strong>Сценарии меняются вместе с ребёнком</strong>
-              <p>2 раза в год подбираем истории под актуальные этапы взросления.</p>
+              <p><span class="pricing-card__num">2 раза в год</span> подбираем истории под актуальные этапы взросления.</p>
             </div>
 
             <div class="pricing-card__feature">
@@ -1016,6 +1030,7 @@ function openLK() {
               <strong>Персональный менеджер</strong>
               <p>Консьерж-поддержка без очередей.</p>
             </div>
+
           </div>
         </div>
 
@@ -1024,12 +1039,16 @@ function openLK() {
             <p class="pricing-card__price-label">Подписка</p>
             <p class="pricing-card__price">59 900 ₽ / год</p>
           </div>
-
-          <button type="button" class="btn btn--secondary btn--arrow label-md pricing-card__btn cadr-btn__one" data-modal="plan-3">
+          <button
+            type="button"
+            class="btn btn--secondary btn--arrow label-md pricing-card__btn cadr-btn__one"
+            onclick="goToCheckout('wizard')"
+            aria-label="Оформить подписку на пакет Волшебник"
+          >
             <span class="btn__text">Оформить подписку</span>
             <span class="btn__icon">
               <svg viewBox="0 0 18 18" fill="none">
-                <path d="M5 13L13 5M13 5H7M13 5V11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M5 13L13 5M13 5H7M13 5V11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </span>
           </button>
@@ -1050,16 +1069,20 @@ function openLK() {
         </div>
 
         <div class="pricing-card__footer">
-          <a class="btn btn--primary btn--arrow card-btn__new" href="/lk/subscription/constructor">
+          <a
+            class="btn btn--primary btn--arrow card-btn__new"
+            href="/lk/#/subscription/constructor"
+          >
             <span class="btn__text">Подробнее</span>
             <span class="btn__icon">
               <svg viewBox="0 0 18 18" fill="none">
-                <path d="M5 13L13 5M13 5H7M13 5V11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                <path d="M5 13L13 5M13 5H7M13 5V11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </span>
           </a>
         </div>
       </article>
+
     </div>
   </div>
 </section>
