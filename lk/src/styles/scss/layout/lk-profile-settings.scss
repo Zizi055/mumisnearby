@@ -152,7 +152,7 @@
 }
 
 .lk-profile__block-title {
-  margin: 0 0 $lk-space-18;
+  margin: 0 0 $lk-space-16;
 
   font-size: 17px;
   line-height: 1.2;
@@ -166,7 +166,7 @@
   margin:
     -8px
     0
-    $lk-space-18;
+    $lk-space-16;
 
   max-width: 520px;
 
@@ -181,7 +181,7 @@
 .lk-profile__form {
   display: flex;
   flex-direction: column;
-  gap: $lk-space-18;
+  gap: $lk-space-16;
 
   margin-bottom: $lk-space-20;
 }
@@ -281,7 +281,7 @@
   background: $lk-bg;
 
   border: 1px solid $lk-line-soft;
-  border-radius: $lk-radius-18;
+  border-radius: $lk-radius-16;
 }
 
 .lk-profile__add-actions {
@@ -317,7 +317,7 @@
     );
 
   border: 1px solid $lk-line-soft;
-  border-radius: $lk-radius-18;
+  border-radius: $lk-radius-16;
 
   transition:
     border-color .18s ease,
@@ -521,12 +521,12 @@
 
 @media (max-width: 767px) {
   .lk-profile {
-    gap: $lk-space-18;
+    gap: $lk-space-16;
   }
 
   .lk-profile__hero,
   .lk-profile__block {
-    padding: $lk-space-18;
+    padding: $lk-space-16;
 
     border-radius: $lk-radius-20;
   }
