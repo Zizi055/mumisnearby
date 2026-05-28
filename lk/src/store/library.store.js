@@ -1,160 +1,147 @@
 import { create } from 'zustand';
 
-import { getFairyTales } from '../api/content.service';
-
 import {
-  filterLibraryItems,
-} from '../utils/libraryFilters';
+  getLibraryItems,
+} from '../api/library.service';
 
-export const useLibraryStore = create((set, get) => ({
+export const useLibraryStore = create(
+  (set, get) => ({
 
-  items: [],
+    items: [],
 
-  filteredItems: [],
+    filteredItems: [],
 
-  loading: false,
+    loading: false,
 
-  error: null,
+    filters: {
+      search: '',
+      type: 'fairy_tale',
 
-  filters: {
-    search: '',
-    type: 'fairy_tale',
+      age: [],
+      duration: [],
+      emotions: [],
+      themes: [],
+    },
 
-    age: [],
-    duration: [],
-    emotions: [],
-    themes: [],
-  },
+    async loadLibrary() {
 
-  async loadLibrary() {
-    try {
+      try {
 
-      set({
-        loading: true,
-        error: null,
-      });
+        set({
+          loading: true,
+        });
 
-      const data = await getFairyTales();
+        const data =
+          await getLibraryItems(
+            get().filters.type
+          );
 
-      const normalized = data.map((item) => ({
-        id: item.id,
+        set({
+          items: data,
+          filteredItems: data,
+        });
 
-        title: item.title,
+      } catch (error) {
 
-        description: item.description,
+        console.error(error);
 
-        category: item.category,
+      } finally {
 
-        age: item.age,
+        set({
+          loading: false,
+        });
 
-        preview: item.preview_url,
+      }
+    },
 
-        type: 'fairy_tale',
+    setSearch(value) {
 
-        duration: item.duration || 10,
-
-        emotions: item.emotions || [],
-
-        themes: item.themes || [],
+      set((state) => ({
+        filters: {
+          ...state.filters,
+          search: value,
+        },
       }));
 
-      set({
-        items: normalized,
-        filteredItems: normalized,
+      get().applyFilters();
+    },
+
+    setType(value) {
+
+      set((state) => ({
+        filters: {
+          ...state.filters,
+          type: value,
+        },
+      }));
+
+      get().loadLibrary();
+    },
+
+    toggleFilter(group, value) {
+
+      set((state) => {
+
+        const current =
+          state.filters[group];
+
+        const exists =
+          current.includes(value);
+
+        return {
+          filters: {
+            ...state.filters,
+
+            [group]: exists
+              ? current.filter(
+                  (item) =>
+                    item !== value
+                )
+              : [...current, value],
+          },
+        };
       });
+    },
 
-    } catch (error) {
+    resetFilters() {
 
-      console.error(error);
-
-      set({
-        error: error.message,
-      });
-
-    } finally {
-
-      set({
-        loading: false,
-      });
-
-    }
-  },
-
-  setSearch(value) {
-
-    set((state) => ({
-      filters: {
-        ...state.filters,
-        search: value,
-      },
-    }));
-
-    get().applyFilters();
-  },
-
-  setType(value) {
-
-    set((state) => ({
-      filters: {
-        ...state.filters,
-        type: value,
-      },
-    }));
-
-    get().applyFilters();
-  },
-
-  toggleFilter(group, value) {
-
-    set((state) => {
-
-      const current = state.filters[group];
-
-      const exists = current.includes(value);
-
-      return {
+      set((state) => ({
         filters: {
           ...state.filters,
 
-          [group]: exists
-            ? current.filter((item) => item !== value)
-            : [...current, value],
+          age: [],
+          duration: [],
+          emotions: [],
+          themes: [],
         },
-      };
-    });
+      }));
+    },
 
-    get().applyFilters();
-  },
+    applyFilters() {
 
-  resetFilters() {
+      const {
+        items,
+        filters,
+      } = get();
 
-    set((state) => ({
-      filters: {
-        ...state.filters,
+      let filtered = [...items];
 
-        age: [],
-        duration: [],
-        emotions: [],
-        themes: [],
-      },
-    }));
+      if (filters.search.trim()) {
 
-    get().applyFilters();
-  },
+        const query =
+          filters.search.toLowerCase();
 
-  applyFilters() {
+        filtered = filtered.filter(
+          (item) =>
+            item.title
+              .toLowerCase()
+              .includes(query)
+        );
+      }
 
-    const {
-      items,
-      filters,
-    } = get();
-
-    const filteredItems =
-      filterLibraryItems(items, filters);
-
-    set({
-      filteredItems,
-    });
-  },
-
-}));
+      set({
+        filteredItems: filtered,
+      });
+    },
+  })
+);
