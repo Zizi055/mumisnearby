@@ -1,15 +1,20 @@
 import { create } from 'zustand';
 
-import {
-  LIBRARY_ITEMS,
-} from '../data/libraryCatalog.data';
+import { getFairyTales } from '../api/content.service';
 
 import {
   filterLibraryItems,
 } from '../utils/libraryFilters';
 
 export const useLibraryStore = create((set, get) => ({
-  items: LIBRARY_ITEMS,
+
+  items: [],
+
+  filteredItems: [],
+
+  loading: false,
+
+  error: null,
 
   filters: {
     search: '',
@@ -21,9 +26,62 @@ export const useLibraryStore = create((set, get) => ({
     themes: [],
   },
 
-  filteredItems: LIBRARY_ITEMS,
+  async loadLibrary() {
+    try {
+
+      set({
+        loading: true,
+        error: null,
+      });
+
+      const data = await getFairyTales();
+
+      const normalized = data.map((item) => ({
+        id: item.id,
+
+        title: item.title,
+
+        description: item.description,
+
+        category: item.category,
+
+        age: item.age,
+
+        preview: item.preview_url,
+
+        type: 'fairy_tale',
+
+        duration: item.duration || 10,
+
+        emotions: item.emotions || [],
+
+        themes: item.themes || [],
+      }));
+
+      set({
+        items: normalized,
+        filteredItems: normalized,
+      });
+
+    } catch (error) {
+
+      console.error(error);
+
+      set({
+        error: error.message,
+      });
+
+    } finally {
+
+      set({
+        loading: false,
+      });
+
+    }
+  },
 
   setSearch(value) {
+
     set((state) => ({
       filters: {
         ...state.filters,
@@ -35,6 +93,7 @@ export const useLibraryStore = create((set, get) => ({
   },
 
   setType(value) {
+
     set((state) => ({
       filters: {
         ...state.filters,
@@ -46,7 +105,9 @@ export const useLibraryStore = create((set, get) => ({
   },
 
   toggleFilter(group, value) {
+
     set((state) => {
+
       const current = state.filters[group];
 
       const exists = current.includes(value);
@@ -54,6 +115,7 @@ export const useLibraryStore = create((set, get) => ({
       return {
         filters: {
           ...state.filters,
+
           [group]: exists
             ? current.filter((item) => item !== value)
             : [...current, value],
@@ -65,6 +127,7 @@ export const useLibraryStore = create((set, get) => ({
   },
 
   resetFilters() {
+
     set((state) => ({
       filters: {
         ...state.filters,
@@ -80,7 +143,11 @@ export const useLibraryStore = create((set, get) => ({
   },
 
   applyFilters() {
-    const { items, filters } = get();
+
+    const {
+      items,
+      filters,
+    } = get();
 
     const filteredItems =
       filterLibraryItems(items, filters);
@@ -89,4 +156,5 @@ export const useLibraryStore = create((set, get) => ({
       filteredItems,
     });
   },
+
 }));

@@ -18,6 +18,15 @@ function validateName(name) {
   return name.trim().length >= 2;
 }
 
+function getRedirectPath() {
+  const hash = window.location.hash;
+  const queryStart = hash.indexOf('?');
+  if (queryStart === -1) return null;
+  const params = new URLSearchParams(hash.slice(queryStart + 1));
+  const redirect = params.get('redirect');
+  return redirect ? decodeURIComponent(redirect) : null;
+}
+
 export default function Auth() {
   const navigate = useNavigate();
   const { setUser } = useAuth();
@@ -61,7 +70,12 @@ export default function Auth() {
         : await login({ email, password });
 
       setUser(user);
-      navigate('/dashboard/progress');
+
+      // После входа проверяем redirect
+      // Если пользователь пришёл с тарифной страницы — ведём на оплату
+      const redirect = getRedirectPath();
+      navigate(redirect || '/dashboard/progress');
+
     } catch (e) {
       setServerError(e.message || 'Что-то пошло не так');
       setStatus('error');
@@ -81,10 +95,8 @@ export default function Auth() {
       {/* ═══ ЛЕВАЯ ПАНЕЛЬ ═══ */}
       <div className="auth__left">
 
-        {/* ДНК-анимация */}
         <AuthDNA />
 
-        {/* Контент поверх */}
         <div className="auth__left-content">
 
           <div className="auth__brand">

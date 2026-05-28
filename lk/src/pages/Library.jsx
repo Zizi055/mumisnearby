@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
+
 import { useLocation } from 'react-router-dom';
 
 import {
@@ -10,50 +11,63 @@ import {
 import LibraryCard from '../components/library/LibraryCard';
 
 import {
-  LIBRARY_ITEMS,
   LIBRARY_FILTERS,
 } from '../data/libraryCatalog.data';
+
+import { useLibraryStore } from '../store/library.store';
 
 const categoryMeta = {
   stories: {
     type: 'fairy_tale',
+
     title: 'Сказки',
+
     count: '100+ доступных сказок',
+
     description:
       'Добрые истории для сна, спокойствия и воображения.',
   },
 
   lullabies: {
     type: 'lullaby',
+
     title: 'Колыбельные',
+
     count: '50+ колыбельных',
+
     description:
       'Мягкие голосовые сценарии для вечернего ритуала.',
   },
 
   therapy: {
     type: 'therapy',
-    title: '10+ терапевтических сценариев',
+
+    title: 'Терапевтические сценарии',
+
     count: '10+ терапевтических сценариев',
+
     description:
       'Поддерживающие аудиосценарии и эмоциональная адаптация.',
   },
 
   family: {
     type: 'family_story',
+
     title: 'Семейные истории',
+
     count: '70+ семейных историй',
+
     description:
       'Личные воспоминания и родные голосовые послания.',
   },
 };
 
 const FILTER_STORAGE_KEY =
-  'lk-library-filters-v2';
+  'lk-library-filters-v3';
 
 const initialFilters = {
-  ageGroups: [],
-  durationGroups: [],
+  age: [],
+  duration: [],
   emotions: [],
   themes: [],
 };
@@ -69,20 +83,45 @@ export default function Library() {
       ? categoryFromUrl
       : 'stories';
 
+  const currentMeta =
+    categoryMeta[activeCategory];
+
   const [activeMode, setActiveMode] =
     useState('all');
-
-  const [searchValue, setSearchValue] =
-    useState('');
 
   const [isFiltersOpen, setIsFiltersOpen] =
     useState(false);
 
-  const [appliedFilters, setAppliedFilters] =
-    useState(initialFilters);
-
   const [draftFilters, setDraftFilters] =
     useState(initialFilters);
+
+  const {
+    filteredItems,
+
+    loading,
+
+    filters,
+
+    loadLibrary,
+
+    setSearch,
+
+    setType,
+
+    toggleFilter,
+
+    resetFilters,
+
+    applyFilters,
+  } = useLibraryStore();
+
+  useEffect(() => {
+    loadLibrary();
+  }, []);
+
+  useEffect(() => {
+    setType(currentMeta.type);
+  }, [currentMeta.type]);
 
   useEffect(() => {
     const saved = localStorage.getItem(
@@ -92,113 +131,24 @@ export default function Library() {
     if (saved) {
       const parsed = JSON.parse(saved);
 
-      setAppliedFilters(parsed);
       setDraftFilters(parsed);
+
+      Object.entries(parsed).forEach(
+        ([group, values]) => {
+          values.forEach((value) => {
+            toggleFilter(group, value);
+          });
+        }
+      );
     }
   }, []);
 
   useEffect(() => {
     localStorage.setItem(
       FILTER_STORAGE_KEY,
-      JSON.stringify(appliedFilters)
+      JSON.stringify(draftFilters)
     );
-  }, [appliedFilters]);
-
-  useEffect(() => {
-    setActiveMode('all');
-    setSearchValue('');
-  }, [activeCategory]);
-
-  const currentMeta =
-    categoryMeta[activeCategory];
-
-  const filteredItems = useMemo(() => {
-    let items = LIBRARY_ITEMS.filter(
-      (item) =>
-        item.type === currentMeta.type
-    );
-
-    if (activeMode === 'favorites') {
-      items = items.filter(
-        (item) => item.isFavorite
-      );
-    }
-
-    if (activeMode === 'new') {
-      items = items.filter(
-        (item) => item.isNew
-      );
-    }
-
-    if (searchValue.trim()) {
-      const query =
-        searchValue.toLowerCase();
-
-      items = items.filter(
-        (item) =>
-          item.title
-            .toLowerCase()
-            .includes(query) ||
-          item.description
-            .toLowerCase()
-            .includes(query)
-      );
-    }
-
-    if (
-      appliedFilters.ageGroups.length
-    ) {
-      items = items.filter((item) =>
-        appliedFilters.ageGroups.includes(
-          item.age
-        )
-      );
-    }
-
-    if (
-      appliedFilters.durationGroups.length
-    ) {
-      items = items.filter((item) =>
-        appliedFilters.durationGroups.some(
-          (group) =>
-            checkDuration(
-              item.duration,
-              group
-            )
-        )
-      );
-    }
-
-    if (
-      appliedFilters.emotions.length
-    ) {
-      items = items.filter((item) =>
-        appliedFilters.emotions.some(
-          (emotion) =>
-            item.emotions.includes(
-              emotion
-            )
-        )
-      );
-    }
-
-    if (appliedFilters.themes.length) {
-      items = items.filter((item) =>
-        appliedFilters.themes.some(
-          (theme) =>
-            item.themes.includes(theme)
-        )
-      );
-    }
-
-    return items;
-  }, [
-    activeCategory,
-    activeMode,
-    searchValue,
-    appliedFilters,
-    currentMeta.type,
-  ]);
+  }, [draftFilters]);
 
   const toggleDraftFilter = (
     group,
@@ -217,16 +167,44 @@ export default function Library() {
     }));
   };
 
-  const applyFilters = () => {
-    setAppliedFilters(draftFilters);
+  const handleApplyFilters = () => {
+    resetFilters();
+
+    Object.entries(draftFilters).forEach(
+      ([group, values]) => {
+        values.forEach((value) => {
+          toggleFilter(group, value);
+        });
+      }
+    );
+
+    applyFilters();
 
     setIsFiltersOpen(false);
   };
 
-  const resetFilters = () => {
+  const handleResetFilters = () => {
     setDraftFilters(initialFilters);
-    setAppliedFilters(initialFilters);
+
+    resetFilters();
+
+    applyFilters();
   };
+
+  const visibleItems = filteredItems.filter(
+    (item) => {
+
+      if (activeMode === 'favorites') {
+        return item.isFavorite;
+      }
+
+      if (activeMode === 'new') {
+        return item.isNew;
+      }
+
+      return true;
+    }
+  );
 
   return (
     <section className="lk-library-page">
@@ -248,6 +226,7 @@ export default function Library() {
             : ''
         }`}
       >
+
         <div className="lk-library-filters">
 
           <div className="lk-library-filters__head">
@@ -256,10 +235,13 @@ export default function Library() {
               type="button"
               className="lk-library-filters__title"
             >
+
               <SlidersHorizontal
                 size={18}
               />
+
               Фильтры
+
             </button>
 
             <button
@@ -269,7 +251,9 @@ export default function Library() {
                 setIsFiltersOpen(false)
               }
             >
+
               <X size={18} />
+
             </button>
 
           </div>
@@ -278,18 +262,21 @@ export default function Library() {
           <div className="lk-library-group">
 
             <div className="lk-library-group__head">
-              <h3>Возраст</h3>
+              <h3>
+                Возраст
+              </h3>
             </div>
 
             <div className="lk-library-checkboxes">
 
               {LIBRARY_FILTERS.age.map(
                 (item) => (
+
                   <button
                     key={item.id}
                     type="button"
                     className={`lk-library-checkbox ${
-                      draftFilters.ageGroups.includes(
+                      draftFilters.age.includes(
                         item.id
                       )
                         ? 'is-active'
@@ -297,15 +284,18 @@ export default function Library() {
                     }`}
                     onClick={() =>
                       toggleDraftFilter(
-                        'ageGroups',
+                        'age',
                         item.id
                       )
                     }
                   >
+
                     <span />
 
                     {item.label}
+
                   </button>
+
                 )
               )}
 
@@ -317,18 +307,21 @@ export default function Library() {
           <div className="lk-library-group">
 
             <div className="lk-library-group__head">
-              <h3>Длительность</h3>
+              <h3>
+                Длительность
+              </h3>
             </div>
 
             <div className="lk-library-checkboxes">
 
               {LIBRARY_FILTERS.duration.map(
                 (item) => (
+
                   <button
                     key={item.id}
                     type="button"
                     className={`lk-library-checkbox ${
-                      draftFilters.durationGroups.includes(
+                      draftFilters.duration.includes(
                         item.id
                       )
                         ? 'is-active'
@@ -336,15 +329,18 @@ export default function Library() {
                     }`}
                     onClick={() =>
                       toggleDraftFilter(
-                        'durationGroups',
+                        'duration',
                         item.id
                       )
                     }
                   >
+
                     <span />
 
                     {item.label}
+
                   </button>
+
                 )
               )}
 
@@ -356,13 +352,16 @@ export default function Library() {
           <div className="lk-library-group">
 
             <div className="lk-library-group__head">
-              <h3>Эмоции</h3>
+              <h3>
+                Эмоции
+              </h3>
             </div>
 
             <div className="lk-library-tags">
 
               {LIBRARY_FILTERS.emotions.map(
                 (item) => (
+
                   <button
                     key={item.id}
                     type="button"
@@ -380,8 +379,11 @@ export default function Library() {
                       )
                     }
                   >
+
                     {item.label}
+
                   </button>
+
                 )
               )}
 
@@ -393,13 +395,16 @@ export default function Library() {
           <div className="lk-library-group">
 
             <div className="lk-library-group__head">
-              <h3>Темы</h3>
+              <h3>
+                Темы
+              </h3>
             </div>
 
             <div className="lk-library-tags">
 
               {LIBRARY_FILTERS.themes.map(
                 (item) => (
+
                   <button
                     key={item.id}
                     type="button"
@@ -417,8 +422,11 @@ export default function Library() {
                       )
                     }
                   >
+
                     {item.label}
+
                   </button>
+
                 )
               )}
 
@@ -431,7 +439,7 @@ export default function Library() {
             <button
               type="button"
               className="lk-library-apply"
-              onClick={applyFilters}
+              onClick={handleApplyFilters}
             >
               Применить
             </button>
@@ -439,7 +447,7 @@ export default function Library() {
             <button
               type="button"
               className="lk-library-reset"
-              onClick={resetFilters}
+              onClick={handleResetFilters}
             >
               Сбросить
             </button>
@@ -447,6 +455,7 @@ export default function Library() {
           </div>
 
         </div>
+
       </aside>
 
       {/* CONTENT */}
@@ -466,9 +475,7 @@ export default function Library() {
             </h2>
 
             <p>
-              {
-                currentMeta.description
-              }
+              {currentMeta.description}
             </p>
 
           </div>
@@ -487,9 +494,9 @@ export default function Library() {
             <Search size={16} />
 
             <input
-              value={searchValue}
+              value={filters.search}
               onChange={(e) =>
-                setSearchValue(
+                setSearch(
                   e.target.value
                 )
               }
@@ -554,59 +561,44 @@ export default function Library() {
               setIsFiltersOpen(true)
             }
           >
+
             <SlidersHorizontal
               size={16}
             />
+
             Фильтры
+
           </button>
 
         </div>
 
+        {/* LOADING */}
+        {loading && (
+          <div className="lk-library-loading">
+            Загрузка библиотеки...
+          </div>
+        )}
+
         {/* GRID */}
-        <div className="lk-library-grid">
+        {!loading && (
+          <div className="lk-library-grid">
 
-          {filteredItems.map(
-            (item) => (
-              <LibraryCard
-                key={item.id}
-                item={item}
-              />
-            )
-          )}
+            {visibleItems.map(
+              (item) => (
 
-        </div>
+                <LibraryCard
+                  key={item.id}
+                  item={item}
+                />
+
+              )
+            )}
+
+          </div>
+        )}
 
       </div>
 
     </section>
   );
-}
-
-function checkDuration(
-  duration,
-  durationId
-) {
-  switch (durationId) {
-
-    case 'under-7':
-      return duration < 7;
-
-    case '7-14':
-      return (
-        duration >= 7 &&
-        duration <= 14
-      );
-
-    case '14-21':
-      return (
-        duration >= 14 &&
-        duration <= 21
-      );
-
-    case 'over-20':
-      return duration >= 20;
-
-    default:
-      return true;
-  }
 }
