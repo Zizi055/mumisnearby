@@ -1,36 +1,24 @@
 import { api } from './client';
 
-// Переключатель: mock / real
-const USE_MOCK = true;
-
-// мок-данные
-const mock = {
-  referralCode: 'halisa',
-  invitedCount: 2,
-  maxInvites: 5,
-  reward: '1 месяц бесплатно',
-  yearlyDiscount: 20,
-  weeklyContent: true,
-};
-
-// 
-const delay = (ms) => new Promise((r) => setTimeout(r, ms));
-
+// Получить статус бонусов и реферальную программу
+// GET /api/subscription/bonus
+// Возвращает: { referral_code, invited_count, max_invites, weekly_content }
 export async function getBonus() {
-  if (USE_MOCK) {
-    await delay(300);
-    return mock;
-  }
+  const data = await api.get('/api/subscription/bonus');
 
-  //endpoint
-  return api.get('/api/subscription/bonus');
+  //Форматируем данные для компонента SubscriptionBonus.jsx
+  return {
+    referralCode:   data.referral_code,
+    invitedCount:   data.invited_count,
+    maxInvites:     data.max_invites,
+    reward:         'месяц бесплатно',   // бэкенд не возвращает — подставляем
+    yearlyDiscount: 20,                  // бэкенд не возвращает — подставляем
+    weeklyContent:  data.weekly_content,
+  };
 }
 
-export async function claimReferralReward() {
-  if (USE_MOCK) {
-    await delay(200);
-    return { success: true };
-  }
-
-  return api.post('/api/subscription/bonus/claim');
+// Получить бонус, когда достигнут лимит приглашений
+// POST /api/subscription/bonus/claim
+export async function claimBonus() {
+  return api.post('/api/subscription/bonus/claim', {});
 }

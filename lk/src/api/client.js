@@ -7,7 +7,7 @@ async function request(path, options = {}) {
     ...(options.headers || {}),
   };
 
-  
+  // Content-Type не ставим для FormData — браузер сам добавит boundary
   if (!(options.body instanceof FormData)) {
     headers['Content-Type'] = 'application/json';
   }
@@ -24,7 +24,6 @@ async function request(path, options = {}) {
 
   if (!res.ok) {
     const text = await res.text().catch(() => '');
-
     throw new Error(`HTTP ${res.status}: ${text}`);
   }
 
@@ -42,10 +41,7 @@ export const api = {
   post: (path, body, options = {}) =>
     request(path, {
       method: 'POST',
-      body:
-        body instanceof FormData
-          ? body
-          : JSON.stringify(body),
+      body: body instanceof FormData ? body : JSON.stringify(body),
       ...options,
     }),
 
