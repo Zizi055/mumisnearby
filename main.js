@@ -349,23 +349,3 @@ modals.forEach(modal => {
     }
   });
 });
-function goToCheckout(planId) {
-    var redirect = encodeURIComponent(
-      '/subscription/checkout?plan=' + planId + '&period=year'
-    );
-
-    var user = null;
-    try { user = localStorage.getItem('user'); } catch(e) {}
-
-    if (user) {
-      window.location.href = '/lk/#/subscription/checkout?plan=' + planId + '&period=year';
-    } else {
-      window.location.href = '/lk/#/auth?redirect=' + redirect;
-    }
-  }
-
-  function openLK() {
-    var user = null;
-    try { user = localStorage.getItem('user'); } catch(e) {}
-    window.location.href = user ? '/lk/#/dashboard/progress' : '/lk/#/auth';
-  }
