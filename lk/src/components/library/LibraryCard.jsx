@@ -44,16 +44,7 @@ const openDetails = () => {
           </button>
         </div>
 
-        <button
-          type="button"
-          className="lk-library-card__play"
-          onClick={openDetails}
-        >
-          <Play
-            size={18}
-            fill="currentColor"
-          />
-        </button>
+     
 
         {item.isPremium && (
           <div className="lk-library-card__premium">
@@ -91,7 +82,7 @@ const openDetails = () => {
         <div className="lk-library-card__footer">
           <button
             type="button"
-            className="lk-library-card__details"
+            className="lk-btn lk-btn--secondary lk-btn--sm"
             onClick={openDetails}
           >
             Подробнее
