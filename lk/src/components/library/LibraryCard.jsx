@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import {
   Clock3,
   Heart,
@@ -8,6 +9,13 @@ import {
 export default function LibraryCard({
   item,
 }) {
+  const navigate = useNavigate();
+
+  const openDetails = () => {
+    navigate(
+      `/library/item/${item.type}/${item.id}`
+    );
+  };
   return (
     <article className="lk-library-card">
       {/* image */}
@@ -39,6 +47,7 @@ export default function LibraryCard({
         <button
           type="button"
           className="lk-library-card__play"
+          onClick={openDetails}
         >
           <Play
             size={18}
@@ -78,6 +87,15 @@ export default function LibraryCard({
               {getEmotionLabel(tag)}
             </span>
           ))}
+        </div>
+        <div className="lk-library-card__footer">
+          <button
+            type="button"
+            className="lk-library-card__details"
+            onClick={openDetails}
+          >
+            Подробнее
+          </button>
         </div>
       </div>
     </article>
