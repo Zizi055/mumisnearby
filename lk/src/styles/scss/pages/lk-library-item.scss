@@ -1,0 +1,163 @@
+@use '../abstracts/lk-tokens' as *;
+
+.lk-library-item {
+  padding: $lk-space-32;
+}
+
+.lk-library-item__hero {
+  overflow: hidden;
+
+  border-radius: $lk-radius-32;
+
+  background: $lk-surface;
+
+  border: 1px solid $lk-border;
+
+  margin-bottom: $lk-space-32;
+}
+
+.lk-library-item__hero img {
+  width: 100%;
+  height: 420px;
+  object-fit: cover;
+  display: block;
+}
+
+.lk-library-item__hero-content {
+  padding: $lk-space-32;
+}
+
+.lk-library-item__title {
+  margin-top: $lk-space-16;
+}
+
+.lk-library-item__description {
+  margin-top: $lk-space-12;
+  max-width: 720px;
+}
+
+.lk-library-item__meta {
+  display: flex;
+  gap: $lk-space-16;
+
+  margin-top: $lk-space-20;
+
+  color: $lk-text-muted;
+}
+
+.lk-library-item__body {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: $lk-space-32;
+}
+
+.lk-library-item__main {
+  background: $lk-surface;
+
+  border: 1px solid $lk-border;
+
+  border-radius: $lk-radius-24;
+
+  padding: $lk-space-32;
+}
+
+.lk-library-item__text {
+  margin-top: $lk-space-20;
+
+  line-height: 1.8;
+}
+
+.lk-library-item__text p {
+  margin-bottom: $lk-space-20;
+}
+
+.lk-library-item__sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: $lk-space-20;
+}
+
+.lk-library-item__card {
+  background: $lk-surface;
+
+  border: 1px solid $lk-border;
+
+  border-radius: $lk-radius-24;
+
+  padding: $lk-space-24;
+
+  box-shadow: $lk-shadow-card;
+}
+
+.lk-library-item__voice-list {
+  display: flex;
+  flex-direction: column;
+  gap: $lk-space-12;
+
+  margin-top: $lk-space-20;
+}
+
+.lk-library-item__voice {
+  display: flex;
+  align-items: center;
+  gap: $lk-space-12;
+
+  width: 100%;
+
+  padding: $lk-space-16;
+
+  border-radius: $lk-radius-16;
+
+  border: 1px solid $lk-border;
+
+  background: $lk-white;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+.lk-library-item__voice:hover {
+  border-color: $lk-brand;
+}
+
+.lk-library-item__voice.is-active {
+  border-color: $lk-brand;
+
+  background: rgba(93, 143, 114, 0.06);
+}
+
+.lk-library-item__voice-avatar {
+  width: 48px;
+  height: 48px;
+
+  border-radius: 50%;
+
+  overflow: hidden;
+
+  background: $lk-surface-soft;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+}
+
+.lk-library-item__voice-avatar img {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+.lk-library-item__voice-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.lk-library-item__voice-info span {
+  color: $lk-text-muted;
+  font-size: 13px;
+}
