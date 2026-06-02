@@ -13,7 +13,7 @@ export default function LibraryCard({
       {/* image */}
       <div className="lk-library-card__media">
         <img
-          src={item.preview_url}
+          src={item.image}
           alt={item.title}
         />
 
