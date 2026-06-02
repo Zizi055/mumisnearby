@@ -12,7 +12,9 @@ export default function LibraryCard({
   const navigate = useNavigate();
 
 const openDetails = () => {
-  alert(JSON.stringify(item, null, 2));
+  navigate(
+    `/library/item/${item.type}/${item.id}`
+  );
 };
   return (
     <article className="lk-library-card">
