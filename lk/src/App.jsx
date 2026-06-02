@@ -23,7 +23,7 @@ import Profile from './pages/profile/Profile.jsx';
 import Settings from './pages/settings/Settings.jsx';
 
 import LkLayout from './components/layout/LkLayout';
-import LibraryItem from './pages/library/LibraryItem';
+import LibraryItem from './components/library/LibraryItem';
 function App() {
   return (
     <Routes>
