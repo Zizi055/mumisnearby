@@ -23,6 +23,7 @@ import Profile from './pages/profile/Profile.jsx';
 import Settings from './pages/settings/Settings.jsx';
 
 import LkLayout from './components/layout/LkLayout';
+import LibraryItem from './pages/library/LibraryItem';
 function App() {
   return (
     <Routes>
@@ -53,6 +54,10 @@ function App() {
         <Route path="/library/lullabies" element={<Library />} />
         <Route path="/library/therapy" element={<Library />} />
         <Route path="/library/family" element={<Library />} />
+        <Route
+  path="/library/item/:type/:id"
+  element={<LibraryItem />}
+/>
 
         <Route path="/voice" element={<Voice />}>
           <Route index element={<Navigate to="my" replace />} />

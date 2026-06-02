@@ -11,11 +11,9 @@ export default function LibraryCard({
 }) {
   const navigate = useNavigate();
 
-  const openDetails = () => {
-    navigate(
-      `/library/item/${item.type}/${item.id}`
-    );
-  };
+const openDetails = () => {
+  alert(JSON.stringify(item, null, 2));
+};
   return (
     <article className="lk-library-card">
       {/* image */}
