@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 import { navigation } from '../../config/navigation';
 import { useAuth } from '../../context/AuthContext';
 
-export default function Sidebar() {
+export default function Sidebar({ isOpen, onClose }) {
   const { user } = useAuth();
 
   const getInitial = () => {
@@ -11,7 +11,7 @@ export default function Sidebar() {
   };
 
   return (
-    <aside className="lk-sidebar">
+    <aside className={`lk-sidebar ${isOpen ? 'is-open' : ''}`}>
 
       {/* TOP — основная навигация (Главная, Библиотека, Голос, Подписка) */}
       <div className="lk-sidebar__top">

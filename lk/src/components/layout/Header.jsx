@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { navigation } from '../../config/navigation';
-import { Bell, Check } from 'lucide-react';
+import { Bell, Check, Menu } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
 const MOCK_NOTIFICATIONS = [
@@ -25,7 +25,7 @@ const MOCK_NOTIFICATIONS = [
   },
 ];
 
-export default function Header() {
+export default function Header({ onMenuToggle }) {
   const location = useLocation();
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -79,6 +79,17 @@ export default function Header() {
 
   return (
     <header className="lk-header">
+
+      {/* Hamburger — только на мобильном */}
+      <button
+        type="button"
+        className="lk-header__burger"
+        onClick={onMenuToggle}
+        aria-label="Открыть меню"
+      >
+        <Menu size={20} />
+      </button>
+
       <div className="lk-header__left">
         <div className="lk-header__breadcrumb">
           <a

@@ -71,6 +71,33 @@
 }
 
 /* =============================================
+   HAMBURGER (mobile only)
+============================================= */
+
+.lk-header__burger {
+  display: none;
+  align-items: center;
+  justify-content: center;
+
+  width: 38px;
+  height: 38px;
+
+  border: none;
+  border-radius: 10px;
+  background: rgba(93, 143, 114, 0.08);
+  color: $lk-text;
+
+  cursor: pointer;
+  flex-shrink: 0;
+
+  transition: background 0.2s ease;
+}
+
+.lk-header__burger:hover {
+  background: rgba(93, 143, 114, 0.14);
+}
+
+/* =============================================
    RESPONSIVE MEDIA QUERIES
 ============================================= */
 
@@ -99,6 +126,11 @@
 @media (max-width: 768px) {
   .lk-header {
     padding: 10px 14px;
+    gap: 10px;
+  }
+
+  .lk-header__burger {
+    display: flex;
   }
 
   .lk-header__title {

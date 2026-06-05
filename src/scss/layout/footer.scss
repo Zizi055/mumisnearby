@@ -251,25 +251,39 @@
   text-decoration: underline;
 }
 
-/* TABLET */
+/* =========================================
+   RESPONSIVE
+========================================= */
 
+/* 1280px */
+@media (max-width: 1280px) {
+  .footer__container {
+    padding: 0 32px;
+  }
+}
+
+/* 1024px — планшет горизонтальный */
 @media (max-width: 1024px) {
   .footer__container {
-    padding: 0 28px;
+    padding: 0 24px;
   }
 
   .footer__top {
     grid-template-columns: 1fr 1fr;
-    gap: 28px;
+    gap: 24px;
+    align-items: start;
   }
 
   .footer__bottom {
-    flex-direction: column;
-    align-items: flex-start;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
   }
 
-  .footer__policy {
-    text-align: left;
+  .footer__legal {
+    align-items: flex-end;
   }
 }
 

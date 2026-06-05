@@ -1,10 +1,12 @@
-import { Outlet, useLocation } from 'react-router-dom';
+import { useState } from 'react';
+import { Outlet, useLocation, NavLink } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
 import { navigation } from '../../config/navigation';
 
 export default function LkLayout() {
   const location = useLocation();
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const currentSection =
     navigation.find((item) =>
@@ -13,40 +15,71 @@ export default function LkLayout() {
 
   return (
     <div className="lk">
-      {/* левый сайдбар */}
-      <Sidebar />
 
-      {/* основная оболочка */}
+      {/* Оверлей для мобильного меню */}
+      {sidebarOpen && (
+        <div
+          className="lk-sidebar-overlay"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      {/* Левый сайдбар */}
+      <Sidebar
+        isOpen={sidebarOpen}
+        onClose={() => setSidebarOpen(false)}
+      />
+
+      {/* Основная оболочка */}
       <div className="lk-shell">
 
-        {/* верх */}
-        <Header />
+        {/* Шапка */}
+        <Header onMenuToggle={() => setSidebarOpen((v) => !v)} />
 
-        {/* тело */}
+        {/* Горизонтальное подменю — всегда видно */}
+        <div className="lk-subnav">
+          <span className="lk-subnav__section">
+            {currentSection.label}
+          </span>
+          <nav className="lk-subnav__links">
+            {currentSection.children.map((item) => (
+              <NavLink
+                key={item.path}
+                to={item.path}
+                className={({ isActive }) =>
+                  `lk-subnav__link ${isActive ? 'is-active' : ''}`
+                }
+              >
+                {item.label}
+              </NavLink>
+            ))}
+          </nav>
+        </div>
+
+        {/* Тело */}
         <div className="lk-body">
 
-          {/* submenu */}
+          {/* Боковое подменю (десктоп) */}
           <aside className="lk-submenu">
             <div className="lk-submenu__title">
               {currentSection.label}
             </div>
-
             <nav className="lk-submenu__nav">
               {currentSection.children.map((item) => (
-                <a
+                <NavLink
                   key={item.path}
-                  href={`#${item.path}`}
-                  className={`lk-submenu__link ${
-                    location.pathname === item.path ? 'is-active' : ''
-                  }`}
+                  to={item.path}
+                  className={({ isActive }) =>
+                    `lk-submenu__link ${isActive ? 'is-active' : ''}`
+                  }
                 >
                   {item.label}
-                </a>
+                </NavLink>
               ))}
             </nav>
           </aside>
 
-          {/* контент */}
+          {/* Контент */}
           <main className="lk-content">
             <Outlet />
           </main>

@@ -427,7 +427,14 @@
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
+  .lk-tariffs-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: $lk-space-16;
+  }
+}
+
+@media (max-width: 640px) {
   .lk-tariffs-grid {
     grid-template-columns: 1fr;
     gap: $lk-space-12;
