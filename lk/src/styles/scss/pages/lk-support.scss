@@ -1312,3 +1312,293 @@ $lk-gradient-brand: linear-gradient(135deg, #5d8f72 0%, #79ab89 100%);
 .is-spinning {
   animation: lk-spin 0.8s linear infinite;
 }
+
+/* =============================================
+   RESPONSIVE MEDIA QUERIES
+============================================= */
+
+@media (max-width: 1280px) {
+  .lk-support-hero__content h1 {
+    font-size: 34px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .lk-support-hero {
+    grid-template-columns: 1fr;
+  }
+
+  .lk-support-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lk-support-side {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .lk-support-help,
+  .lk-support-status {
+    flex: 1;
+    min-width: 280px;
+  }
+
+  .lk-support-categories {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 1024px) {
+  .lk-support-hero__content h1 {
+    font-size: 30px;
+  }
+
+  .lk-support-hero__card {
+    padding: 24px;
+    border-radius: 24px;
+  }
+
+  .lk-support-faq {
+    padding: 24px;
+    border-radius: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .lk-support-hero {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .lk-support-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .lk-support-hero__content {
+    padding: 28px;
+    border-radius: 24px;
+  }
+
+  .lk-support-hero__content h1 {
+    font-size: 26px;
+    letter-spacing: -0.04em;
+  }
+
+  .lk-support-hero__content p {
+    font-size: 15px;
+    margin-bottom: 24px;
+  }
+
+  .lk-support-categories {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .lk-support-categories button {
+    height: 62px;
+    padding: 0 18px;
+    font-size: 14px;
+    border-radius: 18px;
+  }
+
+  .lk-support-faq {
+    padding: 20px;
+    border-radius: 22px;
+  }
+
+  .lk-support-faq__head h2 {
+    font-size: 22px;
+  }
+
+  .lk-support-help,
+  .lk-support-status {
+    padding: 24px;
+    border-radius: 24px;
+  }
+
+  .lk-support-side {
+    flex-direction: column;
+  }
+
+  .lk-support-modal {
+    max-width: calc(100vw - 32px);
+    padding: 24px;
+    border-radius: 24px;
+  }
+
+  .lk-support-modal__head h2 {
+    font-size: 26px;
+  }
+
+  .lk-support-form__actions {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .lk-support-form__cancel,
+  .lk-support-form__submit {
+    width: 100%;
+    justify-content: center;
+    padding: 0 20px;
+  }
+
+  .lk-tickets__head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .lk-tickets__actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 640px) {
+  .lk-support-hero__content {
+    padding: 20px;
+    border-radius: 20px;
+  }
+
+  .lk-support-hero__content h1 {
+    font-size: 22px;
+  }
+
+  .lk-support-categories {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .lk-support-categories button {
+    height: 54px;
+    font-size: 14px;
+    border-radius: 16px;
+  }
+
+  .lk-support-faq__trigger {
+    padding: 18px;
+  }
+
+  .lk-support-faq__trigger strong {
+    font-size: 15px;
+  }
+
+  .lk-support-faq__content {
+    padding: 0 18px 18px;
+  }
+
+  .lk-support-modal {
+    max-height: 95vh;
+    padding: 20px;
+    border-radius: 20px;
+  }
+
+  .lk-support-modal__head h2 {
+    font-size: 22px;
+  }
+
+  .lk-support-tabs {
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+}
+
+@media (max-width: 480px) {
+  .lk-support-hero__content {
+    padding: 16px;
+    border-radius: 18px;
+  }
+
+  .lk-support-hero__content h1 {
+    font-size: 20px;
+    letter-spacing: -0.03em;
+  }
+
+  .lk-support-hero__content p {
+    font-size: 14px;
+  }
+
+  .lk-support-search {
+    height: 52px;
+    padding: 0 14px;
+    gap: 10px;
+    border-radius: 16px;
+  }
+
+  .lk-support-faq {
+    padding: 16px;
+    border-radius: 18px;
+  }
+
+  .lk-support-help,
+  .lk-support-status {
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .lk-support-help strong {
+    font-size: 22px;
+  }
+
+  .lk-support-modal {
+    padding: 16px;
+    border-radius: 18px;
+  }
+
+  .lk-support-modal__head {
+    margin-bottom: 20px;
+  }
+
+  .lk-support-modal__head h2 {
+    font-size: 20px;
+  }
+
+  .lk-support-form__cancel,
+  .lk-support-form__submit {
+    height: 46px;
+    font-size: 13px;
+  }
+
+  .lk-ticket-card__head {
+    padding: 14px 16px;
+  }
+
+  .lk-ticket-card__body {
+    padding: 0 16px 14px;
+  }
+
+  .lk-support-success strong {
+    font-size: 26px;
+  }
+
+  .lk-support-success p {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 375px) {
+  .lk-support-hero__content h1 {
+    font-size: 18px;
+  }
+
+  .lk-support-categories button {
+    height: 50px;
+    font-size: 13px;
+    gap: 8px;
+    padding: 0 14px;
+  }
+
+  .lk-support-modal__head h2 {
+    font-size: 18px;
+  }
+
+  .lk-support-form__cancel,
+  .lk-support-form__submit {
+    height: 44px;
+  }
+
+  .lk-ticket-card__subject {
+    font-size: 14px;
+  }
+}

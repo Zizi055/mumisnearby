@@ -390,6 +390,118 @@
 }
 .lk-tariff-access-item > div {
   display: flex;
-  flex-direction: column; 
+  flex-direction: column;
   gap: 4px;
+}
+
+/* =============================================
+   RESPONSIVE MEDIA QUERIES
+============================================= */
+
+@media (max-width: 1280px) {
+  .lk-tariffs-grid {
+    gap: $lk-space-16;
+  }
+}
+
+@media (max-width: 1100px) {
+  .lk-tariffs-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: $lk-space-16;
+  }
+
+  .lk-tariff-card.is-upgrade {
+    transform: scale(1);
+  }
+}
+
+@media (max-width: 1024px) {
+  .lk-tariffs__head {
+    flex-direction: column;
+    gap: $lk-space-12;
+    align-items: flex-start;
+  }
+
+  .lk-tariff-access__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .lk-tariffs-grid {
+    grid-template-columns: 1fr;
+    gap: $lk-space-12;
+  }
+
+  .lk-tariff-card {
+    padding: $lk-space-20;
+    border-radius: $lk-radius-20;
+  }
+
+  .lk-tariff-price__value {
+    font-size: 24px;
+  }
+
+  .lk-compare-table {
+    font-size: 13px;
+  }
+
+  .lk-billing__switch {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .lk-tariff-card {
+    padding: $lk-space-16;
+  }
+
+  .lk-tariff-price__value {
+    font-size: 22px;
+  }
+
+  .lk-tariff-card__head h3 {
+    font-size: 15px;
+  }
+
+  .lk-compare-row {
+    min-width: 600px;
+  }
+
+  .lk-tariff-access-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $lk-space-8;
+  }
+}
+
+@media (max-width: 480px) {
+  .lk-tariffs {
+    gap: $lk-space-20;
+  }
+
+  .lk-tariff-card {
+    padding: 14px;
+    border-radius: $lk-radius-16;
+  }
+
+  .lk-tariff-price__value {
+    font-size: 20px;
+  }
+
+  .lk-billing__switch button {
+    padding: 5px 12px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 375px) {
+  .lk-tariff-card {
+    padding: 12px;
+  }
+
+  .lk-tariff-price__value {
+    font-size: 18px;
+  }
 }

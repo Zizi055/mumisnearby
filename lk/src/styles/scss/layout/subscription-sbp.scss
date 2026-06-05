@@ -178,3 +178,78 @@
   color: var(--color-text-tertiary);
   margin: 0;
 }
+
+/* =============================================
+   RESPONSIVE MEDIA QUERIES
+============================================= */
+
+@media (max-width: 768px) {
+  .lk-payment-tabs {
+    gap: 4px;
+    margin-bottom: 16px;
+  }
+
+  .lk-payment-tab {
+    font-size: 13px;
+    padding: 8px 0;
+  }
+
+  .lk-sbp-bank {
+    padding: 10px 12px;
+  }
+
+  .lk-sbp-bank__icon {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+
+  .lk-sbp-bank__name {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 640px) {
+  .lk-payment-tabs {
+    flex-wrap: wrap;
+  }
+
+  .lk-sbp-qr__image img {
+    max-width: 200px;
+    height: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .lk-payment-tab {
+    font-size: 12px;
+    padding: 7px 0;
+  }
+
+  .lk-sbp {
+    gap: 10px;
+  }
+
+  .lk-sbp-banks {
+    gap: 6px;
+  }
+
+  .lk-sbp-bank {
+    padding: 9px 10px;
+    gap: 10px;
+  }
+
+  .lk-sbp-qr {
+    gap: 10px;
+  }
+}
+
+@media (max-width: 375px) {
+  .lk-payment-tab {
+    font-size: 11px;
+  }
+
+  .lk-sbp-qr__image img {
+    max-width: 180px;
+  }
+}

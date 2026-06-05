@@ -19,3 +19,56 @@
   gap: $lk-space-12;
   margin: $lk-space-20 0;
 }
+
+/* =============================================
+   RESPONSIVE MEDIA QUERIES
+============================================= */
+
+@media (max-width: 768px) {
+  .lk-checkout {
+    padding: 40px 16px;
+  }
+
+  .lk-checkout-card {
+    width: 100%;
+    max-width: 420px;
+    padding: $lk-space-20;
+    border-radius: $lk-radius-20;
+  }
+}
+
+@media (max-width: 640px) {
+  .lk-checkout {
+    padding: 32px 12px;
+  }
+
+  .lk-checkout-card {
+    padding: $lk-space-16;
+    border-radius: $lk-radius-16;
+  }
+
+  .lk-checkout-summary {
+    gap: $lk-space-8;
+  }
+}
+
+@media (max-width: 480px) {
+  .lk-checkout {
+    padding: 24px 10px;
+  }
+
+  .lk-checkout-card {
+    padding: 14px;
+    border-radius: 16px;
+  }
+}
+
+@media (max-width: 375px) {
+  .lk-checkout {
+    padding: 20px 8px;
+  }
+
+  .lk-checkout-card {
+    padding: 12px;
+  }
+}

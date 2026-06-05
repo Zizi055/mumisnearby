@@ -196,3 +196,54 @@
     transform: rotate(360deg);
   }
 }
+
+/* =============================================
+   RESPONSIVE MEDIA QUERIES
+============================================= */
+
+@media (max-width: 768px) {
+  .lk-btn--lg {
+    height: 44px;
+    padding: 0 18px;
+    font-size: 14px;
+  }
+
+  .lk-btn--md {
+    height: 38px;
+    padding: 0 14px;
+  }
+}
+
+@media (max-width: 640px) {
+  .lk-btn--lg {
+    height: 42px;
+    padding: 0 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .lk-btn--lg {
+    height: 40px;
+    padding: 0 14px;
+    font-size: 13px;
+  }
+
+  .lk-btn--md {
+    height: 36px;
+    padding: 0 12px;
+    font-size: 13px;
+  }
+
+  .lk-btn--sm {
+    height: 30px;
+    padding: 0 10px;
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 375px) {
+  .lk-btn--lg {
+    height: 38px;
+    font-size: 13px;
+  }
+}

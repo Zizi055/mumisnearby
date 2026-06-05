@@ -389,3 +389,94 @@
    font-size: 8px;
    color:$lk-danger;
 }
+
+/* =============================================
+   RESPONSIVE MEDIA QUERIES
+============================================= */
+
+@media (max-width: 768px) {
+  .lk-card {
+    max-width: 100%;
+    height: 180px;
+    margin-bottom: 14px;
+  }
+
+  .lk-card__number {
+    font-size: 17px;
+  }
+
+  .lk-payment-item {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .lk-payment-item__right {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 640px) {
+  .lk-card {
+    height: 168px;
+  }
+
+  .lk-card__number {
+    font-size: 15px;
+    letter-spacing: 1.5px;
+  }
+
+  .lk-payment-item {
+    padding: 12px 14px;
+  }
+
+  .lk-payment-item__left {
+    gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .lk-card {
+    height: 160px;
+  }
+
+  .lk-card__face {
+    padding: 14px;
+  }
+
+  .lk-card__chip {
+    width: 36px;
+    height: 24px;
+  }
+
+  .lk-card__number {
+    font-size: 14px;
+  }
+
+  .lk-card__bottom strong {
+    font-size: 12px;
+  }
+
+  .lk-payment-info strong {
+    font-size: 13px;
+  }
+
+  .lk-payment-badge {
+    font-size: 10px;
+    padding: 2px 6px;
+  }
+}
+
+@media (max-width: 375px) {
+  .lk-card {
+    height: 150px;
+  }
+
+  .lk-card__face {
+    padding: 12px;
+  }
+
+  .lk-payment-item {
+    padding: 10px 12px;
+  }
+}

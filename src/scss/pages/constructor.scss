@@ -740,3 +740,173 @@
     }
   }
 }
+
+/* MOBILE PORTRAIT */
+
+@media (max-width: 480px) {
+  .constructor-page {
+    padding: 28px 0 56px;
+
+    &__container {
+      padding: 0 12px;
+    }
+  }
+
+  .constructor-hero {
+    gap: 16px;
+    margin-bottom: 40px;
+
+    &__eyebrow {
+      font-size: 12px;
+      margin-bottom: 14px;
+    }
+
+    &__text {
+      font-size: 15px;
+    }
+
+    &__actions {
+      margin-top: 22px;
+      gap: 14px 16px;
+    }
+  }
+
+  .constructor-summary-card {
+    padding: 18px;
+    border-radius: 18px;
+
+    &__value {
+      font-size: 21px;
+    }
+
+    &__note {
+      font-size: 14px;
+    }
+  }
+
+  .constructor-intro,
+  .constructor-base,
+  .constructor-modules,
+  .constructor-logic,
+  .constructor-example {
+    margin-bottom: 56px;
+  }
+
+  .constructor-section-head {
+    margin-bottom: 16px;
+
+    &__eyebrow {
+      font-size: 11px;
+      margin-bottom: 10px;
+    }
+  }
+
+  .constructor-step-card,
+  .module-card,
+  .constructor-note-card {
+    padding: 18px;
+    border-radius: 18px;
+  }
+
+  .constructor-step-card__title {
+    font-size: 22px;
+  }
+
+  .constructor-step-card__text,
+  .module-card__text,
+  .constructor-note-card__text {
+    font-size: 14px;
+  }
+
+  .module-card__title {
+    font-size: 22px;
+  }
+
+  .module-card__subtitle {
+    font-size: 16px;
+  }
+
+  .constructor-note-card__title {
+    font-size: 20px;
+  }
+
+  .constructor-base-card,
+  .constructor-example-card,
+  .constructor-cta {
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .constructor-cta__text,
+  .constructor-base-card__lead,
+  .constructor-example-card__lead {
+    font-size: 15px;
+  }
+
+  .constructor-feature-list__item {
+    font-size: 14px;
+    padding-left: 18px;
+  }
+
+  .constructor-result-card {
+    padding: 18px;
+    border-radius: 18px;
+
+    &__price {
+      font-size: 26px;
+    }
+
+    &__text {
+      font-size: 14px;
+    }
+  }
+
+  .constructor-price-pill {
+    font-size: 13px;
+    min-height: 38px;
+    padding: 8px 14px;
+  }
+
+  .constructor-example-row__label,
+  .constructor-example-row__value {
+    font-size: 15px;
+  }
+}
+
+/* SMALL MOBILE */
+
+@media (max-width: 375px) {
+  .constructor-page {
+    padding: 24px 0 48px;
+
+    &__container {
+      padding: 0 10px;
+    }
+  }
+
+  .constructor-hero {
+    margin-bottom: 32px;
+  }
+
+  .constructor-step-card__title {
+    font-size: 20px;
+  }
+
+  .constructor-result-card__price {
+    font-size: 24px;
+  }
+
+  .constructor-base-card,
+  .constructor-example-card,
+  .constructor-cta {
+    padding: 16px;
+  }
+
+  .constructor-intro,
+  .constructor-base,
+  .constructor-modules,
+  .constructor-logic,
+  .constructor-example {
+    margin-bottom: 40px;
+  }
+}

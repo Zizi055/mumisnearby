@@ -315,3 +315,80 @@ box-shadow:
     height: 10px;
   }
 }
+
+/* MOBILE PORTRAIT */
+
+@media (max-width: 480px) {
+  .loyalty-banner {
+    padding: 6px 0 40px;
+  }
+
+  .loyalty-banner .container {
+    padding: 0 14px;
+  }
+
+  .loyalty-banner__card {
+    padding: 16px 14px;
+    border-radius: 18px;
+    gap: 14px;
+  }
+
+  .loyalty-banner__title {
+    font-size: 20px;
+  }
+
+  .loyalty-banner__caterpillar {
+    max-width: 120px;
+  }
+
+  .loyalty-banner__badge {
+    width: 88px;
+    height: 88px;
+    border-radius: 18px;
+  }
+
+  .loyalty-banner__badge-image {
+    width: 62px;
+    height: 62px;
+  }
+
+  .loyalty-banner__text {
+    font-size: 14px;
+  }
+
+  .loyalty-banner__family {
+    width: 64px;
+  }
+
+  .loyalty-banner__dots {
+    margin-top: 10px;
+    gap: 8px;
+  }
+}
+
+/* SMALL MOBILE */
+
+@media (max-width: 375px) {
+  .loyalty-banner .container {
+    padding: 0 12px;
+  }
+
+  .loyalty-banner__card {
+    padding: 14px 12px;
+    border-radius: 16px;
+  }
+
+  .loyalty-banner__title {
+    font-size: 18px;
+  }
+
+  .loyalty-banner__badge {
+    width: 76px;
+    height: 76px;
+  }
+
+  .loyalty-banner__badge-image {
+    width: 52px;
+    height: 52px;
+  }
+}

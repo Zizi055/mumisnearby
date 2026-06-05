@@ -114,3 +114,112 @@
     margin-bottom: 20px;
   }
 }
+
+/* ========================================
+   BUILDER MODAL — RESPONSIVE
+======================================== */
+
+/* Small desktop */
+@media (max-width: 1100px) {
+  .builder__panel {
+    width: min(960px, 94vw);
+    padding: 26px;
+  }
+
+  .builder__body {
+    grid-template-columns: 1fr 320px;
+    gap: 24px;
+  }
+}
+
+/* Tablet landscape */
+@media (max-width: 1024px) {
+  .builder__panel {
+    width: min(800px, 94vw);
+    padding: 24px;
+  }
+
+  .builder__body {
+    grid-template-columns: 1fr 280px;
+    gap: 20px;
+  }
+
+  .builder-summary__title {
+    font-size: 18px;
+  }
+
+  .builder-summary__total {
+    font-size: 20px;
+  }
+}
+
+/* Tablet portrait */
+@media (max-width: 768px) {
+  .builder__panel {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    transform: none;
+    width: 100%;
+    border-radius: 0;
+    padding: 20px 16px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .builder__body {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .builder__header {
+    margin-bottom: 16px;
+  }
+
+  .builder-card {
+    border-radius: 20px;
+    padding: 14px;
+  }
+
+  .builder-option {
+    padding: 12px;
+    border-radius: 12px;
+  }
+
+  .builder-summary {
+    padding: 18px;
+    border-radius: 16px;
+
+    &__title {
+      font-size: 17px;
+      margin-bottom: 12px;
+    }
+
+    &__total {
+      font-size: 18px;
+      margin-bottom: 16px;
+    }
+  }
+}
+
+/* Mobile portrait */
+@media (max-width: 480px) {
+  .builder__panel {
+    padding: 16px 14px;
+  }
+
+  .builder-section h3 {
+    font-size: 15px;
+    margin-bottom: 10px;
+  }
+
+  .builder-summary__title {
+    font-size: 16px;
+  }
+
+  .builder-summary__total {
+    font-size: 17px;
+  }
+}

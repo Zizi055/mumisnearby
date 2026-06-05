@@ -42,3 +42,61 @@
   gap: 10px;
   margin-top: 24px;
 }
+
+/* =============================================
+   RESPONSIVE MEDIA QUERIES
+============================================= */
+
+@media (max-width: 768px) {
+  .lk-modal__content {
+    margin: 80px 16px;
+    max-width: calc(100% - 32px);
+    padding: 22px;
+    border-radius: $lk-radius-20;
+  }
+
+  .lk-modal__actions {
+    gap: 8px;
+    margin-top: 18px;
+  }
+}
+
+@media (max-width: 640px) {
+  .lk-modal__content {
+    margin: 60px 12px;
+    padding: 20px;
+  }
+
+  .lk-modal__actions {
+    flex-direction: column-reverse;
+  }
+
+  .lk-modal__actions .lk-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .lk-modal__content {
+    margin: 40px 10px;
+    padding: 18px;
+    border-radius: $lk-radius-16;
+  }
+
+  .lk-modal__content h3 {
+    font-size: 16px;
+  }
+
+  .lk-modal__content p {
+    font-size: 13px;
+    margin-bottom: 16px;
+  }
+}
+
+@media (max-width: 375px) {
+  .lk-modal__content {
+    margin: 24px 8px;
+    padding: 16px;
+  }
+}

@@ -348,3 +348,138 @@
 
   font-size: 14px;
 }
+
+/* =============================================
+   RESPONSIVE MEDIA QUERIES
+============================================= */
+
+@media (max-width: 1100px) {
+  .lk-payments-summary {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 1024px) {
+  .lk-payments__head {
+    flex-direction: column;
+    gap: $lk-space-12;
+    align-items: flex-start;
+  }
+}
+
+@media (max-width: 768px) {
+  .lk-payments-summary {
+    grid-template-columns: 1fr;
+    border-radius: $lk-radius-16;
+  }
+
+  .lk-payments-summary__item:not(:last-child) {
+    border-right: none;
+    border-bottom: 1px solid $lk-border;
+  }
+
+  .lk-payments-summary__item {
+    padding: 12px 16px;
+  }
+
+  .lk-payments-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $lk-space-8;
+  }
+
+  .lk-payments-filter {
+    width: 100%;
+    overflow-x: auto;
+    justify-content: flex-start;
+  }
+
+  .lk-payments-item {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .lk-payments-item__right {
+    width: 100%;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+  }
+
+  .lk-invoice__panel {
+    width: calc(100% - 32px);
+    margin: 40px auto;
+    padding: 16px;
+    border-radius: $lk-radius-16;
+  }
+}
+
+@media (max-width: 640px) {
+  .lk-payments-summary {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .lk-payments-summary__item:not(:last-child) {
+    border-bottom: none;
+    border-right: 1px solid $lk-border;
+  }
+
+  .lk-payments-summary__item {
+    padding: 10px 14px;
+  }
+
+  .lk-payments-item {
+    padding: 12px 14px;
+  }
+
+  .lk-invoice__actions {
+    flex-direction: column;
+  }
+
+  .lk-invoice__actions .lk-btn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .lk-payments-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .lk-payments-summary__item:not(:last-child) {
+    border-right: none;
+    border-bottom: 1px solid $lk-border;
+  }
+
+  .lk-payments {
+    gap: $lk-space-16;
+  }
+
+  .lk-payments-item {
+    padding: 10px 12px;
+    border-radius: $lk-radius-12;
+  }
+
+  .lk-payments-item__info strong {
+    font-size: 13px;
+  }
+
+  .lk-payments-item__right strong {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 375px) {
+  .lk-payments-filter button {
+    height: 28px;
+    padding: 0 10px;
+    font-size: 12px;
+  }
+
+  .lk-payments-sort {
+    height: 32px;
+    font-size: 12px;
+  }
+}

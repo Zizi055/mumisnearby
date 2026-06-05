@@ -76,3 +76,70 @@
 .lk-submenu__link.is-active:hover {
   background: $lk-brand-dark;
 }
+
+/* =============================================
+   RESPONSIVE MEDIA QUERIES
+============================================= */
+
+@media (max-width: 1100px) {
+  .lk-submenu {
+    width: 190px;
+    padding: $lk-space-20 $lk-space-12;
+  }
+}
+
+@media (max-width: 1024px) {
+  .lk-submenu {
+    width: 170px;
+    padding: 16px 10px;
+  }
+
+  .lk-submenu__link {
+    padding: 8px 10px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 768px) {
+  .lk-submenu {
+    display: none;
+    position: fixed;
+    top: 56px;
+    left: 0;
+    width: 100%;
+    height: auto;
+    border-right: none;
+    border-bottom: 1px solid $lk-line;
+    padding: 10px 12px;
+    z-index: 50;
+    background: $lk-white;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+  }
+
+  .lk-submenu.is-open {
+    display: block;
+  }
+
+  .lk-submenu__nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .lk-submenu__title {
+    font-size: 11px;
+    margin-bottom: $lk-space-8;
+  }
+
+  .lk-submenu__link {
+    padding: 7px 12px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 480px) {
+  .lk-submenu__link {
+    padding: 6px 10px;
+    font-size: 12px;
+  }
+}

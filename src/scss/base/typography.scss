@@ -147,15 +147,83 @@ p {
   text-align: center;
 }
 
-/* 
+/*
 Typography system usage:
 
-hero title → display-1  
-hero subtitle → text-lg text-muted  
-menu → label-md  
-sections → heading-2  
-cards → heading-5  
-body text → text-md  
-caption → caption  
-buttons → label-md  
+hero title → display-1
+hero subtitle → text-lg text-muted
+menu → label-md
+sections → heading-2
+cards → heading-5
+body text → text-md
+caption → caption
+buttons → label-md
 */
+
+/* ========================================
+   TYPOGRAPHY — EXTENDED RESPONSIVE
+======================================== */
+
+/* Mobile portrait (480px) */
+@media (max-width: 480px) {
+  body {
+    font-size: 15px;
+  }
+
+  .display-1 {
+    font-size: 28px;
+    line-height: 1.1;
+  }
+
+  .display-2 {
+    font-size: 24px;
+    line-height: 1.12;
+  }
+
+  .heading-1 {
+    font-size: 24px;
+  }
+
+  .heading-2 {
+    font-size: 21px;
+  }
+
+  .heading-3 {
+    font-size: 18px;
+  }
+
+  .heading-4 {
+    font-size: 16px;
+  }
+
+  .heading-5 {
+    font-size: 15px;
+  }
+
+  .text-lg {
+    font-size: 15px;
+  }
+}
+
+/* Small mobile (375px) */
+@media (max-width: 375px) {
+  .display-1 {
+    font-size: 25px;
+  }
+
+  .display-2 {
+    font-size: 22px;
+  }
+
+  .heading-1 {
+    font-size: 22px;
+  }
+
+  .heading-2 {
+    font-size: 19px;
+  }
+
+  .heading-3 {
+    font-size: 17px;
+  }
+}

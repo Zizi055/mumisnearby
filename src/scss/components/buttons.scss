@@ -138,3 +138,74 @@
 .btn--arrow:hover .btn__icon {
   transform: translateX(4px) scale(1.05);
 }
+
+/* ========================================
+   BUTTONS — RESPONSIVE
+======================================== */
+
+/* Tablet portrait */
+@media (max-width: 768px) {
+  .btn {
+    padding: 13px 20px;
+    font-size: 15px;
+  }
+
+  .btn--lg {
+    padding: 15px 24px;
+  }
+
+  .btn--sm {
+    padding: 9px 14px;
+    font-size: 13px;
+  }
+
+  .btn--arrow {
+    gap: 12px;
+
+    .btn__icon {
+      width: 30px;
+      height: 30px;
+
+      svg {
+        width: 14px;
+        height: 14px;
+      }
+    }
+  }
+}
+
+/* Mobile portrait */
+@media (max-width: 480px) {
+  .btn {
+    padding: 12px 18px;
+    font-size: 14px;
+    gap: 8px;
+  }
+
+  .btn--lg {
+    padding: 13px 20px;
+    font-size: 15px;
+  }
+
+  .btn--sm {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+
+  .btn--arrow {
+    gap: 10px;
+
+    .btn__icon {
+      width: 28px;
+      height: 28px;
+    }
+  }
+}
+
+/* Small mobile */
+@media (max-width: 375px) {
+  .btn {
+    padding: 11px 16px;
+    font-size: 14px;
+  }
+}

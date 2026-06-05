@@ -37,3 +37,64 @@
   color: #202020;
   cursor: pointer;
 }
+
+/* ========================================
+   LK HEADER — RESPONSIVE
+======================================== */
+
+/* Tablet landscape */
+@media (max-width: 1024px) {
+  .lk-header {
+    height: 58px;
+    padding: 0 12px;
+  }
+
+  .lk-header__right {
+    gap: 14px;
+  }
+}
+
+/* Tablet portrait */
+@media (max-width: 768px) {
+  .lk-header {
+    height: 52px;
+    padding: 0 14px;
+  }
+
+  .lk-header__title {
+    font-size: 13px;
+  }
+
+  .lk-header__right {
+    gap: 10px;
+  }
+}
+
+/* Mobile portrait */
+@media (max-width: 480px) {
+  .lk-header {
+    height: 48px;
+    padding: 0 12px;
+  }
+
+  .lk-header__title {
+    font-size: 12px;
+    letter-spacing: 0.02em;
+  }
+
+  .lk-header__right {
+    gap: 8px;
+  }
+
+  .lk-header__action,
+  .lk-header__profile {
+    font-size: 11px;
+  }
+}
+
+/* Small mobile */
+@media (max-width: 375px) {
+  .lk-header {
+    padding: 0 10px;
+  }
+}
