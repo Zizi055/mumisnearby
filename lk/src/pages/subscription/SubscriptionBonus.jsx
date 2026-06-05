@@ -56,15 +56,26 @@ const invitesLeft = referral
     }
   };
 if (loading) {
-  return <div>Загрузка...</div>;
+  return (
+    <section className="lk-bonus">
+      <div className="lk-library-loading" style={{ minHeight: 200 }}>
+        Загрузка бонусов...
+      </div>
+    </section>
+  );
 }
 
-if (error) {
-  return <div>{error}</div>;
-}
-
-if (!referral) {
-  return null;
+if (error || !referral) {
+  const is500 = error?.includes('500');
+  return (
+    <section className="lk-bonus">
+      <div className="lk-library-empty" style={{ minHeight: 240 }}>
+        {is500
+          ? 'Раздел бонусов временно недоступен — сервер вернул ошибку. Попробуйте позже или обратитесь в поддержку.'
+          : (error || 'Не удалось загрузить данные.')}
+      </div>
+    </section>
+  );
 }
   return (
     <section className="lk-bonus">

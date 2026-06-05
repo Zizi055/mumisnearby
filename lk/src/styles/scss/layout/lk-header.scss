@@ -1,11 +1,19 @@
 @use '../abstracts/lk-tokens' as *;
+
 .lk-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
+  gap: 12px;
 
-  padding: 20px 24px;
-  border-bottom: 1px solid $lk-line;
+  padding: 16px 24px;
+
+  background: $lk-white;
+  border-bottom: 1px solid $lk-line-soft;
+
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
 
 /* LEFT */
