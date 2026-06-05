@@ -69,9 +69,12 @@ export default function Library() {
 
   const currentMeta = categoryMeta[activeCategory];
 
+  const PAGE_SIZE = 8; // 2 ряда по 4 карточки
+
   const [activeMode, setActiveMode] = useState('all');
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
   const [draftFilters, setDraftFilters] = useState(initialFilters);
+  const [visibleCount, setVisibleCount] = useState(PAGE_SIZE);
 
   const {
     filteredItems,
@@ -85,6 +88,11 @@ export default function Library() {
     resetFilters,
     applyFilters,
   } = useLibraryStore();
+
+  // Сбрасываем пагинацию при смене категории, режима или поиска
+  useEffect(() => {
+    setVisibleCount(PAGE_SIZE);
+  }, [currentMeta.type, activeMode, filters.search]);
 
   // Загружаем при первом монтировании и при смене категории
   useEffect(() => {
@@ -148,12 +156,15 @@ export default function Library() {
     applyFilters();
   };
 
-  const visibleItems = filteredItems.filter((item) => {
+  const allMatchingItems = filteredItems.filter((item) => {
     if (activeMode === 'favorites') return item.isFavorite;
     if (activeMode === 'new') return item.isNew;
     if (activeMode === 'folk') return item.isRussianFolk;
     return true;
   });
+
+  const visibleItems = allMatchingItems.slice(0, visibleCount);
+  const hasMore = visibleCount < allMatchingItems.length;
 
   const favoritesCount = filteredItems.filter((i) => i.isFavorite).length;
 
@@ -426,11 +437,32 @@ export default function Library() {
 
         {/* GRID */}
         {!loading && !error && visibleItems.length > 0 && (
-          <div className="lk-library-grid">
-            {visibleItems.map((item) => (
-              <LibraryCard key={item.id} item={item} />
-            ))}
-          </div>
+          <>
+            <div className="lk-library-grid">
+              {visibleItems.map((item) => (
+                <LibraryCard key={item.id} item={item} />
+              ))}
+            </div>
+
+            {/* LOAD MORE */}
+            {hasMore && (
+              <div className="lk-library-more">
+                <button
+                  type="button"
+                  className="lk-library-more__btn"
+                  onClick={() => setVisibleCount((n) => n + PAGE_SIZE)}
+                >
+                  Ещё
+                  <span className="lk-library-more__count">
+                    +{Math.min(PAGE_SIZE, allMatchingItems.length - visibleCount)}
+                  </span>
+                </button>
+                <span className="lk-library-more__total">
+                  Показано {visibleCount} из {allMatchingItems.length}
+                </span>
+              </div>
+            )}
+          </>
         )}
 
       </div>
