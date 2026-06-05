@@ -54,6 +54,7 @@ function App() {
         <Route path="/library/lullabies" element={<Library />} />
         <Route path="/library/therapy" element={<Library />} />
         <Route path="/library/family" element={<Library />} />
+        <Route path="/library/poems" element={<Library />} />
         <Route
   path="/library/item/:type/:id"
   element={<LibraryItem />}

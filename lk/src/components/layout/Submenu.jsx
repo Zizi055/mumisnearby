@@ -7,7 +7,7 @@ export default function Submenu() {
   const [isVisible, setIsVisible] = useState(false);
 
 
-  const path = location.hash.replace('#', '') || '/';
+  const path = location.pathname;
 
   const currentSection = navigation.find((item) =>
     path.startsWith(item.path)
@@ -21,7 +21,7 @@ export default function Submenu() {
     }, 80);
 
     return () => clearTimeout(timer);
-  }, [location.hash]);
+  }, [location.pathname]);
 
   if (!currentSection) {
     console.warn('Submenu not found for:', path);

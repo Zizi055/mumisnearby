@@ -349,3 +349,49 @@ modals.forEach(modal => {
     }
   });
 });
+
+// ─── CTA → Регистрация ──────────────────────────────────────────────────────
+// Все кнопки, которые должны вести на страницу регистрации в ЛК
+document.addEventListener('DOMContentLoaded', () => {
+  const REG_URL = '/lk/';
+
+  // Навигация на регистрацию
+  const toReg = () => { window.location.href = REG_URL; };
+
+  // 1. Кнопки тарифов / «Оформить подписку» / «Записать бесплатно»
+  document.querySelectorAll('.cadr-btn__one').forEach(btn => {
+    btn.addEventListener('click', toReg);
+  });
+
+  // 2. Главный hero CTA «Создать голосового двойника»
+  const heroPrimary = document.querySelector('.hero__actions .btn--primary');
+  if (heroPrimary) heroPrimary.addEventListener('click', toReg);
+
+  // 3. «Как это работает?» — плавная прокрутка к секции
+  const heroGhost = document.querySelector('.hero__actions .btn--ghost');
+  if (heroGhost) {
+    heroGhost.addEventListener('click', () => {
+      const target = document.getElementById('how-it-works');
+      if (target) target.scrollIntoView({ behavior: 'smooth' });
+    });
+  }
+
+  // 4. «Попробовать» в секции voices-echo
+  const echoCta = document.querySelector('.voices-echo__btn');
+  if (echoCta) echoCta.addEventListener('click', toReg);
+
+  // 5. «Попробовать» в footer
+  const footerBtn = document.querySelector('.footer__button');
+  if (footerBtn) footerBtn.addEventListener('click', toReg);
+
+  // 6. «Подать заявку» (программа лояльности + how-it-works top)
+  document.querySelectorAll('.loyalty-banner__btn, .how-it-works__top .btn--primary').forEach(btn => {
+    btn.addEventListener('click', toReg);
+  });
+
+  // 7. Кнопка «Подробнее» на карточке конструктора → конструктор
+  const constructorBtn = document.querySelector('.card-btn__new');
+  if (constructorBtn) constructorBtn.addEventListener('click', () => {
+    window.location.href = '/constructor.html';
+  });
+});

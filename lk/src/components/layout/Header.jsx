@@ -81,11 +81,29 @@ export default function Header() {
     <header className="lk-header">
       <div className="lk-header__left">
         <div className="lk-header__breadcrumb">
-          {current?.label} / {currentChild?.label}
+          <a
+            href="/"
+            className="lk-header__breadcrumb-home"
+            title="На главную страницу"
+          >
+            Главная
+          </a>
+          {current?.label && (
+            <>
+              <span className="lk-header__breadcrumb-sep">/</span>
+              <span>{current.label}</span>
+            </>
+          )}
+          {currentChild?.label && (
+            <>
+              <span className="lk-header__breadcrumb-sep">/</span>
+              <span>{currentChild.label}</span>
+            </>
+          )}
         </div>
 
         <h1 className="lk-header__title">
-          {currentChild?.label}
+          {currentChild?.label ?? current?.label}
         </h1>
       </div>
 

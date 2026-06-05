@@ -1,20 +1,30 @@
 import { api } from './client';
  
 // Маппинг полей бэкенда в формат который ожидает LibraryCard и стор
+const FOLK_CATEGORIES = ['folk', 'народная', 'народные', 'russian_folk', 'народная сказка'];
+
+function isFolkCategory(category) {
+  if (!category) return false;
+  const lower = category.toLowerCase();
+  return FOLK_CATEGORIES.some((k) => lower.includes(k));
+}
+
 function mapFairyTale(item) {
   return {
-    id:          item.id,
-    type:        'fairy_tale',
-    title:       item.title,
-    description: item.description ?? '',
-    age:         String(item.age),
-    duration:    0,                        // бэкенд не возвращает — пока 0
-    emotions:    [],
-    themes:      [],
-    image:       item.preview_url ?? null,
-    isFavorite:  false,
-    isNew:       false,
-    isPremium:   false,
+    id:            item.id,
+    type:          'fairy_tale',
+    title:         item.title,
+    description:   item.description ?? '',
+    age:           String(item.age),
+    duration:      0,
+    emotions:      [],
+    themes:        [],
+    image:         item.preview_url ?? null,
+    isFavorite:    false,
+    isNew:         false,
+    isPremium:     false,
+    isRussianFolk: isFolkCategory(item.category),
+    category:      item.category ?? null,
   };
 }
  

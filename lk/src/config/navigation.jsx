@@ -20,6 +20,7 @@ export const navigation = [
       { label: 'Колыбельные', path: '/library/lullabies' },
       { label: 'Терапия', path: '/library/therapy' },
       { label: 'Семейные истории', path: '/library/family' },
+      { label: 'Рассказы и стихи', path: '/library/poems' },
     ],
   },
   {

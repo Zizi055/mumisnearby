@@ -11,9 +11,29 @@
 /* LEFT */
 
 .lk-header__breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
   font-size: 12px;
   color: #999;
   margin-bottom: 4px;
+}
+
+.lk-header__breadcrumb-home {
+  color: $lk-brand;
+  text-decoration: none;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+.lk-header__breadcrumb-home:hover {
+  opacity: 0.75;
+  text-decoration: underline;
+}
+
+.lk-header__breadcrumb-sep {
+  color: #ccc;
 }
 
 .lk-header__title {

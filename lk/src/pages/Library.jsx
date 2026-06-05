@@ -41,6 +41,13 @@ const categoryMeta = {
     count: '70+ семейных историй',
     description: 'Личные воспоминания и родные голосовые послания.',
   },
+
+  poems: {
+    type: 'poem',
+    title: 'Рассказы и стихи',
+    count: '80+ рассказов и стихотворений',
+    description: 'Короткие рассказы и добрые стихи для ежедневного чтения.',
+  },
 };
 
 const FILTER_STORAGE_KEY = 'lk-library-filters-v3';
@@ -77,10 +84,6 @@ export default function Library() {
     resetFilters,
     applyFilters,
   } = useLibraryStore();
-
-  useEffect(() => {
-    loadLibrary();
-  }, []);
 
   useEffect(() => {
     setType(currentMeta.type);
