@@ -85,9 +85,17 @@ export default function Library() {
     applyFilters,
   } = useLibraryStore();
 
+  // Загружаем при первом монтировании и при смене категории
   useEffect(() => {
     setType(currentMeta.type);
   }, [currentMeta.type]);
+
+  // Запасная загрузка — если store пустой после mount
+  useEffect(() => {
+    if (filteredItems.length === 0 && !loading) {
+      loadLibrary();
+    }
+  }, []);
 
   useEffect(() => {
     const saved = localStorage.getItem(FILTER_STORAGE_KEY);
