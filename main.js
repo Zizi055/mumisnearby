@@ -389,9 +389,21 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.addEventListener('click', toReg);
   });
 
-  // 7. Кнопка «Подробнее» на карточке конструктора → конструктор
+  // 7. Кнопка «Подробнее» на карточке конструктора (index.html) → конструктор
   const constructorBtn = document.querySelector('.card-btn__new');
   if (constructorBtn) constructorBtn.addEventListener('click', () => {
     window.location.href = '/constructor.html';
+  });
+
+  // 8. «Оформить тариф» внутри модалки конструктора (constructor.html)
+  const builderSubmit = document.querySelector('.builder__submit');
+  if (builderSubmit) builderSubmit.addEventListener('click', toReg);
+
+  // 9. footer «Попробовать» на constructor.html (тег <a> без href)
+  document.querySelectorAll('.footer__button').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      toReg();
+    });
   });
 });
