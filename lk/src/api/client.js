@@ -1,5 +1,16 @@
 const BASE_URL = import.meta.env.VITE_API_URL || '';
 
+// ── Глобальный обработчик истёкшего токена ───────────────────────────────────
+function handleUnauthorized() {
+  localStorage.removeItem('token');
+  localStorage.removeItem('user');
+
+  // Перенаправляем на страницу входа (HashRouter)
+  if (!window.location.hash.includes('/auth')) {
+    window.location.hash = '/auth';
+  }
+}
+
 async function request(path, options = {}) {
   const token = localStorage.getItem('token');
 
@@ -21,6 +32,12 @@ async function request(path, options = {}) {
     ...options,
     headers,
   });
+
+  // Токен истёк или невалиден — выходим и редиректим на логин
+  if (res.status === 401) {
+    handleUnauthorized();
+    throw new Error('Сессия истекла. Пожалуйста, войдите снова.');
+  }
 
   if (!res.ok) {
     const text = await res.text().catch(() => '');

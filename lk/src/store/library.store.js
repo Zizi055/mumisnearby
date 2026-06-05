@@ -34,6 +34,8 @@ export const useLibraryStore = create(
 
     loading: false,
 
+    error: null,
+
     favorites: loadFavorites(),
 
     filters: {
@@ -50,32 +52,31 @@ export const useLibraryStore = create(
 
       try {
 
-        set({
-          loading: true,
-        });
+        set({ loading: true, error: null });
 
-        const data =
-          await getLibraryItems(
-            get().filters.type
-          );
+        const data = await getLibraryItems(get().filters.type);
 
         const favorites = get().favorites;
         const withFavs = injectFavorites(data, favorites);
 
-        set({
-          items: withFavs,
-          filteredItems: withFavs,
-        });
+        set({ items: withFavs, filteredItems: withFavs });
 
       } catch (error) {
 
         console.error(error);
 
+        // 401 обрабатывается в client.js (редирект на /auth)
+        // Здесь показываем понятную ошибку
+        const is401 = error.message?.includes('401') || error.message?.includes('истекла');
+        set({
+          error: is401
+            ? 'session_expired'
+            : 'load_failed',
+        });
+
       } finally {
 
-        set({
-          loading: false,
-        });
+        set({ loading: false });
 
       }
     },

@@ -76,6 +76,7 @@ export default function Library() {
   const {
     filteredItems,
     loading,
+    error,
     filters,
     loadLibrary,
     setSearch,
@@ -384,8 +385,36 @@ export default function Library() {
           </div>
         )}
 
+        {/* ОШИБКА */}
+        {!loading && error && (
+          <div className="lk-library-empty">
+            {error === 'session_expired' ? (
+              <>
+                Сессия истекла.{' '}
+                <span
+                  style={{ color: '#5d8f72', cursor: 'pointer', textDecoration: 'underline' }}
+                  onClick={() => { window.location.hash = '/auth'; }}
+                >
+                  Войдите снова
+                </span>
+                , чтобы видеть библиотеку.
+              </>
+            ) : (
+              <>
+                Не удалось загрузить контент.{' '}
+                <span
+                  style={{ color: '#5d8f72', cursor: 'pointer', textDecoration: 'underline' }}
+                  onClick={loadLibrary}
+                >
+                  Попробовать ещё раз
+                </span>
+              </>
+            )}
+          </div>
+        )}
+
         {/* EMPTY */}
-        {!loading && visibleItems.length === 0 && (
+        {!loading && !error && visibleItems.length === 0 && (
           <div className="lk-library-empty">
             {activeMode === 'favorites'
               ? 'Вы ещё не добавили ничего в избранное. Нажмите ♥ на карточке.'
@@ -396,7 +425,7 @@ export default function Library() {
         )}
 
         {/* GRID */}
-        {!loading && visibleItems.length > 0 && (
+        {!loading && !error && visibleItems.length > 0 && (
           <div className="lk-library-grid">
             {visibleItems.map((item) => (
               <LibraryCard key={item.id} item={item} />
