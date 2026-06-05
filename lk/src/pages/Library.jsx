@@ -19,51 +19,31 @@ import { useLibraryStore } from '../store/library.store';
 const categoryMeta = {
   stories: {
     type: 'fairy_tale',
-
     title: 'Сказки',
-
     count: '100+ доступных сказок',
-
-    description:
-      'Добрые истории для сна, спокойствия и воображения.',
+    description: 'Добрые истории для сна, спокойствия и воображения.',
   },
-
   lullabies: {
     type: 'lullaby',
-
     title: 'Колыбельные',
-
     count: '50+ колыбельных',
-
-    description:
-      'Мягкие голосовые сценарии для вечернего ритуала.',
+    description: 'Мягкие голосовые сценарии для вечернего ритуала.',
   },
-
   therapy: {
     type: 'therapy',
-
     title: 'Терапевтические сценарии',
-
     count: '10+ терапевтических сценариев',
-
-    description:
-      'Поддерживающие аудиосценарии и эмоциональная адаптация.',
+    description: 'Поддерживающие аудиосценарии и эмоциональная адаптация.',
   },
-
   family: {
     type: 'family_story',
-
     title: 'Семейные истории',
-
     count: '70+ семейных историй',
-
-    description:
-      'Личные воспоминания и родные голосовые послания.',
+    description: 'Личные воспоминания и родные голосовые послания.',
   },
 };
 
-const FILTER_STORAGE_KEY =
-  'lk-library-filters-v3';
+const FILTER_STORAGE_KEY = 'lk-library-filters-v3';
 
 const initialFilters = {
   age: [],
@@ -75,43 +55,26 @@ const initialFilters = {
 export default function Library() {
   const location = useLocation();
 
-  const categoryFromUrl =
-    location.pathname.split('/').pop();
+  const categoryFromUrl = location.pathname.split('/').pop();
 
   const activeCategory =
-    categoryMeta[categoryFromUrl]
-      ? categoryFromUrl
-      : 'stories';
+    categoryMeta[categoryFromUrl] ? categoryFromUrl : 'stories';
 
-  const currentMeta =
-    categoryMeta[activeCategory];
+  const currentMeta = categoryMeta[activeCategory];
 
-  const [activeMode, setActiveMode] =
-    useState('all');
-
-  const [isFiltersOpen, setIsFiltersOpen] =
-    useState(false);
-
-  const [draftFilters, setDraftFilters] =
-    useState(initialFilters);
+  const [activeMode, setActiveMode] = useState('all');
+  const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+  const [draftFilters, setDraftFilters] = useState(initialFilters);
 
   const {
     filteredItems,
-
     loading,
-
     filters,
-
     loadLibrary,
-
     setSearch,
-
     setType,
-
     toggleFilter,
-
     resetFilters,
-
     applyFilters,
   } = useLibraryStore();
 
@@ -124,22 +87,17 @@ export default function Library() {
   }, [currentMeta.type]);
 
   useEffect(() => {
-    const saved = localStorage.getItem(
-      FILTER_STORAGE_KEY
-    );
+    const saved = localStorage.getItem(FILTER_STORAGE_KEY);
 
     if (saved) {
       const parsed = JSON.parse(saved);
-
       setDraftFilters(parsed);
 
-      Object.entries(parsed).forEach(
-        ([group, values]) => {
-          values.forEach((value) => {
-            toggleFilter(group, value);
-          });
-        }
-      );
+      Object.entries(parsed).forEach(([group, values]) => {
+        values.forEach((value) => {
+          toggleFilter(group, value);
+        });
+      });
     }
   }, []);
 
@@ -150,19 +108,11 @@ export default function Library() {
     );
   }, [draftFilters]);
 
-  const toggleDraftFilter = (
-    group,
-    value
-  ) => {
+  const toggleDraftFilter = (group, value) => {
     setDraftFilters((prev) => ({
       ...prev,
-
-      [group]: prev[group].includes(
-        value
-      )
-        ? prev[group].filter(
-            (i) => i !== value
-          )
+      [group]: prev[group].includes(value)
+        ? prev[group].filter((i) => i !== value)
         : [...prev[group], value],
     }));
   };
@@ -170,41 +120,30 @@ export default function Library() {
   const handleApplyFilters = () => {
     resetFilters();
 
-    Object.entries(draftFilters).forEach(
-      ([group, values]) => {
-        values.forEach((value) => {
-          toggleFilter(group, value);
-        });
-      }
-    );
+    Object.entries(draftFilters).forEach(([group, values]) => {
+      values.forEach((value) => {
+        toggleFilter(group, value);
+      });
+    });
 
     applyFilters();
-
     setIsFiltersOpen(false);
   };
 
   const handleResetFilters = () => {
     setDraftFilters(initialFilters);
-
     resetFilters();
-
     applyFilters();
   };
 
-  const visibleItems = filteredItems.filter(
-    (item) => {
+  const visibleItems = filteredItems.filter((item) => {
+    if (activeMode === 'favorites') return item.isFavorite;
+    if (activeMode === 'new') return item.isNew;
+    if (activeMode === 'folk') return item.isRussianFolk;
+    return true;
+  });
 
-      if (activeMode === 'favorites') {
-        return item.isFavorite;
-      }
-
-      if (activeMode === 'new') {
-        return item.isNew;
-      }
-
-      return true;
-    }
-  );
+  const favoritesCount = filteredItems.filter((i) => i.isFavorite).length;
 
   return (
     <section className="lk-library-page">
@@ -212,230 +151,125 @@ export default function Library() {
       {isFiltersOpen && (
         <div
           className="lk-library-overlay"
-          onClick={() =>
-            setIsFiltersOpen(false)
-          }
+          onClick={() => setIsFiltersOpen(false)}
         />
       )}
 
       {/* SIDEBAR */}
       <aside
-        className={`lk-library-sidebar ${
-          isFiltersOpen
-            ? 'is-open'
-            : ''
-        }`}
+        className={`lk-library-sidebar ${isFiltersOpen ? 'is-open' : ''}`}
       >
-
         <div className="lk-library-filters">
 
           <div className="lk-library-filters__head">
-
             <button
               type="button"
               className="lk-library-filters__title"
             >
-
-              <SlidersHorizontal
-                size={18}
-              />
-
+              <SlidersHorizontal size={18} />
               Фильтры
-
             </button>
 
             <button
               type="button"
               className="lk-library-filters__close"
-              onClick={() =>
-                setIsFiltersOpen(false)
-              }
+              onClick={() => setIsFiltersOpen(false)}
             >
-
               <X size={18} />
-
             </button>
-
           </div>
 
           {/* AGE */}
           <div className="lk-library-group">
-
             <div className="lk-library-group__head">
-              <h3>
-                Возраст
-              </h3>
+              <h3>Возраст</h3>
             </div>
 
             <div className="lk-library-checkboxes">
-
-              {LIBRARY_FILTERS.age.map(
-                (item) => (
-
-                  <button
-                    key={item.id}
-                    type="button"
-                    className={`lk-library-checkbox ${
-                      draftFilters.age.includes(
-                        item.id
-                      )
-                        ? 'is-active'
-                        : ''
-                    }`}
-                    onClick={() =>
-                      toggleDraftFilter(
-                        'age',
-                        item.id
-                      )
-                    }
-                  >
-
-                    <span />
-
-                    {item.label}
-
-                  </button>
-
-                )
-              )}
-
+              {LIBRARY_FILTERS.age.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  className={`lk-library-checkbox ${
+                    draftFilters.age.includes(item.id) ? 'is-active' : ''
+                  }`}
+                  onClick={() => toggleDraftFilter('age', item.id)}
+                >
+                  <span />
+                  {item.label}
+                </button>
+              ))}
             </div>
-
           </div>
 
           {/* DURATION */}
           <div className="lk-library-group">
-
             <div className="lk-library-group__head">
-              <h3>
-                Длительность
-              </h3>
+              <h3>Длительность</h3>
             </div>
 
             <div className="lk-library-checkboxes">
-
-              {LIBRARY_FILTERS.duration.map(
-                (item) => (
-
-                  <button
-                    key={item.id}
-                    type="button"
-                    className={`lk-library-checkbox ${
-                      draftFilters.duration.includes(
-                        item.id
-                      )
-                        ? 'is-active'
-                        : ''
-                    }`}
-                    onClick={() =>
-                      toggleDraftFilter(
-                        'duration',
-                        item.id
-                      )
-                    }
-                  >
-
-                    <span />
-
-                    {item.label}
-
-                  </button>
-
-                )
-              )}
-
+              {LIBRARY_FILTERS.duration.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  className={`lk-library-checkbox ${
+                    draftFilters.duration.includes(item.id) ? 'is-active' : ''
+                  }`}
+                  onClick={() => toggleDraftFilter('duration', item.id)}
+                >
+                  <span />
+                  {item.label}
+                </button>
+              ))}
             </div>
-
           </div>
 
           {/* EMOTIONS */}
           <div className="lk-library-group">
-
             <div className="lk-library-group__head">
-              <h3>
-                Эмоции
-              </h3>
+              <h3>Эмоции</h3>
             </div>
 
             <div className="lk-library-tags">
-
-              {LIBRARY_FILTERS.emotions.map(
-                (item) => (
-
-                  <button
-                    key={item.id}
-                    type="button"
-                    className={`lk-library-tag ${
-                      draftFilters.emotions.includes(
-                        item.id
-                      )
-                        ? 'is-active'
-                        : ''
-                    }`}
-                    onClick={() =>
-                      toggleDraftFilter(
-                        'emotions',
-                        item.id
-                      )
-                    }
-                  >
-
-                    {item.label}
-
-                  </button>
-
-                )
-              )}
-
+              {LIBRARY_FILTERS.emotions.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  className={`lk-library-tag ${
+                    draftFilters.emotions.includes(item.id) ? 'is-active' : ''
+                  }`}
+                  onClick={() => toggleDraftFilter('emotions', item.id)}
+                >
+                  {item.label}
+                </button>
+              ))}
             </div>
-
           </div>
 
           {/* THEMES */}
           <div className="lk-library-group">
-
             <div className="lk-library-group__head">
-              <h3>
-                Темы
-              </h3>
+              <h3>Темы</h3>
             </div>
 
             <div className="lk-library-tags">
-
-              {LIBRARY_FILTERS.themes.map(
-                (item) => (
-
-                  <button
-                    key={item.id}
-                    type="button"
-                    className={`lk-library-tag ${
-                      draftFilters.themes.includes(
-                        item.id
-                      )
-                        ? 'is-active'
-                        : ''
-                    }`}
-                    onClick={() =>
-                      toggleDraftFilter(
-                        'themes',
-                        item.id
-                      )
-                    }
-                  >
-
-                    {item.label}
-
-                  </button>
-
-                )
-              )}
-
+              {LIBRARY_FILTERS.themes.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  className={`lk-library-tag ${
+                    draftFilters.themes.includes(item.id) ? 'is-active' : ''
+                  }`}
+                  onClick={() => toggleDraftFilter('themes', item.id)}
+                >
+                  {item.label}
+                </button>
+              ))}
             </div>
-
           </div>
 
           <div className="lk-library-filters__footer">
-
             <button
               type="button"
               className="lk-library-apply"
@@ -451,11 +285,9 @@ export default function Library() {
             >
               Сбросить
             </button>
-
           </div>
 
         </div>
-
       </aside>
 
       {/* CONTENT */}
@@ -463,111 +295,73 @@ export default function Library() {
 
         {/* HERO */}
         <div className="lk-library-hero">
-
           <div>
-
-            <span className="lk-library-hero__eyebrow">
-              Библиотека
-            </span>
-
-            <h2>
-              {currentMeta.title}
-            </h2>
-
-            <p>
-              {currentMeta.description}
-            </p>
-
+            <span className="lk-library-hero__eyebrow">Библиотека</span>
+            <h2>{currentMeta.title}</h2>
+            <p>{currentMeta.description}</p>
           </div>
 
           <div className="lk-library-hero__count">
             {currentMeta.count}
           </div>
-
         </div>
 
         {/* TOPBAR */}
         <div className="lk-library-topbar">
 
           <div className="lk-library-search">
-
             <Search size={16} />
-
             <input
               value={filters.search}
-              onChange={(e) =>
-                setSearch(
-                  e.target.value
-                )
-              }
+              onChange={(e) => setSearch(e.target.value)}
               placeholder="Поиск по библиотеке"
             />
-
           </div>
 
           <div className="lk-library-modes">
-
             <button
               type="button"
-              className={
-                activeMode === 'all'
-                  ? 'is-active'
-                  : ''
-              }
-              onClick={() =>
-                setActiveMode('all')
-              }
+              className={activeMode === 'all' ? 'is-active' : ''}
+              onClick={() => setActiveMode('all')}
             >
               Все
             </button>
 
             <button
               type="button"
-              className={
-                activeMode ===
-                'favorites'
-                  ? 'is-active'
-                  : ''
-              }
-              onClick={() =>
-                setActiveMode(
-                  'favorites'
-                )
-              }
+              className={`lk-library-mode-favorites ${activeMode === 'favorites' ? 'is-active' : ''}`}
+              onClick={() => setActiveMode('favorites')}
             >
-              Избранное
+              ♥ Избранное
+              {favoritesCount > 0 && (
+                <span className="lk-library-mode-badge">{favoritesCount}</span>
+              )}
             </button>
 
             <button
               type="button"
-              className={
-                activeMode === 'new'
-                  ? 'is-active'
-                  : ''
-              }
-              onClick={() =>
-                setActiveMode('new')
-              }
+              className={activeMode === 'folk' ? 'is-active' : ''}
+              onClick={() => setActiveMode('folk')}
+            >
+              Русские народные
+            </button>
+
+            <button
+              type="button"
+              className={activeMode === 'new' ? 'is-active' : ''}
+              onClick={() => setActiveMode('new')}
             >
               Новое
             </button>
-
           </div>
 
           <button
             type="button"
             className="lk-library-mobile-filter"
-            onClick={() =>
-              setIsFiltersOpen(true)
-            }
+            onClick={() => setIsFiltersOpen(true)}
           >
-
-            <SlidersHorizontal
-              size={16}
-            />
-
+            <SlidersHorizontal size={16} />
             Фильтры
-
           </button>
 
         </div>
@@ -579,21 +373,23 @@ export default function Library() {
           </div>
         )}
 
+        {/* EMPTY */}
+        {!loading && visibleItems.length === 0 && (
+          <div className="lk-library-empty">
+            {activeMode === 'favorites'
+              ? 'Вы ещё не добавили ничего в избранное. Нажмите ♥ на карточке.'
+              : activeMode === 'folk'
+              ? 'Русские народные сказки не найдены.'
+              : 'Ничего не найдено по вашему запросу.'}
+          </div>
+        )}
+
         {/* GRID */}
-        {!loading && (
+        {!loading && visibleItems.length > 0 && (
           <div className="lk-library-grid">
-
-            {visibleItems.map(
-              (item) => (
-
-                <LibraryCard
-                  key={item.id}
-                  item={item}
-                />
-
-              )
-            )}
-
+            {visibleItems.map((item) => (
+              <LibraryCard key={item.id} item={item} />
+            ))}
           </div>
         )}
 

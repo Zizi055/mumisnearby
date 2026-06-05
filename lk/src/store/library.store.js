@@ -4,6 +4,27 @@ import {
   getLibraryItems,
 } from '../api/library.service';
 
+const FAVORITES_KEY = 'lk-library-favorites';
+
+function loadFavorites() {
+  try {
+    return new Set(JSON.parse(localStorage.getItem(FAVORITES_KEY) || '[]'));
+  } catch {
+    return new Set();
+  }
+}
+
+function saveFavorites(set) {
+  localStorage.setItem(FAVORITES_KEY, JSON.stringify([...set]));
+}
+
+function injectFavorites(items, favorites) {
+  return items.map((item) => ({
+    ...item,
+    isFavorite: favorites.has(item.id),
+  }));
+}
+
 export const useLibraryStore = create(
   (set, get) => ({
 
@@ -12,6 +33,8 @@ export const useLibraryStore = create(
     filteredItems: [],
 
     loading: false,
+
+    favorites: loadFavorites(),
 
     filters: {
       search: '',
@@ -36,9 +59,12 @@ export const useLibraryStore = create(
             get().filters.type
           );
 
+        const favorites = get().favorites;
+        const withFavs = injectFavorites(data, favorites);
+
         set({
-          items: data,
-          filteredItems: data,
+          items: withFavs,
+          filteredItems: withFavs,
         });
 
       } catch (error) {
@@ -52,6 +78,23 @@ export const useLibraryStore = create(
         });
 
       }
+    },
+
+    toggleFavorite(id) {
+      const favorites = new Set(get().favorites);
+
+      if (favorites.has(id)) {
+        favorites.delete(id);
+      } else {
+        favorites.add(id);
+      }
+
+      saveFavorites(favorites);
+
+      const items = injectFavorites(get().items, favorites);
+      const filteredItems = injectFavorites(get().filteredItems, favorites);
+
+      set({ favorites, items, filteredItems });
     },
 
     setSearch(value) {
