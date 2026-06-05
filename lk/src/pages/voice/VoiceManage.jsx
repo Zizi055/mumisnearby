@@ -64,6 +64,9 @@ export default function VoiceManage() {
   const [uploadedFile, setUploadedFile] =
     useState(null);
 
+  const [biometryConsent, setBiometryConsent] =
+    useState(false);
+
   const [trainingStatus, setTrainingStatus] =
     useState('idle');
 
@@ -359,8 +362,11 @@ export default function VoiceManage() {
           size="sm"
           className="lk-btn--icon"
           onClick={() =>
-            fileRef.current.click()
+            biometryConsent
+              ? fileRef.current.click()
+              : document.querySelector('.lk-voice-consent')?.scrollIntoView({ behavior: 'smooth' })
           }
+          title={!biometryConsent ? 'Сначала дайте согласие на биометрию' : ''}
         >
           <Upload size={15} />
           Загрузить запись
@@ -392,10 +398,12 @@ export default function VoiceManage() {
 
           <button
             type="button"
-            className="lk-voice-upload__drop"
+            className={`lk-voice-upload__drop ${!biometryConsent ? 'is-disabled' : ''}`}
             onClick={() =>
-              fileRef.current.click()
+              biometryConsent && fileRef.current.click()
             }
+            disabled={!biometryConsent}
+            title={!biometryConsent ? 'Необходимо дать согласие на обработку биометрических данных' : ''}
           >
             <FileAudio size={18} />
 
@@ -410,6 +418,33 @@ export default function VoiceManage() {
             <span>MP3, WAV, M4A</span>
             <span>до 100 МБ</span>
           </div>
+
+          {/* Согласие на биометрию — обязательное */}
+          <label className="lk-voice-consent">
+            <input
+              type="checkbox"
+              checked={biometryConsent}
+              onChange={(e) => setBiometryConsent(e.target.checked)}
+            />
+            <span className="lk-voice-consent__box" />
+            <span className="lk-voice-consent__text">
+              Я даю{' '}
+              <a
+                href="/lk/docs/согласие-на-биометрию.docx"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="lk-voice-consent__link"
+                download
+              >
+                согласие на обработку биометрических персональных данных
+              </a>{' '}
+              (голосового образца) ИП Бабочкиным В.В. в целях создания голосовой модели и генерации аудиофайлов.
+              Согласие может быть отозвано в любой момент на&nbsp;
+              <a href="mailto:info@rodnyegolosa.ru" className="lk-voice-consent__link">
+                info@rodnyegolosa.ru
+              </a>
+            </span>
+          </label>
 
         </div>
 

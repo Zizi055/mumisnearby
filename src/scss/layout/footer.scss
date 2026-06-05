@@ -231,15 +231,24 @@
   line-height: 1.55;
 }
 
+.footer__legal {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
 .footer__policy {
   color: rgba(255, 255, 255, 0.72);
   text-decoration: none;
   transition: color 0.22s ease;
   text-align: right;
+  font-size: 13px;
 }
 
 .footer__policy:hover {
   color: #ffffff;
+  text-decoration: underline;
 }
 
 /* TABLET */
