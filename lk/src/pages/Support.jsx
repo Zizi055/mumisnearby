@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useAuth } from '../context/AuthContext';
 
 import {
   Search,
@@ -128,6 +129,7 @@ function formatDate(iso) {
 // ========================================
 
 function SupportModal({ isOpen, onClose, onSuccess }) {
+  const { user } = useAuth();
   const [ticketForm, setTicketForm]   = useState(INITIAL_FORM);
   const [ticketStatus, setTicketStatus] = useState('idle');
   const [ticketError, setTicketError]   = useState(null);
@@ -159,8 +161,8 @@ function SupportModal({ isOpen, onClose, onSuccess }) {
       body.append('type',       ticketForm.category);
       body.append('subject',    ticketForm.subject.trim());
       body.append('message',    ticketForm.message.trim());
-      body.append('user_id',    'USER_ID_HERE');    // TODO: заменить на auth-контекст
-      body.append('user_email', 'USER_EMAIL_HERE'); // TODO: заменить на auth-контекст
+      body.append('user_id',    String(user?.id    || ''));
+      body.append('user_email', String(user?.email || ''));
       if (ticketForm.file) body.append('attachment', ticketForm.file);
 
       const res = await fetch('/api/support/tickets', { method: 'POST', body });
@@ -303,6 +305,7 @@ function TicketCard({ ticket }) {
 }
 
 function UserTickets({ onCreateTicket, refreshKey }) {
+  const { user } = useAuth();
   const [tickets, setTickets]           = useState([]);
   const [fetchStatus, setFetchStatus]   = useState('loading');
   const [filterStatus, setFilterStatus] = useState('all');
@@ -310,8 +313,8 @@ function UserTickets({ onCreateTicket, refreshKey }) {
   async function fetchTickets() {
     setFetchStatus('loading');
     try {
-      // TODO: заменить user_id на auth-контекст
-      const res = await fetch('/api/support/tickets?user_id=USER_ID_HERE');
+      const userId = user?.id || '';
+      const res = await fetch(`/api/support/tickets?user_id=${userId}`);
       if (!res.ok) throw new Error();
       setTickets(await res.json());
       setFetchStatus('success');

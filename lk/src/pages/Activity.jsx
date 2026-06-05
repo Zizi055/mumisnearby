@@ -21,13 +21,12 @@ export default function Activity() {
 
   useEffect(() => {
     async function load() {
-      const response =
-        await getActivityOverview();
-
+      const response = await getActivityOverview();
       setData(response);
     }
-
     load();
+    const interval = setInterval(load, 60_000);
+    return () => clearInterval(interval);
   }, []);
 
   if (!data) {

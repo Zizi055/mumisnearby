@@ -19,13 +19,21 @@ export default function Dashboard() {
   const [progress, setProgress]   = useState(0);
   const [currentAudio, setCurrentAudio] = useState(null);
 
-  useEffect(() => {
-    async function load() {
+  const load = async () => {
+    try {
       const response = await getDashboardOverview();
       setData(response);
       setCurrentAudio(response.continueListening.audioUrl);
+    } catch (e) {
+      console.error('Dashboard load error', e);
     }
+  };
+
+  useEffect(() => {
     load();
+    // Автообновление каждые 60 секунд
+    const interval = setInterval(load, 60_000);
+    return () => clearInterval(interval);
   }, []);
 
   // Обновляем src когда меняется текущая сказка
@@ -275,23 +283,28 @@ export default function Dashboard() {
             </header>
 
             <div className="lk-dashboard-voices">
-              <article className="lk-dashboard-voice">
-                <div className="lk-dashboard-voice__avatar">М</div>
-                <div className="lk-dashboard-voice__content">
-                  <h3>Мамин голос</h3>
-                  <p>Основной голос</p>
-                </div>
-                <div className="lk-dashboard-voice__status is-active">Active</div>
-              </article>
-
-              <article className="lk-dashboard-voice">
-                <div className="lk-dashboard-voice__avatar">П</div>
-                <div className="lk-dashboard-voice__content">
-                  <h3>Папин голос</h3>
-                  <p>Семейные истории</p>
-                </div>
-                <div className="lk-dashboard-voice__status">Standby</div>
-              </article>
+              {data.voices.length === 0 && (
+                <p style={{ color: 'var(--lk-text-muted, #6e756f)', fontSize: 14 }}>
+                  Голосов пока нет. <span
+                    style={{ color: '#5d8f72', cursor: 'pointer', textDecoration: 'underline' }}
+                    onClick={() => navigate('/voice/manage')}
+                  >Добавить голос</span>
+                </p>
+              )}
+              {data.voices.map((voice) => (
+                <article key={voice.id} className="lk-dashboard-voice">
+                  <div className="lk-dashboard-voice__avatar">
+                    {voice.name?.[0]?.toUpperCase() || '?'}
+                  </div>
+                  <div className="lk-dashboard-voice__content">
+                    <h3>{voice.name || 'Без названия'}</h3>
+                    <p>{voice.description || 'Голосовая модель'}</p>
+                  </div>
+                  <div className={`lk-dashboard-voice__status ${voice.status === 'ready' || !voice.status ? 'is-active' : ''}`}>
+                    {voice.status === 'training' ? 'Обучается' : 'Активен'}
+                  </div>
+                </article>
+              ))}
             </div>
           </section>
 
