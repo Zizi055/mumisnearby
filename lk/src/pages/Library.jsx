@@ -18,8 +18,9 @@ import { useLibraryStore } from '../store/library.store';
 import { getTrialInfo } from '../store/trial.store';
 import { getSubscription } from '../store/subscription.store';
 
-// В пробном периоде первые 5 карточек открыты, остальные — под замком
+// В пробном периоде: только категория сказок, первые 5 открыты
 const TRIAL_FREE_COUNT = 5;
+const TRIAL_FREE_CATEGORY = 'stories';
 
 const categoryMeta = {
   stories: {
@@ -79,6 +80,8 @@ export default function Library() {
   const hasPaidPlan = !!getSubscription()?.currentPlanId;
   const trial = !hasPaidPlan ? getTrialInfo() : null;
   const isTrialMode = !!trial;
+  // В триале открыта только категория сказок (первые 5), всё остальное заблокировано
+  const isLockedCategory = isTrialMode && activeCategory !== TRIAL_FREE_CATEGORY;
 
   const [activeMode, setActiveMode] = useState('all');
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
@@ -452,7 +455,7 @@ export default function Library() {
                 <LibraryCard
                   key={item.id}
                   item={item}
-                  isTrialLocked={isTrialMode && index >= TRIAL_FREE_COUNT}
+                  isTrialLocked={isLockedCategory || (isTrialMode && index >= TRIAL_FREE_COUNT)}
                 />
               ))}
             </div>
