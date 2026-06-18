@@ -18,8 +18,8 @@ import { useLibraryStore } from '../store/library.store';
 import { getTrialInfo } from '../store/trial.store';
 import { getSubscription } from '../store/subscription.store';
 
-// В пробном периоде первые 3 карточки открыты, остальные — под замком
-const TRIAL_FREE_COUNT = 3;
+// В пробном периоде первые 5 карточек открыты, остальные — под замком
+const TRIAL_FREE_COUNT = 5;
 
 const categoryMeta = {
   stories: {
