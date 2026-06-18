@@ -5,25 +5,31 @@ import {
   Heart,
   Lock,
   Star,
+  Sparkles,
 } from 'lucide-react';
 
 import { useLibraryStore } from '../../store/library.store';
 
-export default function LibraryCard({ item }) {
+export default function LibraryCard({ item, isTrialLocked = false }) {
   const navigate = useNavigate();
   const toggleFavorite = useLibraryStore((s) => s.toggleFavorite);
 
   const handleFavorite = (e) => {
     e.stopPropagation();
+    if (isTrialLocked) return;
     toggleFavorite(item.id);
   };
 
   const openDetails = () => {
+    if (isTrialLocked) {
+      navigate('/subscription/tariff');
+      return;
+    }
     navigate(`/library/item/${item.type}/${item.id}`);
   };
 
   return (
-    <article className="lk-library-card">
+    <article className={`lk-library-card ${isTrialLocked ? 'is-trial-locked' : ''}`}>
       {/* image */}
       <div className="lk-library-card__media">
         <img src={item.image} alt={item.title} />
@@ -34,27 +40,47 @@ export default function LibraryCard({ item }) {
             {getTypeLabel(item.type)}
           </span>
 
-          <button
-            type="button"
-            className={`lk-library-card__favorite ${item.isFavorite ? 'is-active' : ''}`}
-            onClick={handleFavorite}
-            aria-label={item.isFavorite ? 'Убрать из избранного' : 'Добавить в избранное'}
-          >
-            <Heart size={14} />
-          </button>
+          {!isTrialLocked && (
+            <button
+              type="button"
+              className={`lk-library-card__favorite ${item.isFavorite ? 'is-active' : ''}`}
+              onClick={handleFavorite}
+              aria-label={item.isFavorite ? 'Убрать из избранного' : 'Добавить в избранное'}
+            >
+              <Heart size={14} />
+            </button>
+          )}
         </div>
 
-        {item.isPremium && (
+        {item.isPremium && !isTrialLocked && (
           <div className="lk-library-card__premium">
             <Lock size={12} />
             Premium
           </div>
         )}
 
-        {item.isRussianFolk && (
+        {item.isRussianFolk && !isTrialLocked && (
           <div className="lk-library-card__folk">
             <Star size={11} />
             Народная
+          </div>
+        )}
+
+        {/* Замок для триала */}
+        {isTrialLocked && (
+          <div className="lk-library-card__trial-lock">
+            <div className="lk-library-card__trial-lock-icon">
+              <Lock size={20} />
+            </div>
+            <span>Доступно по подписке</span>
+            <button
+              type="button"
+              className="lk-library-card__trial-lock-btn"
+              onClick={openDetails}
+            >
+              <Sparkles size={13} />
+              Открыть доступ
+            </button>
           </div>
         )}
       </div>
@@ -75,7 +101,7 @@ export default function LibraryCard({ item }) {
           {item.description}
         </p>
 
-        {item.emotions?.length > 0 && (
+        {item.emotions?.length > 0 && !isTrialLocked && (
           <div className="lk-library-card__tags">
             {item.emotions.slice(0, 3).map((tag) => (
               <span key={tag}>{getEmotionLabel(tag)}</span>
@@ -86,10 +112,12 @@ export default function LibraryCard({ item }) {
         <div className="lk-library-card__footer">
           <button
             type="button"
-            className="lk-btn lk-btn--secondary lk-btn--sm"
+            className={`lk-btn lk-btn--sm ${isTrialLocked ? 'lk-btn--primary' : 'lk-btn--secondary'}`}
             onClick={openDetails}
           >
-            Подробнее
+            {isTrialLocked ? (
+              <><Lock size={13} /> Подписка</>
+            ) : 'Подробнее'}
           </button>
         </div>
       </div>

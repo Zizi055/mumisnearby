@@ -15,6 +15,11 @@ import {
 } from '../data/libraryCatalog.data';
 
 import { useLibraryStore } from '../store/library.store';
+import { getTrialInfo } from '../store/trial.store';
+import { getSubscription } from '../store/subscription.store';
+
+// В пробном периоде первые 3 карточки открыты, остальные — под замком
+const TRIAL_FREE_COUNT = 3;
 
 const categoryMeta = {
   stories: {
@@ -70,6 +75,10 @@ export default function Library() {
   const currentMeta = categoryMeta[activeCategory];
 
   const PAGE_SIZE = 8; // 2 ряда по 4 карточки
+
+  const hasPaidPlan = !!getSubscription()?.currentPlanId;
+  const trial = !hasPaidPlan ? getTrialInfo() : null;
+  const isTrialMode = !!trial;
 
   const [activeMode, setActiveMode] = useState('all');
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
@@ -439,8 +448,12 @@ export default function Library() {
         {!loading && !error && visibleItems.length > 0 && (
           <>
             <div className="lk-library-grid">
-              {visibleItems.map((item) => (
-                <LibraryCard key={item.id} item={item} />
+              {visibleItems.map((item, index) => (
+                <LibraryCard
+                  key={item.id}
+                  item={item}
+                  isTrialLocked={isTrialMode && index >= TRIAL_FREE_COUNT}
+                />
               ))}
             </div>
 

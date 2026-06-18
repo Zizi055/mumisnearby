@@ -19,6 +19,7 @@ import VoiceAnalytics from './pages/voice/VoiceAnalytics';
 import Activity from './pages/Activity.jsx';
 import Support from './pages/Support.jsx';
 import Auth from './pages/Auth.jsx';
+import AuthReset from './pages/AuthReset.jsx';
 import Profile from './pages/profile/Profile.jsx';
 import Settings from './pages/settings/Settings.jsx';
 
@@ -30,7 +31,7 @@ function App() {
 
       {/* Auth —  до LkLayout */}
       <Route path="/auth" element={<Auth />} />
-      <Route path="/auth/reset" element={<Auth />} />
+      <Route path="/auth/reset" element={<AuthReset />} />
 
       {/* ЛК */}
       <Route element={<LkLayout />}>
