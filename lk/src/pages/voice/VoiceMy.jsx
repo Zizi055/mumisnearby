@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LkButton from '../../components/ui/LkButton';
 import { useVoiceStore } from '../../store/voice.store';
+import { getTrialInfo } from '../../store/trial.store';
+import { getSubscription } from '../../store/subscription.store';
 
 
 import {
@@ -29,6 +31,11 @@ export default function VoiceMy() {
     renameVoiceById,
     uploadAvatar,
   } = useVoiceStore();
+
+  const hasPaidPlan = !!getSubscription()?.currentPlanId;
+  const trial = !hasPaidPlan ? getTrialInfo() : null;
+  // В триале — только 1 голос
+  const voiceLimitReached = !hasPaidPlan && trial && voices.length >= 1;
 
   const avatarInputRef = useRef(null);
 
@@ -184,14 +191,20 @@ export default function VoiceMy() {
           variant="secondary"
           size="sm"
           className="lk-btn--icon"
-          onClick={() =>
-            navigate('/voice/manage')
-          }
+          disabled={voiceLimitReached}
+          title={voiceLimitReached ? 'В пробном периоде доступен 1 голос' : undefined}
+          onClick={() => {
+            if (voiceLimitReached) {
+              navigate('/subscription/tariff');
+            } else {
+              navigate('/voice/manage');
+            }
+          }}
         >
           <Plus size={16} />
 
           <span>
-            Создать голос
+            {voiceLimitReached ? 'Лимит голосов' : 'Создать голос'}
           </span>
         </LkButton>
 
@@ -242,6 +255,20 @@ export default function VoiceMy() {
         </div>
 
       </div>
+
+      {/* Триал-подсказка */}
+      {voiceLimitReached && (
+        <div className="lk-voices-trial-hint">
+          <span>В пробном периоде доступен только 1 голос.</span>
+          <button
+            type="button"
+            className="lk-btn lk-btn--sm lk-btn--secondary"
+            onClick={() => navigate('/subscription/tariff')}
+          >
+            Расширить доступ
+          </button>
+        </div>
+      )}
 
       {/* grid */}
 

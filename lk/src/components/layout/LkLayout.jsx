@@ -2,11 +2,18 @@ import { useState } from 'react';
 import { Outlet, useLocation, NavLink } from 'react-router-dom';
 import Sidebar from './Sidebar';
 import Header from './Header';
+import TrialBanner from '../trial/TrialBanner';
 import { navigation } from '../../config/navigation';
+import { getSubscription } from '../../store/subscription.store';
+import { getTrialInfo } from '../../store/trial.store';
 
 export default function LkLayout() {
   const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const sub = getSubscription();
+  const hasPaidPlan = !!sub?.currentPlanId;
+  const trial = !hasPaidPlan ? getTrialInfo() : null;
 
   const currentSection =
     navigation.find((item) =>
@@ -55,6 +62,9 @@ export default function LkLayout() {
             ))}
           </nav>
         </div>
+
+        {/* Триал-баннер */}
+        {trial && <TrialBanner />}
 
         {/* Тело */}
         <div className="lk-body">

@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, ArrowRight, Sparkles } from 'lucide-react';
 import { login, register } from '../api/auth.service';
 import { useAuth } from '../context/AuthContext';
+import { initTrial } from '../store/trial.store';
 import AuthDNA from './AuthDNA';
 import '../styles/scss/pages/auth.scss';
 
@@ -70,6 +71,11 @@ export default function Auth() {
         : await login({ email, password });
 
       setUser(user);
+
+      // Инициализируем триал при регистрации (при входе не трогаем)
+      if (isRegister) {
+        initTrial();
+      }
 
       // После входа проверяем redirect
       // Если пользователь пришёл с тарифной страницы — ведём на оплату

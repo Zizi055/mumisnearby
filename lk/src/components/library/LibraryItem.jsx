@@ -14,6 +14,8 @@ import {
 
 import { useVoiceStore } from '../../store/voice.store';
 import { useLibraryStore } from '../../store/library.store';
+import { useTrialStore } from '../../store/trial.store';
+import { getSubscription } from '../../store/subscription.store';
 
 export default function LibraryItem() {
   const { type, id } = useParams();
@@ -21,6 +23,9 @@ export default function LibraryItem() {
 
   const { voices, loadVoices } = useVoiceStore();
   const { items, loadLibrary, setType, toggleFavorite } = useLibraryStore();
+  const { trial, incrementStory } = useTrialStore();
+
+  const hasPaidPlan = !!getSubscription()?.currentPlanId;
 
   const [selectedVoice, setSelectedVoice] = useState(null);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -46,12 +51,35 @@ export default function LibraryItem() {
 
   const handleGenerate = async () => {
     if (!selectedVoice) return;
+
+    // Проверяем триал-лимит (только если нет платной подписки)
+    if (!hasPaidPlan && trial) {
+      if (trial.isExpired) {
+        navigate('/subscription/tariff');
+        return;
+      }
+      if (trial.storiesLimitReached) {
+        navigate('/subscription/tariff');
+        return;
+      }
+    }
+
     setIsGenerating(true);
     try {
       alert('Позже здесь будет генерация через ElevenLabs');
+      if (!hasPaidPlan) {
+        incrementStory();
+      }
     } finally {
       setIsGenerating(false);
     }
+  };
+
+  const trialBlocked = !hasPaidPlan && trial && (!trial.canGenerate);
+  const generateLabel = () => {
+    if (isGenerating) return 'Генерация...';
+    if (trialBlocked) return 'Лимит исчерпан';
+    return 'Создать аудио';
   };
 
   const categoryPath = getCategoryPath(type);
@@ -150,15 +178,25 @@ export default function LibraryItem() {
             </div>
           )}
 
+          {!hasPaidPlan && trial && (
+            <div className="lk-item-trial-hint">
+              {trial.canGenerate
+                ? `Пробный период: осталось ${trial.storiesLeft} из 5 сказок`
+                : trial.isExpired
+                  ? 'Пробный период завершён — оформите подписку'
+                  : 'Лимит в 5 сказок исчерпан — оформите подписку'}
+            </div>
+          )}
+
           <div className="lk-item-hero__actions">
             <button
               type="button"
-              className="lk-btn lk-btn--primary"
+              className={`lk-btn lk-btn--primary ${trialBlocked ? 'lk-btn--disabled' : ''}`}
               onClick={handleGenerate}
-              disabled={!selectedVoice || isGenerating}
+              disabled={!selectedVoice || isGenerating || trialBlocked}
             >
               <Play size={15} />
-              {isGenerating ? 'Генерация...' : 'Создать аудио'}
+              {generateLabel()}
             </button>
 
             {item && (
@@ -259,15 +297,34 @@ export default function LibraryItem() {
                 : 'Выберите голос выше'}
             </p>
 
+            {!hasPaidPlan && trial && (
+              <p className="lk-item-card__trial">
+                {trial.canGenerate
+                  ? `Осталось сказок: ${trial.storiesLeft} / 5`
+                  : '— Лимит исчерпан'}
+              </p>
+            )}
+
             <button
               type="button"
               className="lk-btn lk-btn--primary lk-btn--full"
-              disabled={!selectedVoice || isGenerating}
+              disabled={!selectedVoice || isGenerating || trialBlocked}
               onClick={handleGenerate}
             >
               <Play size={15} />
-              {isGenerating ? 'Генерация...' : 'Сгенерировать'}
+              {generateLabel()}
             </button>
+
+            {trialBlocked && (
+              <button
+                type="button"
+                className="lk-btn lk-btn--secondary lk-btn--full"
+                style={{ marginTop: 8 }}
+                onClick={() => navigate('/subscription/tariff')}
+              >
+                Оформить подписку
+              </button>
+            )}
           </div>
 
         </aside>
