@@ -6,18 +6,28 @@ export function AuthProvider({ children }) {
   const [user, setUserState] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // При загрузке приложения восстанавливаем пользователя из localStorage
+  // При загрузке проверяем токен на сервере
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem('user');
-      if (stored) {
-        setUserState(JSON.parse(stored));
-      }
-    } catch {
-      localStorage.removeItem('user');
-    } finally {
+    const token = localStorage.getItem('token');
+    if (!token) {
       setLoading(false);
+      return;
     }
+
+    import('../api/auth.service').then(({ getMe }) => {
+      getMe()
+        .then((data) => {
+          const user = { ...data, name: data.username ?? data.name };
+          localStorage.setItem('user', JSON.stringify(user));
+          setUserState(user);
+        })
+        .catch(() => {
+          localStorage.removeItem('token');
+          localStorage.removeItem('user');
+          setUserState(null);
+        })
+        .finally(() => setLoading(false));
+    });
   }, []);
 
   const setUser = (userData) => {
