@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import {
@@ -9,10 +10,18 @@ import {
 } from 'lucide-react';
 
 import { useLibraryStore } from '../../store/library.store';
+import TrialPaywallModal from '../trial/TrialPaywallModal';
+import { useTrialStore } from '../../store/trial.store';
+import { getSubscription } from '../../store/subscription.store';
 
 export default function LibraryCard({ item, isTrialLocked = false }) {
   const navigate = useNavigate();
   const toggleFavorite = useLibraryStore((s) => s.toggleFavorite);
+  const trial = useTrialStore((s) => s.trial);
+  const hasPaidPlan = !!getSubscription()?.currentPlanId;
+  const [showPaywall, setShowPaywall] = useState(false);
+
+  const paywallReason = trial?.isExpired ? 'expired' : 'limit';
 
   const handleFavorite = (e) => {
     e.stopPropagation();
@@ -22,13 +31,20 @@ export default function LibraryCard({ item, isTrialLocked = false }) {
 
   const openDetails = () => {
     if (isTrialLocked) {
-      navigate('/subscription/tariff');
+      setShowPaywall(true);
       return;
     }
     navigate(`/library/item/${item.type}/${item.id}`);
   };
 
   return (
+    <>
+    {showPaywall && (
+      <TrialPaywallModal
+        reason={paywallReason}
+        onClose={() => setShowPaywall(false)}
+      />
+    )}
     <article className={`lk-library-card ${isTrialLocked ? 'is-trial-locked' : ''}`}>
       {/* image */}
       <div className="lk-library-card__media">
@@ -122,6 +138,7 @@ export default function LibraryCard({ item, isTrialLocked = false }) {
         </div>
       </div>
     </article>
+    </>
   );
 }
 

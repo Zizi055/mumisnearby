@@ -16,6 +16,7 @@ import { useVoiceStore } from '../../store/voice.store';
 import { useLibraryStore } from '../../store/library.store';
 import { useTrialStore } from '../../store/trial.store';
 import { getSubscription } from '../../store/subscription.store';
+import TrialPaywallModal from '../trial/TrialPaywallModal';
 
 export default function LibraryItem() {
   const { type, id } = useParams();
@@ -29,6 +30,7 @@ export default function LibraryItem() {
 
   const [selectedVoice, setSelectedVoice] = useState(null);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [showPaywall, setShowPaywall] = useState(false);
 
   useEffect(() => {
     loadVoices();
@@ -54,12 +56,8 @@ export default function LibraryItem() {
 
     // Проверяем триал-лимит (только если нет платной подписки)
     if (!hasPaidPlan && trial) {
-      if (trial.isExpired) {
-        navigate('/subscription/tariff');
-        return;
-      }
-      if (trial.storiesLimitReached) {
-        navigate('/subscription/tariff');
+      if (trial.isExpired || trial.storiesLimitReached) {
+        setShowPaywall(true);
         return;
       }
     }
@@ -86,6 +84,13 @@ export default function LibraryItem() {
 
   return (
     <section className="lk-item-page">
+
+      {showPaywall && (
+        <TrialPaywallModal
+          reason={trial?.isExpired ? 'expired' : 'limit'}
+          onClose={() => setShowPaywall(false)}
+        />
+      )}
 
       {/* BACK */}
       <button
@@ -320,7 +325,7 @@ export default function LibraryItem() {
                 type="button"
                 className="lk-btn lk-btn--secondary lk-btn--full"
                 style={{ marginTop: 8 }}
-                onClick={() => navigate('/subscription/tariff')}
+                onClick={() => setShowPaywall(true)}
               >
                 Оформить подписку
               </button>

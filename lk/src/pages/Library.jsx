@@ -80,8 +80,9 @@ export default function Library() {
   const hasPaidPlan = !!getSubscription()?.currentPlanId;
   const trial = !hasPaidPlan ? getTrialInfo() : null;
   const isTrialMode = !!trial;
-  // В триале открыта только категория сказок (первые 5), всё остальное заблокировано
-  const isLockedCategory = isTrialMode && activeCategory !== TRIAL_FREE_CATEGORY;
+  // Триал истёк — блокируем всё. Иначе: только сказки первые 5 открыты
+  const trialExpired = isTrialMode && trial?.isExpired;
+  const isLockedCategory = isTrialMode && (trialExpired || activeCategory !== TRIAL_FREE_CATEGORY);
 
   const [activeMode, setActiveMode] = useState('all');
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
