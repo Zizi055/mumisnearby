@@ -50,40 +50,19 @@ export const useVoiceStore = create((set, get) => ({
 
   createVoice: async (file) => {
     try {
-      set({
-        loading: true,
-        error: null,
-      });
+      set({ loading: true, error: null });
 
       const newVoice = await uploadVoice(file);
 
-      set((state) => ({
-        voices: [
-          {
-            settings: {
-              softness: 70,
-              clarity: 82,
-              speed: 58,
-            },
+      // Перезагружаем список с сервера — чтобы получить актуальные данные
+      const fresh = await getVoices();
+      set({ voices: fresh || [], loading: false });
 
-            ...newVoice,
-          },
-
-          ...state.voices,
-        ],
-
-        loading: false,
-      }));
-
-      return newVoice;
+      // Возвращаем голос из свежего списка или fallback на то что вернул API
+      return fresh?.find((v) => v.id === newVoice?.id) || newVoice;
     } catch (error) {
       console.error(error);
-
-      set({
-        loading: false,
-        error: error.message,
-      });
-
+      set({ loading: false, error: error.message });
       throw error;
     }
   },
