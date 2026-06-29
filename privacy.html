@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Политика конфиденциальности — Родные голоса</title>
+  <meta name="description" content="Политика конфиденциальности сервиса Родные голоса — порядок обработки и защиты персональных данных." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f8f5f0;
+      color: #1a1a1a;
+      line-height: 1.7;
+    }
+
+    /* HEADER */
+    .pp-header {
+      background: #fff;
+      border-bottom: 1px solid #ede9e3;
+      padding: 18px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .pp-header__inner {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .pp-logo {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1a1a1a;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pp-logo::before {
+      content: '✦';
+      color: #5d8f72;
+      font-size: 18px;
+    }
+
+    .pp-back {
+      font-size: 13px;
+      color: #5d8f72;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: opacity 0.15s;
+    }
+
+    .pp-back:hover { opacity: 0.75; }
+
+    /* HERO */
+    .pp-hero {
+      background: linear-gradient(135deg, #2d5a3d 0%, #4a7a5c 100%);
+      color: #fff;
+      padding: 56px 24px 48px;
+      text-align: center;
+    }
+
+    .pp-hero__tag {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 999px;
+      padding: 5px 16px;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .pp-hero h1 {
+      font-size: clamp(26px, 5vw, 38px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+
+    .pp-hero p {
+      font-size: 15px;
+      opacity: 0.8;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .pp-hero__date {
+      display: inline-block;
+      margin-top: 20px;
+      font-size: 12px;
+      opacity: 0.6;
+    }
+
+    /* CONTENT */
+    .pp-content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    .pp-section {
+      background: #fff;
+      border-radius: 20px;
+      padding: 36px 40px;
+      margin-bottom: 16px;
+      border: 1px solid #ede9e3;
+    }
+
+    .pp-section:first-child { margin-top: 0; }
+
+    .pp-section h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid #f0ede8;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .pp-section h2 .pp-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      background: #e8f5ee;
+      color: #5d8f72;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .pp-section p {
+      font-size: 14px;
+      color: #4a4a4a;
+      margin-bottom: 12px;
+    }
+
+    .pp-section p:last-child { margin-bottom: 0; }
+
+    .pp-section ul, .pp-section ol {
+      padding-left: 20px;
+      margin-bottom: 12px;
+    }
+
+    .pp-section li {
+      font-size: 14px;
+      color: #4a4a4a;
+      margin-bottom: 6px;
+    }
+
+    /* TABLE */
+    .pp-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 13px;
+    }
+
+    .pp-table th {
+      background: #f0f9f4;
+      color: #2d5a3d;
+      font-weight: 600;
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid #d4ead9;
+    }
+
+    .pp-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #f0ede8;
+      color: #4a4a4a;
+      vertical-align: top;
+    }
+
+    .pp-table tr:last-child td { border-bottom: none; }
+    .pp-table tr:hover td { background: #faf9f7; }
+
+    /* HIGHLIGHT */
+    .pp-highlight {
+      background: #f0f9f4;
+      border-left: 3px solid #5d8f72;
+      border-radius: 0 10px 10px 0;
+      padding: 14px 18px;
+      margin: 16px 0;
+      font-size: 13px;
+      color: #2d5a3d;
+    }
+
+    .pp-warn {
+      background: #fff8ed;
+      border-left: 3px solid #e07b39;
+      border-radius: 0 10px 10px 0;
+      padding: 14px 18px;
+      margin: 16px 0;
+      font-size: 13px;
+      color: #7a3d0a;
+    }
+
+    a { color: #5d8f72; }
+    a:hover { opacity: 0.8; }
+
+    strong { font-weight: 600; color: #1a1a1a; }
+
+    /* CONTACT CARD */
+    .pp-contact {
+      background: linear-gradient(135deg, #2d5a3d, #4a7a5c);
+      border-radius: 20px;
+      padding: 32px 40px;
+      color: #fff;
+      margin-top: 16px;
+    }
+
+    .pp-contact h2 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: #fff;
+      border: none;
+      padding: 0;
+    }
+
+    .pp-contact p {
+      font-size: 14px;
+      opacity: 0.85;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+
+    .pp-contact a {
+      color: #a8d8b8;
+    }
+
+    /* FOOTER */
+    .pp-footer {
+      text-align: center;
+      padding: 32px 24px;
+      font-size: 12px;
+      color: #9ca3af;
+      border-top: 1px solid #ede9e3;
+    }
+
+    @media (max-width: 600px) {
+      .pp-section { padding: 24px 20px; border-radius: 16px; }
+      .pp-contact { padding: 24px 20px; border-radius: 16px; }
+      .pp-table { display: block; overflow-x: auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="pp-header">
+    <div class="pp-header__inner">
+      <a href="/" class="pp-logo">Родные голоса</a>
+      <a href="/" class="pp-back">← На главную</a>
+    </div>
+  </header>
+
+  <div class="pp-hero">
+    <div class="pp-hero__tag">Юридический документ</div>
+    <h1>Политика конфиденциальности</h1>
+    <p>Порядок обработки, хранения и защиты персональных данных пользователей сайта rodnyegolosa.ru</p>
+    <span class="pp-hero__date">Дата последнего обновления: 09.06.2026</span>
+  </div>
+
+  <div class="pp-content">
+
+    <div class="pp-section">
+      <p>Настоящая Политика конфиденциальности (далее — Политика) определяет порядок обработки, хранения, защиты и уничтожения персональных данных, биометрической информации и иных данных пользователей сайта <a href="https://rodnyegolosa.ru/">https://rodnyegolosa.ru/</a> (далее — Сайт).</p>
+      <p>Политика составлена в соответствии с:</p>
+      <ul>
+        <li>Федеральным законом от 27.07.2006 № 152‑ФЗ «О персональных данных»;</li>
+        <li>Федеральным законом от 27.07.2006 № 149‑ФЗ «Об информации, информационных технологиях и о защите информации»;</li>
+        <li>Постановлением Правительства РФ от 01.11.2012 № 1119.</li>
+      </ul>
+    </div>
+
+    <div class="pp-section">
+      <h2><span class="pp-num">1</span> Термины и определения</h2>
+      <p><strong>1.1 Оператор</strong> — Индивидуальный предприниматель Бабочкин Вячеслав Вячеславович (ОГРНИП 325344300105232, ИНН 343534427084).</p>
+      <p><strong>1.2 Пользователь</strong> — любое физическое лицо, использующее Сайт (включая просмотр, регистрацию, загрузку голосовых образцов, оплату подписки).</p>
+      <p><strong>1.3 Персональные данные</strong> — любая информация, относящаяся к определённому или определяемому Пользователю (ст. 3 152‑ФЗ).</p>
+      <p><strong>1.4 Биометрические персональные данные</strong> — голосовой образец (аудиофайл), загружаемый Пользователем, характеризующий его физиологические особенности (голос).</p>
+      <p><strong>1.5 Голосовой образец</strong> — аудиофайл (формат MP3/WAV/M4A, размер до 10 МБ), загружаемый Пользователем.</p>
+      <p><strong>1.6 Голосовой двойник</strong> — цифровая модель голоса, создаваемая Оператором на основе Голосового образца.</p>
+      <p><strong>1.7 Озвученный текст</strong> — аудиофайл, сгенерированный с использованием Голосового двойника из текстов Библиотеки Сайта. Хранится на Сайте, не передаётся Пользователю в виде файла.</p>
+      <p><strong>1.8 Подписка</strong> — платный доступ к сервису на определённый срок (месяц, год).</p>
+    </div>
+
+    <div class="pp-section">
+      <h2><span class="pp-num">2</span> Какие данные собирает Оператор</h2>
+      <p><strong>2.1 Персональные данные (обязательные)</strong></p>
+      <table class="pp-table">
+        <thead>
+          <tr><th>Данные</th><th>Цель сбора</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Адрес электронной почты (e-mail)</td><td>Регистрация, восстановление доступа, уведомления, рассылка (с правом отписки)</td></tr>
+          <tr><td>Имя и фамилия (или псевдоним)</td><td>Идентификация в Личном кабинете</td></tr>
+          <tr><td>Номер телефона (по желанию)</td><td>Альтернативное уведомление</td></tr>
+        </tbody>
+      </table>
+
+      <p><strong>2.2 Технические данные (автоматически)</strong></p>
+      <table class="pp-table">
+        <thead>
+          <tr><th>Данные</th><th>Цель</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>IP-адрес</td><td>Безопасность, предотвращение атак</td></tr>
+          <tr><td>Тип браузера и ОС</td><td>Адаптация интерфейса</td></tr>
+          <tr><td>Дата и время посещения</td><td>Анализ нагрузки</td></tr>
+          <tr><td>Cookie-файлы</td><td>Авторизация, настройки, аналитика</td></tr>
+          <tr><td>Действия на Сайте</td><td>Улучшение пользовательского опыта</td></tr>
+        </tbody>
+      </table>
+      <p class="pp-highlight">Cookie можно отключить в настройках браузера.</p>
+
+      <p><strong>2.3 Биометрические данные (требуют отдельного согласия)</strong></p>
+      <table class="pp-table">
+        <thead>
+          <tr><th>Данные</th><th>Цель</th><th>Срок хранения</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Голосовой образец (аудиофайл)</td><td>Создание Голосового двойника</td><td>В течение Подписки + 30 дней</td></tr>
+          <tr><td>Голосовой двойник</td><td>Генерация Озвученных текстов</td><td>В течение Подписки + 30 дней</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pp-section">
+      <h2><span class="pp-num">3</span> Правовые основания обработки</h2>
+      <p>3.1 Обработка персональных данных осуществляется на основании:</p>
+      <ul>
+        <li>п. 5 ч. 1 ст. 6 152‑ФЗ — исполнение договора (Оферты);</li>
+        <li>согласия Пользователя — для биометрических данных (отдельная галочка);</li>
+        <li>законного интереса Оператора — безопасность Сайта.</li>
+      </ul>
+      <p>3.2 Пользователь даёт согласие на обработку персональных данных в момент регистрации.</p>
+      <p>3.3 Согласие на обработку биометрии даётся отдельно при загрузке Голосового образца и может быть отозвано (п. 8).</p>
+    </div>
+
+    <div class="pp-section">
+      <h2><span class="pp-num">4</span> Хранение и защита данных</h2>
+      <p>4.1 Все данные хранятся на серверах, расположенных на территории <strong>Российской Федерации</strong>. Трансграничная передача данных <strong>не осуществляется</strong>.</p>
+
+      <p><strong>4.2 Сроки хранения</strong></p>
+      <table class="pp-table">
+        <thead>
+          <tr><th>Тип данных</th><th>Срок хранения</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>E-mail, имя, телефон</td><td>В течение Подписки + 3 года после последней активности (или до удаления)</td></tr>
+          <tr><td>Логи доступа (IP, дата)</td><td>12 месяцев</td></tr>
+          <tr><td>Cookie</td><td>Сессионные — до закрытия браузера; постоянные — до 2 лет</td></tr>
+          <tr><td>Голосовой образец</td><td>В течение Подписки + 30 дней</td></tr>
+          <tr><td>Голосовой двойник</td><td>В течение Подписки + 30 дней</td></tr>
+          <tr><td>Озвученные тексты</td><td>В течение Подписки; после прекращения — блокируются</td></tr>
+        </tbody>
+      </table>
+
+      <p><strong>4.3 Меры защиты</strong></p>
+      <ul>
+        <li>Шифрование передачи данных (SSL/TLS);</li>
+        <li>Ограниченный доступ к Голосовым образцам (только технические специалисты);</li>
+        <li>Регулярное резервное копирование;</li>
+        <li>Защита от SQL‑инъекций и XSS‑атак.</li>
+      </ul>
+    </div>
+
+    <div class="pp-section">
+      <h2><span class="pp-num">5</span> Передача данных третьим лицам</h2>
+      <p>5.1 Оператор <strong>не продаёт</strong> и <strong>не передаёт</strong> данные третьим лицам, за исключением:</p>
+      <table class="pp-table">
+        <thead>
+          <tr><th>Получатель</th><th>Какие данные</th><th>Основание</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Платёжный агрегатор</td><td>Идентификатор платежа, сумма, e-mail</td><td>Обработка оплаты</td></tr>
+          <tr><td>Хостинг-провайдер</td><td>Все данные (в зашифрованном виде)</td><td>Хранение</td></tr>
+          <tr><td>Правоохранительные органы</td><td>По законному запросу</td><td>Требование закона</td></tr>
+          <tr><td>Суд</td><td>По решению суда</td><td>Исполнение судебного акта</td></tr>
+        </tbody>
+      </table>
+      <p>5.2 Оператор обязывает третьих лиц соблюдать конфиденциальность.</p>
+    </div>
+
+    <div class="pp-section">
+      <h2><span class="pp-num">6</span> Права Пользователя</h2>
+      <ul>
+        <li><strong>6.1 На доступ к своим данным</strong> — запрос на e-mail <a href="mailto:info@rodnyegolosa.ru">info@rodnyegolosa.ru</a>. Ответ в течение 10 рабочих дней.</li>
+        <li><strong>6.2 На уточнение, блокировку или уничтожение данных</strong>, если они неполные, устаревшие или незаконные.</li>
+        <li><strong>6.3 На отзыв согласия на обработку биометрических данных</strong> (см. п. 8).</li>
+        <li><strong>6.4 На удаление аккаунта и всех связанных данных.</strong> Заявление на e-mail <a href="mailto:info@rodnyegolosa.ru">info@rodnyegolosa.ru</a>. Срок удаления — 10 рабочих дней.</li>
+        <li><strong>6.5 На обращение в Роскомнадзор</strong> — <a href="https://rkn.gov.ru" target="_blank" rel="noopener">rkn.gov.ru</a>.</li>
+      </ul>
+    </div>
+
+    <div class="pp-section">
+      <h2><span class="pp-num">7</span> Обработка биометрии (голоса)</h2>
+      <p>7.1 Биометрические данные обрабатываются только при явном, информированном и свободном согласии Пользователя.</p>
+      <p>7.2 Форма согласия размещается на Сайте перед загрузкой аудиофайла. Галочка не установлена по умолчанию.</p>
+      <p>7.3 Пользователь подтверждает, что загружаемый Голосовой образец:</p>
+      <ul>
+        <li>записан с его собственного голоса, либо</li>
+        <li>записан с письменного согласия третьего лица (для взрослых), либо с согласия законного представителя (для голоса ребёнка младше 18 лет).</li>
+      </ul>
+      <div class="pp-warn">7.4 Оператор не проверяет наличие согласия третьего лица. Ответственность за отсутствие согласия несёт Пользователь.</div>
+    </div>
+
+    <div class="pp-section">
+      <h2><span class="pp-num">8</span> Как отозвать согласие или удалить данные</h2>
+      <p><strong>8.1 Отзыв согласия на биометрию</strong></p>
+      <p>Направить на e-mail <a href="mailto:info@rodnyegolosa.ru">info@rodnyegolosa.ru</a> письмо с темой <strong>«Отзыв согласия на обработку биометрии»</strong>, указав e-mail, использованный при регистрации.</p>
+      <p>Оператор:</p>
+      <ul>
+        <li>подтверждает получение в течение 2 рабочих дней;</li>
+        <li>удаляет Голосовой образец и Голосового двойника в течение 7 рабочих дней;</li>
+        <li>блокирует возможность генерации новых Озвученных текстов.</li>
+      </ul>
+      <p><strong>8.2 Удаление всех данных (аккаунта)</strong></p>
+      <p>Направить письмо с темой <strong>«Удаление аккаунта»</strong>. Оператор удаляет: e-mail, имя, телефон, Голосовой образец и Голосового двойника, все Озвученные тексты. Срок: 10 рабочих дней после подтверждения личности.</p>
+    </div>
+
+    <div class="pp-section">
+      <h2><span class="pp-num">9</span> Cookie и аналитика</h2>
+      <table class="pp-table">
+        <thead>
+          <tr><th>Тип cookie</th><th>Назначение</th><th>Срок</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Технические (обязательные)</td><td>Авторизация, защита</td><td>Сессионные</td></tr>
+          <tr><td>Аналитические</td><td>Яндекс.Метрика, Google Analytics</td><td>До 2 лет</td></tr>
+          <tr><td>Функциональные</td><td>Настройки интерфейса</td><td>30 дней</td></tr>
+        </tbody>
+      </table>
+      <p>9.2 Пользователь может отключить cookie в настройках браузера. Некоторые функции могут работать некорректно.</p>
+    </div>
+
+    <div class="pp-section">
+      <h2><span class="pp-num">10</span> Обработка данных несовершеннолетних</h2>
+      <p>10.1 Сайт предназначен для лиц старше <strong>18 лет</strong>. Регистрируясь, Пользователь подтверждает достижение 18 лет.</p>
+      <p>10.2 Для загрузки голоса ребёнка согласие даёт законный представитель.</p>
+      <p>10.3 При обнаружении данных несовершеннолетних без согласия представителя — данные удаляются.</p>
+    </div>
+
+    <div class="pp-section">
+      <h2><span class="pp-num">11</span> Изменение Политики</h2>
+      <p>11.1 Оператор вправе изменять Политику с уведомлением за 3 дня через публикацию на Сайте.</p>
+      <p>11.2 Продолжение использования Сайта после изменений означает согласие с новой редакцией.</p>
+    </div>
+
+    <div class="pp-contact">
+      <h2>Контактная информация</h2>
+      <p><strong>Оператор:</strong> ИП Бабочкин Вячеслав Вячеславович</p>
+      <p><strong>ИНН:</strong> 343534427084</p>
+      <p><strong>ОГРНИП:</strong> 325344300105232</p>
+      <p><strong>E-mail:</strong> <a href="mailto:info@rodnyegolosa.ru">info@rodnyegolosa.ru</a></p>
+      <p>Ответственное лицо за обработку персональных данных: ИП Бабочкин Вячеслав Вячеславович лично</p>
+    </div>
+
+    <div class="pp-section" style="text-align: center; padding: 24px;">
+      <p style="font-size: 13px; color: #9ca3af;">Политика является публичным документом и доступна по адресу: <a href="https://rodnyegolosa.ru/privacy">rodnyegolosa.ru/privacy</a></p>
+      <p style="font-size: 13px; color: #9ca3af; margin-top: 6px;">Во всём, что не урегулировано Политикой, применяется законодательство РФ.</p>
+    </div>
+
+  </div>
+
+  <footer class="pp-footer">
+    © 2026 Родные голоса · <a href="/">На главную</a> · <a href="mailto:info@rodnyegolosa.ru">info@rodnyegolosa.ru</a>
+  </footer>
+
+</body>
+</html>

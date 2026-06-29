@@ -254,7 +254,7 @@ export default function Auth() {
                   условия использования
                 </a>
                 {' '}и{' '}
-                <a href="/privacy" target="_blank" rel="noreferrer">
+                <a href="/privacy.html" target="_blank" rel="noreferrer">
                   политику конфиденциальности
                 </a>
               </p>
