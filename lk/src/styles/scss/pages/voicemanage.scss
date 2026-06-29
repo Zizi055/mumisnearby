@@ -403,44 +403,109 @@
 
 /* Тело плеера */
 .lk-voice-player__body {
-  background: linear-gradient(135deg, #f0f9f4, #f8faf9);
-  border: 1px solid #d4ead9;
-  border-radius: 16px;
-  padding: 18px 20px;
+  background: linear-gradient(160deg, #1e3d2a 0%, #2d5a3d 60%, #3d6b50 100%);
+  border-radius: 18px;
+  padding: 20px 22px 18px;
   display: flex;
   flex-direction: column;
-  gap: 14px;
+  gap: 16px;
+  box-shadow:
+    0 8px 32px rgba(30, 61, 42, 0.25),
+    inset 0 1px 0 rgba(255,255,255,0.08);
 }
 
 .lk-voice-player__wave-wrap {
   overflow: hidden;
-  height: 52px;
+  height: 56px;
   display: flex;
   align-items: center;
+}
+
+.lk-voice-player__wave {
+  flex: 1;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+// Высоты барчиков — имитация аудиоволны
+$bar-heights: 14, 22, 18, 30, 24, 40, 28, 48, 32, 42, 20, 36, 44, 26, 38,
+              16, 46, 30, 22, 50, 34, 18, 42, 28, 48, 22, 38, 44, 20, 32,
+              46, 24, 36, 18, 42, 28, 52, 16, 40, 30, 22, 46, 34, 18, 44, 26, 38, 20;
+
+.lk-voice-player__wave span {
+  width: 3px;
+  flex-shrink: 0;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.25);
+  transition: background 0.3s;
+}
+
+@for $i from 1 through 48 {
+  $h: nth($bar-heights, $i);
+  .lk-voice-player__wave span:nth-child(#{$i}) {
+    height: #{$h}px;
+    animation-delay: #{($i * 0.04)}s;
+  }
+}
+
+.lk-voice-player__wave.is-playing span {
+  background: rgba(255, 255, 255, 0.7);
+  animation: voiceBar 0.9s ease-in-out infinite alternate;
+}
+
+@keyframes voiceBar {
+  from { opacity: 0.4; transform: scaleY(0.6); }
+  to   { opacity: 1;   transform: scaleY(1); }
 }
 
 .lk-voice-player__controls {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
 }
 
 .lk-voice-player__timeline {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
 
-  input {
+  input[type="range"] {
     width: 100%;
-    accent-color: $lk-brand;
-    height: 4px;
+    height: 3px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 0 6px rgba(0,0,0,0.25);
+      cursor: pointer;
+    }
+
+    &::-moz-range-thumb {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #fff;
+      border: none;
+      cursor: pointer;
+    }
   }
 }
 
 .lk-voice-player__time {
   font-size: 12px;
-  color: $lk-text-muted;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.6);
+  white-space: nowrap;
+  min-width: 72px;
   text-align: right;
 }
 
@@ -462,42 +527,30 @@
 }
 
 .lk-voice-player__button {
-  width: 52px;
-  height: 52px;
-
+  width: 40px;
+  height: 40px;
+  flex-shrink: 0;
   border: none;
   border-radius: 50%;
-
-  background:
-    linear-gradient(
-      180deg,
-      rgba(93, 143, 114, 1),
-      rgba(78, 121, 96, 1)
-    );
-
-  color: white;
-
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-
   cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
 
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
-}
+  &:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: scale(1.05);
+  }
 
-.lk-voice-player__button:hover {
-  transform: scale(1.03);
-
-  box-shadow:
-    0 12px 28px rgba(93, 143, 114, 0.28);
-}
-
-.lk-voice-player__button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+  &:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
 }
 
 .lk-voice-player__wave {

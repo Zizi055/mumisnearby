@@ -564,19 +564,10 @@ export default function VoiceManage() {
         <div className="lk-voice-player__body">
 
           <div className="lk-voice-player__wave-wrap">
-            <div className="lk-voice-player__wave">
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
-              <span />
+            <div className={`lk-voice-player__wave ${isPlaying ? 'is-playing' : ''}`}>
+              {Array.from({ length: 48 }).map((_, i) => (
+                <span key={i} />
+              ))}
             </div>
           </div>
 
@@ -587,7 +578,7 @@ export default function VoiceManage() {
               onClick={handlePlay}
               disabled={!activeVoice || activeVoice.status === 'training'}
             >
-              {isPlaying ? <Pause size={18} /> : <Play size={18} />}
+              {isPlaying ? <Pause size={16} /> : <Play size={16} />}
             </button>
 
             <div className="lk-voice-player__timeline">
@@ -598,9 +589,10 @@ export default function VoiceManage() {
                 value={playerTime}
                 onChange={handleTimelineChange}
               />
-              <div className="lk-voice-player__time">
-                {formatTime(playerTime)} / {formatTime(playerDuration)}
-              </div>
+            </div>
+
+            <div className="lk-voice-player__time">
+              {formatTime(playerTime)} / {formatTime(playerDuration)}
             </div>
           </div>
 
