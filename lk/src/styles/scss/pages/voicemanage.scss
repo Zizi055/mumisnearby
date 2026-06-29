@@ -344,10 +344,104 @@
 
 .lk-voice-player {
   padding: $lk-space-24;
-
   display: flex;
   flex-direction: column;
-  gap: $lk-space-24;
+  gap: $lk-space-20;
+}
+
+/* Header — аватар + имя + статус */
+.lk-voice-player__header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.lk-voice-player__avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #e8f5ee, #c8e6d4);
+  color: #5d8f72;
+  font-size: 22px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.lk-voice-player__meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  h3 {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 700;
+    color: $lk-text;
+    line-height: 1.2;
+  }
+}
+
+.lk-voice-player__label {
+  font-size: 11px;
+  font-weight: 500;
+  color: $lk-text-muted;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.lk-voice-player__status {
+  font-size: 12px;
+  color: $lk-text-muted;
+
+  &.is-ready {
+    color: $lk-brand;
+  }
+}
+
+/* Тело плеера */
+.lk-voice-player__body {
+  background: linear-gradient(135deg, #f0f9f4, #f8faf9);
+  border: 1px solid #d4ead9;
+  border-radius: 16px;
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.lk-voice-player__wave-wrap {
+  overflow: hidden;
+  height: 52px;
+  display: flex;
+  align-items: center;
+}
+
+.lk-voice-player__controls {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.lk-voice-player__timeline {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  input {
+    width: 100%;
+    accent-color: $lk-brand;
+    height: 4px;
+  }
+}
+
+.lk-voice-player__time {
+  font-size: 12px;
+  color: $lk-text-muted;
+  text-align: right;
 }
 
 .lk-voice-player__info span {
@@ -664,10 +758,15 @@
   color: $lk-text-muted;
 }
 
-.lk-voice-meta__publish {
+.lk-voice-meta__actions {
   margin-top: $lk-space-8;
+  display: flex;
+  justify-content: flex-start;
+}
 
+.lk-voice-meta__publish {
   height: 44px;
+  padding: 0 28px;
 
   border: none;
   border-radius: $lk-radius-16;

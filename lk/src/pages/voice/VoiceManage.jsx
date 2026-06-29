@@ -438,7 +438,7 @@ export default function VoiceManage() {
               >
                 согласие на обработку биометрических персональных данных
               </a>{' '}
-              (голосового образца) ИП Бабочкиным В.В. в целях создания голосовой модели и генерации аудиофайлов.
+              (голосового образца) в целях создания голосовой модели и генерации аудиофайлов.
               Согласие может быть отозвано в любой момент на&nbsp;
               <a href="mailto:info@rodnyegolosa.ru" className="lk-voice-consent__link">
                 info@rodnyegolosa.ru
@@ -542,183 +542,67 @@ export default function VoiceManage() {
 
       <div className="lk-voice-player">
 
-        <div className="lk-voice-player__info">
-
-          <span>
-            Активный голос
-          </span>
-
-          <h3>
-            {activeVoice?.name ||
-              'Голос не выбран'}
-          </h3>
-
-          <p>
-            {activeVoice?.status ===
-            'training'
-              ? 'Модель ещё обучается. Прослушивание будет доступно после завершения.'
-              : 'Готов к прослушиванию и использованию в сценариях.'}
-          </p>
-
+        <div className="lk-voice-player__header">
+          <div className="lk-voice-player__avatar">
+            {activeVoice?.name
+              ? activeVoice.name[0].toUpperCase()
+              : '♪'}
+          </div>
+          <div className="lk-voice-player__meta">
+            <span className="lk-voice-player__label">Активный голос</span>
+            <h3>{activeVoice?.name || 'Голос не выбран'}</h3>
+            <span className={`lk-voice-player__status ${activeVoice?.status === 'ready' ? 'is-ready' : ''}`}>
+              {activeVoice?.status === 'training'
+                ? '● Обучается'
+                : activeVoice
+                  ? '● Готов к использованию'
+                  : 'Загрузите голос'}
+            </span>
+          </div>
         </div>
 
-        <div className="lk-voice-player__main">
+        <div className="lk-voice-player__body">
 
-          <button
-            type="button"
-            className="lk-voice-player__button"
-            onClick={handlePlay}
-            disabled={
-              !activeVoice ||
-              activeVoice.status ===
-                'training'
-            }
-          >
-            {isPlaying ? (
-              <Pause size={18} />
-            ) : (
-              <Play size={18} />
-            )}
-          </button>
-
-          <div className="lk-voice-player__wave">
-            <span />
-            <span />
-            <span />
-            <span />
-            <span />
-            <span />
-            <span />
-            <span />
-            <span />
-            <span />
+          <div className="lk-voice-player__wave-wrap">
+            <div className="lk-voice-player__wave">
+              <span />
+              <span />
+              <span />
+              <span />
+              <span />
+              <span />
+              <span />
+              <span />
+              <span />
+              <span />
+              <span />
+              <span />
+            </div>
           </div>
 
-          <div className="lk-voice-player__time">
-            {formatTime(playerTime)} /
-            {formatTime(playerDuration)}
+          <div className="lk-voice-player__controls">
+            <button
+              type="button"
+              className="lk-voice-player__button"
+              onClick={handlePlay}
+              disabled={!activeVoice || activeVoice.status === 'training'}
+            >
+              {isPlaying ? <Pause size={18} /> : <Play size={18} />}
+            </button>
+
+            <div className="lk-voice-player__timeline">
+              <input
+                type="range"
+                min="0"
+                max={playerDuration || 0}
+                value={playerTime}
+                onChange={handleTimelineChange}
+              />
+              <div className="lk-voice-player__time">
+                {formatTime(playerTime)} / {formatTime(playerDuration)}
+              </div>
+            </div>
           </div>
-
-        </div>
-
-        <div className="lk-voice-player__timeline">
-
-          <input
-            type="range"
-            min="0"
-            max={playerDuration || 0}
-            value={playerTime}
-            onChange={
-              handleTimelineChange
-            }
-          />
-
-        </div>
-
-      </div>
-
-      <div className="lk-voice-settings">
-
-        <div className="lk-voice-settings__head">
-
-          <div>
-            <h3>
-              Настройки звучания
-            </h3>
-
-            <p>
-              Эти параметры помогают
-              адаптировать голос
-              под сказки,
-              колыбельные и
-              терапевтические сценарии.
-            </p>
-          </div>
-
-          <SlidersHorizontal size={18} />
-
-        </div>
-
-        <div className="lk-voice-settings__list">
-
-          <VoiceRange
-            label="Мягкость"
-            value={
-              activeSettings.softness
-            }
-            onChange={(value) =>
-              updateSetting(
-                'softness',
-                value
-              )
-            }
-          />
-
-          <VoiceRange
-            label="Чёткость"
-            value={
-              activeSettings.clarity
-            }
-            onChange={(value) =>
-              updateSetting(
-                'clarity',
-                value
-              )
-            }
-          />
-
-          <VoiceRange
-            label="Скорость"
-            value={
-              activeSettings.speed
-            }
-            onChange={(value) =>
-              updateSetting(
-                'speed',
-                value
-              )
-            }
-          />
-
-        </div>
-
-      </div>
-
-      <div className="lk-voice-presets">
-
-        <div>
-          <h3>
-            Эмоциональные пресеты
-          </h3>
-
-          <p>
-            Быстро адаптируйте голос
-            под тип контента.
-          </p>
-        </div>
-
-        <div className="lk-voice-presets__list">
-
-          {emotionPresets.map(
-            (preset) => (
-              <button
-                key={preset}
-                type="button"
-                className={
-                  selectedPreset ===
-                  preset
-                    ? 'is-active'
-                    : ''
-                }
-                onClick={() =>
-                  handlePreset(preset)
-                }
-              >
-                <Sparkles size={14} />
-                {preset}
-              </button>
-            )
-          )}
 
         </div>
 
@@ -815,23 +699,16 @@ export default function VoiceManage() {
 
         </div>
 
-        <button
-          type="button"
-          className="lk-voice-meta__publish"
-          onClick={
-            handlePublishToggle
-          }
-          disabled={
-            !activeVoice ||
-            activeVoice.status ===
-              'training'
-          }
-        >
-          {publishState ===
-          'published'
-            ? 'Вернуть в черновик'
-            : 'Опубликовать'}
-        </button>
+        <div className="lk-voice-meta__actions">
+          <button
+            type="button"
+            className="lk-voice-meta__publish"
+            onClick={handlePublishToggle}
+            disabled={!activeVoice || activeVoice.status === 'training'}
+          >
+            {publishState === 'published' ? 'Вернуть в черновик' : 'Опубликовать'}
+          </button>
+        </div>
 
       </div>
 

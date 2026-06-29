@@ -154,11 +154,6 @@ export default function LibraryItem() {
             {item?.title ?? 'Загрузка...'}
           </h1>
 
-          {item?.description && (
-            <p className="lk-item-hero__desc">
-              {item.description}
-            </p>
-          )}
 
           <div className="lk-item-hero__meta">
             {item?.duration > 0 && (
@@ -223,7 +218,7 @@ export default function LibraryItem() {
 
         {/* MAIN — текст */}
         <div className="lk-item-main">
-          <h2>О {getAboutLabel(type)}</h2>
+          <h2>Описание</h2>
 
           <div className="lk-item-text">
             {item?.description ? (
