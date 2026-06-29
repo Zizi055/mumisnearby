@@ -225,7 +225,7 @@
 
     /* CONTACT CARD */
     .pp-contact {
-      background: linear-gradient(135deg, #2d5a3d, #4a7a5c);
+      background: linear-gradient(135deg, #3d6b50 0%, #5d8f72 100%);
       border-radius: 20px;
       padding: 32px 40px;
       color: #fff;
@@ -243,22 +243,35 @@
 
     .pp-contact p {
       font-size: 14px;
-      opacity: 0.85;
+      opacity: 0.9;
       margin-bottom: 8px;
       color: #fff;
     }
 
+    .pp-contact p strong {
+      color: #fff;
+      font-weight: 600;
+    }
+
     .pp-contact a {
-      color: #a8d8b8;
+      color: rgba(255,255,255,0.85);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .pp-contact a:hover {
+      color: #fff;
+      opacity: 1;
     }
 
     /* FOOTER */
     .pp-footer {
       text-align: center;
-      padding: 32px 24px;
+      padding: 40px 24px 56px;
       font-size: 12px;
       color: #9ca3af;
       border-top: 1px solid #ede9e3;
+      margin-top: 16px;
     }
 
     @media (max-width: 600px) {
@@ -477,7 +490,7 @@
       <p><strong>ИНН:</strong> 343534427084</p>
       <p><strong>ОГРНИП:</strong> 325344300105232</p>
       <p><strong>E-mail:</strong> <a href="mailto:info@rodnyegolosa.ru">info@rodnyegolosa.ru</a></p>
-      <p>Ответственное лицо за обработку персональных данных: ИП Бабочкин Вячеслав Вячеславович лично</p>
+      <p><strong>Ответственное лицо за обработку ПД:</strong> ИП Бабочкин Вячеслав Вячеславович</p>
     </div>
 
     <div class="pp-section" style="text-align: center; padding: 24px;">
