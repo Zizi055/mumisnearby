@@ -406,4 +406,31 @@ document.addEventListener('DOMContentLoaded', () => {
       toReg();
     });
   });
+
+  // 10. Слайдер программы лояльности
+  const loyaltySlides = document.querySelectorAll('.loyalty-banner__card.is-slide');
+  const loyaltyDots = document.querySelectorAll('.loyalty-banner__dot');
+
+  function goToLoyaltySlide(index) {
+    loyaltySlides.forEach((slide, i) => {
+      slide.classList.toggle('is-active', i === index);
+    });
+    loyaltyDots.forEach((dot, i) => {
+      dot.classList.toggle('is-active', i === index);
+    });
+  }
+
+  loyaltyDots.forEach((dot) => {
+    dot.addEventListener('click', () => {
+      goToLoyaltySlide(Number(dot.dataset.dot));
+    });
+  });
+
+  if (loyaltySlides.length > 1) {
+    let loyaltyIndex = 0;
+    setInterval(() => {
+      loyaltyIndex = (loyaltyIndex + 1) % loyaltySlides.length;
+      goToLoyaltySlide(loyaltyIndex);
+    }, 6000);
+  }
 });

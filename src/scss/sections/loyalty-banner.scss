@@ -193,6 +193,26 @@ box-shadow:
   object-fit: contain;
 }
 
+/* SLIDER */
+
+.loyalty-banner__slider {
+  position: relative;
+}
+
+.loyalty-banner__card.is-slide {
+  display: none;
+}
+
+.loyalty-banner__card.is-slide.is-active {
+  display: grid;
+  animation: loyaltyFade 0.4s ease;
+}
+
+@keyframes loyaltyFade {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 /* DOTS */
 
 .loyalty-banner__dots {
@@ -205,16 +225,20 @@ box-shadow:
 .loyalty-banner__dot {
   width: 12px;
   height: 12px;
+  border: none;
   border-radius: 50%;
+  background: rgba(111, 146, 127, 0.4);
+  cursor: pointer;
+  padding: 0;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.loyalty-banner__dot:hover {
+  transform: scale(1.15);
+}
+
+.loyalty-banner__dot.is-active {
   background: rgba(111, 146, 127, 0.95);
-}
-
-.loyalty-banner__dot:nth-child(2) {
-  opacity: 0.78;
-}
-
-.loyalty-banner__dot:nth-child(3) {
-  opacity: 0.55;
 }
 
 /* TABLET */

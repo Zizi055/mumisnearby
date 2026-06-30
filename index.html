@@ -602,55 +602,116 @@ function openLK() {
 
   <div class="loyalty-banner__body">
     <div class="container">
-      <div class="loyalty-banner__card">
-        <div class="loyalty-banner__left">
-          <h2 class="heading-3 loyalty-banner__title">
-            Наша программа лояльности
-          </h2>
 
-          <div class="loyalty-banner__caterpillar" aria-hidden="true">
-            <img
-              src="/src/assets/img/index/улитка.svg"
-              alt="Caterpillar"
-              class="loyalty-banner__caterpillar-image"
-            />
+      <div class="loyalty-banner__slider" id="loyaltySlider">
+
+        <div class="loyalty-banner__card is-slide is-active" data-slide="0">
+          <div class="loyalty-banner__left">
+            <h2 class="heading-3 loyalty-banner__title">
+              Наша программа лояльности
+            </h2>
+
+            <div class="loyalty-banner__caterpillar" aria-hidden="true">
+              <img
+                src="/src/assets/img/index/улитка.svg"
+                alt="Caterpillar"
+                class="loyalty-banner__caterpillar-image"
+              />
+            </div>
+          </div>
+
+          <div class="loyalty-banner__center">
+            <div class="loyalty-banner__badge" aria-hidden="true">
+              <img
+                src="/src/assets/img/index/Discount.svg"
+                alt="Discount"
+                class="loyalty-banner__badge-image"
+              />
+            </div>
+
+
+          </div>
+
+          <div class="loyalty-banner__right">
+              <h3 class="heading-4 loyalty-banner__text">
+              Подтвердите статус многодетной семьи
+              и получите постоянную скидку 25 %
+            </h3>
+            <a
+              href="/lk/"
+              class="btn btn--primary label-md loyalty-banner__btn"
+              aria-label="Подать заявку"
+            >
+              <span class="btn__text">Подать заявку</span>
+              <span class="btn__icon">↗</span>
+            </a>
+
+            <div class="loyalty-banner__family" aria-hidden="true">
+              <img
+                src="/src/assets/img/index/family.svg"
+                alt="Family"
+                class="loyalty-banner__family-image"
+              />
+            </div>
           </div>
         </div>
 
-        <div class="loyalty-banner__center">
-          <div class="loyalty-banner__badge" aria-hidden="true">
-            <img
-              src="/src/assets/img/index/Discount.svg"
-              alt="Discount"
-              class="loyalty-banner__badge-image"
-            />
+        <div class="loyalty-banner__card is-slide" data-slide="1">
+          <div class="loyalty-banner__left">
+            <h2 class="heading-3 loyalty-banner__title">
+              Поддержка участников СВО
+            </h2>
+
+            <div class="loyalty-banner__caterpillar" aria-hidden="true">
+              <img
+                src="/src/assets/img/index/улитка2.svg"
+                alt="Caterpillar"
+                class="loyalty-banner__caterpillar-image"
+              />
+            </div>
           </div>
 
-    
-        </div>
+          <div class="loyalty-banner__center">
+            <div class="loyalty-banner__badge" aria-hidden="true">
+              <img
+                src="/src/assets/img/index/Discount.svg"
+                alt="Discount"
+                class="loyalty-banner__badge-image"
+              />
+            </div>
 
-        <div class="loyalty-banner__right">
-            <h3 class="heading-4 loyalty-banner__text">
-            Подтвердите статус многодетной семьи
-            и получите постоянную скидку 25 %
-          </h3>
-          <a
-            href="/lk/"
-            class="btn btn--primary label-md loyalty-banner__btn"
-            aria-label="Подать заявку"
-          >
-            <span class="btn__text">Подать заявку</span>
-            <span class="btn__icon">↗</span>
-          </a>
 
-          <div class="loyalty-banner__family" aria-hidden="true">
-            <img
-              src="/src/assets/img/index/family.svg"
-              alt="Family"
-              class="loyalty-banner__family-image"
-            />
+          </div>
+
+          <div class="loyalty-banner__right">
+              <h3 class="heading-4 loyalty-banner__text">
+              Участникам СВО и их семьям —
+              постоянная скидка 25 % в знак благодарности
+            </h3>
+            <a
+              href="/lk/"
+              class="btn btn--primary label-md loyalty-banner__btn"
+              aria-label="Подать заявку"
+            >
+              <span class="btn__text">Подать заявку</span>
+              <span class="btn__icon">↗</span>
+            </a>
+
+            <div class="loyalty-banner__family" aria-hidden="true">
+              <img
+                src="/src/assets/img/index/family.svg"
+                alt="Family"
+                class="loyalty-banner__family-image"
+              />
+            </div>
           </div>
         </div>
+
+      </div>
+
+      <div class="loyalty-banner__dots" id="loyaltyDots">
+        <button type="button" class="loyalty-banner__dot is-active" data-dot="0" aria-label="Слайд 1"></button>
+        <button type="button" class="loyalty-banner__dot" data-dot="1" aria-label="Слайд 2"></button>
       </div>
 
     </div>
