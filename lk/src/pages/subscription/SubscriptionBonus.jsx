@@ -90,7 +90,7 @@ if (error || !referral) {
 
         <div className="lk-bonus-summary">
           <span>Ваш реферальный код</span>
-          <strong>{referral.referralCode.toUpperCase()}</strong>
+          <strong>{(referral.referralCode || '—').toUpperCase()}</strong>
         </div>
       </div>
 
@@ -212,7 +212,7 @@ if (error || !referral) {
 
             <div className="lk-invite__code">
               <span>Код приглашения</span>
-              <strong>{referral.referralCode.toUpperCase()}</strong>
+              <strong>{(referral.referralCode || '—').toUpperCase()}</strong>
             </div>
 
             <div className="lk-invite__link">
