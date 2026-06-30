@@ -554,7 +554,7 @@ export default function Home() {
               <div className="loyalty-banner__right">
                 <h3 className="heading-4 loyalty-banner__text">
                   Подтвердите статус многодетной семьи
-                  и получите постоянную скидку 20 %
+                  и получите постоянную скидку 20&nbsp;%
                 </h3>
                 <button
                   type="button"
