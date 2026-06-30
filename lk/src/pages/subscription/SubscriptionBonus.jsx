@@ -65,18 +65,9 @@ if (loading) {
   );
 }
 
-if (error || !referral) {
-  const is500 = error?.includes('500');
-  return (
-    <section className="lk-bonus">
-      <div className="lk-library-empty" style={{ minHeight: 240 }}>
-        {is500
-          ? 'Раздел бонусов временно недоступен — сервер вернул ошибку. Попробуйте позже или обратитесь в поддержку.'
-          : (error || 'Не удалось загрузить данные.')}
-      </div>
-    </section>
-  );
-}
+const is500 = error?.includes('500');
+const referralUnavailable = !!error || !referral;
+
   return (
     <section className="lk-bonus">
 
@@ -88,15 +79,17 @@ if (error || !referral) {
           </p>
         </div>
 
-        <div className="lk-bonus-summary">
-          <span>Ваш реферальный код</span>
-          <strong>{(referral.referralCode || '—').toUpperCase()}</strong>
-        </div>
+        {referral && (
+          <div className="lk-bonus-summary">
+            <span>Ваш реферальный код</span>
+            <strong>{(referral.referralCode || '—').toUpperCase()}</strong>
+          </div>
+        )}
       </div>
 
       <div className="lk-bonus__grid">
 
-        {/* ГОДОВАЯ СКИДКА */}
+        {/* ГОДОВАЯ СКИДКА — статичная, не зависит от API */}
         <div className="lk-bonus-item is-accent">
           <div className="lk-bonus-item__top">
             <div className="lk-bonus-item__icon">
@@ -109,7 +102,7 @@ if (error || !referral) {
           </div>
 
           <div className="lk-bonus-item__content">
-            <h4>-{referral.yearlyDiscount}% при оплате за год</h4>
+            <h4>-{referral?.yearlyDiscount ?? 20}% при оплате за год</h4>
             <p>
               Экономьте при долгосрочной подписке и сохраняйте доступ ко всем функциям.
             </p>
@@ -124,56 +117,66 @@ if (error || !referral) {
               <Users size={18} />
             </div>
 
-            <span className="lk-bonus-item__badge is-dark">
-              {referral.invitedCount} / {referral.maxInvites} друзей
-            </span>
+            {!referralUnavailable && (
+              <span className="lk-bonus-item__badge is-dark">
+                {referral.invitedCount} / {referral.maxInvites} друзей
+              </span>
+            )}
           </div>
 
           <div className="lk-bonus-item__content">
             <h4>Пригласи друга</h4>
             <p>
-              Получите {referral.reward} за приглашение друзей.
+              {referralUnavailable
+                ? (is500
+                    ? 'Реферальная программа временно недоступна — сервер вернул ошибку.'
+                    : 'Не удалось загрузить данные реферальной программы.')
+                : `Получите ${referral.reward} за приглашение друзей.`}
             </p>
           </div>
 
-          <div className="lk-bonus-progress">
-            <div style={{ width: `${progress}%` }} />
-          </div>
+          {!referralUnavailable && (
+            <>
+              <div className="lk-bonus-progress">
+                <div style={{ width: `${progress}%` }} />
+              </div>
 
-          <p className="lk-bonus-hint">
-            {invitesLeft > 0
-              ? `Осталось пригласить ${invitesLeft}, чтобы получить бонус`
-              : 'Бонус доступен к начислению'}
-          </p>
+              <p className="lk-bonus-hint">
+                {invitesLeft > 0
+                  ? `Осталось пригласить ${invitesLeft}, чтобы получить бонус`
+                  : 'Бонус доступен к начислению'}
+              </p>
 
-          <div className="lk-bonus-ref">
-            <span className="lk-bonus-ref__link">
-              {inviteLink}
-            </span>
+              <div className="lk-bonus-ref">
+                <span className="lk-bonus-ref__link">
+                  {inviteLink}
+                </span>
 
-            <button
-              type="button"
-              className="lk-bonus-ref__copy"
-              onClick={handleCopy}
-              aria-label="Скопировать ссылку"
-            >
-              <Copy size={16} />
-            </button>
-          </div>
+                <button
+                  type="button"
+                  className="lk-bonus-ref__copy"
+                  onClick={handleCopy}
+                  aria-label="Скопировать ссылку"
+                >
+                  <Copy size={16} />
+                </button>
+              </div>
 
-          <LkButton
-            variant="primary"
-            size="sm"
-            className="lk-btn--icon"
-            onClick={() => setShowInvite(true)}
-          >
-            Пригласить
-            <span className="lk-btn__circle">↗</span>
-          </LkButton>
+              <LkButton
+                variant="primary"
+                size="sm"
+                className="lk-btn--icon"
+                onClick={() => setShowInvite(true)}
+              >
+                Пригласить
+                <span className="lk-btn__circle">↗</span>
+              </LkButton>
+            </>
+          )}
 
         </div>
 
-        {/* КОНТЕНТ */}
+        {/* КОНТЕНТ — статичная, не зависит от API */}
         <div className="lk-bonus-item is-soft">
           <div className="lk-bonus-item__top">
             <div className="lk-bonus-item__icon">
@@ -196,7 +199,7 @@ if (error || !referral) {
       </div>
 
       {/* INVITE PANEL */}
-      {showInvite && (
+      {showInvite && referral && (
         <div className="lk-invite">
           <div
             className="lk-invite__overlay"
