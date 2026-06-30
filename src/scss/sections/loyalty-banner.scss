@@ -208,6 +208,14 @@ box-shadow:
   animation: loyaltyFade 0.4s ease;
 }
 
+/* Одинаковый размер шрифта и интервалов на всех слайдах — оба используют
+   общие классы .loyalty-banner__title / __text, без переопределений */
+.loyalty-banner__card.is-slide .loyalty-banner__title,
+.loyalty-banner__card.is-slide .loyalty-banner__text {
+  font-size: inherit;
+  letter-spacing: inherit;
+}
+
 @keyframes loyaltyFade {
   from { opacity: 0; transform: translateY(6px); }
   to   { opacity: 1; transform: translateY(0); }
