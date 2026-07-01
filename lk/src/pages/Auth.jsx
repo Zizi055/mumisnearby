@@ -66,8 +66,10 @@ export default function Auth() {
     setServerError('');
 
     try {
+      const refCode = isRegister ? localStorage.getItem('ref_code') : null;
+
       const user = isRegister
-        ? await register({ name, email, password })
+        ? await register({ name, email, password, referral_code: refCode || undefined })
         : await login({ email, password });
 
       setUser(user);
@@ -75,6 +77,16 @@ export default function Auth() {
       // Инициализируем триал при регистрации (при входе не трогаем)
       if (isRegister) {
         initTrial();
+
+        // Применяем реферальный код если был
+        if (refCode) {
+          try {
+            await import('../api/bonus.service').then(({ applyReferral }) => applyReferral(refCode));
+          } catch {
+            // тихо — не блокируем регистрацию
+          }
+          localStorage.removeItem('ref_code');
+        }
       }
 
       // После входа проверяем redirect

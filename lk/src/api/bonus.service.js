@@ -11,7 +11,7 @@ export async function getBonus() {
     referralCode:   data.referral_code,
     invitedCount:   data.invited_count,
     maxInvites:     data.max_invites,
-    reward:         'месяц бесплатно',   // бэкенд не возвращает — подставляем
+    reward:         `${data.balance_discount || 10}% скидки на подписку`,
     yearlyDiscount: 20,                  // бэкенд не возвращает — подставляем
     weeklyContent:  data.weekly_content,
   };
@@ -21,4 +21,16 @@ export async function getBonus() {
 // POST /api/subscription/bonus/claim
 export async function claimBonus() {
   return api.post('/api/subscription/bonus/claim', {});
+}
+
+// Применить реферальный код при регистрации
+// POST /api/referral/apply
+export async function applyReferral(referral_code) {
+  return api.post('/api/referral/apply', { referral_code });
+}
+
+// Получить скидку на балансе пользователя
+// GET /api/referral/discount
+export async function getReferralDiscount() {
+  return api.get('/api/referral/discount');
 }

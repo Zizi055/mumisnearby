@@ -35,7 +35,7 @@ useEffect(() => {
 }, []);
 
 const inviteLink = referral
-  ? `https://momis.app/invite/${referral.referralCode}`
+  ? `https://rodnyegolosa.ru/?ref=${referral.referralCode}`
   : '';
 
 const progress = referral

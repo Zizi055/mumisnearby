@@ -1,5 +1,16 @@
 import './src/scss/style.scss';
 
+// Захватываем реферальный код из URL (?ref=CODE или /invite/CODE)
+(function captureRefCode() {
+  const params = new URLSearchParams(window.location.search);
+  const refFromParam = params.get('ref');
+  const refFromPath  = window.location.pathname.match(/\/invite\/([A-Z0-9]+)/i)?.[1];
+  const code = (refFromParam || refFromPath || '').toUpperCase();
+  if (code) {
+    localStorage.setItem('ref_code', code);
+  }
+})();
+
 // FAQ accordion
 document.addEventListener('DOMContentLoaded', () => {
   const accordion = document.querySelector('[data-accordion]');
