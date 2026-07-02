@@ -8,12 +8,12 @@ export async function getBonus() {
 
   //Форматируем данные для компонента SubscriptionBonus.jsx
   return {
-    referralCode:   data.referral_code,
-    invitedCount:   data.invited_count,
-    maxInvites:     data.max_invites,
-    reward:         `${data.balance_discount || 10}% скидки на подписку`,
-    yearlyDiscount: 20,                  // бэкенд не возвращает — подставляем
-    weeklyContent:  data.weekly_content,
+    referralCode:     data.referral_code,
+    invitedCount:     data.invited_count   ?? 0,
+    maxInvites:       data.max_invites      ?? 10,
+    balanceDiscount:  data.balance_discount ?? 0,
+    yearlyDiscount:   data.yearly_discount  ?? 20,
+    weeklyContent:    data.weekly_content   ?? true,
   };
 }
 

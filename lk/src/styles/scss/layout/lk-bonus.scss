@@ -505,3 +505,26 @@
     padding: 10px;
   }
 }
+
+/* Баннер накопленной скидки */
+.lk-bonus-alert {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  margin-bottom: $lk-space-16;
+  border-radius: $lk-radius-12;
+  background: linear-gradient(135deg, rgba($lk-brand, 0.1), rgba($lk-brand-dark, 0.08));
+  border: 1px solid rgba($lk-brand, 0.2);
+  color: $lk-text-primary;
+  font-size: 14px;
+
+  svg {
+    flex-shrink: 0;
+    color: $lk-brand;
+  }
+
+  strong {
+    color: $lk-brand-dark;
+  }
+}
