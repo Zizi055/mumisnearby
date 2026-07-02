@@ -122,11 +122,9 @@ export default function SubscriptionBonus() {
         <div className="lk-bonus-item is-primary">
           <div className="lk-bonus-item__top">
             <div className="lk-bonus-item__icon"><Users size={18} /></div>
-            {!referralUnavailable && (
-              <span className="lk-bonus-item__badge is-dark">
-                {invitedCount} / {BONUS_THRESHOLD} друзей
-              </span>
-            )}
+            <span className="lk-bonus-item__badge is-dark">
+              {invitedCount} / {BONUS_THRESHOLD} друзей
+            </span>
           </div>
 
           <div className="lk-bonus-item__content">
@@ -145,15 +143,15 @@ export default function SubscriptionBonus() {
           {!referralUnavailable && (
             <>
               {/* Прогресс до бесплатного месяца */}
-              <div className="lk-bonus-progress">
-                <div style={{ width: `${progress}%` }} />
-              </div>
+          <div className="lk-bonus-progress">
+            <div style={{ width: `${progress}%` }} />
+          </div>
 
-              <p className="lk-bonus-hint">
-                {bonusReady
-                  ? '🎉 Вы пригласили достаточно друзей — бонус доступен!'
-                  : `Осталось пригласить ещё ${invitesLeft} ${invitesLeft === 1 ? 'друга' : 'друзей'}`}
-              </p>
+          <p className="lk-bonus-hint">
+            {bonusReady
+              ? '🎉 Вы пригласили достаточно друзей — бонус доступен!'
+              : `Осталось пригласить ещё ${invitesLeft} ${invitesLeft === 1 ? 'друга' : 'друзей'}`}
+          </p>
 
               {/* Кнопка получения бонуса — появляется только когда готово */}
               {bonusReady && !claimed && (
