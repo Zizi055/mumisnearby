@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Percent, Users, Sparkles, Gift, Copy, Send, MessageCircle } from 'lucide-react';
+import { Percent, Users, Sparkles, Gift, Copy, Send, MessageCircle, Heart, UserCheck, Shield } from 'lucide-react';
 import LkButton from '../../components/ui/LkButton';
 import { getBonus, claimBonus } from '../../api/bonus.service';
 
@@ -206,6 +206,84 @@ export default function SubscriptionBonus() {
             <h4>Новые сказки каждую неделю</h4>
             <p>
               Библиотека регулярно пополняется новыми сказками, колыбельными и сценариями.
+            </p>
+          </div>
+        </div>
+
+        {/* 4. МНОГОДЕТНЫЕ СЕМЬИ */}
+        <div className="lk-bonus-item is-social">
+          <div className="lk-bonus-item__top">
+            <div className="lk-bonus-item__icon"><Heart size={18} /></div>
+            <span className="lk-bonus-item__badge is-social">Социальная льгота</span>
+          </div>
+          <div className="lk-bonus-item__content">
+            <h4>Скидка многодетным семьям</h4>
+            <p>
+              Семьи с тремя и более детьми получают специальные условия на подписку.
+            </p>
+          </div>
+          <div className="lk-bonus-docs">
+            <p className="lk-bonus-docs__title">Документы для подтверждения:</p>
+            <ul>
+              <li>Удостоверение многодетной семьи или единый документ из органов соцзащиты</li>
+              <li>Свидетельства о рождении детей (при оформлении онлайн)</li>
+            </ul>
+            <p className="lk-bonus-docs__contact">
+              Для получения скидки напишите нам на{' '}
+              <a href="mailto:support@rodnyegolosa.ru">support@rodnyegolosa.ru</a>
+            </p>
+          </div>
+        </div>
+
+        {/* 5. МАТЕРИ-ОДИНОЧКИ */}
+        <div className="lk-bonus-item is-social">
+          <div className="lk-bonus-item__top">
+            <div className="lk-bonus-item__icon"><UserCheck size={18} /></div>
+            <span className="lk-bonus-item__badge is-social">Социальная льгота</span>
+          </div>
+          <div className="lk-bonus-item__content">
+            <h4>Скидка одиноким родителям</h4>
+            <p>
+              Матери и отцы, самостоятельно воспитывающие детей, могут оформить льготную подписку.
+            </p>
+          </div>
+          <div className="lk-bonus-docs">
+            <p className="lk-bonus-docs__title">Документы для подтверждения:</p>
+            <ul>
+              <li>Свидетельство о рождении ребёнка (прочерк или запись со слов матери в графе «Отец»)</li>
+              <li>Справка из ЗАГСа по форме №25</li>
+              <li>Паспорт, подтверждающий отсутствие брака</li>
+            </ul>
+            <p className="lk-bonus-docs__contact">
+              Для получения скидки напишите нам на{' '}
+              <a href="mailto:support@rodnyegolosa.ru">support@rodnyegolosa.ru</a>
+            </p>
+          </div>
+        </div>
+
+        {/* 6. УЧАСТНИКИ СВО */}
+        <div className="lk-bonus-item is-social">
+          <div className="lk-bonus-item__top">
+            <div className="lk-bonus-item__icon"><Shield size={18} /></div>
+            <span className="lk-bonus-item__badge is-social">Социальная льгота</span>
+          </div>
+          <div className="lk-bonus-item__content">
+            <h4>Скидка участникам СВО и их семьям</h4>
+            <p>
+              Участники специальной военной операции и члены их семей получают льготный доступ к сервису.
+            </p>
+          </div>
+          <div className="lk-bonus-docs">
+            <p className="lk-bonus-docs__title">Документы для подтверждения:</p>
+            <ul>
+              <li>Справка участника СВО установленного образца (с QR-кодом) — получить можно через Госуслуги, в военкомате, МФЦ или воинской части</li>
+              <li>Удостоверение ветерана боевых действий или военный билет с соответствующей записью</li>
+              <li>Паспорт гражданина РФ</li>
+              <li>При оформлении для членов семьи — свидетельство о браке или свидетельство о рождении</li>
+            </ul>
+            <p className="lk-bonus-docs__contact">
+              Для получения скидки напишите нам на{' '}
+              <a href="mailto:support@rodnyegolosa.ru">support@rodnyegolosa.ru</a>
             </p>
           </div>
         </div>

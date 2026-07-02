@@ -506,6 +506,60 @@
   }
 }
 
+/* Социальные карточки */
+.lk-bonus-item.is-social {
+  background: linear-gradient(135deg, #f0f4f2 0%, #e8eeeb 100%);
+  border-color: rgba($lk-brand, 0.15);
+}
+
+.lk-bonus-item__badge.is-social {
+  background: rgba($lk-brand-dark, 0.1);
+  color: $lk-brand-dark;
+}
+
+.lk-bonus-docs {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba($lk-brand, 0.12);
+
+  &__title {
+    font-size: 12px;
+    font-weight: 600;
+    color: $lk-text-soft;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin: 0 0 8px;
+  }
+
+  ul {
+    margin: 0 0 10px;
+    padding-left: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+    li {
+      font-size: 13px;
+      color: $lk-text-soft;
+      line-height: 1.5;
+    }
+  }
+
+  &__contact {
+    font-size: 13px;
+    color: $lk-text-muted;
+    margin: 0;
+
+    a {
+      color: $lk-brand-dark;
+      text-decoration: none;
+      font-weight: 500;
+
+      &:hover { text-decoration: underline; }
+    }
+  }
+}
+
 /* Баннер накопленной скидки */
 .lk-bonus-alert {
   display: flex;
