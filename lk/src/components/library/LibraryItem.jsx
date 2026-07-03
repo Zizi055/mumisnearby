@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 
 import {
@@ -8,8 +8,10 @@ import {
   Star,
   Lock,
   Play,
+  Square,
   Heart,
   Mic,
+  Loader2,
 } from 'lucide-react';
 
 import { useVoiceStore } from '../../store/voice.store';
@@ -17,6 +19,11 @@ import { useLibraryStore } from '../../store/library.store';
 import { useTrialStore } from '../../store/trial.store';
 import { getSubscription } from '../../store/subscription.store';
 import TrialPaywallModal from '../trial/TrialPaywallModal';
+import {
+  createGeneration,
+  waitForGeneration,
+  getGenerationAudio,
+} from '../../api/generations.service.js';
 
 export default function LibraryItem() {
   const { type, id } = useParams();
@@ -28,8 +35,13 @@ export default function LibraryItem() {
 
   const hasPaidPlan = !!getSubscription()?.currentPlanId;
 
+  const audioRef = useRef(null);
+
   const [selectedVoice, setSelectedVoice] = useState(null);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [genStatus, setGenStatus] = useState('');
+  const [audioUrl, setAudioUrl] = useState(null);
+  const [isPlaying, setIsPlaying] = useState(false);
   const [showPaywall, setShowPaywall] = useState(false);
 
   useEffect(() => {
@@ -51,10 +63,20 @@ export default function LibraryItem() {
 
   const item = items.find((i) => String(i.id) === String(id));
 
-  const handleGenerate = async () => {
-    if (!selectedVoice) return;
+  const handlePlayStop = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    if (isPlaying) {
+      audio.pause();
+      audio.currentTime = 0;
+    } else {
+      audio.play().catch(() => {});
+    }
+  };
 
-    // Проверяем триал-лимит (только если нет платной подписки)
+  const handleGenerate = async () => {
+    if (!selectedVoice || !item) return;
+
     if (!hasPaidPlan && trial) {
       if (trial.isExpired || trial.storiesLimitReached) {
         setShowPaywall(true);
@@ -63,11 +85,26 @@ export default function LibraryItem() {
     }
 
     setIsGenerating(true);
+    setGenStatus('pending');
+    setAudioUrl(null);
+    setIsPlaying(false);
+
     try {
-      alert('Позже здесь будет генерация через ElevenLabs');
-      if (!hasPaidPlan) {
-        incrementStory();
-      }
+      const gen = await createGeneration(selectedVoice.id, type, item.id);
+      await waitForGeneration(gen.id, setGenStatus);
+      const { url } = await getGenerationAudio(gen.id);
+      setAudioUrl(url);
+      setGenStatus('ready');
+
+      if (!hasPaidPlan) incrementStory();
+
+      // Автозапуск
+      setTimeout(() => {
+        audioRef.current?.play().catch(() => {});
+      }, 100);
+    } catch (e) {
+      setGenStatus('failed');
+      console.error('Ошибка генерации:', e);
     } finally {
       setIsGenerating(false);
     }
@@ -75,8 +112,14 @@ export default function LibraryItem() {
 
   const trialBlocked = !hasPaidPlan && trial && (!trial.canGenerate);
   const generateLabel = () => {
-    if (isGenerating) return 'Генерация...';
+    if (isGenerating) {
+      if (genStatus === 'pending') return 'Отправка...';
+      if (genStatus === 'generating') return 'Озвучивание...';
+      return 'Генерация...';
+    }
+    if (genStatus === 'failed') return 'Повторить';
     if (trialBlocked) return 'Лимит исчерпан';
+    if (audioUrl) return 'Создать новое';
     return 'Создать аудио';
   };
 
@@ -91,6 +134,15 @@ export default function LibraryItem() {
           onClose={() => setShowPaywall(false)}
         />
       )}
+
+      {/* Скрытый аудио-элемент */}
+      <audio
+        ref={audioRef}
+        src={audioUrl || undefined}
+        onPlay={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
+        onEnded={() => setIsPlaying(false)}
+      />
 
       {/* BACK */}
       <button
@@ -195,9 +247,20 @@ export default function LibraryItem() {
               onClick={handleGenerate}
               disabled={!selectedVoice || isGenerating || trialBlocked}
             >
-              <Play size={15} />
+              {isGenerating ? <Loader2 size={15} className="lk-spin" /> : <Play size={15} />}
               {generateLabel()}
             </button>
+
+            {audioUrl && (
+              <button
+                type="button"
+                className={`lk-btn ${isPlaying ? 'lk-btn--secondary' : 'lk-btn--ghost'}`}
+                onClick={handlePlayStop}
+              >
+                {isPlaying ? <Square size={15} /> : <Play size={15} />}
+                {isPlaying ? 'Стоп' : 'Слушать'}
+              </button>
+            )}
 
             {item && (
               <button
@@ -305,13 +368,34 @@ export default function LibraryItem() {
               </p>
             )}
 
+            {genStatus === 'generating' && (
+              <p className="lk-item-card__hint">Озвучивание, подождите...</p>
+            )}
+
+            {genStatus === 'failed' && (
+              <p className="lk-item-card__hint" style={{ color: '#c0392b' }}>
+                Ошибка генерации. Попробуйте ещё раз.
+              </p>
+            )}
+
+            {audioUrl && (
+              <button
+                type="button"
+                className="lk-btn lk-btn--secondary lk-btn--full"
+                onClick={handlePlayStop}
+              >
+                {isPlaying ? <Square size={15} /> : <Play size={15} />}
+                {isPlaying ? 'Остановить' : 'Слушать сказку'}
+              </button>
+            )}
+
             <button
               type="button"
               className="lk-btn lk-btn--primary lk-btn--full"
               disabled={!selectedVoice || isGenerating || trialBlocked}
               onClick={handleGenerate}
             >
-              <Play size={15} />
+              {isGenerating ? <Loader2 size={15} className="lk-spin" /> : <Play size={15} />}
               {generateLabel()}
             </button>
 
