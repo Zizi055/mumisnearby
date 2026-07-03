@@ -741,3 +741,83 @@ display: flex;
     min-height: auto;
   }
 }
+
+/* Виджет реферальной ссылки */
+.lk-dashboard-referral {
+  padding: $lk-space-28;
+  background: linear-gradient(160deg, rgba($lk-brand, 0.06) 0%, #fff 100%);
+  border: 1px solid rgba($lk-brand, 0.15);
+  border-radius: $lk-radius-24;
+  box-shadow: $lk-shadow-card;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: $lk-space-16;
+
+  &__icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: linear-gradient(180deg, rgba($lk-brand, 0.15), rgba($lk-brand, 0.06));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $lk-brand-dark;
+  }
+
+  h2 {
+    font-size: 15px;
+    font-weight: 600;
+    margin: 0;
+    color: $lk-text;
+  }
+
+  p {
+    font-size: 13px;
+    color: $lk-text-soft;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: rgba($lk-brand, 0.06);
+    border: 1px solid rgba($lk-brand, 0.12);
+    border-radius: $lk-radius-12;
+
+    span {
+      flex: 1;
+      font-size: 12px;
+      color: $lk-brand-dark;
+      font-weight: 500;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    button {
+      flex-shrink: 0;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: $lk-brand-dark;
+      display: flex;
+      align-items: center;
+      padding: 2px;
+      opacity: 0.7;
+      transition: opacity 0.2s;
+
+      &:hover { opacity: 1; }
+    }
+  }
+
+  &__copied {
+    font-size: 12px;
+    color: $lk-brand;
+    font-weight: 500;
+    margin: 0;
+  }
+}

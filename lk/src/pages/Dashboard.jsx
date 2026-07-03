@@ -7,17 +7,22 @@ import {
   Clock3,
   ChevronRight,
   Brain,
+  Copy,
+  Users,
 } from 'lucide-react';
 import { getDashboardOverview } from '../api/dashboard.api.js';
+import { getReferralLink } from '../api/bonus.service.js';
 
 export default function Dashboard() {
   const navigate = useNavigate();
   const audioRef = useRef(null);
 
-  const [data, setData]       = useState(null);
+  const [data, setData]           = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress]   = useState(0);
   const [currentAudio, setCurrentAudio] = useState(null);
+  const [refLink, setRefLink]     = useState(null);
+  const [refCopied, setRefCopied] = useState(false);
 
   const load = async () => {
     try {
@@ -31,10 +36,25 @@ export default function Dashboard() {
 
   useEffect(() => {
     load();
-    // Автообновление каждые 60 секунд
     const interval = setInterval(load, 60_000);
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    getReferralLink()
+      .then(setRefLink)
+      .catch(() => {});
+  }, []);
+
+  const handleRefCopy = async () => {
+    const link = refLink?.link;
+    if (!link) return;
+    try {
+      await navigator.clipboard.writeText(link);
+      setRefCopied(true);
+      setTimeout(() => setRefCopied(false), 2000);
+    } catch { /* clipboard недоступен */ }
+  };
 
   // Обновляем src когда меняется текущая сказка
   useEffect(() => {
@@ -322,6 +342,42 @@ export default function Dashboard() {
               В этот период ребёнок чаще дослушивает сценарии до конца.
             </p>
           </section>
+          {/* РЕФЕРАЛЬНАЯ ССЫЛКА */}
+          <section className="lk-dashboard-referral">
+            <div className="lk-dashboard-referral__icon">
+              <Users size={18} />
+            </div>
+            <h2>Пригласи друга</h2>
+            <p>Поделитесь ссылкой — за 5 приглашений получите месяц бесплатно</p>
+
+            {refLink?.link ? (
+              <>
+                <div className="lk-dashboard-referral__link">
+                  <span>{refLink.link}</span>
+                  <button type="button" onClick={handleRefCopy} aria-label="Скопировать">
+                    <Copy size={14} />
+                  </button>
+                </div>
+                {refCopied && <p className="lk-dashboard-referral__copied">Скопировано!</p>}
+                <button
+                  type="button"
+                  className="lk-btn lk-btn--primary lk-btn--sm"
+                  onClick={() => navigate('/subscription/bonus')}
+                >
+                  <span className="lk-btn__content">Подробнее о бонусах</span>
+                </button>
+              </>
+            ) : (
+              <button
+                type="button"
+                className="lk-btn lk-btn--ghost lk-btn--sm"
+                onClick={() => navigate('/subscription/bonus')}
+              >
+                <span className="lk-btn__content">Перейти в бонусы</span>
+              </button>
+            )}
+          </section>
+
         </aside>
 
       </section>
