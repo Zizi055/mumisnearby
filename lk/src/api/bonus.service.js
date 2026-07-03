@@ -1,36 +1,33 @@
 import { api } from './client';
 
-// Получить статус бонусов и реферальную программу
 // GET /api/subscription/bonus
-// Возвращает: { referral_code, invited_count, max_invites, weekly_content }
+// BonusStatusResponse: { referral_code, invited_count, max_invites, weekly_content }
 export async function getBonus() {
   const data = await api.get('/api/subscription/bonus');
-
-  //Форматируем данные для компонента SubscriptionBonus.jsx
   return {
-    referralCode:     data.referral_code,
-    invitedCount:     data.invited_count   ?? 0,
-    maxInvites:       data.max_invites      ?? 10,
-    balanceDiscount:  data.balance_discount ?? 0,
-    yearlyDiscount:   data.yearly_discount  ?? 20,
-    weeklyContent:    data.weekly_content   ?? true,
+    referralCode:  data.referral_code,
+    invitedCount:  data.invited_count  ?? 0,
+    maxInvites:    data.max_invites    ?? 10,
+    weeklyContent: data.weekly_content ?? true,
   };
 }
 
-// Получить бонус, когда достигнут лимит приглашений
 // POST /api/subscription/bonus/claim
+// ClaimBonusResponse: { success, message, weekly_content, invited_count }
 export async function claimBonus() {
-  return api.post('/api/subscription/bonus/claim', {});
+  const data = await api.post('/api/subscription/bonus/claim', {});
+  if (!data.success) throw new Error(data.message || 'Не удалось получить бонус');
+  return data;
 }
 
-// Применить реферальный код при регистрации
-// POST /api/referral/apply
-export async function applyReferral(referral_code) {
-  return api.post('/api/referral/apply', { referral_code });
+// GET /referral/link
+// ReferralLinkResponse: { link, referral_code }
+export async function getReferralLink() {
+  return api.get('/referral/link');
 }
 
-// Получить скидку на балансе пользователя
-// GET /api/referral/discount
-export async function getReferralDiscount() {
-  return api.get('/api/referral/discount');
+// GET /referral/stats
+// ReferralStatsResponse: { invited_count, referred_users: [{ username, created_at }] }
+export async function getReferralStats() {
+  return api.get('/referral/stats');
 }
