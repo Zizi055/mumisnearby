@@ -20,6 +20,7 @@ import Activity from './pages/Activity.jsx';
 import Support from './pages/Support.jsx';
 import Auth from './pages/Auth.jsx';
 import AuthReset from './pages/AuthReset.jsx';
+import VerifyEmail from './pages/VerifyEmail.jsx';
 import Profile from './pages/profile/Profile.jsx';
 import Settings from './pages/settings/Settings.jsx';
 
@@ -32,6 +33,7 @@ function App() {
       {/* Auth —  до LkLayout */}
       <Route path="/auth" element={<Auth />} />
       <Route path="/auth/reset" element={<AuthReset />} />
+      <Route path="/verify-email" element={<VerifyEmail />} />
 
       {/* ЛК */}
       <Route element={<LkLayout />}>

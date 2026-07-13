@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Eye, EyeOff, ArrowRight, Sparkles } from 'lucide-react';
-import { login, register } from '../api/auth.service';
+import { Eye, EyeOff, ArrowRight, Sparkles, MailCheck } from 'lucide-react';
+import { login, register, resendVerification } from '../api/auth.service';
 import { useAuth } from '../context/AuthContext';
-import { initTrial } from '../store/trial.store';
 import AuthDNA from './AuthDNA';
 import '../styles/scss/pages/auth.scss';
 
@@ -41,6 +40,14 @@ export default function Auth() {
   const [status, setStatus] = useState('idle');
   const [serverError, setServerError] = useState('');
 
+  // Заполняется после успешной регистрации — показываем экран "проверьте
+  // почту" вместо того чтобы вести в ЛК: POST /auth/register токена не
+  // выдаёт (RegisterResponse = { message }), пользователь ещё не
+  // подтвердил почту, вести его в ЛК нельзя.
+  const [awaitingVerification, setAwaitingVerification] = useState(null);
+  const [resendState, setResendState] = useState('idle'); // idle | sending | sent | error
+  const [resendError, setResendError] = useState('');
+
   const isRegister = tab === 'register';
   const isLoading = status === 'loading';
 
@@ -66,28 +73,23 @@ export default function Auth() {
     setServerError('');
 
     try {
-      const refCode = isRegister ? localStorage.getItem('ref_code') : null;
-
-      const user = isRegister
-        ? await register({ name, email, password, referral_code: refCode || undefined })
-        : await login({ email, password });
-
-      setUser(user);
-
-      // Инициализируем триал при регистрации (при входе не трогаем)
       if (isRegister) {
-        initTrial();
+        const refCode = localStorage.getItem('ref_code');
 
-        // Применяем реферальный код если был
+        await register({ name, email, password, referral_code: refCode || undefined });
+
         if (refCode) {
-          try {
-            await import('../api/bonus.service').then(({ applyReferral }) => applyReferral(refCode));
-          } catch {
-            // тихо — не блокируем регистрацию
-          }
+          // referral_code уже ушёл в /auth/register — локальный код можно очистить
           localStorage.removeItem('ref_code');
         }
+
+        setStatus('idle');
+        setAwaitingVerification(email);
+        return;
       }
+
+      const user = await login({ email, password });
+      setUser(user);
 
       // После входа проверяем redirect
       // Если пользователь пришёл с тарифной страницы — ведём на оплату
@@ -100,11 +102,28 @@ export default function Auth() {
     }
   };
 
+  const handleResend = async () => {
+    setResendState('sending');
+    setResendError('');
+    try {
+      await resendVerification();
+      setResendState('sent');
+    } catch (e) {
+      setResendState('error');
+      setResendError(
+        e.message || 'Не получилось отправить письмо повторно. Попробуйте позже.'
+      );
+    }
+  };
+
   const handleTabSwitch = (newTab) => {
     setTab(newTab);
     setTouched({ name: false, email: false, password: false });
     setServerError('');
     setStatus('idle');
+    setAwaitingVerification(null);
+    setResendState('idle');
+    setResendError('');
   };
 
   return (
@@ -169,6 +188,44 @@ export default function Auth() {
             </button>
           </div>
 
+          {awaitingVerification ? (
+            <div className="auth__reset-success">
+              <div className="auth__reset-success__icon">
+                <MailCheck size={32} />
+              </div>
+              <h2>Проверьте почту</h2>
+              <p>
+                Мы отправили письмо со ссылкой подтверждения на{' '}
+                <strong>{awaitingVerification}</strong>. Перейдите по ссылке
+                из письма, чтобы завершить регистрацию — после этого можно
+                будет войти. Проверьте папку «Спам», если письмо не пришло.
+              </p>
+
+              {resendState === 'sent' ? (
+                <p className="auth__verify-sent">Письмо отправлено повторно.</p>
+              ) : (
+                <>
+                  {resendState === 'error' && (
+                    <div className="auth__server-error">{resendError}</div>
+                  )}
+                  <button
+                    type="button"
+                    className="auth__submit"
+                    disabled={resendState === 'sending'}
+                    onClick={handleResend}
+                  >
+                    {resendState === 'sending' ? 'Отправляем…' : 'Отправить письмо ещё раз'}
+                  </button>
+                </>
+              )}
+
+              <div className="auth__forgot">
+                <button type="button" onClick={() => handleTabSwitch('login')}>
+                  Уже подтвердили — войти
+                </button>
+              </div>
+            </div>
+          ) : (
           <div className="auth__form">
 
             {isRegister && (
@@ -240,7 +297,25 @@ export default function Auth() {
             )}
 
             {serverError && (
-              <div className="auth__server-error">{serverError}</div>
+              <div className="auth__server-error">
+                {serverError}
+                {!isRegister && serverError.includes('не подтверждён') && (
+                  <>
+                    {resendState === 'sent' ? (
+                      <p className="auth__verify-sent">Письмо отправлено повторно.</p>
+                    ) : (
+                      <button
+                        type="button"
+                        className="auth__resend-inline"
+                        onClick={handleResend}
+                        disabled={resendState === 'sending'}
+                      >
+                        {resendState === 'sending' ? 'Отправляем…' : 'Отправить письмо ещё раз'}
+                      </button>
+                    )}
+                  </>
+                )}
+              </div>
             )}
 
             <button
@@ -273,6 +348,7 @@ export default function Auth() {
             )}
 
           </div>
+          )}
         </div>
       </div>
 
