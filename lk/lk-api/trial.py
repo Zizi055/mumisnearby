@@ -38,7 +38,13 @@ access_lvl > 0 или лимит исчерпан, блокируется, пр�
 Интеграция:
   1. Миграция: добавьте trial_ends_at, trial_plays_used, trial_voices_used
      в users (см. migration_add_trial_fields.py — без изменений).
-  2. При регистрации: trial_ends_at = now() + timedelta(days=3).
+  2. Триал стартует НЕ при регистрации, а при подтверждении почты: вызовите
+     start_trial_period(...) внутри реального хендлера GET /auth/verify-email
+     после успешной проверки токена (см. ниже). POST /auth/register не
+     логинит пользователя сразу (RegisterResponse отдаёт только {message}),
+     значит до подтверждения почты пользователь всё равно ничего сделать не
+     может — отсчитывать триал с момента регистрации бессмысленно и нечестно
+     по отношению к тем, кто подтверждает письмо не сразу.
   3. Подключите роутер: app.include_router(trial_router, prefix="/subscription")
      (не пересекается с реальными /subscription/status, /activate, /cancel).
   4. Раскомментируйте реальные импорты (get_db, get_current_user, модели).
@@ -51,7 +57,7 @@ access_lvl > 0 или лимит исчерпан, блокируется, пр�
      реального бэка, этот файл их только читает, не создаёт.
 """
 
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from typing import Literal
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -221,6 +227,42 @@ async def _user_weekly_bonus_active(user_id: str, db: "AsyncSession") -> bool:
         return status.weekly_content
     """
     return False
+
+
+async def start_trial_period(user_id: str, db: "AsyncSession") -> None:
+    """
+    Запускает отсчёт триала. Вызывайте внутри реального хендлера
+    GET /auth/verify-email, СРАЗУ после того как токен подтверждения
+    проверен и почта помечена подтверждённой — не раньше.
+
+    Идемпотентно не проверяется здесь специально: если у вашей реализации
+    verify-email возможен повторный вызов для уже подтверждённой почты,
+    оберните вызов условием "trial_ends_at is None", чтобы не продлевать
+    триал повторными переходами по ссылке из письма.
+
+    Пример:
+        @router.get("/auth/verify-email")
+        async def verify_email(
+            token: str,
+            db: AsyncSession = Depends(get_db),
+        ):
+            user = await confirm_email_token(token, db)  # ваша логика
+            if user.trial_ends_at is None:
+                await start_trial_period(str(user.id), db)
+            return {"status": "ok"}
+    """
+    from models import User
+    trial_ends_at = datetime.now(timezone.utc) + timedelta(days=TRIAL_DAYS)
+    await db.execute(
+        update(User)
+        .where(User.id == user_id)
+        .values(
+            trial_ends_at=trial_ends_at,
+            trial_plays_used=0,
+            trial_voices_used=0,
+        )
+    )
+    await db.commit()
 
 
 async def increment_trial_play(user_id: str, db: "AsyncSession") -> None:

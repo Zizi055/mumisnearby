@@ -34,8 +34,8 @@ app.include_router(trial_router, prefix="/subscription")
 (алембика в проекте пока нет — сначала `alembic init`), поправь
 `down_revision`, либо накати SQL из низа файла напрямую.
 
-При регистрации (`POST /auth/register`) выставляй
-`trial_ends_at = now() + timedelta(days=3)`.
+**Важно:** `trial_ends_at` выставляется НЕ при регистрации, а при
+подтверждении почты — см. шаг 4.
 
 ---
 
@@ -56,7 +56,28 @@ from models import User, Subscription
 
 ---
 
-## 4. Встроить гейтинг в реальные эндпоинты
+## 4. Запустить триал при подтверждении почты
+
+`POST /auth/register` не логинит пользователя сразу (`RegisterResponse`
+отдаёт только `{ message }`) — до подтверждения почты человек всё равно
+ничего не может делать. Поэтому триал стартует не в register, а в
+verify-email, иначе часть 3 дней могла бы сгорать впустую, пока письмо не
+открыто:
+
+```python
+from trial import start_trial_period
+
+@router.get("/auth/verify-email")
+async def verify_email(token: str, db: AsyncSession = Depends(get_db)):
+    user = await confirm_email_token(token, db)  # ваша логика проверки токена
+    if user.trial_ends_at is None:  # не продлевать триал повторным переходом по ссылке
+        await start_trial_period(str(user.id), db)
+    return {"status": "ok"}
+```
+
+---
+
+## 5. Встроить гейтинг в реальные эндпоинты
 
 **POST /generations/** — до создания задачи:
 
@@ -88,7 +109,7 @@ if not trial.has_subscription:
 
 - [ ] Роутер подключён в `main.py`
 - [ ] Миграция прогнана, поля есть в `users`
-- [ ] `trial_ends_at` выставляется при регистрации
+- [ ] `start_trial_period` вызывается из `GET /auth/verify-email`, НЕ из `POST /auth/register`
 - [ ] Импорты раскомментированы, `_user_weekly_bonus_active` и
       `_get_content_access_lvl` связаны с реальными сервисами
 - [ ] `require_generation_access` / `on_generation_created` встроены в
