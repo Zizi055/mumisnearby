@@ -17,7 +17,7 @@ import {
 import { useVoiceStore } from '../../store/voice.store';
 import { useLibraryStore } from '../../store/library.store';
 import { useTrialStore } from '../../store/trial.store';
-import { getSubscription } from '../../store/subscription.store';
+import { useHasPaidPlan } from '../../store/subscription.store';
 import TrialPaywallModal from '../trial/TrialPaywallModal';
 import {
   createGeneration,
@@ -33,7 +33,7 @@ export default function LibraryItem() {
   const { items, loadLibrary, setType, toggleFavorite } = useLibraryStore();
   const { trial, incrementStory } = useTrialStore();
 
-  const hasPaidPlan = !!getSubscription()?.currentPlanId;
+  const hasPaidPlan = useHasPaidPlan();
 
   const audioRef = useRef(null);
 
@@ -424,6 +424,8 @@ function getCategoryPath(type) {
     case 'lullaby': return '/library/lullabies';
     case 'therapy': return '/library/therapy';
     case 'family_story': return '/library/family';
+    case 'poem': return '/library/poems';
+    case 'story': return '/library/poems';
     default: return '/library/stories';
   }
 }
@@ -434,6 +436,8 @@ function getTypeLabel(type) {
     case 'lullaby': return 'Колыбельные';
     case 'therapy': return 'Терапия';
     case 'family_story': return 'Семейные истории';
+    case 'poem': return 'Рассказы и стихи';
+    case 'story': return 'Рассказы и стихи';
     default: return 'Библиотека';
   }
 }
@@ -444,6 +448,8 @@ function getTypeShortLabel(type) {
     case 'lullaby': return ' колыбельной';
     case 'therapy': return ' сценария';
     case 'family_story': return ' истории';
+    case 'poem': return ' стихотворения';
+    case 'story': return ' рассказа';
     default: return '';
   }
 }
@@ -454,6 +460,8 @@ function getAboutLabel(type) {
     case 'lullaby': return 'колыбельной';
     case 'therapy': return 'сценарии';
     case 'family_story': return 'истории';
+    case 'poem': return 'стихотворении';
+    case 'story': return 'рассказе';
     default: return 'контенте';
   }
 }

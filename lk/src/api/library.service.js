@@ -61,38 +61,111 @@ function mapTherapy(item) {
     isPremium:   false,
   };
 }
- 
+
+function mapFamilyStory(item) {
+  return {
+    id:          item.id,
+    type:        'family_story',
+    title:       item.title,
+    description: item.description ?? '',
+    age:         item.age,
+    duration:    0,
+    emotions:    [],
+    themes:      [],
+    image:       item.preview_url ?? null,
+    isFavorite:  false,
+    isNew:       false,
+    isPremium:   false,
+    category:    item.category ?? null,
+  };
+}
+
+function mapPoem(item) {
+  return {
+    id:          item.id,
+    type:        'poem',
+    title:       item.title,
+    description: '',
+    age:         item.age,
+    duration:    0,
+    emotions:    [],
+    themes:      [],
+    image:       item.preview_url ?? null,
+    isFavorite:  false,
+    isNew:       false,
+    isPremium:   false,
+  };
+}
+
+function mapStory(item) {
+  return {
+    id:          item.id,
+    type:        'story',
+    title:       item.title,
+    description: item.description ?? '',
+    age:         item.age,
+    duration:    0,
+    emotions:    [],
+    themes:      [],
+    image:       item.preview_url ?? null,
+    isFavorite:  false,
+    isNew:       false,
+    isPremium:   false,
+  };
+}
+
 // Загрузить контент по типу — вызывается из library.store.js
 export async function getLibraryItems(type) {
   if (type === 'fairy_tale') {
     const data = await api.get('/api/content/fairy-tales?skip=0&limit=100');
     return data.map(mapFairyTale);
   }
- 
+
   if (type === 'lullaby') {
     const data = await api.get('/api/content/lullabies?skip=0&limit=100');
     return data.map(mapLullaby);
   }
- 
+
   if (type === 'therapy') {
     const data = await api.get('/api/content/therapies?skip=0&limit=100');
     return data.map(mapTherapy);
   }
- 
-  // family_story — нет эндпоинта на бэкенде, возвращаем пустой массив
+
+  if (type === 'family_story') {
+    const data = await api.get('/api/content/family-stories?skip=0&limit=100');
+    return data.map(mapFamilyStory);
+  }
+
+  if (type === 'poem') {
+    // Вкладка в UI называется "Рассказы и стихи" — показываем оба реальных
+    // типа контента (poem + story) в одном списке. item.type у каждой
+    // карточки остаётся точным ('poem' или 'story'), чтобы генерация
+    // озвучки (POST /generations) уходила с правильным content_type.
+    const [poems, stories] = await Promise.all([
+      api.get('/api/content/poems?skip=0&limit=100'),
+      api.get('/api/content/stories?skip=0&limit=100'),
+    ]);
+    return [...poems.map(mapPoem), ...stories.map(mapStory)];
+  }
+
   return [];
 }
- 
-// Остальные функции — уточни у бэкенда есть ли они
+
+// Мёртвый код — старые эндпоинты /stories/generate, /stories/{id},
+// /library/{id}/favorite не существуют на бэке (см. openapi.json).
+// Озвучка идёт через generations.service.js (createGeneration/waitForGeneration/
+// getGenerationAudio), избранное — целиком локально в library.store.js.
+// Ничего из этого файла их не вызывает, оставлено не удалённым намеренно —
+// на случай если бэк всё же добавит эти пути под другим именем, но если нет,
+// можно смело выпиливать.
 export async function generateStory(payload) {
   return api.post('/stories/generate', payload);
 }
- 
+
 export async function getStory(id) {
   return api.get(`/stories/${id}`);
 }
- 
+
 export async function toggleFavorite(id) {
   return api.post(`/library/${id}/favorite`);
 }
- 

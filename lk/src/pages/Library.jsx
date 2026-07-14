@@ -16,7 +16,7 @@ import {
 
 import { useLibraryStore } from '../store/library.store';
 import { getTrialInfo } from '../store/trial.store';
-import { getSubscription } from '../store/subscription.store';
+import { useHasPaidPlan } from '../store/subscription.store';
 
 // В пробном периоде: только категория сказок, первые 5 открыты
 const TRIAL_FREE_COUNT = 5;
@@ -77,7 +77,7 @@ export default function Library() {
 
   const PAGE_SIZE = 8; // 2 ряда по 4 карточки
 
-  const hasPaidPlan = !!getSubscription()?.currentPlanId;
+  const hasPaidPlan = useHasPaidPlan();
   const trial = !hasPaidPlan ? getTrialInfo() : null;
   const isTrialMode = !!trial;
   // Триал истёк — блокируем всё. Иначе: только сказки первые 5 открыты

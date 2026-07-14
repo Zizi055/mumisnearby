@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import LkButton from '../../components/ui/LkButton';
 import { useVoiceStore } from '../../store/voice.store';
 import { getTrialInfo } from '../../store/trial.store';
-import { getSubscription } from '../../store/subscription.store';
+import { useHasPaidPlan } from '../../store/subscription.store';
 
 
 import {
@@ -32,7 +32,7 @@ export default function VoiceMy() {
     uploadAvatar,
   } = useVoiceStore();
 
-  const hasPaidPlan = !!getSubscription()?.currentPlanId;
+  const hasPaidPlan = useHasPaidPlan();
   const trial = !hasPaidPlan ? getTrialInfo() : null;
   // В триале — только 1 голос
   const voiceLimitReached = !hasPaidPlan && trial && voices.length >= 1;
@@ -57,6 +57,15 @@ export default function VoiceMy() {
     useState(null);
 
   const [playingVoiceId, setPlayingVoiceId] =
+    useState(null);
+
+  // Переименование и загрузка аватарки бьются в эндпоинты, которых пока
+  // нет на бэке (PATCH /voices/{id}, POST /voices/{id}/avatar) — держим
+  // ошибку в стейте, чтобы показать понятное сообщение вместо тишины.
+  const [renameError, setRenameError] =
+    useState(null);
+
+  const [avatarError, setAvatarError] =
     useState(null);
 
   useEffect(() => {
@@ -103,8 +112,14 @@ export default function VoiceMy() {
         voiceId,
         file
       );
+
+      setAvatarError(null);
     } catch (error) {
       console.error(error);
+
+      setAvatarError(
+        'Загрузка фото голоса пока недоступна — эта функция ещё в разработке.'
+      );
     }
 
     e.target.value = '';
@@ -255,6 +270,20 @@ export default function VoiceMy() {
         </div>
 
       </div>
+
+      {/* Ошибка загрузки аватарки — эндпоинт ещё не реализован на бэке */}
+      {avatarError && (
+        <div className="lk-voices-trial-hint">
+          <span>{avatarError}</span>
+          <button
+            type="button"
+            className="lk-btn lk-btn--sm lk-btn--secondary"
+            onClick={() => setAvatarError(null)}
+          >
+            Понятно
+          </button>
+        </div>
+      )}
 
       {/* Триал-подсказка */}
       {voiceLimitReached && (
@@ -465,6 +494,10 @@ export default function VoiceMy() {
                         voice.name
                       );
 
+                      setRenameError(
+                        null
+                      );
+
                       setActiveMenu(
                         null
                       );
@@ -565,9 +598,10 @@ export default function VoiceMy() {
 
             <div
               className="lk-modal__overlay"
-              onClick={() =>
-                setRenameVoice(null)
-              }
+              onClick={() => {
+                setRenameVoice(null);
+                setRenameError(null);
+              }}
             />
 
             <div className="lk-modal__content">
@@ -588,14 +622,21 @@ export default function VoiceMy() {
                   className="lk-input"
                 />
 
+                {renameError && (
+                  <p className="lk-voice-rename-error">
+                    {renameError}
+                  </p>
+                )}
+
               </div>
 
               <div className="lk-modal__actions">
 
                 <LkButton
-                  onClick={() =>
-                    setRenameVoice(null)
-                  }
+                  onClick={() => {
+                    setRenameVoice(null);
+                    setRenameError(null);
+                  }}
                 >
                   Отмена
                 </LkButton>
@@ -612,9 +653,17 @@ export default function VoiceMy() {
                       setRenameVoice(
                         null
                       );
+
+                      setRenameError(
+                        null
+                      );
                     } catch (error) {
                       console.error(
                         error
+                      );
+
+                      setRenameError(
+                        'Переименование пока недоступно — эта функция ещё в разработке.'
                       );
                     }
                   }}

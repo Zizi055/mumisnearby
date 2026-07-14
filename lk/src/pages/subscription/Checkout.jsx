@@ -82,11 +82,7 @@ export default function Checkout() {
     try {
       const response = await createSubscriptionCheckout({
         planId: plan.id,
-        planName: plan.name,
-        period: effectivePeriod,
-        amount: price,
-        changeType,
-        currentPlanId: currentPlan?.id || null,
+        billingPeriod: effectivePeriod,
       });
 
       setResult(response);

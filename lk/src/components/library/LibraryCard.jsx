@@ -12,13 +12,13 @@ import {
 import { useLibraryStore } from '../../store/library.store';
 import TrialPaywallModal from '../trial/TrialPaywallModal';
 import { useTrialStore } from '../../store/trial.store';
-import { getSubscription } from '../../store/subscription.store';
+import { useHasPaidPlan } from '../../store/subscription.store';
 
 export default function LibraryCard({ item, isTrialLocked = false }) {
   const navigate = useNavigate();
   const toggleFavorite = useLibraryStore((s) => s.toggleFavorite);
   const trial = useTrialStore((s) => s.trial);
-  const hasPaidPlan = !!getSubscription()?.currentPlanId;
+  const hasPaidPlan = useHasPaidPlan();
   const [showPaywall, setShowPaywall] = useState(false);
 
   const paywallReason = trial?.isExpired ? 'expired' : 'limit';
@@ -148,6 +148,8 @@ function getTypeLabel(type) {
     case 'lullaby': return 'Колыбельная';
     case 'therapy': return 'Терапия';
     case 'family_story': return 'История';
+    case 'poem': return 'Стих';
+    case 'story': return 'Рассказ';
     default: return 'Контент';
   }
 }
