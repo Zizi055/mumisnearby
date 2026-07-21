@@ -168,7 +168,8 @@ export default function SubscriptionTariff() {
               onClick={() => setBillingPeriod('year')}
             >
               Год
-              <span>-20%</span>
+              {/* Была подпись "-20%" — сравнение с помесячной оплатой,
+                  убрали вместе с отключением месячной подписки. */}
             </button>
 
           </div>
