@@ -203,6 +203,16 @@
   color: $lk-white;
 }
 
+/* Статичный вид переключателя, пока месячная оплата отключена */
+.lk-billing__switch--static span.is-active {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: $lk-radius-pill;
+  background: $lk-brand;
+  color: $lk-white;
+  font-size: 13px;
+}
+
 /* CURRENT PLAN */
 .lk-current-plan {
   display: inline-flex;

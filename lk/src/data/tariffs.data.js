@@ -1,3 +1,6 @@
+// Месячная подписка временно отключена по всему сайту — оставили только
+// годовую оплату (isYearOnly: true у всех тарифов). priceMonth не удаляли,
+// чтобы легко вернуть помесячную оплату обратно — просто убрать isYearOnly.
 export const tariffs = [
   {
     id: 'fairy',
@@ -5,6 +8,7 @@ export const tariffs = [
 
     priceYear: 14400,
     priceMonth: 1490,
+    isYearOnly: true,
 
     level: 1,
     description: 'Идеальный старт. Ваш голос оживляет классические сказки.',
@@ -27,6 +31,7 @@ export const tariffs = [
 
     priceYear: 24400,
     priceMonth: 2490,
+    isYearOnly: true,
 
     level: 2,
     description: 'Полноценное присутствие...',
