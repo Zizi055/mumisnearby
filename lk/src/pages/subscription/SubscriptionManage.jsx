@@ -65,6 +65,11 @@ function isValidName(name) {
   return name.trim().length > 2;
 }
 
+// Месячная подписка временно отключена по всему сайту — оставили только
+// годовую оплату. Чтобы вернуть переключатель периода здесь, поставь true
+// и убери isYearOnly у тарифов в data/tariffs.data.js.
+const MONTHLY_BILLING_ENABLED = false;
+
 const SBP_BANKS = [
   {
     id: 'sber',
@@ -193,13 +198,13 @@ export default function SubscriptionManage() {
     ? `${currentPlan.priceYear.toLocaleString('ru-RU')} ₽ / год`
     : '—';
 
-  const priceMonth = currentPlan?.priceMonth
-    ? `${currentPlan.priceMonth.toLocaleString('ru-RU')} ₽ / мес`
-    : '';
+  // priceMonth/currentPrice-по-месяцам не удаляли — пригодятся, когда
+  // вернём переключатель периода (см. MONTHLY_BILLING_ENABLED выше).
+  // const priceMonth = currentPlan?.priceMonth
+  //   ? `${currentPlan.priceMonth.toLocaleString('ru-RU')} ₽ / мес`
+  //   : '';
 
-  const currentPrice = billing === 'year'
-    ? currentPlan?.priceYear
-    : currentPlan?.priceMonth;
+  const currentPrice = currentPlan?.priceYear;
 
   const brand = detectBrand(card);
   const defaultCard = cards.find((c) => c.id === defaultCardId);
@@ -303,23 +308,29 @@ export default function SubscriptionManage() {
           <p className="lk-text">Контролируйте тариф, платежи и доступ</p>
         </div>
 
-        <div className="lk-billing-toggle">
-          <button
-            type="button"
-            className={billing === 'month' ? 'is-active' : ''}
-            onClick={() => setBilling('month')}
-          >
-            Месяц
-          </button>
-          <button
-            type="button"
-            className={billing === 'year' ? 'is-active' : ''}
-            onClick={() => setBilling('year')}
-          >
-            Год
-            <span>выгоднее</span>
-          </button>
-        </div>
+        {MONTHLY_BILLING_ENABLED ? (
+          <div className="lk-billing-toggle">
+            <button
+              type="button"
+              className={billing === 'month' ? 'is-active' : ''}
+              onClick={() => setBilling('month')}
+            >
+              Месяц
+            </button>
+            <button
+              type="button"
+              className={billing === 'year' ? 'is-active' : ''}
+              onClick={() => setBilling('year')}
+            >
+              Год
+              <span>выгоднее</span>
+            </button>
+          </div>
+        ) : (
+          <div className="lk-billing-toggle lk-billing-toggle--static">
+            <span className="is-active">Год</span>
+          </div>
+        )}
       </div>
 
       <div className="lk-subscription-card">
@@ -338,7 +349,7 @@ export default function SubscriptionManage() {
           </div>
           <div>
             <span>Сумма</span>
-            <strong>{billing === 'year' ? priceYear : priceMonth}</strong>
+            <strong>{priceYear}</strong>
           </div>
         </div>
       </div>

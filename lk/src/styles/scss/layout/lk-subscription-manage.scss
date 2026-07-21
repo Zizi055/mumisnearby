@@ -67,6 +67,16 @@
   }
 }
 
+/* Статичный вид переключателя, пока месячная оплата отключена */
+.lk-billing-toggle--static span.is-active {
+  display: inline-flex;
+  align-items: center;
+  height: 32px;
+  padding: 0 14px;
+  border-radius: $lk-radius-pill;
+  font-size: 13px;
+}
+
 
 .lk-usage {
   @extend .lk-subscription-block;
