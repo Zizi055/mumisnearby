@@ -28,6 +28,8 @@ export default function Settings() {
 
   // Семья
   const [familyAccess, setFamilyAccess] = useState(true);
+  // childMode используется только в закомментированном ниже переключателе
+  // «Детский режим» — оставили для быстрого возврата.
   const [childMode, setChildMode] = useState(false);
 
   const handleSavePassword = () => {
@@ -64,6 +66,10 @@ export default function Settings() {
               </label>
             </div>
 
+            {/* Качество аудио и скорость воспроизведения — пока такого
+                функционала на сайте не будет, скрыла. Код оставила ниже
+                в комментарии, чтобы вернуть, когда появится реализация.
+
             <div className="lk-settings__row">
               <div>
                 <strong>Качество аудио</strong>
@@ -81,16 +87,17 @@ export default function Settings() {
                 <strong>Скорость воспроизведения</strong>
                 <p>По умолчанию 1×</p>
               </div>
-           <select
-  className="lk-settings__select"
-  defaultValue="1×"
->
-  <option>0.75×</option>
-  <option value="1×">1×</option>
-  <option>1.25×</option>
-  <option>1.5×</option>
-</select>
+              <select
+                className="lk-settings__select"
+                defaultValue="1×"
+              >
+                <option>0.75×</option>
+                <option value="1×">1×</option>
+                <option>1.25×</option>
+                <option>1.5×</option>
+              </select>
             </div>
+            */}
           </div>
         </div>
       )}
@@ -236,6 +243,10 @@ export default function Settings() {
               </label>
             </div>
 
+            {/* Детский режим — пока такого функционала на сайте не будет,
+                скрыла. Код оставила в комментарии, чтобы вернуть, когда
+                появится реализация.
+
             <div className="lk-settings__row">
               <div>
                 <strong>Детский режим</strong>
@@ -246,6 +257,7 @@ export default function Settings() {
                 <span />
               </label>
             </div>
+            */}
           </div>
         </div>
       )}
