@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, ArrowRight, Sparkles, MailCheck } from 'lucide-react';
 import { login, register, resendVerification } from '../api/auth.service';
+import { getStoredReferralCode, clearStoredReferralCode } from '../utils/referral';
 import { useAuth } from '../context/AuthContext';
 import AuthDNA from './AuthDNA';
 import '../styles/scss/pages/auth.scss';
@@ -74,13 +75,13 @@ export default function Auth() {
 
     try {
       if (isRegister) {
-        const refCode = localStorage.getItem('ref_code');
+        const refCode = getStoredReferralCode();
 
         await register({ name, email, password, referral_code: refCode || undefined });
 
         if (refCode) {
           // referral_code уже ушёл в /auth/register — локальный код можно очистить
-          localStorage.removeItem('ref_code');
+          clearStoredReferralCode();
         }
 
         setStatus('idle');

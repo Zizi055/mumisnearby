@@ -1,4 +1,7 @@
+import { useEffect } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';
+
+import { captureReferralCode } from './utils/referral';
 
 import Dashboard from './pages/Dashboard';
 import Library from './pages/Library';
@@ -27,6 +30,12 @@ import Settings from './pages/settings/Settings.jsx';
 import LkLayout from './components/layout/LkLayout';
 import LibraryItem from './components/library/LibraryItem';
 function App() {
+  // Ловим ?ref=CODE (или /ref/CODE) сразу при заходе в приложение — на
+  // случай прямой ссылки в ЛК, минуя маркетинговый сайт. См. utils/referral.js
+  useEffect(() => {
+    captureReferralCode();
+  }, []);
+
   return (
     <Routes>
 
