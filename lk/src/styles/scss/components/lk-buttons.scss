@@ -5,30 +5,65 @@
 /* ======================================== */
 
 .lk-btn {
+  --btn-bg: #{$lk-brand};
+  --btn-color: #{$lk-white};
+  --btn-border: transparent;
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
 
   position: relative;
 
+  padding: 14px 22px;
   border-radius: $lk-radius-pill;
+
+  background: var(--btn-bg);
+  color: var(--btn-color);
+  border: 1px solid var(--btn-border);
+
+  text-decoration: none;
   cursor: pointer;
 
   font-size: 14px;
   line-height: 1;
   font-weight: 500;
 
-  border: 1px solid transparent;
-
   transition:
-    background 0.2s ease,
-    color 0.2s ease,
-    border-color 0.2s ease,
+    transform 0.2s ease,
     box-shadow 0.2s ease,
-    transform 0.1s ease;
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
 
   white-space: nowrap;
+
+  /* убираем дефолтные стили кнопки */
+  appearance: none;
+  -webkit-appearance: none;
+  font-family: inherit;
+}
+
+/* hover / active — общие для всех вариантов */
+.lk-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+.lk-btn:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* disabled */
+.lk-btn:disabled,
+.lk-btn.is-disabled,
+.lk-btn--disabled {
+  opacity: 0.6;
+  pointer-events: none;
+  cursor: not-allowed;
+  transform: none;
 }
 
 /* ======================================== */
@@ -36,132 +71,119 @@
 /* ======================================== */
 
 .lk-btn--sm {
-  height: 32px;
-  padding: 0 12px;
-}
-
-.lk-btn--md {
-  height: 40px;
-  padding: 0 16px;
+  padding: 10px 16px;
+  font-size: 13px;
 }
 
 .lk-btn--lg {
-  height: 48px;
-  padding: 0 20px;
+  padding: 16px 26px;
   font-size: 15px;
 }
 
 /* ======================================== */
-/* PRIMARY */
+/* VARIANTS */
 /* ======================================== */
 
 .lk-btn--primary {
-  background: $lk-brand;
-  color: $lk-white;
-  box-shadow: 0 4px 12px rgba(93, 143, 114, 0.18);
+  --btn-bg: #{$lk-brand};
+  --btn-color: #{$lk-white};
+  --btn-border: transparent;
 }
 
 .lk-btn--primary:hover {
-  background: $lk-brand-dark;
-  transform: translateY(-1px);
+  --btn-bg: #{$lk-brand-dark};
 }
-
-.lk-btn--primary:active {
-  transform: translateY(0);
-  box-shadow: none;
-}
-
-.lk-btn--primary:disabled {
-  background: rgba(93, 143, 114, 0.35);
-  color: rgba(255, 255, 255, 0.8);
-  box-shadow: none;
-}
-
-/* ======================================== */
-/* SECONDARY */
-/* ======================================== */
 
 .lk-btn--secondary {
-  background: $lk-surface;
-  border: 1px solid $lk-border;
-  color: $lk-text;
+  --btn-bg: transparent;
+  --btn-color: #{$lk-text};
+  --btn-border: #{$lk-border};
 }
 
 .lk-btn--secondary:hover {
-  background: rgba(93, 143, 114, 0.06);
-  border-color: $lk-line;
+  --btn-bg: #{$lk-brand};
+  --btn-color: #{$lk-white};
+  --btn-border: #{$lk-brand};
 }
-
-.lk-btn--secondary:active {
-  background: rgba(93, 143, 114, 0.1);
-}
-
-.lk-btn--secondary:disabled {
-  background: $lk-surface-soft;
-  color: $lk-text-muted;
-  border-color: $lk-line-soft;
-}
-
-/* ======================================== */
-/* GHOST */
-/* ======================================== */
 
 .lk-btn--ghost {
-  background: transparent;
-  color: $lk-text-muted;
+  --btn-bg: transparent;
+  --btn-color: #{$lk-text-muted};
+  --btn-border: transparent;
 }
 
 .lk-btn--ghost:hover {
-  color: $lk-text;
-  background: rgba(93, 143, 114, 0.05);
+  --btn-bg: rgba(93, 143, 114, 0.08);
+  --btn-color: #{$lk-text};
 }
-
-.lk-btn--ghost:disabled {
-  opacity: 0.6;
-}
-
-/* ======================================== */
-/* DANGER */
-/* ======================================== */
 
 .lk-btn--danger {
-  background: transparent;
-  border: 1px solid rgba(229, 72, 72, 0.35);
-  color: $lk-danger;
+  --btn-bg: transparent;
+  --btn-color: #{$lk-danger};
+  --btn-border: rgba(229, 72, 72, 0.35);
 }
 
 .lk-btn--danger:hover {
-  background: rgba(229, 72, 72, 0.08);
-  border-color: rgba(229, 72, 72, 0.5);
-}
-
-.lk-btn--danger:active {
-  background: rgba(229, 72, 72, 0.15);
-}
-
-.lk-btn--danger:disabled {
-  color: rgba(229, 72, 72, 0.4);
-  border-color: rgba(229, 72, 72, 0.2);
+  --btn-bg: rgba(229, 72, 72, 0.08);
+  --btn-border: rgba(229, 72, 72, 0.5);
 }
 
 /* ======================================== */
-/* DISABLED GLOBAL */
-/* ======================================== */
-
-.lk-btn:disabled {
-  cursor: not-allowed;
-  pointer-events: none;
-  transform: none;
-}
-
-/* ======================================== */
-/* CONTENT */
+/* CONTENT / ELEMENTS */
 /* ======================================== */
 
 .lk-btn__content {
   display: inline-flex;
   align-items: center;
   gap: 8px;
+}
+
+.lk-btn__text {
+  display: inline-flex;
+  align-items: center;
+}
+
+.lk-btn__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease;
+}
+
+.lk-btn:hover .lk-btn__icon {
+  transform: translateX(3px);
+}
+
+/* ======================================== */
+/* ARROW IN CIRCLE */
+/* ======================================== */
+
+.lk-btn--arrow {
+  gap: 14px;
+
+  .lk-btn__icon {
+    width: 32px;
+    height: 32px;
+
+    border: 1.5px solid currentColor;
+    border-radius: 50%;
+
+    flex-shrink: 0;
+
+    transition:
+      transform 0.25s ease,
+      background 0.25s ease,
+      border-color 0.25s ease;
+
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+}
+
+.lk-btn--arrow:hover .lk-btn__icon {
+  transform: translateX(4px) scale(1.05);
 }
 
 /* ======================================== */
@@ -176,7 +198,6 @@
   opacity: 0.4;
 }
 
-/* loader */
 .lk-btn__loader {
   position: absolute;
 
@@ -190,7 +211,6 @@
   animation: lk-spin 0.6s linear infinite;
 }
 
-/* animation */
 @keyframes lk-spin {
   to {
     transform: rotate(360deg);
@@ -202,52 +222,46 @@
 }
 
 /* =============================================
-   RESPONSIVE MEDIA QUERIES
+   RESPONSIVE — padding и font-size, иконки не трогаем
 ============================================= */
 
 @media (max-width: 768px) {
+  .lk-btn {
+    padding: 13px 20px;
+    font-size: 13.5px;
+  }
+
   .lk-btn--lg {
-    height: 44px;
-    padding: 0 18px;
+    padding: 15px 22px;
     font-size: 14px;
   }
 
-  .lk-btn--md {
-    height: 38px;
-    padding: 0 14px;
-  }
-}
-
-@media (max-width: 640px) {
-  .lk-btn--lg {
-    height: 42px;
-    padding: 0 16px;
+  .lk-btn--sm {
+    padding: 9px 14px;
+    font-size: 12.5px;
   }
 }
 
 @media (max-width: 480px) {
-  .lk-btn--lg {
-    height: 40px;
-    padding: 0 14px;
+  .lk-btn {
+    padding: 12px 16px;
     font-size: 13px;
   }
 
-  .lk-btn--md {
-    height: 36px;
-    padding: 0 12px;
-    font-size: 13px;
+  .lk-btn--lg {
+    padding: 13px 18px;
+    font-size: 13.5px;
   }
 
   .lk-btn--sm {
-    height: 30px;
-    padding: 0 10px;
+    padding: 8px 12px;
     font-size: 12px;
   }
 }
 
 @media (max-width: 375px) {
-  .lk-btn--lg {
-    height: 38px;
+  .lk-btn {
+    padding: 11px 14px;
     font-size: 13px;
   }
 }
