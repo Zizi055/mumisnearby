@@ -1,5 +1,12 @@
 import { api } from './client';
 
+// GET /generations/ — список всех озвучек пользователя (вкладка
+// «Мои сказки» в библиотеке).
+export async function getGenerations() {
+  const data = await api.get('/generations/');
+  return Array.isArray(data) ? data : (data?.items ?? []);
+}
+
 // POST /generations/
 // body: { voice_id, content_type, content_id }
 export async function createGeneration(voiceId, contentType, contentId) {

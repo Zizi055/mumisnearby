@@ -7,6 +7,7 @@ import {
   renameVoice,
   uploadVoiceAvatar,
   updateVoiceSettings as updateVoiceSettingsRequest,
+  waitForVoiceReady,
 } from '../api/voice.service';
 
 export const useVoiceStore = create((set, get) => ({
@@ -80,6 +81,34 @@ export const useVoiceStore = create((set, get) => ({
           : voice
       ),
     })),
+
+
+
+  // Реальный поллинг статуса обучения через GET /voices/{id} — вместо
+  // мгновенной локальной фейковой анимации. Обновляет голос в сторе
+  // на каждый тик (в т.ч. audio/preview_url, как только бэк его отдаст).
+  pollVoiceUntilReady: async (id, onUpdate) => {
+    try {
+      const finalVoice = await waitForVoiceReady(id, (voice) => {
+        set((state) => ({
+          voices: state.voices.map((v) =>
+            v.id === id ? { ...v, ...voice } : v
+          ),
+        }));
+        onUpdate?.(voice);
+      });
+      return finalVoice;
+    } catch (error) {
+      console.error(error);
+      set((state) => ({
+        voices: state.voices.map((v) =>
+          v.id === id ? { ...v, status: 'error' } : v
+        ),
+        error: error.message,
+      }));
+      throw error;
+    }
+  },
 
 
 

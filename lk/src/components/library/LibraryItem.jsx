@@ -8,6 +8,7 @@ import {
   Star,
   Lock,
   Play,
+  Pause,
   Square,
   Heart,
   Mic,
@@ -17,7 +18,8 @@ import {
 import { useVoiceStore } from '../../store/voice.store';
 import { useLibraryStore } from '../../store/library.store';
 import { useTrialStore } from '../../store/trial.store';
-import { useHasPaidPlan } from '../../store/subscription.store';
+import { useHasPaidPlan, useTariffLevel } from '../../store/subscription.store';
+import { getRequiredTariffLabel } from '../../utils/tariffAccess';
 import TrialPaywallModal from '../trial/TrialPaywallModal';
 import {
   createGeneration,
@@ -34,8 +36,10 @@ export default function LibraryItem() {
   const { trial, incrementStory } = useTrialStore();
 
   const hasPaidPlan = useHasPaidPlan();
+  const tariffLevel = useTariffLevel();
 
   const audioRef = useRef(null);
+  const previewAudioRef = useRef(null);
 
   const [selectedVoice, setSelectedVoice] = useState(null);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -43,6 +47,7 @@ export default function LibraryItem() {
   const [audioUrl, setAudioUrl] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showPaywall, setShowPaywall] = useState(false);
+  const [previewVoiceId, setPreviewVoiceId] = useState(null);
 
   useEffect(() => {
     loadVoices();
@@ -74,8 +79,44 @@ export default function LibraryItem() {
     }
   };
 
+  // Прослушать пример голоса (preview_url) прямо в списке выбора —
+  // до генерации сказки, чтобы было слышно, каким голосом она прозвучит.
+  const handlePreviewVoice = (e, voice) => {
+    e.stopPropagation();
+
+    if (!voice.audio) return;
+
+    if (previewAudioRef.current && previewVoiceId === voice.id) {
+      previewAudioRef.current.pause();
+      previewAudioRef.current = null;
+      setPreviewVoiceId(null);
+      return;
+    }
+
+    if (previewAudioRef.current) {
+      previewAudioRef.current.pause();
+    }
+
+    const audio = new Audio(voice.audio);
+    previewAudioRef.current = audio;
+    audio.addEventListener('ended', () => setPreviewVoiceId(null));
+    audio.play().catch(() => {});
+    setPreviewVoiceId(voice.id);
+  };
+
+  useEffect(() => {
+    return () => {
+      previewAudioRef.current?.pause();
+    };
+  }, []);
+
   const handleGenerate = async () => {
     if (!selectedVoice || !item) return;
+
+    if (tariffBlocked) {
+      navigate('/subscription/tariff');
+      return;
+    }
 
     if (!hasPaidPlan && trial) {
       if (trial.isExpired || trial.storiesLimitReached) {
@@ -111,6 +152,9 @@ export default function LibraryItem() {
   };
 
   const trialBlocked = !hasPaidPlan && trial && (!trial.canGenerate);
+  // Доступ по тарифу: у контента есть свой access_lvl (0-4), сравниваем
+  // с уровнем тарифа пользователя (0 = демо/без подписки).
+  const tariffBlocked = (item?.accessLvl || 0) > tariffLevel;
   const generateLabel = () => {
     if (isGenerating) {
       if (genStatus === 'pending') return 'Отправка...';
@@ -118,6 +162,7 @@ export default function LibraryItem() {
       return 'Генерация...';
     }
     if (genStatus === 'failed') return 'Повторить';
+    if (tariffBlocked) return `Нужен тариф «${getRequiredTariffLabel(item?.accessLvl)}»`;
     if (trialBlocked) return 'Лимит исчерпан';
     if (audioUrl) return 'Создать новое';
     return 'Создать аудио';
@@ -230,7 +275,19 @@ export default function LibraryItem() {
             </div>
           )}
 
-          {!hasPaidPlan && trial && (
+          {tariffBlocked && (
+            <div className="lk-item-trial-hint">
+              Эта сказка доступна на тарифе «{getRequiredTariffLabel(item?.accessLvl)}» и выше.{' '}
+              <span
+                style={{ textDecoration: 'underline', cursor: 'pointer' }}
+                onClick={() => navigate('/subscription/tariff')}
+              >
+                Улучшить тариф
+              </span>
+            </div>
+          )}
+
+          {!tariffBlocked && !hasPaidPlan && trial && (
             <div className="lk-item-trial-hint">
               {trial.canGenerate
                 ? `Пробный период: осталось ${trial.storiesLeft} из 5 сказок`
@@ -243,9 +300,9 @@ export default function LibraryItem() {
           <div className="lk-item-hero__actions">
             <button
               type="button"
-              className={`lk-btn lk-btn--primary ${trialBlocked ? 'lk-btn--disabled' : ''}`}
+              className={`lk-btn lk-btn--primary ${trialBlocked || tariffBlocked ? 'lk-btn--disabled' : ''}`}
               onClick={handleGenerate}
-              disabled={!selectedVoice || isGenerating || trialBlocked}
+              disabled={!selectedVoice || isGenerating || trialBlocked || tariffBlocked}
             >
               {isGenerating ? <Loader2 size={15} className="lk-spin" /> : <Play size={15} />}
               {generateLabel()}
@@ -341,6 +398,21 @@ export default function LibraryItem() {
                         {voice.status === 'ready' ? 'Готов' : 'Обучается'}
                       </span>
                     </div>
+
+                    {voice.audio && (
+                      <button
+                        type="button"
+                        className="lk-item-voice__preview"
+                        onClick={(e) => handlePreviewVoice(e, voice)}
+                        title="Прослушать пример голоса"
+                      >
+                        {previewVoiceId === voice.id ? (
+                          <Pause size={13} />
+                        ) : (
+                          <Play size={13} />
+                        )}
+                      </button>
+                    )}
 
                     {selectedVoice?.id === voice.id && (
                       <div className="lk-item-voice__check" />

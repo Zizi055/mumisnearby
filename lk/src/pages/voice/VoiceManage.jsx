@@ -59,6 +59,7 @@ export default function VoiceManage() {
     updateVoice,
     updateVoiceSettings,
     loadVoices,
+    pollVoiceUntilReady,
   } = useVoiceStore();
 
   const [uploadedFile, setUploadedFile] =
@@ -75,6 +76,9 @@ export default function VoiceManage() {
 
   const [trainingProgress, setTrainingProgress] =
     useState(0);
+
+  const [trainingError, setTrainingError] =
+    useState(null);
 
   const [activeVoiceId, setActiveVoiceId] =
     useState(null);
@@ -145,58 +149,55 @@ export default function VoiceManage() {
 
       setTrainingStep(0);
 
-      setTrainingProgress(0);
+      setTrainingProgress(10);
+
+      setTrainingError(null);
 
       setPublishState('draft');
 
+      // Файл загружен на бэк (ElevenLabs начинает обучение)
       const createdVoice =
         await createVoice(file);
 
       setActiveVoiceId(createdVoice.id);
 
-      trainingSteps.forEach((_, index) => {
-        setTimeout(() => {
-          setTrainingStep(index);
+      setTrainingStep(1);
+      setTrainingProgress(35);
 
-          setTrainingProgress(
-            Math.round(
-              ((index + 1) /
-                trainingSteps.length) *
-                100
-            )
-          );
-
-          if (
-            index ===
-            trainingSteps.length - 1
-          ) {
-            setTrainingStatus('ready');
-
-            setPublishState('published');
-
-            updateVoice(createdVoice.id, {
-              status: 'ready',
-
-              description:
-                'Голосовая модель готова',
-
-              publishState: 'published',
-
-              tags: [
-                'готова',
-                'чистое звучание',
-                'родной тембр',
-              ],
-            });
-
-            syncToCloud();
+      // Реальный поллинг статуса через GET /voices/{id} — вместо
+      // фейковой анимации ждём, пока бэк действительно отдаст
+      // status: 'ready' и настоящий preview_url.
+      const finalVoice = await pollVoiceUntilReady(
+        createdVoice.id,
+        (voice) => {
+          if (voice.status === 'training') {
+            setTrainingStep(2);
+            setTrainingProgress(70);
           }
-        }, 900 * (index + 1));
-      });
+        }
+      );
+
+      if (finalVoice.status === 'ready') {
+        setTrainingStep(trainingSteps.length - 1);
+        setTrainingProgress(100);
+        setTrainingStatus('ready');
+        setPublishState('published');
+        syncToCloud();
+      } else {
+        setTrainingStatus('idle');
+        setTrainingError(
+          'Не удалось обучить голос — попробуйте загрузить запись ещё раз.'
+        );
+      }
     } catch (error) {
       console.error(error);
 
       setTrainingStatus('idle');
+      setTrainingError(
+        error.message?.includes('истекло')
+          ? 'Обучение голоса заняло слишком много времени. Обновите страницу через пару минут — модель может быть уже готова.'
+          : 'Не удалось загрузить голос. Попробуйте ещё раз.'
+      );
     }
 
     e.target.value = '';
@@ -534,6 +535,12 @@ export default function VoiceManage() {
                 }}
               />
             </div>
+          )}
+
+          {trainingError && (
+            <p className="lk-voice-training__error">
+              {trainingError}
+            </p>
           )}
 
         </div>

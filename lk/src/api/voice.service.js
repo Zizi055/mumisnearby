@@ -36,7 +36,30 @@ export async function getVoices() {
 
 // GET /voices/{voice_id}
 export async function getVoiceById(id) {
-  return api.get(`/voices/${id}`);
+  const data = await api.get(`/voices/${id}`);
+  return normalizeVoice(data);
+}
+
+// Ждёт пока голос реально обучится на бэке (ElevenLabs) — статус и
+// preview_url сразу после /voices/add часто ещё не готовы, обучение
+// занимает какое-то время. Поллинг вместо мгновенной фейковой анимации.
+export async function waitForVoiceReady(id, onUpdate) {
+  const INTERVAL = 2000;
+  const TIMEOUT = 180_000;
+  const start = Date.now();
+
+  while (Date.now() - start < TIMEOUT) {
+    const voice = await getVoiceById(id);
+    onUpdate?.(voice);
+
+    if (voice.status === 'ready' || voice.status === 'error') {
+      return voice;
+    }
+
+    await new Promise((r) => setTimeout(r, INTERVAL));
+  }
+
+  throw new Error('Время ожидания обучения голоса истекло');
 }
 
 // DELETE /voices/{voice_id}

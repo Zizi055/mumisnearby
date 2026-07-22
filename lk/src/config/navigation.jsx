@@ -21,6 +21,7 @@ export const navigation = [
       { label: 'Терапия', path: '/library/therapy' },
       { label: 'Семейные истории', path: '/library/family' },
       { label: 'Рассказы и стихи', path: '/library/poems' },
+      { label: 'Мои сказки', path: '/library/generations' },
     ],
   },
   {

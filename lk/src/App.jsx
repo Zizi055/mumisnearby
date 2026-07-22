@@ -29,6 +29,7 @@ import Settings from './pages/settings/Settings.jsx';
 
 import LkLayout from './components/layout/LkLayout';
 import LibraryItem from './components/library/LibraryItem';
+import LibraryGenerations from './pages/library/LibraryGenerations';
 function App() {
   // Ловим ?ref=CODE (или /ref/CODE) сразу при заходе в приложение — на
   // случай прямой ссылки в ЛК, минуя маркетинговый сайт. См. utils/referral.js
@@ -67,6 +68,7 @@ function App() {
         <Route path="/library/therapy" element={<Library />} />
         <Route path="/library/family" element={<Library />} />
         <Route path="/library/poems" element={<Library />} />
+        <Route path="/library/generations" element={<LibraryGenerations />} />
         <Route
   path="/library/item/:type/:id"
   element={<LibraryItem />}

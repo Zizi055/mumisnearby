@@ -16,7 +16,7 @@ import {
 
 import { useLibraryStore } from '../store/library.store';
 import { getTrialInfo } from '../store/trial.store';
-import { useHasPaidPlan } from '../store/subscription.store';
+import { useHasPaidPlan, useTariffLevel } from '../store/subscription.store';
 
 // В пробном периоде: только категория сказок, первые 5 открыты
 const TRIAL_FREE_COUNT = 5;
@@ -83,6 +83,10 @@ export default function Library() {
   // Триал истёк — блокируем всё. Иначе: только сказки первые 5 открыты
   const trialExpired = isTrialMode && trial?.isExpired;
   const isLockedCategory = isTrialMode && (trialExpired || activeCategory !== TRIAL_FREE_CATEGORY);
+
+  // Гейтинг по тарифу: access_lvl контента (0-4) сравнивается с уровнем
+  // текущего тарифа пользователя. 0 = демо, доступно всем.
+  const tariffLevel = useTariffLevel();
 
   const [activeMode, setActiveMode] = useState('all');
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
@@ -452,13 +456,20 @@ export default function Library() {
         {!loading && !error && visibleItems.length > 0 && (
           <>
             <div className="lk-library-grid">
-              {visibleItems.map((item, index) => (
-                <LibraryCard
-                  key={item.id}
-                  item={item}
-                  isTrialLocked={isLockedCategory || (isTrialMode && index >= TRIAL_FREE_COUNT)}
-                />
-              ))}
+              {visibleItems.map((item, index) => {
+                const isTrialLocked =
+                  isLockedCategory || (isTrialMode && index >= TRIAL_FREE_COUNT);
+                const isTariffLocked = !isTrialLocked && (item.accessLvl || 0) > tariffLevel;
+
+                return (
+                  <LibraryCard
+                    key={item.id}
+                    item={item}
+                    isTrialLocked={isTrialLocked}
+                    isTariffLocked={isTariffLocked}
+                  />
+                );
+              })}
             </div>
 
             {/* LOAD MORE */}

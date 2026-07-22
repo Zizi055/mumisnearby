@@ -1,5 +1,6 @@
 import { create } from 'zustand';
 import { getSubscription as fetchSubscription } from '../api/subscription.service';
+import { tariffs } from '../data/tariffs.data';
 
 // Реальная подписка с бэка (GET /subscription/status), больше не localStorage-заглушка.
 // Точная форма ответа backend'а ещё не подтверждена на практике — определяем
@@ -44,4 +45,21 @@ export const useSubscriptionStore = create((set, get) => ({
 // на каждое изменение всего объекта подписки.
 export function useHasPaidPlan() {
   return useSubscriptionStore((s) => hasPaidPlanFrom(s.subscription));
+}
+
+// Числовой уровень тарифа (0-4) — для гейтинга контента по access_lvl.
+// 0 = демо/нет подписки, дальше соответствует полю level в tariffs.data.js
+// (Сказочник=1, Хранитель=2, Волшебник=3, Собери сам=4).
+function tariffLevelFrom(sub) {
+  if (!sub) return 0;
+
+  const planId = sub.plan_id ?? sub.planId ?? null;
+  if (!planId) return 0;
+
+  const plan = tariffs.find((t) => t.id === planId);
+  return plan?.level ?? 0;
+}
+
+export function useTariffLevel() {
+  return useSubscriptionStore((s) => tariffLevelFrom(s.subscription));
 }

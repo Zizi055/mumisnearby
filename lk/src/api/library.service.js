@@ -25,6 +25,7 @@ function mapFairyTale(item) {
     isPremium:     false,
     isRussianFolk: isFolkCategory(item.category),
     category:      item.category ?? null,
+    accessLvl:     item.access_lvl ?? 0,
   };
 }
  
@@ -42,9 +43,10 @@ function mapLullaby(item) {
     isFavorite:  false,
     isNew:       false,
     isPremium:   false,
+    accessLvl:   item.access_lvl ?? 0,
   };
 }
- 
+
 function mapTherapy(item) {
   return {
     id:          item.id,
@@ -59,6 +61,7 @@ function mapTherapy(item) {
     isFavorite:  false,
     isNew:       false,
     isPremium:   false,
+    accessLvl:   item.access_lvl ?? 0,
   };
 }
 
@@ -77,6 +80,7 @@ function mapFamilyStory(item) {
     isNew:       false,
     isPremium:   false,
     category:    item.category ?? null,
+    accessLvl:   item.access_lvl ?? 0,
   };
 }
 
@@ -94,6 +98,7 @@ function mapPoem(item) {
     isFavorite:  false,
     isNew:       false,
     isPremium:   false,
+    accessLvl:   item.access_lvl ?? 0,
   };
 }
 
@@ -111,6 +116,7 @@ function mapStory(item) {
     isFavorite:  false,
     isNew:       false,
     isPremium:   false,
+    accessLvl:   item.access_lvl ?? 0,
   };
 }
 

@@ -13,23 +13,29 @@ import { useLibraryStore } from '../../store/library.store';
 import TrialPaywallModal from '../trial/TrialPaywallModal';
 import { useTrialStore } from '../../store/trial.store';
 import { useHasPaidPlan } from '../../store/subscription.store';
+import { getRequiredTariffLabel } from '../../utils/tariffAccess';
 
-export default function LibraryCard({ item, isTrialLocked = false }) {
+export default function LibraryCard({ item, isTrialLocked = false, isTariffLocked = false }) {
   const navigate = useNavigate();
   const toggleFavorite = useLibraryStore((s) => s.toggleFavorite);
   const trial = useTrialStore((s) => s.trial);
   const hasPaidPlan = useHasPaidPlan();
   const [showPaywall, setShowPaywall] = useState(false);
 
+  const isLocked = isTrialLocked || isTariffLocked;
   const paywallReason = trial?.isExpired ? 'expired' : 'limit';
 
   const handleFavorite = (e) => {
     e.stopPropagation();
-    if (isTrialLocked) return;
+    if (isLocked) return;
     toggleFavorite(item.id);
   };
 
   const openDetails = () => {
+    if (isTariffLocked) {
+      navigate('/subscription/tariff');
+      return;
+    }
     if (isTrialLocked) {
       setShowPaywall(true);
       return;
@@ -45,7 +51,7 @@ export default function LibraryCard({ item, isTrialLocked = false }) {
         onClose={() => setShowPaywall(false)}
       />
     )}
-    <article className={`lk-library-card ${isTrialLocked ? 'is-trial-locked' : ''}`}>
+    <article className={`lk-library-card ${isLocked ? 'is-trial-locked' : ''}`}>
       {/* image */}
       <div className="lk-library-card__media">
         <img src={item.image} alt={item.title} />
@@ -56,7 +62,7 @@ export default function LibraryCard({ item, isTrialLocked = false }) {
             {getTypeLabel(item.type)}
           </span>
 
-          {!isTrialLocked && (
+          {!isLocked && (
             <button
               type="button"
               className={`lk-library-card__favorite ${item.isFavorite ? 'is-active' : ''}`}
@@ -68,34 +74,38 @@ export default function LibraryCard({ item, isTrialLocked = false }) {
           )}
         </div>
 
-        {item.isPremium && !isTrialLocked && (
+        {item.isPremium && !isLocked && (
           <div className="lk-library-card__premium">
             <Lock size={12} />
             Premium
           </div>
         )}
 
-        {item.isRussianFolk && !isTrialLocked && (
+        {item.isRussianFolk && !isLocked && (
           <div className="lk-library-card__folk">
             <Star size={11} />
             Народная
           </div>
         )}
 
-        {/* Замок для триала */}
-        {isTrialLocked && (
+        {/* Замок для триала / тарифа */}
+        {isLocked && (
           <div className="lk-library-card__trial-lock">
             <div className="lk-library-card__trial-lock-icon">
               <Lock size={20} />
             </div>
-            <span>Доступно по подписке</span>
+            <span>
+              {isTariffLocked
+                ? `Доступно на тарифе «${getRequiredTariffLabel(item.accessLvl)}» и выше`
+                : 'Доступно по подписке'}
+            </span>
             <button
               type="button"
               className="lk-library-card__trial-lock-btn"
               onClick={openDetails}
             >
               <Sparkles size={13} />
-              Открыть доступ
+              {isTariffLocked ? 'Улучшить тариф' : 'Открыть доступ'}
             </button>
           </div>
         )}
@@ -117,7 +127,7 @@ export default function LibraryCard({ item, isTrialLocked = false }) {
           {item.description}
         </p>
 
-        {item.emotions?.length > 0 && !isTrialLocked && (
+        {item.emotions?.length > 0 && !isLocked && (
           <div className="lk-library-card__tags">
             {item.emotions.slice(0, 3).map((tag) => (
               <span key={tag}>{getEmotionLabel(tag)}</span>
@@ -128,11 +138,11 @@ export default function LibraryCard({ item, isTrialLocked = false }) {
         <div className="lk-library-card__footer">
           <button
             type="button"
-            className={`lk-btn lk-btn--sm ${isTrialLocked ? 'lk-btn--primary' : 'lk-btn--secondary'}`}
+            className={`lk-btn lk-btn--sm ${isLocked ? 'lk-btn--primary' : 'lk-btn--secondary'}`}
             onClick={openDetails}
           >
-            {isTrialLocked ? (
-              <><Lock size={13} /> Подписка</>
+            {isLocked ? (
+              <><Lock size={13} /> {isTariffLocked ? 'Тариф' : 'Подписка'}</>
             ) : 'Подробнее'}
           </button>
         </div>
