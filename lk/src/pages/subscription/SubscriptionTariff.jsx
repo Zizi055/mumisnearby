@@ -77,7 +77,7 @@ const CURRENT_PLAN_ID = 'guardian';
 
 function formatPrice(value) {
   if (!value) return '';
-  return value.toLocaleString('ru-RU');
+  return `${value.toLocaleString('ru-RU')} ₽`;
 }
 
 function getMonthlyFromYear(priceYear) {
@@ -252,6 +252,10 @@ function TariffCard({ tariff, currentPlan, billingPeriod, navigate }) {
 
           <span className="lk-tariff-price__value">
             {formatPrice(priceRaw)}
+          </span>
+
+          <span className="lk-tariff-price__period">
+            / {periodLabel}
           </span>
 
           {tariff.isYearOnly && (
