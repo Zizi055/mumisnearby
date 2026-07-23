@@ -206,7 +206,7 @@ export default function LibraryGenerations() {
                   {gen.status === 'failed' && gen.error_message && (
                     <span
                       className="lk-generations-row__error"
-                      title={gen.error_message}
+                      title={formatErrorMessage(gen.error_message)}
                     >
                       <AlertCircle size={13} />
                       {formatErrorMessage(gen.error_message)}
@@ -280,23 +280,34 @@ function getTypeLabel(type) {
   }
 }
 
-// Бэк иногда отдаёт error_message как сырой JSON целиком (например ответ
-// ElevenLabs), который некрасиво обрывается на середине при обычном
-// текстовом усечении. Пытаемся достать из него человекочитаемую суть,
-// полный текст всё равно доступен по наведению (title).
+// Бэк иногда отдаёт error_message как текст с сырым JSON внешнего сервиса
+// озвучки внутри (например "Ошибка ...TTS: {...}") — это и обрывается
+// некрасиво на середине при обычном усечении, и светит наружу название
+// стороннего сервиса, которое пользователю знать не нужно. Достаём из
+// этого человекочитаемую суть и полностью убираем упоминание сервиса.
 function formatErrorMessage(raw) {
   if (!raw) return 'Ошибка озвучки';
 
-  try {
-    const parsed = JSON.parse(raw);
-    const detail = parsed?.detail;
+  let message = raw;
 
-    if (typeof detail === 'string') return detail;
-    if (detail?.message) return detail.message;
-    if (detail?.type) return `Ошибка сервиса озвучки (${detail.type})`;
-  } catch {
-    // не JSON — покажем как обычный текст ниже
+  // JSON может быть не с начала строки (например есть текстовый префикс) —
+  // ищем первую { и пробуем распарсить с неё.
+  const jsonStart = raw.indexOf('{');
+  if (jsonStart !== -1) {
+    try {
+      const parsed = JSON.parse(raw.slice(jsonStart));
+      const detail = parsed?.detail;
+
+      if (typeof detail === 'string') message = detail;
+      else if (detail?.message) message = detail.message;
+      else if (detail?.type) message = `Ошибка сервиса озвучки (${detail.type})`;
+    } catch {
+      // не JSON — используем текст как есть, санитайзинг ниже всё равно сработает
+    }
   }
 
-  return raw.length > 70 ? `${raw.slice(0, 70)}…` : raw;
+  // Убираем название стороннего сервиса, если оно всё же попало в текст.
+  message = message.replace(/eleven\s*labs/gi, 'сервис озвучки');
+
+  return message.length > 70 ? `${message.slice(0, 70)}…` : message;
 }

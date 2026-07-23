@@ -1,8 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { navigation } from '../../config/navigation';
 import { Bell, Check, Menu } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import LkButton from '../ui/LkButton';
 
 const MOCK_NOTIFICATIONS = [
   {
@@ -27,11 +28,11 @@ const MOCK_NOTIFICATIONS = [
 
 export default function Header({ onMenuToggle }) {
   const location = useLocation();
-  const navigate = useNavigate();
   const { user } = useAuth();
 
   const [showNotifications, setShowNotifications] = useState(false);
   const [notifications, setNotifications] = useState(MOCK_NOTIFICATIONS);
+  const [showLeaveConfirm, setShowLeaveConfirm] = useState(false);
   const panelRef = useRef(null);
 
   const unreadCount = notifications.filter((n) => !n.read).length;
@@ -183,7 +184,7 @@ export default function Header({ onMenuToggle }) {
         <button
           className="lk-header__user"
           type="button"
-          onClick={() => navigate('/profile')}
+          onClick={() => setShowLeaveConfirm(true)}
         >
           <div className="lk-header__avatar">
             {getInitial()}
@@ -194,6 +195,31 @@ export default function Header({ onMenuToggle }) {
         </button>
 
       </div>
+
+      {/* ПОДТВЕРЖДЕНИЕ ВЫХОДА НА ГЛАВНУЮ СТРАНИЦУ САЙТА */}
+      {showLeaveConfirm && (
+        <div className="lk-modal">
+          <div
+            className="lk-modal__overlay"
+            onClick={() => setShowLeaveConfirm(false)}
+          />
+          <div className="lk-modal__content">
+            <h3>Покинуть сайт?</h3>
+            <p>Вы перейдёте на главную страницу rodnyegolosa.ru, личный кабинет закроется.</p>
+            <div className="lk-modal__actions">
+              <LkButton onClick={() => setShowLeaveConfirm(false)}>
+                Отмена
+              </LkButton>
+              <LkButton
+                variant="primary"
+                onClick={() => { window.location.href = '/'; }}
+              >
+                Выйти
+              </LkButton>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 }

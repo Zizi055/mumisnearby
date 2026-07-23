@@ -40,7 +40,7 @@ export async function getVoiceById(id) {
   return normalizeVoice(data);
 }
 
-// Ждёт пока голос реально обучится на бэке (ElevenLabs) — статус и
+// Ждёт пока голос реально обучится на бэке — статус и
 // preview_url сразу после /voices/add часто ещё не готовы, обучение
 // занимает какое-то время. Поллинг вместо мгновенной фейковой анимации.
 export async function waitForVoiceReady(id, onUpdate) {

@@ -155,7 +155,7 @@ export default function VoiceManage() {
 
       setPublishState('draft');
 
-      // Файл загружен на бэк (ElevenLabs начинает обучение)
+      // Файл загружен на бэк, начинается обучение голосовой модели
       const createdVoice =
         await createVoice(file);
 
