@@ -4,7 +4,19 @@ import { useNavigate } from 'react-router-dom';
 import { Play, Square, AlertCircle, Loader2, ExternalLink } from 'lucide-react';
 
 import { getGenerations, getGenerationAudio } from '../../api/generations.service';
+import { getLibraryItems } from '../../api/library.service';
 import { useVoiceStore } from '../../store/voice.store';
+
+// content_type генерации -> категория, которую грузит library.service.js
+// (истории и стихи приходят одним запросом под ключом 'poem').
+const CONTENT_TYPE_TO_CATEGORY = {
+  fairy_tale: 'fairy_tale',
+  lullaby: 'lullaby',
+  therapy: 'therapy',
+  family_story: 'family_story',
+  poem: 'poem',
+  story: 'poem',
+};
 
 // Вкладка «Мои сказки» в библиотеке — список всех прошлых озвучек
 // (GET /generations/), с прослушиванием готовых и статусом остальных.
@@ -14,6 +26,7 @@ export default function LibraryGenerations() {
   const { voices, loadVoices } = useVoiceStore();
 
   const [generations, setGenerations] = useState([]);
+  const [titleMap, setTitleMap] = useState(new Map());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -36,8 +49,9 @@ export default function LibraryGenerations() {
       setLoading(true);
       setError(null);
       const data = await getGenerations();
-      // Новые сверху, если id по порядку создания
-      setGenerations([...data].sort((a, b) => (b.id ?? 0) - (a.id ?? 0)));
+      const sorted = [...data].sort((a, b) => (b.id ?? 0) - (a.id ?? 0));
+      setGenerations(sorted);
+      loadTitles(sorted);
     } catch (e) {
       console.error(e);
       const is401 = e.message?.includes('401') || e.message?.includes('истекла');
@@ -47,8 +61,42 @@ export default function LibraryGenerations() {
     }
   }
 
-  const getVoiceName = (voiceId) =>
-    voices.find((v) => v.id === voiceId)?.name || `Голос #${voiceId}`;
+  // Подтягиваем настоящие названия сказок/колыбельных вместо голого
+  // "Сказка"/"Рассказ" — по одному запросу на каждую встретившуюся категорию.
+  async function loadTitles(generationsList) {
+    const categories = [
+      ...new Set(
+        generationsList
+          .map((g) => CONTENT_TYPE_TO_CATEGORY[g.content_type])
+          .filter(Boolean)
+      ),
+    ];
+
+    if (categories.length === 0) return;
+
+    try {
+      const results = await Promise.all(
+        categories.map((cat) => getLibraryItems(cat).catch(() => []))
+      );
+
+      const map = new Map();
+      results.flat().forEach((item) => {
+        map.set(`${item.type}:${item.id}`, item.title);
+      });
+
+      setTitleMap(map);
+    } catch (e) {
+      console.error('Не удалось подгрузить названия сказок для списка озвучек:', e);
+    }
+  }
+
+  const getTitle = (gen) =>
+    titleMap.get(`${gen.content_type}:${gen.content_id}`) || getTypeLabel(gen.content_type);
+
+  const getVoiceName = (voiceId) => {
+    if (voiceId == null) return 'не указан';
+    return voices.find((v) => v.id === voiceId)?.name || `#${voiceId}`;
+  };
 
   const handlePlay = async (gen) => {
     if (playingId === gen.id) {
@@ -145,20 +193,23 @@ export default function LibraryGenerations() {
             {generations.map((gen) => (
               <div className="lk-generations-row" key={gen.id}>
                 <div className="lk-generations-row__main">
-                  <span className="lk-generations-row__type">
-                    {getTypeLabel(gen.content_type)}
-                  </span>
-                  <span className="lk-generations-row__voice">
-                    Голос: {getVoiceName(gen.voice_id)}
+                  <strong className="lk-generations-row__title">
+                    {getTitle(gen)}
+                  </strong>
+                  <span className="lk-generations-row__meta">
+                    {getTypeLabel(gen.content_type)} · Голос: {getVoiceName(gen.voice_id)}
                   </span>
                 </div>
 
                 <div className="lk-generations-row__status">
                   <StatusBadge status={gen.status} />
                   {gen.status === 'failed' && gen.error_message && (
-                    <span className="lk-generations-row__error" title={gen.error_message}>
+                    <span
+                      className="lk-generations-row__error"
+                      title={gen.error_message}
+                    >
                       <AlertCircle size={13} />
-                      {gen.error_message}
+                      {formatErrorMessage(gen.error_message)}
                     </span>
                   )}
                 </div>
@@ -227,4 +278,25 @@ function getTypeLabel(type) {
     case 'story': return 'Рассказ';
     default: return 'Контент';
   }
+}
+
+// Бэк иногда отдаёт error_message как сырой JSON целиком (например ответ
+// ElevenLabs), который некрасиво обрывается на середине при обычном
+// текстовом усечении. Пытаемся достать из него человекочитаемую суть,
+// полный текст всё равно доступен по наведению (title).
+function formatErrorMessage(raw) {
+  if (!raw) return 'Ошибка озвучки';
+
+  try {
+    const parsed = JSON.parse(raw);
+    const detail = parsed?.detail;
+
+    if (typeof detail === 'string') return detail;
+    if (detail?.message) return detail.message;
+    if (detail?.type) return `Ошибка сервиса озвучки (${detail.type})`;
+  } catch {
+    // не JSON — покажем как обычный текст ниже
+  }
+
+  return raw.length > 70 ? `${raw.slice(0, 70)}…` : raw;
 }
