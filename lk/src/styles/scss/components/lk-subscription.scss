@@ -203,6 +203,19 @@
   color: $lk-white;
 }
 
+.lk-billing__discount {
+  display: inline-block;
+  margin-left: 6px;
+
+  padding: 1px 6px;
+  border-radius: $lk-radius-pill;
+
+  background: rgba(255, 255, 255, 0.25);
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
 /* Статичный вид переключателя, пока месячная оплата отключена */
 .lk-billing__switch--static span.is-active {
   display: inline-block;

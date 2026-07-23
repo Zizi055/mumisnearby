@@ -14,7 +14,11 @@
 }
 
 .pricing__head {
-  margin-bottom: 36px;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 12px;
 }
 
 .pricing__title {
@@ -26,6 +30,68 @@
   margin: 0;
   max-width: 720px;
   color: rgba(28, 28, 28, 0.68);
+}
+
+/* ========================================
+   BILLING TOGGLE
+======================================== */
+
+.pricing__billing {
+  display: inline-flex;
+  flex-shrink: 0;
+  padding: 4px;
+  border-radius: 999px;
+  background: rgba(82, 130, 108, 0.08);
+}
+
+.pricing__billing-btn {
+  padding: 10px 18px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  cursor: pointer;
+
+  font-family: inherit;
+  font-size: 14px;
+  color: rgba(28, 28, 28, 0.6);
+
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.pricing__billing-btn.is-active {
+  background: #{$color-accent};
+  color: #{$color-white};
+}
+
+.pricing__billing-discount {
+  display: inline-block;
+  margin-left: 4px;
+
+  padding: 1px 6px;
+  border-radius: 999px;
+
+  background: rgba(255, 255, 255, 0.25);
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.pricing__billing-note {
+  margin: 0 0 24px;
+  color: rgba(28, 28, 28, 0.5);
+  font-size: 13px;
+}
+
+@media (max-width: 767px) {
+  .pricing__head {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+  }
+
+  .pricing__billing {
+    align-self: flex-start;
+  }
 }
 
 .pricing__grid {

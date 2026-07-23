@@ -73,11 +73,6 @@ const FEATURE_GATES = {
 };
 const CURRENT_PLAN_ID = 'guardian';
 
-// Месячная подписка временно отключена по всему сайту — оставили только
-// годовую оплату. Чтобы вернуть переключатель периода, поставь true здесь
-// и убери isYearOnly у тарифов в data/tariffs.data.js.
-const MONTHLY_BILLING_ENABLED = false;
-
 /* ================= ХЭЛПЕРЫ ================= */
 
 function formatPrice(value) {
@@ -117,8 +112,6 @@ function getTariffPeriodLabel(tariff, billingPeriod) {
 export default function SubscriptionTariff() {
   const navigate = useNavigate();
   const [billingPeriod, setBillingPeriod] = useState('year');
-  // billingPeriod всегда 'year', пока MONTHLY_BILLING_ENABLED === false —
-  // setBillingPeriod('month') просто некому вызвать (переключатель скрыт).
 
   const currentPlan = tariffs?.find((t) => t.id === CURRENT_PLAN_ID);
 
@@ -151,38 +144,29 @@ export default function SubscriptionTariff() {
 
       {/* BILLING */}
       <div className="lk-billing">
-        {MONTHLY_BILLING_ENABLED ? (
-          <div className="lk-billing__switch">
+        <div className="lk-billing__switch">
 
-            <button
-              type="button"
-              className={billingPeriod === 'month' ? 'is-active' : ''}
-              onClick={() => setBillingPeriod('month')}
-            >
-              Месяц
-            </button>
+          <button
+            type="button"
+            className={billingPeriod === 'month' ? 'is-active' : ''}
+            onClick={() => setBillingPeriod('month')}
+          >
+            Месяц
+          </button>
 
-            <button
-              type="button"
-              className={billingPeriod === 'year' ? 'is-active' : ''}
-              onClick={() => setBillingPeriod('year')}
-            >
-              Год
-              {/* Была подпись "-20%" — сравнение с помесячной оплатой,
-                  убрали вместе с отключением месячной подписки. */}
-            </button>
+          <button
+            type="button"
+            className={billingPeriod === 'year' ? 'is-active' : ''}
+            onClick={() => setBillingPeriod('year')}
+          >
+            Год
+            <span className="lk-billing__discount">-20%</span>
+          </button>
 
-          </div>
-        ) : (
-          <div className="lk-billing__switch lk-billing__switch--static">
-            <span className="is-active">Год</span>
-          </div>
-        )}
+        </div>
 
         <p className="lk-billing__note">
-          {MONTHLY_BILLING_ENABLED
-            ? 'Тариф «Волшебник» доступен только при годовой оплате.'
-            : 'Сейчас все тарифы доступны только при годовой оплате.'}
+          Тариф «Волшебник» доступен только при годовой оплате.
         </p>
       </div>
 

@@ -3,8 +3,6 @@ import { Percent, Users, Sparkles, Copy, Send, MessageCircle, Heart, UserCheck, 
 import LkButton from '../../components/ui/LkButton';
 import { getBonus, claimBonus, getReferralLink, getReferralStats } from '../../api/bonus.service';
 
-// Используется только в закомментированной ниже карточке — оставили для
-// быстрого возврата, когда снова появится помесячная оплата.
 const YEARLY_DISCOUNT = 20;
 const BONUS_THRESHOLD = 5;   // при 5+ приглашениях — 1 месяц бесплатно
 
@@ -99,12 +97,7 @@ export default function SubscriptionBonus() {
 
       <div className="lk-bonus__grid">
 
-        {/* 1. ГОДОВАЯ ОПЛАТА — раньше тут была карточка про скидку 20% при
-            годовой оплате (сравнение с помесячной). Пока на сайте только
-            годовая подписка, сравнивать не с чем, поэтому текст временно
-            заменили на общий. Старая карточка оставлена ниже в комментарии —
-            верни её, когда снова появится помесячная оплата.
-
+        {/* 1. ГОДОВАЯ ОПЛАТА */}
         <div className="lk-bonus-item is-accent">
           <div className="lk-bonus-item__top">
             <div className="lk-bonus-item__icon"><Percent size={18} /></div>
@@ -115,20 +108,6 @@ export default function SubscriptionBonus() {
             <p>
               Оплатите подписку сразу на год и сэкономьте {YEARLY_DISCOUNT}% от месячной стоимости.
               Скидка применяется автоматически при выборе годового тарифа.
-            </p>
-          </div>
-        </div>
-        */}
-        <div className="lk-bonus-item is-accent">
-          <div className="lk-bonus-item__top">
-            <div className="lk-bonus-item__icon"><Percent size={18} /></div>
-            <span className="lk-bonus-item__badge">Доступно</span>
-          </div>
-          <div className="lk-bonus-item__content">
-            <h4>Годовая подписка</h4>
-            <p>
-              Оформите подписку сразу на год — это самый удобный способ
-              пользоваться сервисом без ежемесячных платежей.
             </p>
           </div>
         </div>

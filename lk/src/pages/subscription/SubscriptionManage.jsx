@@ -65,11 +65,6 @@ function isValidName(name) {
   return name.trim().length > 2;
 }
 
-// Месячная подписка временно отключена по всему сайту — оставили только
-// годовую оплату. Чтобы вернуть переключатель периода здесь, поставь true
-// и убери isYearOnly у тарифов в data/tariffs.data.js.
-const MONTHLY_BILLING_ENABLED = false;
-
 const SBP_BANKS = [
   {
     id: 'sber',
@@ -198,13 +193,15 @@ export default function SubscriptionManage() {
     ? `${currentPlan.priceYear.toLocaleString('ru-RU')} ₽ / год`
     : '—';
 
-  // priceMonth/currentPrice-по-месяцам не удаляли — пригодятся, когда
-  // вернём переключатель периода (см. MONTHLY_BILLING_ENABLED выше).
-  // const priceMonth = currentPlan?.priceMonth
-  //   ? `${currentPlan.priceMonth.toLocaleString('ru-RU')} ₽ / мес`
-  //   : '';
+  const priceMonth = currentPlan?.priceMonth
+    ? `${currentPlan.priceMonth.toLocaleString('ru-RU')} ₽ / мес`
+    : '';
 
-  const currentPrice = currentPlan?.priceYear;
+  // «Волшебник» — только годовая оплата, для него всегда показываем год,
+  // даже если тумблер сейчас переключён на «Месяц».
+  const showMonthly = billing === 'month' && !currentPlan?.isYearOnly && priceMonth;
+
+  const currentPrice = showMonthly ? currentPlan?.priceMonth : currentPlan?.priceYear;
 
   const brand = detectBrand(card);
   const defaultCard = cards.find((c) => c.id === defaultCardId);
@@ -308,7 +305,11 @@ export default function SubscriptionManage() {
           <p className="lk-text">Контролируйте тариф, платежи и доступ</p>
         </div>
 
-        {MONTHLY_BILLING_ENABLED ? (
+        {currentPlan?.isYearOnly ? (
+          <div className="lk-billing-toggle lk-billing-toggle--static">
+            <span className="is-active">Год</span>
+          </div>
+        ) : (
           <div className="lk-billing-toggle">
             <button
               type="button"
@@ -323,12 +324,8 @@ export default function SubscriptionManage() {
               onClick={() => setBilling('year')}
             >
               Год
-              <span>выгоднее</span>
+              <span>-20%</span>
             </button>
-          </div>
-        ) : (
-          <div className="lk-billing-toggle lk-billing-toggle--static">
-            <span className="is-active">Год</span>
           </div>
         )}
       </div>
@@ -349,7 +346,7 @@ export default function SubscriptionManage() {
           </div>
           <div>
             <span>Сумма</span>
-            <strong>{priceYear}</strong>
+            <strong>{showMonthly ? priceMonth : priceYear}</strong>
           </div>
         </div>
       </div>

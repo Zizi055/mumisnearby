@@ -894,11 +894,25 @@ function openLK() {
 <section class="pricing" id="pricing">
   <div class="container">
     <div class="pricing__head">
-      <h2 class="display-2 pricing__title">Тарифы</h2>
-      <p class="text-lg pricing__subtitle">
-        Выберите подходящий пакет — остальное бережно сделаем мы.
-      </p>
+      <div>
+        <h2 class="display-2 pricing__title">Тарифы</h2>
+        <p class="text-lg pricing__subtitle">
+          Выберите подходящий пакет — остальное бережно сделаем мы.
+        </p>
+      </div>
+
+      <div class="pricing__billing" data-billing-toggle>
+        <button type="button" class="pricing__billing-btn" data-billing="month">
+          Месяц
+        </button>
+        <button type="button" class="pricing__billing-btn is-active" data-billing="year">
+          Год <span class="pricing__billing-discount">-20%</span>
+        </button>
+      </div>
     </div>
+    <p class="pricing__billing-note">
+      Тариф «Волшебник» доступен только при годовой оплате.
+    </p>
 
     <div class="pricing__grid">
 
@@ -921,35 +935,40 @@ function openLK() {
           <div class="pricing-card__list text-md">
 
             <div class="pricing-card__feature">
-              <strong><span class="pricing-card__num">80+</span> тёплых историй</strong>
-              <p>Сказки, стихи и колыбельные, которые ребёнку рассказываете именно вы.</p>
+              <strong>1 голосовой двойник</strong>
+              <p>Обучите модель своим голосом — она будет читать сказки за вас.</p>
             </div>
 
             <div class="pricing-card__feature">
-              <strong><span class="pricing-card__num">20</span> бережных практик</strong>
-              <p>Голосом родителя и через творчество.</p>
+              <strong>Библиотека «Базовая»</strong>
+              <p><span class="pricing-card__num">50</span> сказок и <span class="pricing-card__num">10</span> колыбельных.</p>
             </div>
 
             <div class="pricing-card__feature">
-              <strong>Библиотека растёт с вами</strong>
-              <p>Каждый сезон — <span class="pricing-card__num">+15 новых</span> добрых историй.</p>
+              <strong>3 терапевтических сценария</strong>
+              <p>Бережные практики на выбор.</p>
             </div>
 
             <div class="pricing-card__feature">
               <strong>Слушайте безлимитно</strong>
-              <p>С любого устройства. Хоть всю ночь напролёт.</p>
+              <p>MP3 без ограничений, с любого устройства.</p>
             </div>
 
             <div class="pricing-card__feature">
               <strong>Вы не одни</strong>
-              <p>Чат с нами и понятные ответы на все вопросы.</p>
+              <p>Чат-бот и база знаний с ответами на все вопросы.</p>
             </div>
 
           </div>
         </div>
 
         <div class="pricing-card__footer">
-          <div class="pricing-card__price-block">
+          <div
+            class="pricing-card__price-block"
+            data-plan-price
+            data-price-month="4 400 ₽ / мес"
+            data-price-year="14 400 ₽ / год"
+          >
             <p class="pricing-card__price-label">Подписка</p>
             <p class="pricing-card__price">14 400 ₽ / год</p>
           </div>
@@ -990,23 +1009,23 @@ function openLK() {
           <div class="pricing-card__list text-md">
 
             <div class="pricing-card__feature">
-              <strong>Два родных голоса</strong>
+              <strong>2 голосовых двойника</strong>
               <p>Мама и папа. Или бабушка с дедушкой. Выбирать вам.</p>
             </div>
 
             <div class="pricing-card__feature">
-              <strong><span class="pricing-card__num">130+</span> добрых историй</strong>
-              <p>Сказки, стихи, рассказы и колыбельные на каждый вечер.</p>
+              <strong>Библиотека «Расширенная»</strong>
+              <p><span class="pricing-card__num">100+</span> сказок и <span class="pricing-card__num">10</span> колыбельных.</p>
             </div>
 
             <div class="pricing-card__feature">
-              <strong><span class="pricing-card__num">40</span> бережных практик</strong>
-              <p>С голосом родителей и через творчество.</p>
+              <strong><span class="pricing-card__num">20+</span> терапевтических сценариев</strong>
+              <p>Больше практик для разных ситуаций.</p>
             </div>
 
             <div class="pricing-card__feature">
-              <strong>Библиотека растёт быстрее</strong>
-              <p>Каждый сезон — <span class="pricing-card__num">+30 новых</span> историй.</p>
+              <strong>Безлимитное прослушивание</strong>
+              <p>С любого устройства, без ограничений.</p>
             </div>
 
             <div class="pricing-card__feature">
@@ -1018,7 +1037,12 @@ function openLK() {
         </div>
 
         <div class="pricing-card__footer">
-          <div class="pricing-card__price-block">
+          <div
+            class="pricing-card__price-block"
+            data-plan-price
+            data-price-month="8 400 ₽ / мес"
+            data-price-year="24 400 ₽ / год"
+          >
             <p class="pricing-card__price-label">Подписка</p>
             <p class="pricing-card__price">24 400 ₽ / год</p>
           </div>
@@ -1062,23 +1086,23 @@ function openLK() {
             </div>
 
             <div class="pricing-card__feature">
-              <strong>Вся библиотека + эксклюзивные сценарии</strong>
-              <p>Безлимитный доступ ко всем историям и специальным материалам.</p>
+              <strong>Безграничная библиотека</strong>
+              <p>Полный доступ ко всем сказкам, колыбельным и сценариям.</p>
             </div>
 
             <div class="pricing-card__feature">
-              <strong>Вы пишете — мы озвучиваем</strong>
-              <p>Любая история, письмо или «я тебя люблю». Без ограничений.</p>
+              <strong>Терапевтический конструктор</strong>
+              <p>Собирайте сценарии под задачи именно вашей семьи.</p>
             </div>
 
             <div class="pricing-card__feature">
-              <strong>Сценарии меняются вместе с ребёнком</strong>
-              <p><span class="pricing-card__num">2 раза в год</span> подбираем истории под актуальные этапы взросления.</p>
+              <strong>Архив записей</strong>
+              <p>Капсула времени — все озвучки бережно сохраняются.</p>
             </div>
 
             <div class="pricing-card__feature">
-              <strong>Капсула времени</strong>
-              <p>Архив всех записей в красивой упаковке — открыть через годы.</p>
+              <strong>Персональный менеджер</strong>
+              <p>Консьерж-поддержка без очередей.</p>
             </div>
 
             <div class="pricing-card__feature">
@@ -1087,8 +1111,8 @@ function openLK() {
             </div>
 
             <div class="pricing-card__feature">
-              <strong>Персональный менеджер</strong>
-              <p>Консьерж-поддержка без очередей.</p>
+              <strong>Без ограничений</strong>
+              <p>Любая история, письмо или «я тебя люблю» — без лимитов.</p>
             </div>
 
           </div>
@@ -1640,20 +1664,58 @@ function openLK() {
 </footer>
     </div>
     <script>
-      function goToCheckout(planId) {
+      // «Волшебник» и «Конструктор» — всегда только годовая оплата.
+  // «Сказочник» и «Хранитель» переключаются тумблером Месяц/Год выше.
+  var pricingBillingPeriod = 'year';
+
+  function goToCheckout(planId) {
+    var yearOnlyPlans = ['wizard', 'builder'];
+    var period = yearOnlyPlans.indexOf(planId) === -1 ? pricingBillingPeriod : 'year';
+
     var redirect = encodeURIComponent(
-      '/subscription/checkout?plan=' + planId + '&period=year'
+      '/subscription/checkout?plan=' + planId + '&period=' + period
     );
 
     var user = null;
     try { user = localStorage.getItem('user'); } catch(e) {}
 
     if (user) {
-      window.location.href = '/lk/#/subscription/checkout?plan=' + planId + '&period=year';
+      window.location.href = '/lk/#/subscription/checkout?plan=' + planId + '&period=' + period;
     } else {
       window.location.href = '/lk/#/auth?redirect=' + redirect;
     }
   }
+
+  // Тумблер Месяц/Год над карточками тарифов — меняет цену только у карточек
+  // с data-plan-price (Сказочник, Хранитель). У «Волшебника»/«Конструктора»
+  // таких атрибутов нет — их цена не трогается.
+  document.addEventListener('DOMContentLoaded', function () {
+    var toggle = document.querySelector('[data-billing-toggle]');
+    if (!toggle) return;
+
+    var buttons = toggle.querySelectorAll('.pricing__billing-btn');
+    var priceBlocks = document.querySelectorAll('[data-plan-price]');
+
+    function applyBilling(period) {
+      pricingBillingPeriod = period;
+
+      buttons.forEach(function (btn) {
+        btn.classList.toggle('is-active', btn.dataset.billing === period);
+      });
+
+      priceBlocks.forEach(function (block) {
+        var priceEl = block.querySelector('.pricing-card__price');
+        var value = period === 'month' ? block.dataset.priceMonth : block.dataset.priceYear;
+        if (priceEl && value) priceEl.textContent = value;
+      });
+    }
+
+    buttons.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        applyBilling(btn.dataset.billing);
+      });
+    });
+  });
 
   function openLK() {
     var user = null;
