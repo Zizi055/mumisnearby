@@ -115,6 +115,7 @@
 
 .lk-tariff-price {
   display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
   gap: $lk-space-8;
 }
@@ -123,11 +124,13 @@
   font-size: 28px;
   font-weight: 600;
   letter-spacing: -0.02em;
+  white-space: nowrap;
 }
 
 .lk-tariff-price__period {
   font-size: 13px;
   color: $lk-text-muted;
+  white-space: nowrap;
 }
 
 
