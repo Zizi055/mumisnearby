@@ -1175,6 +1175,117 @@ $lk-gradient-brand: linear-gradient(135deg, #5d8f72 0%, #79ab89 100%);
 }
 
 // ========================================
+//   ПЕРЕПИСКА ПО ТИКЕТУ
+// ========================================
+
+.lk-ticket-thread__loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 12px 0;
+
+  color: $lk-text-muted;
+}
+
+.lk-ticket-thread {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  padding-top: 4px;
+}
+
+.lk-ticket-thread__msg {
+  padding: 12px 14px;
+
+  border: 1px solid $lk-border;
+  border-radius: 14px;
+
+  background: $lk-surface;
+
+  p {
+    margin: 4px 0 0;
+
+    color: $lk-text-soft;
+
+    font-size: 13px;
+    line-height: 1.6;
+  }
+}
+
+.lk-ticket-thread__author {
+  color: $lk-brand;
+
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.lk-ticket-thread__date {
+  display: block;
+
+  margin-top: 6px;
+
+  color: $lk-text-muted;
+
+  font-size: 11px;
+}
+
+.lk-ticket-reply {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  padding-top: 8px;
+
+  textarea {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 70px;
+
+    padding: 12px;
+
+    border: 1px solid $lk-border;
+    border-radius: $lk-radius-12;
+
+    background: $lk-white;
+
+    color: $lk-text;
+
+    font-size: 13px;
+    line-height: 1.5;
+
+    resize: vertical;
+    outline: none;
+
+    transition: all 0.2s ease;
+
+    &:focus {
+      border-color: $lk-brand;
+      box-shadow: 0 0 0 3px rgba(93, 143, 114, 0.12);
+    }
+
+    &::placeholder {
+      color: $lk-text-muted;
+    }
+  }
+
+  button {
+    align-self: flex-end;
+  }
+}
+
+.lk-ticket-reply__error {
+  margin: 0;
+
+  color: #dc2626;
+
+  font-size: 12px;
+}
+
+// ========================================
 //   БЕЙДЖ СТАТУСА
 // ========================================
 

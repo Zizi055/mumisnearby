@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useAuth } from '../context/AuthContext';
+import { createTicket, getTickets, getTicket, addTicketMessage } from '../api/support.service';
 
 import {
   Search,
@@ -96,17 +96,19 @@ const FAQ = {
   ],
 };
 
+// Статусы строго по бэковому enum'у TicketStatus — 'closed' на бэке нет.
 const STATUS_CONFIG = {
   new:         { label: 'Новое',    icon: Clock,       className: 'lk-ticket-badge--new'      },
   in_progress: { label: 'В работе', icon: Loader,      className: 'lk-ticket-badge--progress' },
   resolved:    { label: 'Решено',   icon: CheckCircle, className: 'lk-ticket-badge--resolved' },
-  closed:      { label: 'Закрыто',  icon: AlertCircle, className: 'lk-ticket-badge--closed'   },
 };
 
+// Типы строго по бэковому enum'у TicketType — 'technical' на бэке нет,
+// вместо него 'generation' (проблема с озвучкой).
 const TYPE_LABELS = {
   voice_model: 'Голосовая модель',
   billing:     'Подписка и оплата',
-  technical:   'Ошибка платформы',
+  generation:  'Проблема с озвучкой',
   other:       'Другое',
 };
 
@@ -129,7 +131,6 @@ function formatDate(iso) {
 // ========================================
 
 function SupportModal({ isOpen, onClose, onSuccess }) {
-  const { user } = useAuth();
   const [ticketForm, setTicketForm]   = useState(INITIAL_FORM);
   const [ticketStatus, setTicketStatus] = useState('idle');
   const [ticketError, setTicketError]   = useState(null);
@@ -157,20 +158,12 @@ function SupportModal({ isOpen, onClose, onSuccess }) {
     setTicketError(null);
 
     try {
-      const body = new FormData();
-      body.append('type',       ticketForm.category);
-      body.append('subject',    ticketForm.subject.trim());
-      body.append('message',    ticketForm.message.trim());
-      body.append('user_id',    String(user?.id    || ''));
-      body.append('user_email', String(user?.email || ''));
-      if (ticketForm.file) body.append('attachment', ticketForm.file);
-
-      const res = await fetch('/api/support/tickets', { method: 'POST', body });
-
-      if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
-        throw new Error(data?.detail || `Ошибка ${res.status}`);
-      }
+      await createTicket({
+        type:    ticketForm.category,
+        subject: ticketForm.subject.trim(),
+        message: ticketForm.message.trim(),
+        file:    ticketForm.file,
+      });
 
       setTicketStatus('success');
       onSuccess?.();
@@ -210,7 +203,7 @@ function SupportModal({ isOpen, onClose, onSuccess }) {
               <select value={ticketForm.category} onChange={(e) => updateTicketField('category', e.target.value)}>
                 <option value="voice_model">Голосовая модель</option>
                 <option value="billing">Подписка и оплата</option>
-                <option value="technical">Ошибка платформы</option>
+                <option value="generation">Проблема с озвучкой</option>
                 <option value="other">Другое</option>
               </select>
             </div>
@@ -275,9 +268,51 @@ function TicketBadge({ status }) {
 
 function TicketCard({ ticket }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [detail, setDetail] = useState(null);
+  const [detailStatus, setDetailStatus] = useState('idle'); // idle | loading | success | error
+
+  const [replyText, setReplyText] = useState('');
+  const [replyStatus, setReplyStatus] = useState('idle'); // idle | loading | error
+
+  async function loadDetail() {
+    setDetailStatus('loading');
+    try {
+      const data = await getTicket(ticket.id);
+      setDetail(data);
+      setDetailStatus('success');
+    } catch {
+      setDetailStatus('error');
+    }
+  }
+
+  function handleToggle() {
+    const next = !isOpen;
+    setIsOpen(next);
+    if (next && !detail) loadDetail();
+  }
+
+  async function handleReply(e) {
+    e.preventDefault();
+    if (!replyText.trim()) return;
+
+    setReplyStatus('loading');
+    try {
+      await addTicketMessage(ticket.id, replyText.trim());
+      setReplyText('');
+      setReplyStatus('idle');
+      loadDetail(); // подтягиваем обновлённую переписку
+    } catch {
+      setReplyStatus('error');
+    }
+  }
+
+  // Переписка может прийти под разными ключами в зависимости от точной
+  // формы MessageOut — подстраховываемся на случай расхождений в схеме.
+  const messages = detail?.messages ?? detail?.items ?? [];
+
   return (
     <div className={`lk-ticket-card ${isOpen ? 'is-open' : ''}`}>
-      <button type="button" className="lk-ticket-card__head" onClick={() => setIsOpen((v) => !v)}>
+      <button type="button" className="lk-ticket-card__head" onClick={handleToggle}>
         <div className="lk-ticket-card__meta">
           <TicketBadge status={ticket.status} />
           <span className="lk-ticket-card__type">{TYPE_LABELS[ticket.type] ?? ticket.type}</span>
@@ -298,6 +333,50 @@ function TicketCard({ ticket }) {
             </a>
           )}
           <div className="lk-ticket-card__id">#{String(ticket.id).slice(0, 8).toUpperCase()}</div>
+
+          {detailStatus === 'loading' && (
+            <div className="lk-ticket-thread__loader">
+              <Loader size={16} className="is-spinning" />
+            </div>
+          )}
+
+          {detailStatus === 'success' && messages.length > 0 && (
+            <div className="lk-ticket-thread">
+              {messages.map((msg, i) => (
+                <div key={msg.id ?? i} className="lk-ticket-thread__msg">
+                  <span className="lk-ticket-thread__author">
+                    {msg.is_staff || msg.author === 'staff' || msg.sender === 'support'
+                      ? 'Поддержка'
+                      : 'Вы'}
+                  </span>
+                  <p>{msg.message ?? msg.text ?? msg.body}</p>
+                  {msg.created_at && (
+                    <span className="lk-ticket-thread__date">{formatDate(msg.created_at)}</span>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {ticket.status !== 'resolved' && (
+            <form className="lk-ticket-reply" onSubmit={handleReply}>
+              <textarea
+                placeholder="Написать ответ в обращение..."
+                value={replyText}
+                onChange={(e) => setReplyText(e.target.value)}
+              />
+              {replyStatus === 'error' && (
+                <p className="lk-ticket-reply__error">Не удалось отправить, попробуйте ещё раз</p>
+              )}
+              <button
+                type="submit"
+                className="lk-btn lk-btn--sm lk-btn--secondary"
+                disabled={replyStatus === 'loading' || !replyText.trim()}
+              >
+                {replyStatus === 'loading' ? 'Отправка...' : 'Ответить'}
+              </button>
+            </form>
+          )}
         </div>
       )}
     </div>
@@ -305,7 +384,6 @@ function TicketCard({ ticket }) {
 }
 
 function UserTickets({ onCreateTicket, refreshKey }) {
-  const { user } = useAuth();
   const [tickets, setTickets]           = useState([]);
   const [fetchStatus, setFetchStatus]   = useState('loading');
   const [filterStatus, setFilterStatus] = useState('all');
@@ -313,10 +391,9 @@ function UserTickets({ onCreateTicket, refreshKey }) {
   async function fetchTickets() {
     setFetchStatus('loading');
     try {
-      const userId = user?.id || '';
-      const res = await fetch(`/api/support/tickets?user_id=${userId}`);
-      if (!res.ok) throw new Error();
-      setTickets(await res.json());
+      // Список обращений текущего пользователя — бэк сам фильтрует по
+      // Bearer-токену, передавать user_id вручную не нужно.
+      setTickets(await getTickets());
       setFetchStatus('success');
     } catch {
       setFetchStatus('error');
@@ -352,7 +429,7 @@ function UserTickets({ onCreateTicket, refreshKey }) {
 
       {fetchStatus === 'success' && tickets.length > 0 && (
         <div className="lk-tickets__filters">
-          {['all', 'new', 'in_progress', 'resolved', 'closed'].map((s) => (
+          {['all', 'new', 'in_progress', 'resolved'].map((s) => (
             <button
               key={s}
               type="button"
