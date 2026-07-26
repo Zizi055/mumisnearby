@@ -1338,7 +1338,7 @@ function openLK() {
 
         <!-- RIGHT -->
         <div class="contact-block__form-wrap">
-          <form class="contact-form" action="#" method="post">
+          <form class="contact-form" action="#" method="post" data-lead-source="home">
             <div class="contact-form__field">
               <label class="text-md contact-form__label" for="contact-name">Имя</label>
               <input
@@ -1375,14 +1375,15 @@ function openLK() {
               />
             </div>
 
+            <p class="contact-form__status" data-form-status></p>
+
             <div class="contact-form__actions">
              <button
-  type="button"
-  class="btn btn--secondary btn--arrow label-md pricing-card__btn cadr-btn__one"
-  data-modal="plan-3"
-  aria-label="Оформить подписку на пакет Волшебник"
+  type="submit"
+  class="btn btn--secondary btn--arrow label-md pricing-card__btn"
+  aria-label="Отправить заявку"
 >
-  <span class="btn__text">Связаться с нами</span>
+  <span class="btn__text">Отправить заявку</span>
 
   <span class="btn__icon">
     <svg viewBox="0 0 18 18" fill="none">

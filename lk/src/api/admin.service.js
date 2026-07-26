@@ -26,3 +26,20 @@ export async function addAdminTicketMessage(id, text) {
 export async function updateAdminTicketStatus(id, status) {
   return api.patch(`/admin/support/tickets/${id}/status`, { status });
 }
+
+// ─── Заявки (лиды с главной страницы и с Конструктора) ──────────────────────
+// Эндпоинтов POST /leads и GET /admin/leads на бэке пока нет — фронт (форма
+// на главной + модалка на Конструкторе, main.js) уже шлёт заявки на POST
+// /leads, эта функция читает список для админки. Как только бэкендер добавит
+// оба эндпоинта — заработает без изменений на фронте.
+export async function getAdminLeads() {
+  const data = await api.get('/admin/leads');
+  return Array.isArray(data) ? data : (data?.items ?? []);
+}
+
+// ─── Пользователи (ЛК) ───────────────────────────────────────────────────────
+// GET /admin/users тоже пока нет на бэке — заведён по тому же принципу.
+export async function getAdminUsers() {
+  const data = await api.get('/admin/users');
+  return Array.isArray(data) ? data : (data?.items ?? []);
+}

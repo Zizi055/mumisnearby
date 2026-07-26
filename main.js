@@ -446,3 +446,65 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 6000);
   }
 });
+
+// ── Заявки: форма «Свяжитесь с нами» на главной (#forms) и модалка
+// «Связаться с нами» на Конструкторе — обе помечены [data-lead-source]
+// и шлются в одно и то же место (POST /leads), откуда попадают в
+// админку (/lk/#/admin/leads). Эндпоинта на бэке пока нет — форма будет
+// показывать ошибку отправки, пока бэкендер его не добавит; менять
+// фронт для этого больше не нужно.
+document.addEventListener('DOMContentLoaded', () => {
+  const leadForms = document.querySelectorAll('[data-lead-source]');
+
+  leadForms.forEach((form) => {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const source = form.dataset.leadSource;
+      const statusEl = form.querySelector('[data-form-status]');
+      const submitBtn = form.querySelector('button[type="submit"]');
+
+      const name  = form.querySelector('[name="name"]')?.value.trim()  || '';
+      const email = form.querySelector('[name="email"]')?.value.trim() || '';
+      const phone = form.querySelector('[name="phone"]')?.value.trim() || '';
+
+      if (statusEl) {
+        statusEl.textContent = '';
+        statusEl.classList.remove('is-error', 'is-success');
+      }
+
+      if (!name || (!email && !phone)) {
+        if (statusEl) {
+          statusEl.textContent = 'Укажите имя и хотя бы один способ связи.';
+          statusEl.classList.add('is-error');
+        }
+        return;
+      }
+
+      if (submitBtn) submitBtn.disabled = true;
+
+      try {
+        const res = await fetch('/leads', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, email, phone, source }),
+        });
+
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+        form.reset();
+        if (statusEl) {
+          statusEl.textContent = 'Заявка отправлена — мы свяжемся с вами в ближайшее время.';
+          statusEl.classList.add('is-success');
+        }
+      } catch (err) {
+        if (statusEl) {
+          statusEl.textContent = 'Не удалось отправить заявку, попробуйте ещё раз или напишите нам напрямую.';
+          statusEl.classList.add('is-error');
+        }
+      } finally {
+        if (submitBtn) submitBtn.disabled = false;
+      }
+    });
+  });
+});

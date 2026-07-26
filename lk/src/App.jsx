@@ -30,7 +30,10 @@ import Settings from './pages/settings/Settings.jsx';
 import LkLayout from './components/layout/LkLayout';
 import LibraryItem from './components/library/LibraryItem';
 import LibraryGenerations from './pages/library/LibraryGenerations';
+import AdminLayout from './pages/admin/AdminLayout.jsx';
 import AdminSupport from './pages/admin/AdminSupport.jsx';
+import AdminLeads from './pages/admin/AdminLeads.jsx';
+import AdminUsers from './pages/admin/AdminUsers.jsx';
 function App() {
   // Ловим ?ref=CODE (или /ref/CODE) сразу при заходе в приложение — на
   // случай прямой ссылки в ЛК, минуя маркетинговый сайт. См. utils/referral.js
@@ -47,9 +50,14 @@ function App() {
       <Route path="/verify-email" element={<VerifyEmail />} />
 
       {/* Админка — своя, без клиентского LkLayout (сайдбар/шапка ЛК не нужны).
-          Доступ реально проверяет бэк на /admin/support/tickets* по роли —
-          страница просто аккуратно показывает 401/403, если прав нет. */}
-      <Route path="/admin" element={<AdminSupport />} />
+          Доступ реально проверяет бэк по роли на каждом /admin/* эндпоинте —
+          страницы сами аккуратно показывают ошибку, если прав/эндпоинта нет. */}
+      <Route path="/admin" element={<AdminLayout />}>
+        <Route index element={<Navigate to="/admin/support" replace />} />
+        <Route path="support" element={<AdminSupport />} />
+        <Route path="leads" element={<AdminLeads />} />
+        <Route path="users" element={<AdminUsers />} />
+      </Route>
 
       {/* ЛК */}
       <Route element={<LkLayout />}>

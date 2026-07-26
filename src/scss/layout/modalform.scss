@@ -135,6 +135,19 @@
   }
 }
 
+.modal-form__status {
+  min-height: 18px;
+  margin: -6px 0 0;
+
+  font-size: 13px;
+  line-height: 1.5;
+
+  &:empty { margin: 0; }
+
+  &.is-success { color: #7fc79a; }
+  &.is-error   { color: #e28a8a; }
+}
+
 .modal-form .btn {
   margin-top: 10px;
   border-radius: 16px;

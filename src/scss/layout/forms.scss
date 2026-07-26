@@ -379,3 +379,16 @@
     height: 56px;
   }
 }
+
+.contact-form__status {
+  min-height: 20px;
+  margin: 4px 0 0;
+
+  font-size: 13px;
+  line-height: 1.5;
+
+  &:empty { margin: 0; }
+
+  &.is-success { color: $color-accent; }
+  &.is-error   { color: #c23b3b; }
+}

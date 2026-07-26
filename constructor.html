@@ -854,10 +854,12 @@ function openLK() {
         Оставьте заявку — мы свяжемся с вами и поможем собрать оптимальный тариф.
       </p>
 
-      <form class="modal-form">
-        <input type="text" placeholder="Ваше имя" required />
-        <input type="email" placeholder="E-mail" required />
-        <input type="tel" placeholder="Телефон" />
+      <form class="modal-form" data-lead-source="constructor">
+        <input type="text" name="name" placeholder="Ваше имя" required />
+        <input type="email" name="email" placeholder="E-mail" required />
+        <input type="tel" name="phone" placeholder="Телефон" />
+
+        <p class="modal-form__status" data-form-status></p>
 
         <button type="submit" class="btn btn--primary">
           Отправить заявку
