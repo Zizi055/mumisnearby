@@ -11,7 +11,6 @@ import {
   Clock,
   CheckCircle,
   RefreshCw,
-  Sparkles,
 } from 'lucide-react';
 
 // Строго по бэковому enum'у TicketStatus.
@@ -230,14 +229,6 @@ export default function AdminSupport() {
           <RefreshCw size={16} className={listStatus === 'loading' ? 'is-spinning' : ''} />
         </button>
       </header>
-
-      {isDemo && listStatus === 'success' && (
-        <div className="lk-admin-demo-banner">
-          <Sparkles size={16} />
-          Демо-режим: показаны примерные обращения, а не реальные. Как только на бэке настроят права
-          администратора и ты войдёшь под таким аккаунтом — здесь появятся настоящие данные.
-        </div>
-      )}
 
       {listStatus === 'failed' && (
         <div className="lk-admin-gate">
