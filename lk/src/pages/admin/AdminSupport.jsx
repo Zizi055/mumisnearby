@@ -153,7 +153,7 @@ export default function AdminSupport() {
           <LogIn size={28} />
           <h2>Нужен вход</h2>
           <p>Войдите под учётной записью с правами администратора.</p>
-          <a className="lk-admin-gate__link" href="#/auth">Войти</a>
+          <a className="lk-admin-gate__link" href="#/auth?redirect=%2Fadmin">Войти</a>
         </div>
       </div>
     );
@@ -183,7 +183,7 @@ export default function AdminSupport() {
         <div className="lk-admin-gate">
           <LogIn size={28} />
           <h2>Сессия истекла</h2>
-          <a className="lk-admin-gate__link" href="#/auth">Войти снова</a>
+          <a className="lk-admin-gate__link" href="#/auth?redirect=%2Fadmin">Войти снова</a>
         </div>
       )}
 
