@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useAuth } from '../../context/AuthContext';
 import {
   getAdminTickets,
   getAdminTicket,
@@ -12,8 +11,7 @@ import {
   Clock,
   CheckCircle,
   RefreshCw,
-  AlertCircle,
-  LogIn,
+  Sparkles,
 } from 'lucide-react';
 
 // Строго по бэковому enum'у TicketStatus.
@@ -29,6 +27,48 @@ const TYPE_LABELS = {
   generation:  'Проблема с озвучкой',
   other:       'Другое',
 };
+
+// Демо-данные для предпросмотра интерфейса, пока на бэке не готовы роли
+// администратора (или пока не залогинена вообще). Показываются вместо
+// блокирующего экрана логина — как только /admin/support/tickets начнёт
+// реально пускать, эти карточки заменятся настоящими автоматически.
+const DEMO_TICKETS = [
+  {
+    id: 'demo-1',
+    subject: 'Не получается загрузить голос',
+    type: 'voice_model',
+    status: 'new',
+    created_at: '2026-07-20T10:15:00Z',
+    user_email: 'anna@example.com',
+    message: 'Загружаю запись, а модель зависает на обучении и не завершается уже час.',
+    messages: [],
+  },
+  {
+    id: 'demo-2',
+    subject: 'Списалось дважды за месяц',
+    type: 'billing',
+    status: 'in_progress',
+    created_at: '2026-07-19T14:02:00Z',
+    user_email: 'oleg@example.com',
+    message: 'По тарифу Хранитель пришло два списания подряд, разберитесь пожалуйста.',
+    messages: [
+      { id: 'm1', is_staff: true, message: 'Здравствуйте! Проверяем платежи, ответим в течение дня.', created_at: '2026-07-19T15:30:00Z' },
+    ],
+  },
+  {
+    id: 'demo-3',
+    subject: 'Сказка озвучилась с ошибкой',
+    type: 'generation',
+    status: 'resolved',
+    created_at: '2026-07-17T09:40:00Z',
+    user_email: 'marina@example.com',
+    message: 'Озвучка «Колобка» упала с ошибкой, остальные сказки в порядке.',
+    messages: [
+      { id: 'm2', is_staff: true, message: 'Перегенерировали, всё готово — проверьте, пожалуйста.', created_at: '2026-07-17T11:00:00Z' },
+      { id: 'm3', is_staff: false, message: 'Да, теперь работает, спасибо!', created_at: '2026-07-17T11:20:00Z' },
+    ],
+  },
+];
 
 function formatDate(iso) {
   if (!iso) return '';
@@ -65,10 +105,9 @@ function TicketStatusBadge({ status }) {
 }
 
 export default function AdminSupport() {
-  const { user, loading: authLoading } = useAuth();
-
   const [tickets, setTickets]     = useState([]);
-  const [listStatus, setListStatus] = useState('loading'); // loading | success | unauthorized | forbidden | failed
+  const [listStatus, setListStatus] = useState('loading'); // loading | success | failed
+  const [isDemo, setIsDemo]       = useState(false);
   const [filterStatus, setFilterStatus] = useState('all');
 
   const [selectedId, setSelectedId] = useState(null);
@@ -80,21 +119,33 @@ export default function AdminSupport() {
 
   const [statusUpdating, setStatusUpdating] = useState(false);
 
-  useEffect(() => {
-    if (!authLoading && user) loadTickets();
-  }, [authLoading, user]);
+  // Грузим сразу при заходе — без завязки на AuthContext, чтобы не
+  // дёргать реальный /admin/... эндпоинт без токена (иначе сработает
+  // глобальный редирект на /auth при 401 из client.js).
+  useEffect(() => { loadTickets(); }, []);
 
   async function loadTickets() {
     setListStatus('loading');
+
+    const hasToken = !!localStorage.getItem('token');
+    if (!hasToken) {
+      setIsDemo(true);
+      setTickets(DEMO_TICKETS);
+      setListStatus('success');
+      return;
+    }
+
     try {
       const data = await getAdminTickets();
+      setIsDemo(false);
       setTickets(data);
       setListStatus('success');
-    } catch (e) {
-      const msg = e.message || '';
-      if (msg.includes('403')) setListStatus('forbidden');
-      else if (msg.includes('401')) setListStatus('unauthorized');
-      else setListStatus('failed');
+    } catch {
+      // Нет прав (403) или другая ошибка — не блокируем экран, показываем
+      // демо-данные, чтобы можно было смотреть интерфейс уже сейчас.
+      setIsDemo(true);
+      setTickets(DEMO_TICKETS);
+      setListStatus('success');
     }
   }
 
@@ -102,6 +153,14 @@ export default function AdminSupport() {
     setSelectedId(id);
     setDetailStatus('loading');
     setReplyText('');
+
+    if (isDemo) {
+      const found = tickets.find((t) => t.id === id);
+      setDetail(found || null);
+      setDetailStatus(found ? 'success' : 'error');
+      return;
+    }
+
     try {
       const data = await getAdminTicket(id);
       setDetail(data);
@@ -114,6 +173,14 @@ export default function AdminSupport() {
   async function handleReply(e) {
     e.preventDefault();
     if (!replyText.trim() || !selectedId) return;
+
+    if (isDemo) {
+      const newMsg = { id: `local-${Date.now()}`, is_staff: true, message: replyText.trim(), created_at: new Date().toISOString() };
+      setDetail((prev) => prev ? { ...prev, messages: [...(prev.messages || []), newMsg] } : prev);
+      setTickets((prev) => prev.map((t) => t.id === selectedId ? { ...t, messages: [...(t.messages || []), newMsg] } : t));
+      setReplyText('');
+      return;
+    }
 
     setReplyStatus('loading');
     try {
@@ -128,6 +195,13 @@ export default function AdminSupport() {
 
   async function handleStatusChange(newStatus) {
     if (!selectedId || statusUpdating) return;
+
+    if (isDemo) {
+      setDetail((prev) => prev ? { ...prev, status: newStatus } : prev);
+      setTickets((prev) => prev.map((t) => t.id === selectedId ? { ...t, status: newStatus } : t));
+      return;
+    }
+
     setStatusUpdating(true);
     try {
       await updateAdminTicketStatus(selectedId, newStatus);
@@ -145,20 +219,6 @@ export default function AdminSupport() {
 
   const messages = detail?.messages ?? detail?.items ?? [];
 
-  // Не залогинена вообще
-  if (!authLoading && !user) {
-    return (
-      <div className="lk-admin lk-admin--gate">
-        <div className="lk-admin-gate">
-          <LogIn size={28} />
-          <h2>Нужен вход</h2>
-          <p>Войдите под учётной записью с правами администратора.</p>
-          <a className="lk-admin-gate__link" href="#/auth?redirect=%2Fadmin">Войти</a>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="lk-admin">
       <header className="lk-admin__head">
@@ -171,25 +231,16 @@ export default function AdminSupport() {
         </button>
       </header>
 
-      {listStatus === 'forbidden' && (
-        <div className="lk-admin-gate">
-          <AlertCircle size={28} />
-          <h2>Доступ запрещён</h2>
-          <p>Этот аккаунт не имеет прав администратора — обратитесь к тому, кто их выдаёт.</p>
-        </div>
-      )}
-
-      {listStatus === 'unauthorized' && (
-        <div className="lk-admin-gate">
-          <LogIn size={28} />
-          <h2>Сессия истекла</h2>
-          <a className="lk-admin-gate__link" href="#/auth?redirect=%2Fadmin">Войти снова</a>
+      {isDemo && listStatus === 'success' && (
+        <div className="lk-admin-demo-banner">
+          <Sparkles size={16} />
+          Демо-режим: показаны примерные обращения, а не реальные. Как только на бэке настроят права
+          администратора и ты войдёшь под таким аккаунтом — здесь появятся настоящие данные.
         </div>
       )}
 
       {listStatus === 'failed' && (
         <div className="lk-admin-gate">
-          <AlertCircle size={28} />
           <h2>Не удалось загрузить обращения</h2>
           <button type="button" onClick={loadTickets}>Попробовать снова</button>
         </div>

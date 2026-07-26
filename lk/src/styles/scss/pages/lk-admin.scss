@@ -116,6 +116,26 @@
   }
 }
 
+.lk-admin-demo-banner {
+  display: flex;
+  align-items: center;
+  gap: $lk-space-8;
+
+  padding: $lk-space-12 $lk-space-16;
+
+  border: 1px solid rgba(93, 143, 114, 0.25);
+  border-radius: $lk-radius-16;
+
+  background: rgba(93, 143, 114, 0.08);
+
+  color: $lk-brand-dark;
+
+  font-size: 13px;
+  line-height: 1.5;
+
+  svg { flex-shrink: 0; }
+}
+
 .lk-admin-grid {
   display: grid;
   grid-template-columns: 360px minmax(0, 1fr);
