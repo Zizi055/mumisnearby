@@ -30,6 +30,7 @@ import Settings from './pages/settings/Settings.jsx';
 import LkLayout from './components/layout/LkLayout';
 import LibraryItem from './components/library/LibraryItem';
 import LibraryGenerations from './pages/library/LibraryGenerations';
+import AdminSupport from './pages/admin/AdminSupport.jsx';
 function App() {
   // Ловим ?ref=CODE (или /ref/CODE) сразу при заходе в приложение — на
   // случай прямой ссылки в ЛК, минуя маркетинговый сайт. См. utils/referral.js
@@ -44,6 +45,11 @@ function App() {
       <Route path="/auth" element={<Auth />} />
       <Route path="/auth/reset" element={<AuthReset />} />
       <Route path="/verify-email" element={<VerifyEmail />} />
+
+      {/* Админка — своя, без клиентского LkLayout (сайдбар/шапка ЛК не нужны).
+          Доступ реально проверяет бэк на /admin/support/tickets* по роли —
+          страница просто аккуратно показывает 401/403, если прав нет. */}
+      <Route path="/admin" element={<AdminSupport />} />
 
       {/* ЛК */}
       <Route element={<LkLayout />}>
