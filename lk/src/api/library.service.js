@@ -156,22 +156,3 @@ export async function getLibraryItems(type) {
 
   return [];
 }
-
-// Мёртвый код — старые эндпоинты /stories/generate, /stories/{id},
-// /library/{id}/favorite не существуют на бэке (см. openapi.json).
-// Озвучка идёт через generations.service.js (createGeneration/waitForGeneration/
-// getGenerationAudio), избранное — целиком локально в library.store.js.
-// Ничего из этого файла их не вызывает, оставлено не удалённым намеренно —
-// на случай если бэк всё же добавит эти пути под другим именем, но если нет,
-// можно смело выпиливать.
-export async function generateStory(payload) {
-  return api.post('/stories/generate', payload);
-}
-
-export async function getStory(id) {
-  return api.get(`/stories/${id}`);
-}
-
-export async function toggleFavorite(id) {
-  return api.post(`/library/${id}/favorite`);
-}

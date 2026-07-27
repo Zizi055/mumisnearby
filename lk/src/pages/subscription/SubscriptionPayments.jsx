@@ -1,35 +1,50 @@
 import { useState, useEffect } from 'react';
-import { tariffs } from '../../data/tariffs.data';
-import { useSubscription } from '../../hooks/useSubscription';
+import { getPayments } from '../../api/payments.service';
 import { generateReceipt } from '../../utils/generateReceipt';
 import {
   ArrowUpRight,
   Receipt,
   CheckCircle,
   Clock,
-  AlertCircle
+  AlertCircle,
+  Loader
 } from 'lucide-react';
 import LkButton from '../../components/ui/LkButton';
 
 export default function SubscriptionPayments() {
 
-  const subscription = useSubscription();
+  const [rawPayments, setRawPayments] = useState([]);
+  const [loadStatus, setLoadStatus] = useState('loading'); // loading | success | failed
+  const [selectedPayment, setSelectedPayment] = useState(null);
 
-  const payments = (subscription.payments || []).map((p) => ({
+  useEffect(() => {
+    loadPayments();
+  }, []);
+
+  async function loadPayments() {
+    setLoadStatus('loading');
+    try {
+      const data = await getPayments();
+      setRawPayments(data);
+      setLoadStatus('success');
+    } catch {
+      setLoadStatus('failed');
+    }
+  }
+
+  const payments = rawPayments.map((p) => ({
     id: p.id,
-    title: tariffs.find(t => t.id === p.planId)?.name || 'Тариф',
-    type: 'Подписка',
-    date: new Date(p.date).toLocaleDateString('ru-RU'),
+    title: p.title,
+    type: p.type,
+    date: p.date ? new Date(p.date).toLocaleDateString('ru-RU') : '—',
     amount: `${p.amount.toLocaleString('ru-RU')} ₽`,
-    status: p.status === 'success' ? 'paid' : p.status,
-    method: 'VISA •••• 4242',
-    receiptUrl: '#',
+    status: p.status,
+    method: p.method || '—',
+    receiptUrl: p.receiptUrl,
     items: [
       { label: 'Подписка', value: `${p.amount.toLocaleString('ru-RU')} ₽` },
     ],
   }));
-
-  const [selectedPayment, setSelectedPayment] = useState(null);
 
   const lastPayment = payments[0] || null;
 
@@ -128,6 +143,26 @@ export default function SubscriptionPayments() {
       </div>
 
       {/* LIST */}
+      {loadStatus === 'loading' && (
+        <div className="lk-payments-loader">
+          <Loader size={20} className="lk-spin" />
+        </div>
+      )}
+
+      {loadStatus === 'failed' && (
+        <div className="lk-payments-empty">
+          Не удалось загрузить платежи.{' '}
+          <button type="button" className="lk-payments-empty__retry" onClick={loadPayments}>
+            Попробовать ещё раз
+          </button>
+        </div>
+      )}
+
+      {loadStatus === 'success' && payments.length === 0 && (
+        <div className="lk-payments-empty">Платежей пока нет</div>
+      )}
+
+      {loadStatus === 'success' && payments.length > 0 && (
       <div className="lk-payments-list">
 
         {payments.map((item) => (
@@ -171,6 +206,7 @@ export default function SubscriptionPayments() {
         ))}
 
       </div>
+      )}
 
       {/* ACTION */}
       <div className="lk-payments-actions">

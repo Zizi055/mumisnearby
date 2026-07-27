@@ -5,6 +5,36 @@
   gap: $lk-space-20;
 }
 
+.lk-payments-loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: $lk-space-40 0;
+
+  color: $lk-text-muted;
+}
+
+.lk-payments-empty {
+  padding: $lk-space-32 0;
+
+  color: $lk-text-muted;
+  font-size: 14px;
+  text-align: center;
+}
+
+.lk-payments-empty__retry {
+  border: none;
+  background: none;
+  padding: 0;
+
+  color: $lk-brand;
+  font-size: 14px;
+  text-decoration: underline;
+
+  cursor: pointer;
+}
+
 
 .lk-payments__head {
   display: flex;

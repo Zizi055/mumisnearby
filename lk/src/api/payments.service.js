@@ -1,63 +1,33 @@
-const USE_MOCK = true;
+import { api } from './client';
 
-const paymentsMock = [
-  {
-    id: 1,
-    title: 'Хранитель',
-    type: 'Подписка',
-    date: '12.01.2026',
-    amount: '14 400 ₽',
-    status: 'paid',
-    method: 'VISA •••• 4242',
-    receiptUrl: '#',
-    items: [
-      { label: 'Подписка', value: '12 000 ₽' },
-      { label: 'НДС', value: '2 400 ₽' },
-    ],
-  },
-  {
-    id: 2,
-    title: 'Хранитель',
-    type: 'Автосписание',
-    date: '12.02.2026',
-    amount: '14 400 ₽',
-    status: 'pending',
-    method: 'VISA •••• 4242',
-    receiptUrl: null,
-    items: [
-      { label: 'Подписка', value: '12 000 ₽' },
-      { label: 'НДС', value: '2 400 ₽' },
-    ],
-  },
-  {
-    id: 3,
-    title: 'Хранитель',
-    type: 'Ошибка оплаты',
-    date: '12.03.2026',
-    amount: '14 400 ₽',
-    status: 'failed',
-    method: 'VISA •••• 4242',
-    receiptUrl: null,
-    items: [
-      { label: 'Подписка', value: '12 000 ₽' },
-      { label: 'НДС', value: '2 400 ₽' },
-    ],
-  },
-];
-
-const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+// GET /api/payments/history — реальный эндпоинт (появился в свежей спеке).
+// Форма ответа в спеке не расписана (schema: {}), поэтому маппим поля
+// защитно, по нескольким вероятным именам — поправим, когда увидим
+// настоящий ответ от бэка.
+function normalizePayment(p) {
+  return {
+    id:         p.id,
+    title:      p.plan_name ?? p.plan?.name ?? 'Подписка',
+    type:       p.type ?? 'Подписка',
+    date:       p.created_at ?? p.date ?? null,
+    amount:     Number(p.amount ?? 0),
+    status:     p.status ?? 'unknown', // ожидаем paid | pending | failed
+    method:     p.payment_method ?? p.method ?? null,
+    receiptUrl: p.receipt_url ?? null,
+  };
+}
 
 export async function getPayments() {
-  if (USE_MOCK) {
-    await delay(300);
-    return paymentsMock;
-  }
+  const data = await api.get('/api/payments/history');
+  const list = Array.isArray(data) ? data : (data?.items ?? []);
+  return list.map(normalizePayment);
+}
 
-  const res = await fetch('/api/subscription/payments');
-
-  if (!res.ok) {
-    throw new Error('Не удалось загрузить платежи');
-  }
-
-  return res.json();
+// POST /api/payments/create — запускает оплату через YooKassa, возвращает
+// confirmation_url, куда нужно перенаправить пользователя для оплаты.
+export async function createPayment({ planId, billingPeriod }) {
+  return api.post('/api/payments/create', {
+    plan_id: planId,
+    billing_period: billingPeriod,
+  });
 }
