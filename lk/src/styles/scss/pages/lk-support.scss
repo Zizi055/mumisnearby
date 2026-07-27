@@ -1149,6 +1149,12 @@ $lk-gradient-brand: linear-gradient(135deg, #5d8f72 0%, #79ab89 100%);
   line-height: 1.7;
 }
 
+.lk-ticket-card__attachments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
 .lk-ticket-card__attachment {
   display: inline-flex;
   align-items: center;

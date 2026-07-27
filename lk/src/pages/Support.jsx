@@ -326,17 +326,24 @@ function TicketCard({ ticket }) {
 
       {isOpen && (
         <div className="lk-ticket-card__body">
-          <p className="lk-ticket-card__message">{ticket.message}</p>
-          {ticket.attachment_url && (
-            <a href={ticket.attachment_url} target="_blank" rel="noreferrer" className="lk-ticket-card__attachment">
-              📎 Вложение
-            </a>
-          )}
-          <div className="lk-ticket-card__id">#{String(ticket.id).slice(0, 8).toUpperCase()}</div>
+          {/* ticket (TicketShort) не содержит ни текста, ни вложений — это
+              есть только в TicketDetail (detail.messages / detail.attachments),
+              подгружается ниже через loadDetail(). id — integer, не UUID. */}
+          <div className="lk-ticket-card__id">#{ticket.id}</div>
 
           {detailStatus === 'loading' && (
             <div className="lk-ticket-thread__loader">
               <Loader size={16} className="is-spinning" />
+            </div>
+          )}
+
+          {detailStatus === 'success' && detail?.attachments?.length > 0 && (
+            <div className="lk-ticket-card__attachments">
+              {detail.attachments.map((att) => (
+                <a key={att.id} href={att.url} target="_blank" rel="noreferrer" className="lk-ticket-card__attachment">
+                  📎 {att.filename}
+                </a>
+              ))}
             </div>
           )}
 
@@ -345,11 +352,18 @@ function TicketCard({ ticket }) {
               {messages.map((msg, i) => (
                 <div key={msg.id ?? i} className="lk-ticket-thread__msg">
                   <span className="lk-ticket-thread__author">
-                    {msg.is_staff || msg.author === 'staff' || msg.sender === 'support'
-                      ? 'Поддержка'
-                      : 'Вы'}
+                    {msg.is_admin ? 'Поддержка' : 'Вы'}
                   </span>
-                  <p>{msg.message ?? msg.text ?? msg.body}</p>
+                  <p>{msg.body}</p>
+                  {msg.attachments?.length > 0 && (
+                    <div className="lk-ticket-card__attachments">
+                      {msg.attachments.map((att) => (
+                        <a key={att.id} href={att.url} target="_blank" rel="noreferrer" className="lk-ticket-card__attachment">
+                          📎 {att.filename}
+                        </a>
+                      ))}
+                    </div>
+                  )}
                   {msg.created_at && (
                     <span className="lk-ticket-thread__date">{formatDate(msg.created_at)}</span>
                   )}

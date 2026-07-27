@@ -32,8 +32,10 @@ export async function getTicket(id) {
 }
 
 // POST /support/tickets/{id}/messages — ответ пользователя в тикете.
-// Предполагаем то же имя поля 'body', что и при создании тикета — если
-// бэк вернёт свой 422 с другим именем поля, поправим по факту.
+// Тело — multipart/form-data с полем 'body' (см. Body_add_message_
+// support_tickets__ticket_id__messages_post в спеке), не JSON.
 export async function addTicketMessage(id, message) {
-  return api.post(`/support/tickets/${id}/messages`, { body: message });
+  const body = new FormData();
+  body.append('body', message);
+  return api.post(`/support/tickets/${id}/messages`, body);
 }

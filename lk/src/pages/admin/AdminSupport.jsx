@@ -31,40 +31,46 @@ const TYPE_LABELS = {
 // администратора (или пока не залогинена вообще). Показываются вместо
 // блокирующего экрана логина — как только /admin/support/tickets начнёт
 // реально пускать, эти карточки заменятся настоящими автоматически.
+// Форма — строго как в реальной схеме (TicketDetail/MessageOut): у тикета
+// нет отдельного текста, есть только messages[], у сообщения — body/is_admin.
 const DEMO_TICKETS = [
   {
-    id: 'demo-1',
+    id: 1001,
     subject: 'Не получается загрузить голос',
     type: 'voice_model',
     status: 'new',
     created_at: '2026-07-20T10:15:00Z',
-    user_email: 'anna@example.com',
-    message: 'Загружаю запись, а модель зависает на обучении и не завершается уже час.',
-    messages: [],
+    user_id: 101,
+    attachments: [],
+    messages: [
+      { id: 1, is_admin: false, body: 'Загружаю запись, а модель зависает на обучении и не завершается уже час.', created_at: '2026-07-20T10:15:00Z' },
+    ],
   },
   {
-    id: 'demo-2',
+    id: 1002,
     subject: 'Списалось дважды за месяц',
     type: 'billing',
     status: 'in_progress',
     created_at: '2026-07-19T14:02:00Z',
-    user_email: 'oleg@example.com',
-    message: 'По тарифу Хранитель пришло два списания подряд, разберитесь пожалуйста.',
+    user_id: 102,
+    attachments: [],
     messages: [
-      { id: 'm1', is_staff: true, message: 'Здравствуйте! Проверяем платежи, ответим в течение дня.', created_at: '2026-07-19T15:30:00Z' },
+      { id: 2, is_admin: false, body: 'По тарифу Хранитель пришло два списания подряд, разберитесь пожалуйста.', created_at: '2026-07-19T14:02:00Z' },
+      { id: 3, is_admin: true, body: 'Здравствуйте! Проверяем платежи, ответим в течение дня.', created_at: '2026-07-19T15:30:00Z' },
     ],
   },
   {
-    id: 'demo-3',
+    id: 1003,
     subject: 'Сказка озвучилась с ошибкой',
     type: 'generation',
     status: 'resolved',
     created_at: '2026-07-17T09:40:00Z',
-    user_email: 'marina@example.com',
-    message: 'Озвучка «Колобка» упала с ошибкой, остальные сказки в порядке.',
+    user_id: 103,
+    attachments: [],
     messages: [
-      { id: 'm2', is_staff: true, message: 'Перегенерировали, всё готово — проверьте, пожалуйста.', created_at: '2026-07-17T11:00:00Z' },
-      { id: 'm3', is_staff: false, message: 'Да, теперь работает, спасибо!', created_at: '2026-07-17T11:20:00Z' },
+      { id: 4, is_admin: false, body: 'Озвучка «Колобка» упала с ошибкой, остальные сказки в порядке.', created_at: '2026-07-17T09:40:00Z' },
+      { id: 5, is_admin: true, body: 'Перегенерировали, всё готово — проверьте, пожалуйста.', created_at: '2026-07-17T11:00:00Z' },
+      { id: 6, is_admin: false, body: 'Да, теперь работает, спасибо!', created_at: '2026-07-17T11:20:00Z' },
     ],
   },
 ];
@@ -80,16 +86,11 @@ function formatDate(iso) {
   }
 }
 
-// Поля пользователя в TicketShort/TicketDetail точно не подтверждены по
-// спеке — подстраховываемся несколькими вариантами имён.
+// TicketDetail отдаёт только user_id (числом) — ни email, ни username бэк
+// не возвращает. Показываем как есть, красивое имя появится только если
+// когда-нибудь на бэке TicketDetail расширят.
 function getRequester(ticket) {
-  return (
-    ticket.user?.email ??
-    ticket.user_email ??
-    ticket.email ??
-    ticket.user?.username ??
-    (ticket.user_id ? `#${ticket.user_id}` : 'неизвестно')
-  );
+  return ticket.user_id ? `Пользователь #${ticket.user_id}` : 'неизвестно';
 }
 
 function TicketStatusBadge({ status }) {
@@ -174,7 +175,7 @@ export default function AdminSupport() {
     if (!replyText.trim() || !selectedId) return;
 
     if (isDemo) {
-      const newMsg = { id: `local-${Date.now()}`, is_staff: true, message: replyText.trim(), created_at: new Date().toISOString() };
+      const newMsg = { id: `local-${Date.now()}`, is_admin: true, body: replyText.trim(), created_at: new Date().toISOString() };
       setDetail((prev) => prev ? { ...prev, messages: [...(prev.messages || []), newMsg] } : prev);
       setTickets((prev) => prev.map((t) => t.id === selectedId ? { ...t, messages: [...(t.messages || []), newMsg] } : t));
       setReplyText('');
@@ -276,7 +277,9 @@ export default function AdminSupport() {
                   </div>
                   <strong className="lk-admin-item__subject">{t.subject}</strong>
                   <div className="lk-admin-item__meta">
-                    <span>{getRequester(t)}</span>
+                    {/* TicketShort (список) не содержит данных о пользователе —
+                        они есть только в TicketDetail после открытия карточки. */}
+                    <span>#{t.id}</span>
                     <span>{formatDate(t.created_at)}</span>
                   </div>
                 </button>
@@ -323,12 +326,16 @@ export default function AdminSupport() {
                   </div>
                 </div>
 
-                <p className="lk-admin-detail__message">{detail.message ?? detail.body}</p>
-
-                {detail.attachment_url && (
-                  <a href={detail.attachment_url} target="_blank" rel="noreferrer" className="lk-admin-detail__attachment">
-                    📎 Вложение
-                  </a>
+                {/* TicketDetail не хранит отдельный текст обращения — исходное
+                    сообщение это просто первый элемент messages[]. */}
+                {detail.attachments?.length > 0 && (
+                  <div className="lk-admin-detail__attachments">
+                    {detail.attachments.map((att) => (
+                      <a key={att.id} href={att.url} target="_blank" rel="noreferrer" className="lk-admin-detail__attachment">
+                        📎 {att.filename}
+                      </a>
+                    ))}
+                  </div>
                 )}
 
                 {messages.length > 0 && (
@@ -336,9 +343,18 @@ export default function AdminSupport() {
                     {messages.map((msg, i) => (
                       <div key={msg.id ?? i} className="lk-admin-thread__msg">
                         <span className="lk-admin-thread__author">
-                          {msg.is_staff || msg.author === 'staff' || msg.sender === 'support' ? 'Поддержка' : 'Клиент'}
+                          {msg.is_admin ? 'Поддержка' : 'Клиент'}
                         </span>
-                        <p>{msg.message ?? msg.text ?? msg.body}</p>
+                        <p>{msg.body}</p>
+                        {msg.attachments?.length > 0 && (
+                          <div className="lk-admin-detail__attachments">
+                            {msg.attachments.map((att) => (
+                              <a key={att.id} href={att.url} target="_blank" rel="noreferrer" className="lk-admin-detail__attachment">
+                                📎 {att.filename}
+                              </a>
+                            ))}
+                          </div>
+                        )}
                         {msg.created_at && <span className="lk-admin-thread__date">{formatDate(msg.created_at)}</span>}
                       </div>
                     ))}

@@ -18,8 +18,12 @@ export async function getAdminTicket(id) {
 }
 
 // POST /admin/support/tickets/{id}/messages — ответ от поддержки.
+// Тело — multipart/form-data с полем 'body' (та же форма, что и на
+// пользовательской стороне), не JSON.
 export async function addAdminTicketMessage(id, text) {
-  return api.post(`/admin/support/tickets/${id}/messages`, { body: text });
+  const body = new FormData();
+  body.append('body', text);
+  return api.post(`/admin/support/tickets/${id}/messages`, body);
 }
 
 // PATCH /admin/support/tickets/{id}/status — сменить статус (new/in_progress/resolved).

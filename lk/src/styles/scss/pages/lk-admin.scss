@@ -489,6 +489,12 @@
   line-height: 1.7;
 }
 
+.lk-admin-detail__attachments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $lk-space-10;
+}
+
 .lk-admin-detail__attachment {
   color: $lk-brand;
   font-size: 13px;
