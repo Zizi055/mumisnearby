@@ -4,6 +4,7 @@ import { ArrowLeft, AlertCircle, ShieldCheck } from 'lucide-react';
 import { tariffs } from '../../data/tariffs.data';
 import LkButton from '../../components/ui/LkButton';
 import { createPayment } from '../../api/payments.service';
+import { getBackendPlanId } from '../../data/planIdMap';
 import { useSubscription } from '../../hooks/useSubscription';
 
 function formatPrice(value) {
@@ -82,8 +83,12 @@ export default function Checkout() {
     setError('');
 
     try {
+      // plan.id — наш строковый slug ('wizard' и т.п.), бэк ждёт числовой
+      // plan_id из своей базы — переводим через planIdMap.
+      const backendPlanId = getBackendPlanId(plan.id);
+
       const response = await createPayment({
-        planId: plan.id,
+        planId: backendPlanId,
         billingPeriod: effectivePeriod,
       });
 
