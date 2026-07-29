@@ -12,6 +12,7 @@ import SubscriptionPayments from './pages/subscription/SubscriptionPayments';
 import SubscriptionManage from './pages/subscription/SubscriptionManage';
 import SubscriptionBonus from './pages/subscription/SubscriptionBonus';
 import Checkout from './pages/subscription/Checkout';
+import SubscriptionSuccess from './pages/subscription/SubscriptionSuccess';
 import Constructor from './pages/subscription/Constructor';
 
 import Voice from './pages/Voice';
@@ -31,6 +32,7 @@ import LkLayout from './components/layout/LkLayout';
 import LibraryItem from './components/library/LibraryItem';
 import LibraryGenerations from './pages/library/LibraryGenerations';
 import AdminLayout from './pages/admin/AdminLayout.jsx';
+import AdminLogin from './pages/admin/AdminLogin.jsx';
 import AdminSupport from './pages/admin/AdminSupport.jsx';
 import AdminLeads from './pages/admin/AdminLeads.jsx';
 import AdminUsers from './pages/admin/AdminUsers.jsx';
@@ -50,8 +52,10 @@ function App() {
       <Route path="/verify-email" element={<VerifyEmail />} />
 
       {/* Админка — своя, без клиентского LkLayout (сайдбар/шапка ЛК не нужны).
-          Доступ реально проверяет бэк по роли на каждом /admin/* эндпоинте —
-          страницы сами аккуратно показывают ошибку, если прав/эндпоинта нет. */}
+          Отдельный логин (/auth/admin/login, /auth/super_admin/login) —
+          не путать с пользовательским /auth. AdminLayout сам проверяет
+          токен и редиректит на /admin/login, если доступа нет. */}
+      <Route path="/admin/login" element={<AdminLogin />} />
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<Navigate to="/admin/support" replace />} />
         <Route path="support" element={<AdminSupport />} />
@@ -102,6 +106,7 @@ function App() {
           <Route path="manage" element={<SubscriptionManage />} />
           <Route path="bonus" element={<SubscriptionBonus />} />
           <Route path="checkout" element={<Checkout />} />
+          <Route path="checkout/success" element={<SubscriptionSuccess />} />
           <Route path="constructor" element={<Constructor />} />
         </Route>
 

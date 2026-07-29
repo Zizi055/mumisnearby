@@ -27,54 +27,6 @@ const TYPE_LABELS = {
   other:       'Другое',
 };
 
-// Демо-данные для предпросмотра интерфейса, пока на бэке не готовы роли
-// администратора (или пока не залогинена вообще). Показываются вместо
-// блокирующего экрана логина — как только /admin/support/tickets начнёт
-// реально пускать, эти карточки заменятся настоящими автоматически.
-// Форма — строго как в реальной схеме (TicketDetail/MessageOut): у тикета
-// нет отдельного текста, есть только messages[], у сообщения — body/is_admin.
-const DEMO_TICKETS = [
-  {
-    id: 1001,
-    subject: 'Не получается загрузить голос',
-    type: 'voice_model',
-    status: 'new',
-    created_at: '2026-07-20T10:15:00Z',
-    user_id: 101,
-    attachments: [],
-    messages: [
-      { id: 1, is_admin: false, body: 'Загружаю запись, а модель зависает на обучении и не завершается уже час.', created_at: '2026-07-20T10:15:00Z' },
-    ],
-  },
-  {
-    id: 1002,
-    subject: 'Списалось дважды за месяц',
-    type: 'billing',
-    status: 'in_progress',
-    created_at: '2026-07-19T14:02:00Z',
-    user_id: 102,
-    attachments: [],
-    messages: [
-      { id: 2, is_admin: false, body: 'По тарифу Хранитель пришло два списания подряд, разберитесь пожалуйста.', created_at: '2026-07-19T14:02:00Z' },
-      { id: 3, is_admin: true, body: 'Здравствуйте! Проверяем платежи, ответим в течение дня.', created_at: '2026-07-19T15:30:00Z' },
-    ],
-  },
-  {
-    id: 1003,
-    subject: 'Сказка озвучилась с ошибкой',
-    type: 'generation',
-    status: 'resolved',
-    created_at: '2026-07-17T09:40:00Z',
-    user_id: 103,
-    attachments: [],
-    messages: [
-      { id: 4, is_admin: false, body: 'Озвучка «Колобка» упала с ошибкой, остальные сказки в порядке.', created_at: '2026-07-17T09:40:00Z' },
-      { id: 5, is_admin: true, body: 'Перегенерировали, всё готово — проверьте, пожалуйста.', created_at: '2026-07-17T11:00:00Z' },
-      { id: 6, is_admin: false, body: 'Да, теперь работает, спасибо!', created_at: '2026-07-17T11:20:00Z' },
-    ],
-  },
-];
-
 function formatDate(iso) {
   if (!iso) return '';
   try {
@@ -107,7 +59,6 @@ function TicketStatusBadge({ status }) {
 export default function AdminSupport() {
   const [tickets, setTickets]     = useState([]);
   const [listStatus, setListStatus] = useState('loading'); // loading | success | failed
-  const [isDemo, setIsDemo]       = useState(false);
   const [filterStatus, setFilterStatus] = useState('all');
 
   const [selectedId, setSelectedId] = useState(null);
@@ -119,33 +70,16 @@ export default function AdminSupport() {
 
   const [statusUpdating, setStatusUpdating] = useState(false);
 
-  // Грузим сразу при заходе — без завязки на AuthContext, чтобы не
-  // дёргать реальный /admin/... эндпоинт без токена (иначе сработает
-  // глобальный редирект на /auth при 401 из client.js).
   useEffect(() => { loadTickets(); }, []);
 
   async function loadTickets() {
     setListStatus('loading');
-
-    const hasToken = !!localStorage.getItem('token');
-    if (!hasToken) {
-      setIsDemo(true);
-      setTickets(DEMO_TICKETS);
-      setListStatus('success');
-      return;
-    }
-
     try {
       const data = await getAdminTickets();
-      setIsDemo(false);
       setTickets(data);
       setListStatus('success');
     } catch {
-      // Нет прав (403) или другая ошибка — не блокируем экран, показываем
-      // демо-данные, чтобы можно было смотреть интерфейс уже сейчас.
-      setIsDemo(true);
-      setTickets(DEMO_TICKETS);
-      setListStatus('success');
+      setListStatus('failed');
     }
   }
 
@@ -153,13 +87,6 @@ export default function AdminSupport() {
     setSelectedId(id);
     setDetailStatus('loading');
     setReplyText('');
-
-    if (isDemo) {
-      const found = tickets.find((t) => t.id === id);
-      setDetail(found || null);
-      setDetailStatus(found ? 'success' : 'error');
-      return;
-    }
 
     try {
       const data = await getAdminTicket(id);
@@ -174,14 +101,6 @@ export default function AdminSupport() {
     e.preventDefault();
     if (!replyText.trim() || !selectedId) return;
 
-    if (isDemo) {
-      const newMsg = { id: `local-${Date.now()}`, is_admin: true, body: replyText.trim(), created_at: new Date().toISOString() };
-      setDetail((prev) => prev ? { ...prev, messages: [...(prev.messages || []), newMsg] } : prev);
-      setTickets((prev) => prev.map((t) => t.id === selectedId ? { ...t, messages: [...(t.messages || []), newMsg] } : t));
-      setReplyText('');
-      return;
-    }
-
     setReplyStatus('loading');
     try {
       await addAdminTicketMessage(selectedId, replyText.trim());
@@ -195,12 +114,6 @@ export default function AdminSupport() {
 
   async function handleStatusChange(newStatus) {
     if (!selectedId || statusUpdating) return;
-
-    if (isDemo) {
-      setDetail((prev) => prev ? { ...prev, status: newStatus } : prev);
-      setTickets((prev) => prev.map((t) => t.id === selectedId ? { ...t, status: newStatus } : t));
-      return;
-    }
 
     setStatusUpdating(true);
     try {
@@ -217,7 +130,7 @@ export default function AdminSupport() {
     ? tickets
     : tickets.filter((t) => t.status === filterStatus);
 
-  const messages = detail?.messages ?? detail?.items ?? [];
+  const messages = detail?.messages ?? [];
 
   return (
     <div className="lk-admin">

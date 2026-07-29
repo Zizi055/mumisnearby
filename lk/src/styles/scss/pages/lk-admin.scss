@@ -32,6 +32,145 @@
   gap: 4px;
 }
 
+.lk-admin-nav__user {
+  display: flex;
+  align-items: center;
+  gap: $lk-space-12;
+  margin-left: auto;
+
+  span {
+    font-size: 13px;
+    font-weight: 600;
+    color: $lk-text;
+  }
+
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 32px;
+    height: 32px;
+
+    border: 1px solid $lk-border;
+    border-radius: $lk-radius-12;
+
+    background: $lk-white;
+    color: $lk-text-muted;
+
+    cursor: pointer;
+    transition: all 0.15s ease;
+
+    &:hover {
+      color: $lk-danger;
+      border-color: rgba(229, 72, 72, 0.3);
+    }
+  }
+}
+
+.lk-admin-login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 100vh;
+  padding: $lk-space-32;
+}
+
+.lk-admin-login__card {
+  width: min(100%, 380px);
+  padding: $lk-space-32;
+
+  border-radius: $lk-radius-24;
+  border: 1px solid $lk-border;
+
+  background: $lk-white;
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.06);
+
+  h1 {
+    margin: 0 0 6px;
+    color: $lk-text;
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  p {
+    margin: 0 0 $lk-space-20;
+    color: $lk-text-muted;
+    font-size: 13px;
+  }
+}
+
+.lk-admin-login__form {
+  display: flex;
+  flex-direction: column;
+  gap: $lk-space-16;
+}
+
+.lk-admin-login__field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  span {
+    color: $lk-text-muted;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  input {
+    height: 44px;
+    padding: 0 14px;
+
+    border: 1px solid $lk-border;
+    border-radius: $lk-radius-12;
+
+    font-size: 14px;
+    outline: none;
+
+    &:focus { border-color: $lk-brand; }
+  }
+}
+
+.lk-admin-login__checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  color: $lk-text-muted;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.lk-admin-login__error {
+  padding: 10px 12px;
+
+  border-radius: $lk-radius-12;
+
+  background: rgba(229, 72, 72, 0.1);
+  color: $lk-danger;
+  font-size: 13px;
+}
+
+.lk-admin-login__form button[type='submit'] {
+  height: 46px;
+
+  border: none;
+  border-radius: $lk-radius-pill;
+
+  background: $lk-brand;
+  color: $lk-white;
+
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+}
+
 .lk-admin-nav__link {
   padding: 8px 16px;
 
@@ -229,26 +368,6 @@
 
     cursor: pointer;
   }
-}
-
-.lk-admin-demo-banner {
-  display: flex;
-  align-items: center;
-  gap: $lk-space-8;
-
-  padding: $lk-space-12 $lk-space-16;
-
-  border: 1px solid rgba(93, 143, 114, 0.25);
-  border-radius: $lk-radius-16;
-
-  background: rgba(93, 143, 114, 0.08);
-
-  color: $lk-brand-dark;
-
-  font-size: 13px;
-  line-height: 1.5;
-
-  svg { flex-shrink: 0; }
 }
 
 .lk-admin-grid {

@@ -342,99 +342,6 @@
 
 
 
-.lk-checkout-success {
-  width: min(100%, 480px);
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: $lk-space-20;
-
-  padding: $lk-space-32;
-  border-radius: $lk-radius-24;
-
-  text-align: center;
-
-  background:
-    radial-gradient(
-      circle at top,
-      rgba(93, 143, 114, 0.12) 0%,
-      rgba(93, 143, 114, 0) 42%
-    ),
-    $lk-surface;
-
-  border: 1px solid $lk-border;
-  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.06);
-}
-
-.lk-checkout-success__icon {
-  width: 64px;
-  height: 64px;
-  border-radius: $lk-radius-pill;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background: rgba(93, 143, 114, 0.12);
-  color: $lk-brand;
-}
-
-.lk-checkout-success__content {
-  display: flex;
-  flex-direction: column;
-  gap: $lk-space-8;
-}
-
-.lk-checkout-success h2 {
-  font-size: 24px;
-  font-weight: 600;
-  letter-spacing: -0.03em;
-}
-
-.lk-checkout-success p {
-  font-size: 14px;
-  line-height: 1.5;
-  color: $lk-text-muted;
-}
-
-.lk-checkout-success__meta {
-  width: 100%;
-
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: $lk-space-12;
-
-  padding: $lk-space-12;
-  border-radius: $lk-radius-16;
-
-  background: rgba(93, 143, 114, 0.08);
-}
-
-.lk-checkout-success__meta div {
-  display: flex;
-  flex-direction: column;
-  gap: $lk-space-4;
-
-  min-width: 0;
-}
-
-.lk-checkout-success__meta span {
-  font-size: 12px;
-  color: $lk-text-muted;
-}
-
-.lk-checkout-success__meta strong {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-
-  font-size: 13px;
-  font-weight: 500;
-}
-
-
-
 @media (max-width: 1100px) {
   .lk-checkout__inner {
     grid-template-columns: 1fr;
@@ -451,8 +358,7 @@
   }
 
   .lk-checkout-card,
-  .lk-summary,
-  .lk-checkout-success {
+  .lk-summary {
     padding: $lk-space-20;
     border-radius: $lk-radius-20;
   }
@@ -463,9 +369,5 @@
 
   .lk-summary__total strong {
     font-size: 24px;
-  }
-
-  .lk-checkout-success__meta {
-    grid-template-columns: 1fr;
   }
 }

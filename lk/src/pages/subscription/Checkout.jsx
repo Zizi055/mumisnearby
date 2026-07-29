@@ -1,9 +1,9 @@
 import { useMemo, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, CheckCircle, AlertCircle, ShieldCheck } from 'lucide-react';
+import { ArrowLeft, AlertCircle, ShieldCheck } from 'lucide-react';
 import { tariffs } from '../../data/tariffs.data';
 import LkButton from '../../components/ui/LkButton';
-import { createSubscriptionCheckout } from '../../api/subscription.service';
+import { createPayment } from '../../api/payments.service';
 import { useSubscription } from '../../hooks/useSubscription';
 
 function formatPrice(value) {
@@ -50,7 +50,6 @@ export default function Checkout() {
 
   const [status, setStatus] = useState('idle');
   const [error, setError] = useState('');
-  const [result, setResult] = useState(null);
 
   const planId = params.get('plan');
   const requestedPeriod = params.get('period') || 'year';
@@ -70,9 +69,12 @@ export default function Checkout() {
   const changeType = getChangeType(plan, currentPlan);
 
   const isLoading = status === 'loading';
-  const isSuccess = status === 'success';
   const isError = status === 'error';
 
+  // Оплата уходит на сторону ЮKassa: создаём платёж и сразу уводим браузер
+  // на confirmation_url — успеха "прямо здесь" не бывает, подтверждение
+  // приходит асинхронно через вебхук, а клиент возвращается на
+  // /subscription/checkout/success уже после оплаты на стороне ЮKassa.
   const handlePay = async () => {
     if (!plan || !price || changeType === 'current') return;
 
@@ -80,64 +82,21 @@ export default function Checkout() {
     setError('');
 
     try {
-      const response = await createSubscriptionCheckout({
+      const response = await createPayment({
         planId: plan.id,
         billingPeriod: effectivePeriod,
       });
 
-      setResult(response);
-      setStatus('success');
+      if (!response?.confirmation_url) {
+        throw new Error('Не получили ссылку на оплату от сервера');
+      }
+
+      window.location.href = response.confirmation_url;
     } catch (e) {
       setError(e.message || 'Ошибка оплаты');
       setStatus('error');
     }
   };
-
-  if (isSuccess) {
-    return (
-      <section className="lk-checkout">
-        <div className="lk-checkout__inner is-centered">
-
-          <div className="lk-checkout-success">
-
-            <div className="lk-checkout-success__icon">
-              <CheckCircle size={30} />
-            </div>
-
-            <div className="lk-checkout-success__content">
-              <h2>Подписка обновлена</h2>
-              <p>
-                Тариф «{plan.name}» активирован. Следующее списание:
-                {' '}
-                {result?.nextChargeDate}.
-              </p>
-            </div>
-
-            <div className="lk-checkout-success__meta">
-              <div>
-                <span>Платёж</span>
-                <strong>{result?.paymentId}</strong>
-              </div>
-              <div>
-                <span>Сумма</span>
-                <strong>{formatPrice(result?.amount)}</strong>
-              </div>
-            </div>
-
-            <LkButton
-              variant="primary"
-              size="lg"
-              onClick={() => navigate('/subscription/manage')}
-            >
-              Вернуться к управлению
-            </LkButton>
-
-          </div>
-
-        </div>
-      </section>
-    );
-  }
 
   return (
     <section className="lk-checkout">

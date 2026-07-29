@@ -4,6 +4,17 @@ import { api } from './client';
 // Форма ответа в спеке не расписана (schema: {}), поэтому маппим поля
 // защитно, по нескольким вероятным именам — поправим, когда увидим
 // настоящий ответ от бэка.
+//
+// Статусы приходят, скорее всего, сырыми терминами ЮKassa
+// (succeeded/pending/waiting_for_capture/canceled) — приводим их к трём
+// состояниям, которые уже понимает интерфейс (paid/pending/failed).
+function normalizeStatus(raw) {
+  if (['paid', 'succeeded', 'success'].includes(raw)) return 'paid';
+  if (['failed', 'canceled', 'cancelled', 'error'].includes(raw)) return 'failed';
+  if (['pending', 'waiting_for_capture'].includes(raw)) return 'pending';
+  return raw ?? 'unknown';
+}
+
 function normalizePayment(p) {
   return {
     id:         p.id,
@@ -11,7 +22,7 @@ function normalizePayment(p) {
     type:       p.type ?? 'Подписка',
     date:       p.created_at ?? p.date ?? null,
     amount:     Number(p.amount ?? 0),
-    status:     p.status ?? 'unknown', // ожидаем paid | pending | failed
+    status:     normalizeStatus(p.status),
     method:     p.payment_method ?? p.method ?? null,
     receiptUrl: p.receipt_url ?? null,
   };
