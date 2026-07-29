@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Check, Sparkles } from 'lucide-react';
 import { tariffs } from '../../data/tariffs.data';
 import LkButton from '../../components/ui/LkButton';
+import { useSubscription } from '../../hooks/useSubscription';
 const COMPARE_FEATURES = [
   {
     id: 'voiceModels',
@@ -71,8 +72,6 @@ const FEATURE_GATES = {
     requiredLevel: 3,
   },
 };
-const CURRENT_PLAN_ID = 'guardian';
-
 /* ================= ХЭЛПЕРЫ ================= */
 
 function formatPrice(value) {
@@ -113,7 +112,9 @@ export default function SubscriptionTariff() {
   const navigate = useNavigate();
   const [billingPeriod, setBillingPeriod] = useState('year');
 
-  const currentPlan = tariffs?.find((t) => t.id === CURRENT_PLAN_ID);
+  // Реальный тариф пользователя — из /subscription/status, а не заглушка.
+  const { planId } = useSubscription();
+  const currentPlan = tariffs?.find((t) => t.id === planId);
 
   const sortedTariffs = useMemo(() => {
     return [...tariffs].sort((a, b) => {
@@ -215,11 +216,9 @@ function TariffCard({ tariff, currentPlan, billingPeriod, navigate }) {
       return;
     }
 
-    if (action.type === 'downgrade') {
-      navigate(`/subscription/manage?change=${tariff.id}`);
-      return;
-    }
-
+    // downgrade идёт туда же, на Checkout — там уже есть предупреждение
+    // «часть функций станет недоступна» и кнопка «Подтвердить смену»
+    // вместо «Оплатить» (см. changeType в Checkout.jsx).
     const period = getEffectivePeriod(tariff, billingPeriod);
 
     navigate(`/subscription/checkout?plan=${tariff.id}&period=${period}`);
@@ -353,11 +352,6 @@ function TariffCompare({ tariffs, currentPlan, billingPeriod, navigate }) {
 
                     if (action.type === 'builder') {
                       navigate('/subscription/constructor');
-                      return;
-                    }
-
-                    if (action.type === 'downgrade') {
-                      navigate(`/subscription/manage?change=${tariff.id}`);
                       return;
                     }
 
