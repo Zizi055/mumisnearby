@@ -6,6 +6,7 @@ import LkCardPreview from '../../components/ui/LkCardPreview';
 import { useSubscription } from '../../hooks/useSubscription';
 import { useTariffPricing } from '../../hooks/useTariffPricing';
 import { cancelAutoRenew } from '../../api/subscription.service';
+import { getTariffSlug } from '../../data/planIdMap';
 
 function formatCardNumber(value) {
   return value
@@ -192,10 +193,16 @@ export default function SubscriptionManage() {
     }
   }, [subscription.autoRenew]);
 
-  const currentPlan = tariffs.find((t) => t.id === subscription.planId);
+  // subscription.planId — числовой ID с бэка (3/4/5), а id в tariffs.data.js —
+  // строковый slug ('fairy'/'guardian'/'wizard'). Сравнивать их напрямую нельзя,
+  // переводим через SLUG_BY_PLAN_ID.
+  const currentSlug = getTariffSlug(subscription.planId);
+  const currentPlan = tariffs.find((t) => t.id === currentSlug);
   const lastPayment = subscription.payments?.[0];
 
-  const plan = currentPlan?.name || '—';
+  // Имя тарифа берём в первую очередь прямо с бэка (plan.name) — это
+  // единственный источник правды; локальный tariffs.data.js только запасной.
+  const plan = subscription.plan?.name || currentPlan?.name || '—';
 
   const nextCharge = lastPayment
     ? new Date(lastPayment.date).toLocaleDateString('ru-RU')

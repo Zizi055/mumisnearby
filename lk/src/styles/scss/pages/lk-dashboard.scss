@@ -368,6 +368,7 @@
 
 
 .lk-dashboard-ai,
+.lk-dashboard-plan,
 .lk-dashboard-session,
 .lk-dashboard-block {
   padding: $lk-space-28;
@@ -378,6 +379,124 @@
   border-radius: $lk-radius-24;
 
   box-shadow: $lk-shadow-card;
+}
+
+
+
+/* ── ТЕКУЩИЙ ТАРИФ ─────────────────────────────────────────────── */
+
+.lk-dashboard-plan {
+  display: flex;
+  flex-direction: column;
+  gap: $lk-space-16;
+}
+
+.lk-dashboard-plan__top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: $lk-space-12;
+}
+
+.lk-dashboard-plan__eyebrow {
+  margin-bottom: 4px;
+
+  font-size: 12px;
+  line-height: 1.2;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+
+  color: $lk-text-muted;
+}
+
+.lk-dashboard-plan__name {
+  margin: 0;
+
+  font-size: 22px;
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+
+  color: $lk-text;
+}
+
+.lk-dashboard-plan__badge {
+  flex-shrink: 0;
+
+  padding: 4px 12px;
+
+  border-radius: $lk-radius-pill;
+
+  background: rgba(93, 143, 114, 0.12);
+
+  font-size: 12px;
+  line-height: 1.4;
+  font-weight: 600;
+
+  color: $lk-brand-dark;
+}
+
+.lk-dashboard-plan__until {
+  margin: 0;
+
+  font-size: 13px;
+  line-height: 1.5;
+
+  color: $lk-text-muted;
+}
+
+.lk-dashboard-plan__limits {
+  display: flex;
+  flex-direction: column;
+  gap: $lk-space-12;
+}
+
+.lk-dashboard-plan__limit-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: $lk-space-8;
+
+  margin-bottom: 6px;
+
+  font-size: 13px;
+  line-height: 1.3;
+
+  color: $lk-text-muted;
+
+  strong {
+    font-weight: 600;
+
+    color: $lk-text;
+  }
+}
+
+.lk-dashboard-plan__bar {
+  height: 6px;
+
+  border-radius: $lk-radius-pill;
+
+  background: rgba(93, 143, 114, 0.10);
+
+  overflow: hidden;
+
+  span {
+    display: block;
+
+    height: 100%;
+
+    border-radius: $lk-radius-pill;
+
+    background:
+      linear-gradient(
+        90deg,
+        rgba(93, 143, 114, 1) 0%,
+        rgba(74, 118, 93, 1) 100%
+      );
+
+    transition: width .3s ease;
+  }
 }
 .lk-dashboard-ai__icon{
   width: 48px;

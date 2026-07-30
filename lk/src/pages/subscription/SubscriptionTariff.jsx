@@ -5,6 +5,7 @@ import { tariffs as staticTariffs } from '../../data/tariffs.data';
 import LkButton from '../../components/ui/LkButton';
 import { useSubscription } from '../../hooks/useSubscription';
 import { useTariffPricing } from '../../hooks/useTariffPricing';
+import { getTariffSlug } from '../../data/planIdMap';
 const COMPARE_FEATURES = [
   {
     id: 'voiceModels',
@@ -114,13 +115,19 @@ export default function SubscriptionTariff() {
   const [billingPeriod, setBillingPeriod] = useState('year');
 
   // Реальный тариф пользователя — из /subscription/status, а не заглушка.
-  const { planId } = useSubscription();
+  const { planId, plan: apiPlan } = useSubscription();
 
   // Цены — из GET /subscription/{plan_id} поверх статичных данных
   // (см. useTariffPricing) — чтобы не расходились с тем, что реально
   // спишет ЮKassa.
   const { tariffs } = useTariffPricing();
-  const currentPlan = tariffs?.find((t) => t.id === planId);
+
+  // planId с бэка числовой (3/4/5), id в tariffs.data.js — строковый slug.
+  // Переводим одно в другое, иначе find никогда не срабатывал и плашка
+  // «Ваш тариф» не показывалась вообще.
+  const currentSlug = getTariffSlug(planId);
+  const currentPlan = tariffs?.find((t) => t.id === currentSlug);
+  const currentPlanName = apiPlan?.name || currentPlan?.name || null;
 
   const sortedTariffs = useMemo(() => {
     return [...tariffs].sort((a, b) => {
@@ -141,10 +148,10 @@ export default function SubscriptionTariff() {
           </p>
         </div>
 
-        {currentPlan && (
+        {currentPlanName && (
           <div className="lk-current-plan">
             <span>Ваш тариф:</span>
-            <strong>{currentPlan.name}</strong>
+            <strong>{currentPlanName}</strong>
           </div>
         )}
       </div>

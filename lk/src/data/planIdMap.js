@@ -15,6 +15,20 @@ export const PLAN_ID_MAP = {
   // отдельно, покупка через этот эндпоинт пока не предусмотрена.
 };
 
+// Обратное соответствие: числовой plan_id с бэка → наш строковый slug.
+// Нужно везде, где приходит GET /subscription/status с plan.id = 4 и надо
+// найти тариф в tariffs.data.js, где id === 'guardian'. Раньше сравнивали
+// напрямую (t.id === 4), строка никогда не равнялась числу, поэтому
+// «текущий тариф» не находился и показывался прочерк.
+export const SLUG_BY_PLAN_ID = Object.fromEntries(
+  Object.entries(PLAN_ID_MAP).map(([slug, id]) => [id, slug])
+);
+
+export function getTariffSlug(planId) {
+  if (planId == null) return null;
+  return SLUG_BY_PLAN_ID[Number(planId)] ?? null;
+}
+
 // Бросает понятную ошибку вместо того, чтобы улететь на бэк со строкой
 // и получить сырой HTTP 422 "Input should be a valid integer".
 export function getBackendPlanId(slug) {

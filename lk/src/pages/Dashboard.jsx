@@ -12,10 +12,25 @@ import {
 } from 'lucide-react';
 import { getDashboardOverview } from '../api/dashboard.api.js';
 import { getReferralLink } from '../api/bonus.service.js';
+import { useSubscription } from '../hooks/useSubscription';
+
+// Подписи для ключей limits из GET /subscription/status.
+const LIMIT_LABELS = {
+  fairy_tales: 'Сказки',
+  lullabies: 'Колыбельные',
+  therapic: 'Терапевтические',
+  family_stories: 'Семейные истории',
+  poems: 'Стихи',
+  stories: 'Рассказы',
+  voices: 'Голоса',
+};
 
 export default function Dashboard() {
   const navigate = useNavigate();
   const audioRef = useRef(null);
+
+  // Реальный оплаченный тариф — на главной его раньше не было вообще.
+  const subscription = useSubscription();
 
   const [data, setData]           = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -217,8 +232,68 @@ export default function Dashboard() {
           </div>
         </article>
 
-        {/* SIDE — AI */}
+        {/* SIDE — ТАРИФ + AI */}
         <aside className="lk-dashboard-top__side">
+
+          {/* ТЕКУЩИЙ ТАРИФ */}
+          {subscription.plan?.name && (
+            <section className="lk-dashboard-plan">
+              <header className="lk-dashboard-plan__top">
+                <div>
+                  <p className="lk-dashboard-plan__eyebrow">Ваш тариф</p>
+                  <h2 className="lk-dashboard-plan__name">
+                    {subscription.plan.name}
+                  </h2>
+                </div>
+                {subscription.status === 'active' && (
+                  <span className="lk-dashboard-plan__badge">Активен</span>
+                )}
+              </header>
+
+              {subscription.expiresAt && (
+                <p className="lk-dashboard-plan__until">
+                  {subscription.autoRenew ? 'Продление' : 'Действует до'}{' '}
+                  {new Date(subscription.expiresAt).toLocaleDateString('ru-RU')}
+                </p>
+              )}
+
+              {Object.keys(subscription.limits || {}).length > 0 && (
+                <div className="lk-dashboard-plan__limits">
+                  {Object.entries(subscription.limits).map(([key, value]) => {
+                    const limit = value?.limit ?? 0;
+                    const used = value?.used ?? 0;
+                    const percent = limit > 0
+                      ? Math.min(100, Math.round((used / limit) * 100))
+                      : 0;
+
+                    return (
+                      <div key={key} className="lk-dashboard-plan__limit">
+                        <div className="lk-dashboard-plan__limit-head">
+                          <span>{LIMIT_LABELS[key] || key}</span>
+                          <strong>{used} / {limit}</strong>
+                        </div>
+                        <div className="lk-dashboard-plan__bar">
+                          <span style={{ width: `${percent}%` }} />
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+
+              <button
+                type="button"
+                className="lk-btn lk-btn--ghost lk-btn--md"
+                onClick={() => navigate('/subscription/tariff')}
+              >
+                <span className="lk-btn__content">
+                  Управление тарифом
+                  <ChevronRight size={16} />
+                </span>
+              </button>
+            </section>
+          )}
+
           <section className="lk-dashboard-ai">
             <div className="lk-dashboard-ai__icon">
               <Brain size={20} />

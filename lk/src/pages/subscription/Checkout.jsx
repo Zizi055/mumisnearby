@@ -3,7 +3,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, AlertCircle, ShieldCheck } from 'lucide-react';
 import LkButton from '../../components/ui/LkButton';
 import { createPayment } from '../../api/payments.service';
-import { getBackendPlanId } from '../../data/planIdMap';
+import { getBackendPlanId, getTariffSlug } from '../../data/planIdMap';
 import { useSubscription } from '../../hooks/useSubscription';
 import { useTariffPricing } from '../../hooks/useTariffPricing';
 
@@ -62,8 +62,12 @@ export default function Checkout() {
   // тем, что реально уйдёт в ЮKassa.
   const { tariffs } = useTariffPricing();
 
+  // currentPlanId — числовой ID с бэка (3/4/5), а planId из URL и id в
+  // tariffs.data.js — строковые slug'и. Без перевода find не находил
+  // текущий тариф, и апгрейд/даунгрейд определялись неверно.
   const currentPlan = useMemo(() => {
-    return tariffs.find((tariff) => tariff.id === currentPlanId) || null;
+    const slug = getTariffSlug(currentPlanId);
+    return tariffs.find((tariff) => tariff.id === slug) || null;
   }, [tariffs, currentPlanId]);
 
   const plan = useMemo(() => {
