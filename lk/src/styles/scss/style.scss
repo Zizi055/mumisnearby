@@ -50,9 +50,15 @@
 @use './pages/trial-paywall.scss';
 @use './pages/lk-admin.scss';
 
+html {
+  overflow-x: hidden;
+}
+
 body {
 
   margin: 0;
+
+  overflow-x: hidden;
 
   font-family: 'Inter', sans-serif;
 

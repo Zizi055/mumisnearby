@@ -39,6 +39,11 @@ export default function Sidebar({ isOpen, onClose }) {
                     {item.icon}
                   </span>
                 )}
+
+                {/* Плавающая подсказка при наведении — как в SaaS-сайдбарах */}
+                <span className="lk-sidebar__tooltip">
+                  {item.tooltip || item.label}
+                </span>
               </NavLink>
             );
           })}

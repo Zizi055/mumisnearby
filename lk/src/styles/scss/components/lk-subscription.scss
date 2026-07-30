@@ -20,7 +20,7 @@
 
 .lk-tariffs-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
   gap: $lk-space-20;
 }
 
@@ -428,14 +428,9 @@
   .lk-tariffs-grid {
     gap: $lk-space-16;
   }
-}
 
-@media (max-width: 1100px) {
-  .lk-tariffs-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: $lk-space-16;
-  }
-
+  /* при сжатии карточек scale(1.05) у выделенного тарифа
+     начинает наезжать на соседей — гасим пораньше */
   .lk-tariff-card.is-upgrade {
     transform: scale(1);
   }
@@ -450,13 +445,6 @@
 
   .lk-tariff-access__grid {
     grid-template-columns: 1fr;
-  }
-}
-
-@media (max-width: 1024px) {
-  .lk-tariffs-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: $lk-space-16;
   }
 }
 

@@ -5,6 +5,7 @@ export const navigation = [
     icon: <Home size={20} strokeWidth={1.7} />,
     path: '/dashboard',
     label: 'Главная',
+    tooltip: 'Главная',
     children: [
       { label: 'Прогресс', path: '/dashboard/progress' },
       { label: 'Активность', path: '/dashboard/activity' },
@@ -15,6 +16,7 @@ export const navigation = [
     icon: <Book size={20} strokeWidth={1.7} />,
     path: '/library',
     label: 'Библиотека',
+    tooltip: 'Библиотека',
     children: [
       { label: 'Сказки', path: '/library/stories' },
       { label: 'Колыбельные', path: '/library/lullabies' },
@@ -28,6 +30,7 @@ export const navigation = [
     icon: <Mic size={20} strokeWidth={1.7} />,
     path: '/voice',
     label: 'Голос',
+    tooltip: 'Управление голосом',
     children: [
       { label: 'Мой голос', path: '/voice/my' },
       { label: 'Управление', path: '/voice/manage' },
@@ -38,6 +41,7 @@ export const navigation = [
     icon: <CreditCard size={20} strokeWidth={1.7} />,
     path: '/subscription',
     label: 'Подписка',
+    tooltip: 'Платежи и тарифы',
     children: [
       { label: 'Тариф', path: '/subscription/tariff' },
       { label: 'Платежи', path: '/subscription/payments' },
@@ -49,6 +53,7 @@ export const navigation = [
     icon: <Settings size={20} strokeWidth={1.7} />,
     path: '/settings',
     label: 'Настройки',
+    tooltip: 'Настройки и профиль',
     children: [
       { label: 'Общие', path: '/settings/general' },
       { label: 'Уведомления', path: '/settings/notifications' },
@@ -60,6 +65,7 @@ export const navigation = [
     icon: <User size={20} strokeWidth={1.7} />,
     path: '/profile',
     label: 'Профиль',
+    tooltip: 'Профиль',
     children: [
       { label: 'Данные', path: '/profile/info' },
       { label: 'Дети', path: '/profile/kids' },

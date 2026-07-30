@@ -222,7 +222,7 @@
 
 .lk-dashboard-top {
   display: grid;
-  grid-template-columns: 1.6fr 360px;
+  grid-template-columns: minmax(0, 1.6fr) minmax(280px, 360px);
   gap: $lk-space-24;
 }
 
@@ -232,7 +232,7 @@
   overflow: hidden;
 
   display: grid;
-  grid-template-columns: 1fr 560px;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 560px);
 
   min-height: 420px;
 
@@ -446,7 +446,7 @@ color: $lk-brand-dark;
 
 .lk-dashboard-grid {
   display: grid;
-  grid-template-columns: 1fr 360px;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
   gap: $lk-space-24;
 }
 
@@ -689,9 +689,7 @@ display: flex;
   .lk-dashboard-stats {
     grid-template-columns: repeat(3, 1fr);
   }
-}
 
-@media (max-width: 1280px) {
   .lk-dashboard-top,
   .lk-dashboard-grid {
     grid-template-columns: 1fr;
