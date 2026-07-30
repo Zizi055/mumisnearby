@@ -1,5 +1,18 @@
 const BASE_URL = import.meta.env.VITE_API_URL || '';
 
+// Бэк отдаёт ошибки как { "detail": "текст" } — вытаскиваем человеко-
+// читаемый текст вместо сырого "HTTP 400: {...}" во всех местах, где
+// используется общий клиент `api`.
+function parseErrorDetail(text) {
+  try {
+    const parsed = JSON.parse(text);
+    if (typeof parsed.detail === 'string') return parsed.detail;
+  } catch {
+    // не JSON — вернём null, вызывающий код подставит текст как есть
+  }
+  return null;
+}
+
 // ── Глобальный обработчик истёкшего токена ───────────────────────────────────
 function handleUnauthorized() {
   localStorage.removeItem('token');
@@ -41,7 +54,7 @@ async function request(path, options = {}) {
 
   if (!res.ok) {
     const text = await res.text().catch(() => '');
-    throw new Error(`HTTP ${res.status}: ${text}`);
+    throw new Error(parseErrorDetail(text) || `HTTP ${res.status}: ${text}`);
   }
 
   if (res.status === 204) {

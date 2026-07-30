@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
-import { getProfile, updateProfile, requestEmailChange } from '../../api/profile.service';
+import { getProfile, updateProfile, requestEmailChange, cancelEmailChange } from '../../api/profile.service';
 import {
   Camera,
   Plus,
@@ -53,6 +53,9 @@ export default function Profile() {
   const [saveError, setSaveError] = useState('');
   const [originalEmail, setOriginalEmail] = useState(user?.email || '');
 
+  const [cancellingEmailChange, setCancellingEmailChange] = useState(false);
+  const [emailChangedNotice, setEmailChangedNotice] = useState(false);
+
   // Подтягиваем актуальные данные с бэка — то, что лежит в AuthContext,
   // могло устареть (например, после смены имени в другой вкладке).
   useEffect(() => {
@@ -69,6 +72,31 @@ export default function Profile() {
         // в AuthContext, ничего не ломаем
       });
   }, []);
+
+  // Возврат по ссылке из письма подтверждения: GET /profile/confirm-email-change
+  // редиректит на /profile?email_changed=true — показываем уведомление
+  // и убираем query-параметр, чтобы он не остался в адресе.
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.get('email_changed') === 'true') {
+      setEmailChangedNotice(true);
+      navigate(location.pathname, { replace: true });
+      setTimeout(() => setEmailChangedNotice(false), 5000);
+    }
+  }, [location.search]);
+
+  const handleCancelEmailChange = async () => {
+    setCancellingEmailChange(true);
+    setSaveError('');
+    try {
+      await cancelEmailChange();
+      setPendingEmail('');
+    } catch (e) {
+      setSaveError(e.message || 'Не удалось отменить смену почты');
+    } finally {
+      setCancellingEmailChange(false);
+    }
+  };
 
   // ─────────────────────────────────────
   // KIDS
@@ -192,6 +220,12 @@ export default function Profile() {
   return (
     <section className="lk-profile">
 
+      {emailChangedNotice && (
+        <div className="lk-profile__notice">
+          Email успешно изменён
+        </div>
+      )}
+
       {/* ─────────────────────────────────────
           HERO
       ───────────────────────────────────── */}
@@ -272,9 +306,21 @@ export default function Profile() {
               />
 
               {pendingEmail && (
-                <p className="lk-profile__hint">
-                  Ждём подтверждения на {pendingEmail} — проверьте почту и перейдите по ссылке из письма.
-                </p>
+                <div className="lk-profile__pending-email">
+                  <p className="lk-profile__hint">
+                    Письмо отправлено на {pendingEmail}. Перейдите по ссылке в письме для подтверждения. Текущая почта остаётся активной.
+                  </p>
+                  <button
+                    type="button"
+                    className="lk-btn lk-btn--ghost lk-btn--sm"
+                    onClick={handleCancelEmailChange}
+                    disabled={cancellingEmailChange}
+                  >
+                    <span className="lk-btn__content">
+                      {cancellingEmailChange ? 'Отменяем…' : 'Отменить смену почты'}
+                    </span>
+                  </button>
+                </div>
               )}
 
             </div>
