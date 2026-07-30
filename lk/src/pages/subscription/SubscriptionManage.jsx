@@ -5,6 +5,7 @@ import LkInput from '../../components/ui/LkInput';
 import LkCardPreview from '../../components/ui/LkCardPreview';
 import { tariffs } from '../../data/tariffs.data';
 import { useSubscription } from '../../hooks/useSubscription';
+import { cancelAutoRenew } from '../../api/subscription.service';
 
 function formatCardNumber(value) {
   return value
@@ -142,6 +143,8 @@ export default function SubscriptionManage() {
 
   const [billing, setBilling] = useState('year');
   const [autoRenew, setAutoRenew] = useState(true);
+  const [cancelling, setCancelling] = useState(false);
+  const [cancelError, setCancelError] = useState('');
 
   const [showCancel, setShowCancel] = useState(false);
   const [showPayment, setShowPayment] = useState(false);
@@ -425,7 +428,14 @@ export default function SubscriptionManage() {
             <input
               type="checkbox"
               checked={autoRenew}
-              onChange={() => setAutoRenew((prev) => !prev)}
+              disabled={cancelling}
+              onChange={() => {
+                // Включить автопродление обратно через API нельзя — на
+                // бэке есть только /subscription/cancel. Выключение здесь
+                // ведёт на то же подтверждение, что и кнопка ниже, чтобы
+                // не было двух путей отмены с разным поведением.
+                if (autoRenew) setShowCancel(true);
+              }}
             />
             <span />
           </label>
@@ -458,20 +468,35 @@ export default function SubscriptionManage() {
       {/* МОДАЛ ОТМЕНЫ */}
       {showCancel && (
         <div className="lk-modal">
-          <div className="lk-modal__overlay" onClick={() => setShowCancel(false)} />
+          <div className="lk-modal__overlay" onClick={() => !cancelling && setShowCancel(false)} />
           <div className="lk-modal__content">
             <h3>Отменить подписку?</h3>
             <p>Доступ сохранится до конца оплаченного периода.</p>
+            {cancelError && (
+              <p className="lk-modal__error">{cancelError}</p>
+            )}
             <div className="lk-modal__actions">
-              <LkButton onClick={() => setShowCancel(false)}>Назад</LkButton>
+              <LkButton onClick={() => setShowCancel(false)} disabled={cancelling}>
+                Назад
+              </LkButton>
               <LkButton
                 variant="danger"
-                onClick={() => {
-                  console.log('cancel subscription');
-                  setShowCancel(false);
+                disabled={cancelling}
+                onClick={async () => {
+                  setCancelling(true);
+                  setCancelError('');
+                  try {
+                    await cancelAutoRenew();
+                    setAutoRenew(false);
+                    setShowCancel(false);
+                  } catch (e) {
+                    setCancelError(e.message || 'Не удалось отменить подписку');
+                  } finally {
+                    setCancelling(false);
+                  }
                 }}
               >
-                Подтвердить отмену
+                {cancelling ? 'Отменяем…' : 'Подтвердить отмену'}
               </LkButton>
             </div>
           </div>

@@ -43,6 +43,16 @@
   margin-top: 24px;
 }
 
+/* ошибка */
+.lk-modal__error {
+  margin: -8px 0 16px;
+  padding: 10px 12px;
+  border-radius: $lk-radius-12;
+  background: rgba(206, 46, 46, 0.08);
+  color: $lk-error;
+  font-size: 13px;
+}
+
 /* =============================================
    RESPONSIVE MEDIA QUERIES
 ============================================= */

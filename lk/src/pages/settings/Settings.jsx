@@ -1,9 +1,13 @@
-import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Bell, Shield, Users, Sliders } from 'lucide-react';
+import { changePassword, getPasswordChangedAt } from '../../api/profile.service';
+import { useAuth } from '../../context/AuthContext';
 
 export default function Settings() {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { logout } = useAuth();
 
   const getTab = () => {
     if (location.pathname.includes('notifications')) return 'notifications';
@@ -24,7 +28,20 @@ export default function Settings() {
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [passwordSaved, setPasswordSaved] = useState(false);
+  const [passwordSaving, setPasswordSaving] = useState(false);
+  const [passwordError, setPasswordError] = useState('');
+  const [passwordChangedAt, setPasswordChangedAt] = useState(null);
   const [twoFactor, setTwoFactor] = useState(false);
+
+  useEffect(() => {
+    getPasswordChangedAt()
+      .then((res) => setPasswordChangedAt(res.password_changed_at))
+      .catch(() => {});
+  }, []);
+
+  const passwordLastChangedLabel = passwordChangedAt
+    ? new Date(passwordChangedAt).toLocaleDateString('ru-RU')
+    : 'никогда';
 
   // Семья
   const [familyAccess, setFamilyAccess] = useState(true);
@@ -32,15 +49,31 @@ export default function Settings() {
   // «Детский режим» — оставили для быстрого возврата.
   const [childMode, setChildMode] = useState(false);
 
-  const handleSavePassword = () => {
+  const handleSavePassword = async () => {
     if (!oldPassword || newPassword.length < 8) return;
-    setPasswordSaved(true);
-    setOldPassword('');
-    setNewPassword('');
-    setTimeout(() => {
-      setPasswordSaved(false);
-      setShowPasswordForm(false);
-    }, 2000);
+
+    setPasswordSaving(true);
+    setPasswordError('');
+
+    try {
+      await changePassword({ old_password: oldPassword, new_password: newPassword });
+
+      setPasswordSaved(true);
+      setOldPassword('');
+      setNewPassword('');
+
+      // По спеке после смены пароля все старые токены становятся
+      // невалидными — текущая сессия тоже, так что зовём логаут и
+      // уводим на вход, а не притворяемся, что всё ок дальше.
+      setTimeout(() => {
+        logout();
+        navigate('/auth');
+      }, 1500);
+    } catch (e) {
+      setPasswordError(e.message || 'Не удалось сменить пароль');
+    } finally {
+      setPasswordSaving(false);
+    }
   };
 
   return (
@@ -170,7 +203,7 @@ export default function Settings() {
             <div className="lk-settings__row">
               <div>
                 <strong>Пароль</strong>
-                <p>Последнее изменение: никогда</p>
+                <p>Последнее изменение: {passwordLastChangedLabel}</p>
               </div>
               <button
                 type="button"
@@ -197,13 +230,17 @@ export default function Settings() {
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                 />
+                {passwordError && (
+                  <p className="lk-settings__error">{passwordError}</p>
+                )}
                 <button
                   type="button"
                   className="lk-btn lk-btn--primary lk-btn--md"
                   onClick={handleSavePassword}
+                  disabled={passwordSaving}
                 >
                   <span className="lk-btn__content">
-                    {passwordSaved ? 'Сохранено ✓' : 'Сохранить пароль'}
+                    {passwordSaving ? 'Сохраняем…' : passwordSaved ? 'Сохранено ✓' : 'Сохранить пароль'}
                   </span>
                 </button>
               </div>

@@ -154,6 +154,14 @@
   padding-top: $lk-space-16;
 }
 
+.lk-settings__error {
+  padding: 10px 12px;
+  border-radius: $lk-radius-12;
+  background: rgba(206, 46, 46, 0.08);
+  color: $lk-error;
+  font-size: 13px;
+}
+
 
 
 .lk-settings__input {

@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { getProfile, updateProfile, requestEmailChange } from '../../api/profile.service';
 import {
   Camera,
   Plus,
@@ -44,9 +45,30 @@ export default function Profile() {
 
   const [name, setName] = useState(user?.name || '');
   const [email, setEmail] = useState(user?.email || '');
-  const [phone, setPhone] = useState(user?.phone || '');
+  const [phone, setPhone] = useState(user?.phone_number || user?.phone || '');
+  const [pendingEmail, setPendingEmail] = useState(user?.pending_email || '');
 
   const [saved, setSaved] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState('');
+  const [originalEmail, setOriginalEmail] = useState(user?.email || '');
+
+  // Подтягиваем актуальные данные с бэка — то, что лежит в AuthContext,
+  // могло устареть (например, после смены имени в другой вкладке).
+  useEffect(() => {
+    getProfile()
+      .then((data) => {
+        setName(data.username ?? '');
+        setEmail(data.email ?? '');
+        setOriginalEmail(data.email ?? '');
+        setPhone(data.phone_number ?? '');
+        setPendingEmail(data.pending_email ?? '');
+      })
+      .catch(() => {
+        // не удалось получить свежие данные — остаёмся с тем, что было
+        // в AuthContext, ничего не ломаем
+      });
+  }, []);
 
   // ─────────────────────────────────────
   // KIDS
@@ -74,19 +96,36 @@ export default function Profile() {
   // SAVE PROFILE
   // ─────────────────────────────────────
 
-  const handleSave = () => {
-    setUser({
-      ...user,
-      name,
-      email,
-      phone,
-    });
+  const handleSave = async () => {
+    setSaving(true);
+    setSaveError('');
 
-    setSaved(true);
+    try {
+      // Имя/телефон меняются сразу через PATCH /profile.
+      const updated = await updateProfile({ username: name, phone_number: phone });
 
-    setTimeout(() => {
-      setSaved(false);
-    }, 2000);
+      setUser({
+        ...user,
+        name: updated.username ?? name,
+        phone: updated.phone_number ?? phone,
+      });
+
+      // Email — отдельный подтверждаемый процесс: PATCH /profile его не
+      // трогает. Если поле реально поменяли, шлём запрос на смену,
+      // текущая почта остаётся рабочей до перехода по ссылке из письма.
+      if (email && email !== originalEmail) {
+        const res = await requestEmailChange({ new_email: email });
+        setPendingEmail(res.pending_email ?? email);
+        setEmail(originalEmail); // рабочая почта пока не изменилась
+      }
+
+      setSaved(true);
+      setTimeout(() => setSaved(false), 2000);
+    } catch (e) {
+      setSaveError(e.message || 'Не удалось сохранить изменения');
+    } finally {
+      setSaving(false);
+    }
   };
 
   // ─────────────────────────────────────
@@ -232,6 +271,12 @@ export default function Profile() {
                 placeholder="your@email.com"
               />
 
+              {pendingEmail && (
+                <p className="lk-profile__hint">
+                  Ждём подтверждения на {pendingEmail} — проверьте почту и перейдите по ссылке из письма.
+                </p>
+              )}
+
             </div>
 
             <div className="lk-profile__field">
@@ -252,15 +297,20 @@ export default function Profile() {
 
           </div>
 
+          {saveError && (
+            <p className="lk-profile__error">{saveError}</p>
+          )}
+
           <div className="lk-profile__actions">
 
             <button
               type="button"
               className="lk-btn lk-btn--primary lk-btn--md"
               onClick={handleSave}
+              disabled={saving}
             >
               <span className="lk-btn__content">
-                {saved ? 'Сохранено ✓' : 'Сохранить'}
+                {saving ? 'Сохраняем…' : saved ? 'Сохранено ✓' : 'Сохранить'}
               </span>
             </button>
 

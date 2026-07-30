@@ -18,3 +18,9 @@ export async function createSubscriptionCheckout({ planId, billingPeriod }) {
     billing_period: billingPeriod,
   });
 }
+
+// POST /subscription/cancel — отключает автопродление, доступ по
+// тарифу сохраняется до конца уже оплаченного периода.
+export async function cancelAutoRenew() {
+  return api.post('/subscription/cancel', {});
+}
