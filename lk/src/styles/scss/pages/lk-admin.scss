@@ -152,6 +152,28 @@
   font-size: 13px;
 }
 
+.lk-admin-detail__title {
+  margin: 0;
+  color: $lk-text;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.lk-admin-login__success {
+  padding: 10px 12px;
+
+  border-radius: $lk-radius-12;
+
+  background: rgba(93, 143, 114, 0.1);
+  color: $lk-brand;
+  font-size: 13px;
+}
+
+.lk-admin-login__submit-icon {
+  margin-right: 6px;
+  vertical-align: -3px;
+}
+
 .lk-admin-login__form button[type='submit'] {
   height: 46px;
 

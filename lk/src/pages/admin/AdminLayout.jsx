@@ -1,12 +1,17 @@
 import { useEffect, useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { LogOut } from 'lucide-react';
-import { getAdminMe, logoutAdmin } from '../../api/adminAuth.service';
+import { getAdminMe, getStoredAdminRole, logoutAdmin } from '../../api/adminAuth.service';
 
 const NAV_ITEMS = [
   { path: '/admin/support', label: 'Обращения' },
   { path: '/admin/leads', label: 'Заявки' },
   { path: '/admin/users', label: 'Пользователи' },
+];
+
+const SUPER_ADMIN_NAV_ITEMS = [
+  ...NAV_ITEMS,
+  { path: '/admin/admins', label: 'Админы' },
 ];
 
 // Общая шапка админки (без клиентского LkLayout — своя, отдельная от ЛК
@@ -61,7 +66,7 @@ export default function AdminLayout() {
       <nav className="lk-admin-nav">
         <span className="lk-admin-nav__title">Админ-панель</span>
         <div className="lk-admin-nav__links">
-          {NAV_ITEMS.map((item) => (
+          {(getStoredAdminRole() === 'super_admin' ? SUPER_ADMIN_NAV_ITEMS : NAV_ITEMS).map((item) => (
             <NavLink
               key={item.path}
               to={item.path}

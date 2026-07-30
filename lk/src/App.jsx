@@ -36,6 +36,7 @@ import AdminLogin from './pages/admin/AdminLogin.jsx';
 import AdminSupport from './pages/admin/AdminSupport.jsx';
 import AdminLeads from './pages/admin/AdminLeads.jsx';
 import AdminUsers from './pages/admin/AdminUsers.jsx';
+import AdminAdmins from './pages/admin/AdminAdmins.jsx';
 function App() {
   // Ловим ?ref=CODE (или /ref/CODE) сразу при заходе в приложение — на
   // случай прямой ссылки в ЛК, минуя маркетинговый сайт. См. utils/referral.js
@@ -61,6 +62,7 @@ function App() {
         <Route path="support" element={<AdminSupport />} />
         <Route path="leads" element={<AdminLeads />} />
         <Route path="users" element={<AdminUsers />} />
+        <Route path="admins" element={<AdminAdmins />} />
       </Route>
 
       {/* ЛК */}
