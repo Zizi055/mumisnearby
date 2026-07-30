@@ -1,4 +1,21 @@
 import { tariffs } from '../data/tariffs.data';
+import { getTariffSlug } from '../data/planIdMap';
+
+// Названия тарифов на бэке грязные: "Хранитель " с хвостовым пробелом,
+// "вошебник" вместо "Волшебник". Пока их не почистят в базе, показываем
+// наше выверенное название, а к сырому имени с бэка откатываемся только
+// если тариф в локальном справочнике не нашёлся (например, бэк завёл
+// новый план, о котором фронт ещё не знает).
+export function resolvePlanName(planId, backendName) {
+  const slug = getTariffSlug(planId);
+  const local = tariffs.find((t) => t.id === slug);
+
+  if (local?.name) return local.name;
+  if (typeof backendName === 'string' && backendName.trim()) {
+    return backendName.trim();
+  }
+  return null;
+}
 
 // access_lvl → человекочитаемое название тарифа, который открывает доступ.
 // 0 = демо-доступ (доступно всем без подписки).

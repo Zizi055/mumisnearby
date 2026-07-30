@@ -13,6 +13,7 @@ import {
 import { getDashboardOverview } from '../api/dashboard.api.js';
 import { getReferralLink } from '../api/bonus.service.js';
 import { useSubscription } from '../hooks/useSubscription';
+import { resolvePlanName } from '../utils/tariffAccess';
 
 // Подписи для ключей limits из GET /subscription/status.
 const LIMIT_LABELS = {
@@ -31,6 +32,7 @@ export default function Dashboard() {
 
   // Реальный оплаченный тариф — на главной его раньше не было вообще.
   const subscription = useSubscription();
+  const planName = resolvePlanName(subscription.planId, subscription.plan?.name);
 
   const [data, setData]           = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -236,13 +238,13 @@ export default function Dashboard() {
         <aside className="lk-dashboard-top__side">
 
           {/* ТЕКУЩИЙ ТАРИФ */}
-          {subscription.plan?.name && (
+          {planName && (
             <section className="lk-dashboard-plan">
               <header className="lk-dashboard-plan__top">
                 <div>
                   <p className="lk-dashboard-plan__eyebrow">Ваш тариф</p>
                   <h2 className="lk-dashboard-plan__name">
-                    {subscription.plan.name}
+                    {planName}
                   </h2>
                 </div>
                 {subscription.status === 'active' && (

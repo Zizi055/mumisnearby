@@ -1,10 +1,19 @@
+// ВАЖНО: цены и level здесь — только запасной вариант на те доли секунды,
+// пока не долетел GET /subscription/{plan_id} (см. hooks/useTariffPricing).
+// Реальные цены и лимиты живут на бэке, и именно они уходят в ЮKassa.
+// Значения ниже синхронизированы с ответами бэка от 31.07.2026:
+//   Сказочник  (plan_id 3, access_lvl 1): year 16800, month 2400
+//   Хранитель  (plan_id 4, access_lvl 2): цены с бэка ещё не сверены
+//   Волшебник  (plan_id 5, access_lvl 3): year 59900, month 59900 (!)
+// Поле level ОБЯЗАНО совпадать с access_lvl тарифа на бэке — по нему
+// открывается контент библиотеки (см. store/subscription.store.js).
 export const tariffs = [
   {
     id: 'fairy',
     name: 'Сказочник',
 
-    priceYear: 14400,
-    priceMonth: 4400,
+    priceYear: 16800,
+    priceMonth: 2400,
 
     level: 1,
     description: 'Идеальный старт. Ваш голос оживляет классические сказки.',

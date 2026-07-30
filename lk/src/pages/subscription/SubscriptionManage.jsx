@@ -7,6 +7,7 @@ import { useSubscription } from '../../hooks/useSubscription';
 import { useTariffPricing } from '../../hooks/useTariffPricing';
 import { cancelAutoRenew } from '../../api/subscription.service';
 import { getTariffSlug } from '../../data/planIdMap';
+import { resolvePlanName } from '../../utils/tariffAccess';
 
 function formatCardNumber(value) {
   return value
@@ -200,9 +201,9 @@ export default function SubscriptionManage() {
   const currentPlan = tariffs.find((t) => t.id === currentSlug);
   const lastPayment = subscription.payments?.[0];
 
-  // Имя тарифа берём в первую очередь прямо с бэка (plan.name) — это
-  // единственный источник правды; локальный tariffs.data.js только запасной.
-  const plan = subscription.plan?.name || currentPlan?.name || '—';
+  // Имя показываем наше выверенное: на бэке в названиях мусор
+  // («Хранитель » с пробелом, «вошебник» с опечаткой).
+  const plan = resolvePlanName(subscription.planId, subscription.plan?.name) || '—';
 
   const nextCharge = lastPayment
     ? new Date(lastPayment.date).toLocaleDateString('ru-RU')

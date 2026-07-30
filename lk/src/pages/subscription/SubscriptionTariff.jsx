@@ -6,6 +6,7 @@ import LkButton from '../../components/ui/LkButton';
 import { useSubscription } from '../../hooks/useSubscription';
 import { useTariffPricing } from '../../hooks/useTariffPricing';
 import { getTariffSlug } from '../../data/planIdMap';
+import { resolvePlanName } from '../../utils/tariffAccess';
 const COMPARE_FEATURES = [
   {
     id: 'voiceModels',
@@ -127,7 +128,7 @@ export default function SubscriptionTariff() {
   // «Ваш тариф» не показывалась вообще.
   const currentSlug = getTariffSlug(planId);
   const currentPlan = tariffs?.find((t) => t.id === currentSlug);
-  const currentPlanName = apiPlan?.name || currentPlan?.name || null;
+  const currentPlanName = resolvePlanName(planId, apiPlan?.name);
 
   const sortedTariffs = useMemo(() => {
     return [...tariffs].sort((a, b) => {
@@ -279,6 +280,10 @@ function TariffCard({ tariff, currentPlan, billingPeriod, navigate }) {
         ))}
       </ul>
 
+      {/* Реальные лимиты генерации с бэка — тексты в features писались
+          руками и разъезжались с базой, эти цифры всегда актуальны. */}
+      <TariffLimits tariff={tariff} />
+
       <div className="lk-tariff-footer">
         <LkButton
           variant={action.buttonVariant}
@@ -296,6 +301,48 @@ function TariffCard({ tariff, currentPlan, billingPeriod, navigate }) {
       </div>
 
     </article>
+  );
+}
+
+/* ================= ЛИМИТЫ ГЕНЕРАЦИИ ================= */
+
+const LIMIT_ROWS = [
+  ['fairyTales', 'Сказки'],
+  ['lullabies', 'Колыбельные'],
+  ['therapic', 'Терапевтические'],
+  ['familyStories', 'Семейные истории'],
+  ['poems', 'Стихи'],
+  ['stories', 'Рассказы'],
+  ['voiceClones', 'Голосовые двойники'],
+];
+
+function TariffLimits({ tariff }) {
+  const limits = tariff.limits;
+  if (!limits) return null;
+
+  const rows = LIMIT_ROWS.filter(([key]) => limits[key] != null);
+  if (rows.length === 0) return null;
+
+  return (
+    <div className="lk-tariff-limits">
+      <p className="lk-tariff-limits__title">Лимиты генерации в месяц</p>
+
+      <ul className="lk-tariff-limits__list">
+        {rows.map(([key, label]) => (
+          <li key={key}>
+            <span>{label}</span>
+            <strong>{limits[key]}</strong>
+          </li>
+        ))}
+      </ul>
+
+      {tariff.audioFormat && (
+        <p className="lk-tariff-limits__note">
+          Формат аудио: {tariff.audioFormat.toUpperCase()}
+          {tariff.hasTimeCapsule ? ' · Капсула времени' : ''}
+        </p>
+      )}
+    </div>
   );
 }
 

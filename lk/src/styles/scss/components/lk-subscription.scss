@@ -165,6 +165,63 @@
   background: $lk-brand;
 }
 
+/* ЛИМИТЫ ГЕНЕРАЦИИ (реальные цифры с бэка) */
+.lk-tariff-limits {
+  margin-top: $lk-space-16;
+  padding-top: $lk-space-16;
+
+  border-top: 1px solid $lk-line-soft;
+}
+
+.lk-tariff-limits__title {
+  margin: 0 0 $lk-space-10;
+
+  font-size: 11px;
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+
+  color: $lk-text-muted;
+}
+
+.lk-tariff-limits__list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: $lk-space-8;
+
+    font-size: 13px;
+    line-height: 1.4;
+
+    color: $lk-text-muted;
+
+    strong {
+      font-weight: 600;
+
+      color: $lk-text;
+    }
+  }
+}
+
+.lk-tariff-limits__note {
+  margin: $lk-space-10 0 0;
+
+  font-size: 12px;
+  line-height: 1.4;
+
+  color: $lk-text-muted;
+}
+
 /* FOOTER */
 .lk-tariff-footer {
   margin-top: auto;
