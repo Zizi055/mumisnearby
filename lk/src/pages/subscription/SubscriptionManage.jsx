@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import LkButton from '../../components/ui/LkButton';
 import LkInput from '../../components/ui/LkInput';
 import LkCardPreview from '../../components/ui/LkCardPreview';
-import { tariffs } from '../../data/tariffs.data';
 import { useSubscription } from '../../hooks/useSubscription';
+import { useTariffPricing } from '../../hooks/useTariffPricing';
 import { cancelAutoRenew } from '../../api/subscription.service';
 
 function formatCardNumber(value) {
@@ -182,6 +182,15 @@ export default function SubscriptionManage() {
   ]);
 
   const subscription = useSubscription();
+  const { tariffs } = useTariffPricing();
+
+  // Синхронизируем тумблер с реальным auto_renew из /subscription/status,
+  // как только он подгрузится (до этого — оптимистичный true).
+  useEffect(() => {
+    if (subscription.autoRenew != null) {
+      setAutoRenew(subscription.autoRenew);
+    }
+  }, [subscription.autoRenew]);
 
   const currentPlan = tariffs.find((t) => t.id === subscription.planId);
   const lastPayment = subscription.payments?.[0];

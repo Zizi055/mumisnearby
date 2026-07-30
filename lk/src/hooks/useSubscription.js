@@ -1,21 +1,53 @@
 import { useState, useEffect } from 'react';
 import { getSubscription } from '../api/subscription.service';
 
-// Точная форма ответа GET /subscription/status ещё не подтверждена на
-// практике — подстраховываемся под оба варианта именования (snake_case
-// с бэка и camelCase, если вдруг сериализуется иначе).
+// Реальная форма ответа GET /subscription/status (подтверждено по
+// Network от клиента):
+// {
+//   plan: { id, name, access_lvl },
+//   billing_period, status, auto_renew, expires_at,
+//   limits: { fairy_tales: { limit, used }, lullabies: {...}, therapic: {...}, ... }
+// }
+// plan_id раньше искали плоским полем верхнего уровня — там его нет,
+// он вложен в plan.id, поэтому «текущий тариф» нигде не подхватывался.
 function normalizeSubscription(res) {
-  if (!res) return { planId: null, payments: [] };
+  if (!res) {
+    return {
+      planId: null,
+      planAccessLvl: null,
+      autoRenew: null,
+      expiresAt: null,
+      status: null,
+      limits: {},
+      payments: [],
+    };
+  }
 
   return {
     ...res,
-    planId: res.plan_id ?? res.planId ?? null,
+    planId: res.plan?.id ?? res.plan_id ?? res.planId ?? null,
+    planAccessLvl: res.plan?.access_lvl ?? null,
+    autoRenew: res.auto_renew ?? null,
+    expiresAt: res.expires_at ?? null,
+    status: res.status ?? null,
+    limits: res.limits ?? {},
+    // payments сюда не приходят — это /api/payments/history отдельным
+    // запросом (payments.service.js), оставляем как есть на случай, если
+    // бэк когда-нибудь начнёт класть их и сюда.
     payments: res.payments ?? [],
   };
 }
 
 export function useSubscription() {
-  const [data, setData] = useState({ planId: null, payments: [] });
+  const [data, setData] = useState({
+    planId: null,
+    planAccessLvl: null,
+    autoRenew: null,
+    expiresAt: null,
+    status: null,
+    limits: {},
+    payments: [],
+  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 

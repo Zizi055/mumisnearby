@@ -24,3 +24,11 @@ export async function createSubscriptionCheckout({ planId, billingPeriod }) {
 export async function cancelAutoRenew() {
   return api.post('/subscription/cancel', {});
 }
+
+// GET /subscription/{plan_id} — актуальная информация о тарифе с бэка.
+// В спеке response schema: {} — форма ответа не описана. Используется
+// в useTariffPricing() для подтягивания реальной цены поверх статичных
+// данных из tariffs.data.js.
+export async function getPlanInfo(planId) {
+  return api.get(`/subscription/${planId}`);
+}

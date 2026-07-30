@@ -1,11 +1,11 @@
 import { useMemo, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, AlertCircle, ShieldCheck } from 'lucide-react';
-import { tariffs } from '../../data/tariffs.data';
 import LkButton from '../../components/ui/LkButton';
 import { createPayment } from '../../api/payments.service';
 import { getBackendPlanId } from '../../data/planIdMap';
 import { useSubscription } from '../../hooks/useSubscription';
+import { useTariffPricing } from '../../hooks/useTariffPricing';
 
 function formatPrice(value) {
   if (!value) return '—';
@@ -57,13 +57,18 @@ export default function Checkout() {
 
   const { planId: currentPlanId } = useSubscription();
 
+  // Цены — из GET /subscription/{plan_id} поверх статики (см.
+  // useTariffPricing), чтобы то, что видит клиент здесь, совпадало с
+  // тем, что реально уйдёт в ЮKassa.
+  const { tariffs } = useTariffPricing();
+
   const currentPlan = useMemo(() => {
     return tariffs.find((tariff) => tariff.id === currentPlanId) || null;
-  }, [currentPlanId]);
+  }, [tariffs, currentPlanId]);
 
   const plan = useMemo(() => {
     return tariffs.find((tariff) => tariff.id === planId) || tariffs[0];
-  }, [planId]);
+  }, [tariffs, planId]);
 
   const effectivePeriod = getEffectivePeriod(plan, requestedPeriod);
   const price = getPlanPrice(plan, effectivePeriod);

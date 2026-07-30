@@ -1,9 +1,10 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Check, Sparkles } from 'lucide-react';
-import { tariffs } from '../../data/tariffs.data';
+import { tariffs as staticTariffs } from '../../data/tariffs.data';
 import LkButton from '../../components/ui/LkButton';
 import { useSubscription } from '../../hooks/useSubscription';
+import { useTariffPricing } from '../../hooks/useTariffPricing';
 const COMPARE_FEATURES = [
   {
     id: 'voiceModels',
@@ -114,6 +115,11 @@ export default function SubscriptionTariff() {
 
   // Реальный тариф пользователя — из /subscription/status, а не заглушка.
   const { planId } = useSubscription();
+
+  // Цены — из GET /subscription/{plan_id} поверх статичных данных
+  // (см. useTariffPricing) — чтобы не расходились с тем, что реально
+  // спишет ЮKassa.
+  const { tariffs } = useTariffPricing();
   const currentPlan = tariffs?.find((t) => t.id === planId);
 
   const sortedTariffs = useMemo(() => {
@@ -122,7 +128,7 @@ export default function SubscriptionTariff() {
       if (b.isBuilder) return -1;
       return a.level - b.level;
     });
-  }, []);
+  }, [tariffs]);
 
   return (
     <section className="lk-tariffs">
@@ -449,7 +455,7 @@ function getRecommendedPlanForFeature(featureKey) {
 
   if (!gate) return 'guardian';
 
-  const plan = tariffs.find((tariff) => {
+  const plan = staticTariffs.find((tariff) => {
     if (tariff.isBuilder) return false;
     return tariff.level >= gate.requiredLevel;
   });
