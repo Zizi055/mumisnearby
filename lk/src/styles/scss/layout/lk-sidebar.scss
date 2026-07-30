@@ -88,50 +88,17 @@
   font-weight: 700;
 }
 
-/* ===== TOOLTIP (наведение на иконку первого уровня) ===== */
+/* ===== LABEL (название пункта меню) =====
+   На десктопе/планшете сайдбар — узкая иконочная колонка, а название
+   раздела и так всегда видно в соседнем .lk-submenu — всплывающая
+   подсказка тут не нужна и просто накладывалась бы на него.
+   Подпись показываем только в мобильной раскладке (см. @media ниже),
+   где сайдбар разворачивается в полноценный список: там hover
+   всё равно не работает на тач-экранах, поэтому нужна не всплывашка,
+   а обычный видимый текст рядом с иконкой. */
 
-.lk-sidebar__tooltip {
-  position: absolute;
-  left: calc(100% + 12px);
-  top: 50%;
-  transform: translate(-6px, -50%);
-
-  padding: 7px 12px;
-  border-radius: 8px;
-
-  background: $lk-text;
-  color: $lk-white;
-
-  font-size: 13px;
-  font-weight: 500;
-  white-space: nowrap;
-  letter-spacing: -0.01em;
-
-  pointer-events: none;
-  opacity: 0;
-  z-index: 250;
-
-  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.16);
-
-  transition: opacity 0.18s ease, transform 0.18s ease;
-}
-
-/* стрелочка-указатель к иконке */
-.lk-sidebar__tooltip::before {
-  content: '';
-  position: absolute;
-  right: 100%;
-  top: 50%;
-  transform: translateY(-50%);
-
-  border: 5px solid transparent;
-  border-right-color: $lk-text;
-}
-
-.lk-sidebar__icon:hover .lk-sidebar__tooltip,
-.lk-sidebar__icon:focus-visible .lk-sidebar__tooltip {
-  opacity: 1;
-  transform: translate(0, -50%);
+.lk-sidebar__label {
+  display: none;
 }
 
 /* =========================================
@@ -203,9 +170,12 @@
     background: rgba(93, 143, 114, 0.08);
   }
 
-  /* на мобильном сайдбар разворачивается в список с подписями —
-     всплывающая подсказка тут не нужна и будет вылезать за экран */
-  .lk-sidebar__tooltip {
-    display: none;
+  /* здесь сайдбар — полноценный список, название показываем как
+     обычный текст рядом с иконкой */
+  .lk-sidebar__label {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }

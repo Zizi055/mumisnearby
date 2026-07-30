@@ -40,8 +40,9 @@ export default function Sidebar({ isOpen, onClose }) {
                   </span>
                 )}
 
-                {/* Плавающая подсказка при наведении — как в SaaS-сайдбарах */}
-                <span className="lk-sidebar__tooltip">
+                {/* Название пункта — видно только в мобильной раскладке,
+                    на десктопе/планшете его и так показывает .lk-submenu */}
+                <span className="lk-sidebar__label">
                   {item.tooltip || item.label}
                 </span>
               </NavLink>
