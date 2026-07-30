@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { getAdminUsers } from '../../api/admin.service';
 import { Loader, RefreshCw, AlertCircle } from 'lucide-react';
+import { resolvePlanName } from '../../utils/tariffAccess';
 
 function formatDate(iso) {
   if (!iso) return '';
@@ -14,8 +15,26 @@ function formatDate(iso) {
 // Поля пользователя в списке для админки точно не подтверждены по спеке
 // (GET /admin/users на бэке пока не существует) — подстраховываемся
 // несколькими вариантами имён на случай расхождений, когда бэк появится.
+// Основной вариант — та же вложенная форма, что и в /subscription/status:
+// subscription: { plan: { id, name, access_lvl }, ... }.
 function getTariffLabel(u) {
-  return u.tariff ?? u.plan ?? u.subscription?.plan_name ?? u.subscription?.plan_id ?? 'Демо';
+  const nested = u.subscription?.plan;
+  if (nested) {
+    const byId = resolvePlanName(nested.id, nested.name);
+    if (byId) return byId;
+  }
+
+  const raw =
+    u.tariff ??
+    u.plan?.name ??
+    u.plan ??
+    u.subscription?.plan_name ??
+    u.subscription?.plan_id;
+
+  if (typeof raw === 'string' && raw.trim()) return raw.trim();
+  if (typeof raw === 'number') return resolvePlanName(raw, null) ?? 'Демо';
+
+  return 'Демо';
 }
 
 // Список личных кабинетов (ЛК) пользователей. Без демо-режима — как только
