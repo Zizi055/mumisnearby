@@ -7,53 +7,63 @@ import { useSubscription } from '../../hooks/useSubscription';
 import { useTariffPricing } from '../../hooks/useTariffPricing';
 import { getTariffSlug } from '../../data/planIdMap';
 import { resolvePlanName } from '../../utils/tariffAccess';
+// Значения берём из лимитов, пришедших с бэка (см. useTariffPricing).
+// Раньше они были прописаны формулами по level: «50 / 100+ / 3 / 20+» —
+// и расходились с реальной базой (у Сказочника не 50 сказок, а 30,
+// у Волшебника терапия не «без ограничений», а 30).
+function limitValue(tariff, key, fallback = '—') {
+  const value = tariff.limits?.[key];
+  return value == null ? fallback : String(value);
+}
+
 const COMPARE_FEATURES = [
   {
     id: 'voiceModels',
     label: 'Голосовые двойники',
-    getValue: (tariff) => {
-      if (tariff.isBuilder) return 'по настройке';
-      if (tariff.level >= 3) return 'до 5';
-      if (tariff.level >= 2) return '2';
-      return '1';
-    },
+    getValue: (tariff) =>
+      tariff.isBuilder ? 'по настройке' : limitValue(tariff, 'voiceClones'),
   },
   {
-    id: 'library',
-    label: 'Библиотека сказок',
-    getValue: (tariff) => {
-      if (tariff.isBuilder) return 'на выбор';
-      if (tariff.level >= 2) return '100+';
-      return '50';
-    },
+    id: 'fairyTales',
+    label: 'Сказки в месяц',
+    getValue: (tariff) =>
+      tariff.isBuilder ? 'на выбор' : limitValue(tariff, 'fairyTales'),
+  },
+  {
+    id: 'lullabies',
+    label: 'Колыбельные в месяц',
+    getValue: (tariff) =>
+      tariff.isBuilder ? 'на выбор' : limitValue(tariff, 'lullabies'),
   },
   {
     id: 'therapy',
     label: 'Терапевтические сценарии',
+    getValue: (tariff) =>
+      tariff.isBuilder ? 'модуль' : limitValue(tariff, 'therapic'),
+  },
+  {
+    id: 'familyStories',
+    label: 'Семейные истории',
+    getValue: (tariff) =>
+      tariff.isBuilder ? 'на выбор' : limitValue(tariff, 'familyStories'),
+  },
+  {
+    id: 'stories',
+    label: 'Рассказы и стихи',
     getValue: (tariff) => {
-      if (tariff.isBuilder) return 'модуль';
-      if (tariff.level >= 3) return 'без ограничений';
-      if (tariff.level >= 2) return '20+';
-      return '3';
+      if (tariff.isBuilder) return 'на выбор';
+      const stories = tariff.limits?.stories;
+      const poems = tariff.limits?.poems;
+      if (stories == null && poems == null) return '—';
+      return `${stories ?? 0} / ${poems ?? 0}`;
     },
   },
   {
     id: 'audioFormats',
-    label: 'Форматы аудио',
+    label: 'Формат аудио',
     getValue: (tariff) => {
       if (tariff.isBuilder) return 'на выбор';
-      if (tariff.level >= 3) return 'MP3 + WAV';
-      return 'MP3';
-    },
-  },
-  {
-    id: 'support',
-    label: 'Поддержка',
-    getValue: (tariff) => {
-      if (tariff.isBuilder) return 'по тарифу';
-      if (tariff.level >= 3) return 'персональная';
-      if (tariff.level >= 2) return 'приоритетная';
-      return 'стандартная';
+      return tariff.audioFormat ? tariff.audioFormat.toUpperCase() : '—';
     },
   },
 ];
@@ -440,8 +450,6 @@ function TariffCompare({ tariffs, currentPlan, billingPeriod, navigate }) {
 /* ================= ACCESS ================= */
 
 function TariffAccess({ currentPlan, navigate }) {
-  const currentLevel = currentPlan?.level || 0;
-
   return (
     <section className="lk-tariff-access">
       <div className="lk-tariff-access__head">
@@ -455,6 +463,10 @@ function TariffAccess({ currentPlan, navigate }) {
 
     const locked = isFeatureLocked(key, currentPlan);
     const recommendedPlan = getRecommendedPlanForFeature(key);
+    // Название минимального тарифа, который открывает функцию, — вместо
+    // технического «уровня 3», непонятного пользователю.
+    const requiredPlanName =
+      staticTariffs.find((t) => t.id === recommendedPlan)?.name || null;
 
     return (
       <div
@@ -467,7 +479,9 @@ function TariffAccess({ currentPlan, navigate }) {
 
           <span>
             {locked
-              ? `Доступно с тарифа уровня ${gate.requiredLevel}`
+              ? requiredPlanName
+                ? `Доступно на тарифе «${requiredPlanName}»`
+                : 'Доступно на старшем тарифе'
               : 'Доступно в вашем тарифе'}
           </span>
         </div>
@@ -480,7 +494,7 @@ function TariffAccess({ currentPlan, navigate }) {
               navigate(`/subscription/checkout?plan=${recommendedPlan}&period=year`)
             }
           >
-            Открыть
+            Улучшить тариф
           </LkButton>
         ) : (
           <span className="lk-tariff-access__status">
@@ -494,7 +508,9 @@ function TariffAccess({ currentPlan, navigate }) {
 
 </div>
       <p className="lk-tariff-access__note">
-        Текущий уровень доступа: {currentLevel}
+        {currentPlan
+          ? `Ваш тариф: ${currentPlan.name}`
+          : 'Подписка не оформлена'}
       </p>
     </section>
   );
