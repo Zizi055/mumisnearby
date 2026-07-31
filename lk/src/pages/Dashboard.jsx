@@ -399,21 +399,6 @@ export default function Dashboard() {
           <button
             type="button"
             className="lk-dashboard-quick__item"
-            onClick={() => navigate('/library/generations')}
-          >
-            <span className="lk-dashboard-quick__icon">
-              <Sparkles size={18} />
-            </span>
-            <span className="lk-dashboard-quick__text">
-              <strong>Создать сказку</strong>
-              <span>Озвучить историю своим голосом</span>
-            </span>
-            <ChevronRight size={16} />
-          </button>
-
-          <button
-            type="button"
-            className="lk-dashboard-quick__item"
             onClick={() => navigate('/dashboard/support')}
           >
             <span className="lk-dashboard-quick__icon">
