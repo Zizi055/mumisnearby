@@ -34,6 +34,25 @@ export default function Dashboard() {
   const subscription = useSubscription();
   const planName = resolvePlanName(subscription.planId, subscription.plan?.name);
 
+  // Карточка «Тариф» в верхнем ряду статистики приходит из
+  // dashboard.api.js заглушкой — там нет доступа к подписке. Подменяем
+  // её реальными данными здесь: /subscription/status уже загружен хуком.
+  const statusHint =
+    subscription.status === 'active'
+      ? subscription.expiresAt
+        ? `Действует до ${new Date(subscription.expiresAt).toLocaleDateString('ru-RU')}`
+        : 'Подписка активна'
+      : subscription.loading
+      ? 'Загружаем данные подписки…'
+      : 'Подписка не оформлена';
+
+  const withPlanStat = (stats = []) =>
+    stats.map((item) =>
+      item.id === 'plan'
+        ? { ...item, value: planName || (subscription.loading ? '—' : 'Демо'), hint: statusHint }
+        : item
+    );
+
   const [data, setData]           = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress]   = useState(0);
@@ -144,7 +163,7 @@ export default function Dashboard() {
 
       {/* ── STATS ── */}
       <section className="lk-dashboard-stats" aria-label="Статистика">
-        {data.stats.map((item) => (
+        {withPlanStat(data.stats).map((item) => (
           <article key={item.id} className="lk-dashboard-stat">
             <header className="lk-dashboard-stat__top">
               {item.icon && (

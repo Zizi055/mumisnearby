@@ -107,11 +107,14 @@ export async function getDashboardOverview() {
         label: 'Средняя сессия',
         hint:  'Данные обновятся когда появится API',
       },
+      // Тариф заполняется в Dashboard.jsx из useSubscription() — там
+      // ответ /subscription/status уже есть, второй запрос не нужен.
+      // Значения ниже видны только те доли секунды, пока он летит.
       {
         id:    'plan',
         value: '—',
         label: 'Тариф',
-        hint:  'API подписки не подключён',
+        hint:  'Загружаем данные подписки…',
       },
     ],
 
