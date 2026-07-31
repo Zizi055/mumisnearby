@@ -7,12 +7,7 @@
 .lk-voice-manage {
   display: flex;
   flex-direction: column;
-  gap: $lk-space-20;
-
-  /* Раньше каждый блок тянулся во всю ширину экрана — на широком
-     мониторе строки уезжали за 1400px и читать было неудобно. */
-  width: 100%;
-  max-width: 1180px;
+  gap: $lk-space-24;
 }
 
 /* =========================================
@@ -30,10 +25,30 @@
    GRID
 ========================================= */
 
+/* Три равнозначных блока в ряд: загрузка, статус обучения и активный
+   голос. Раньше плеер стоял отдельной полосой во всю ширину под ними. */
 .lk-voice-manage__grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 420px;
+  grid-template-columns: minmax(0, 1.5fr) minmax(260px, 1fr) minmax(280px, 1fr);
   gap: $lk-space-16;
+
+  align-items: stretch;
+}
+
+@media (max-width: 1400px) {
+  .lk-voice-manage__grid {
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 1fr);
+  }
+
+  .lk-voice-player {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 900px) {
+  .lk-voice-manage__grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* =========================================
@@ -363,6 +378,12 @@
   display: flex;
   flex-direction: column;
   gap: $lk-space-20;
+}
+
+/* Плеер прижимается к низу карточки, чтобы три блока в ряду
+   заканчивались на одной линии. */
+.lk-voice-player__body {
+  margin-top: auto;
 }
 
 /* Header — аватар + имя + статус */

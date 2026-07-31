@@ -579,8 +579,6 @@ export default function VoiceManage() {
 
         </div>
 
-      </div>
-
       <div className="lk-voice-player">
 
         <div className="lk-voice-player__header">
@@ -602,15 +600,10 @@ export default function VoiceManage() {
           </div>
         </div>
 
+        {/* Декоративная «волна» из 48 span'ов убрана: она рисовалась
+            по фиксированным высотам из CSS и не имела отношения к
+            реальному аудио. */}
         <div className="lk-voice-player__body">
-
-          <div className="lk-voice-player__wave-wrap">
-            <div className={`lk-voice-player__wave ${isPlaying ? 'is-playing' : ''}`}>
-              {Array.from({ length: 48 }).map((_, i) => (
-                <span key={i} />
-              ))}
-            </div>
-          </div>
 
           <div className="lk-voice-player__controls">
             <button
@@ -638,6 +631,8 @@ export default function VoiceManage() {
           </div>
 
         </div>
+
+      </div>
 
       </div>
 
