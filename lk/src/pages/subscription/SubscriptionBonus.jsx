@@ -43,8 +43,17 @@ export default function SubscriptionBonus() {
 
   const inviteLink     = refLink?.link || '';
   const referralCode   = refLink?.referral_code || bonus?.referralCode || '';
-  const invitedCount   = stats?.invited_count  ?? bonus?.invitedCount  ?? 0;
-  const referredUsers  = stats?.referred_users ?? [];
+  const referredUsers  = Array.isArray(stats?.referred_users) ? stats.referred_users : null;
+
+  // Бэк в одном и том же ответе /referral/stats присылает противоречие:
+  // invited_count = 4, а в referred_users всего 2 записи. Верим списку —
+  // это перечисление конкретных людей, его можно проверить глазами, тогда
+  // как счётчик ни с чем не сходится. Если списка нет вовсе — падаем
+  // обратно на счётчик.
+  const invitedCount =
+    referredUsers !== null
+      ? referredUsers.length
+      : (stats?.invited_count ?? bonus?.invitedCount ?? 0);
   const progress       = Math.min((invitedCount / BONUS_THRESHOLD) * 100, 100);
   const invitesLeft    = Math.max(BONUS_THRESHOLD - invitedCount, 0);
   const bonusReady     = invitedCount >= BONUS_THRESHOLD;
@@ -123,7 +132,12 @@ export default function SubscriptionBonus() {
 
           <div className="lk-bonus-item__content">
             <h4>Пригласи {BONUS_THRESHOLD} друзей — получи месяц бесплатно</h4>
-            {error && !bonus ? (
+            {/* Раньше сообщение показывалось при любой ошибке
+                /api/subscription/bonus, даже когда /referral/stats и
+                /referral/link отработали и ссылка со списком были на
+                экране — выглядело как «ничего не работает», хотя
+                программа работала. */}
+            {error && !bonus && !stats && !refLink ? (
               <p>Реферальная программа временно недоступна.</p>
             ) : (
               <p>
@@ -156,7 +170,7 @@ export default function SubscriptionBonus() {
           )}
 
           {/* Список приглашённых */}
-          {referredUsers.length > 0 && (
+          {referredUsers?.length > 0 && (
             <div className="lk-bonus-referred">
               <button
                 type="button"
