@@ -11,9 +11,11 @@
    Два столбца вместо длинного списка строк: с обложкой сказка
    узнаётся с одного взгляда, а список перестаёт быть простынёй. */
 
+/* Ровно два столбца. На auto-fill при широком экране вставало три,
+   карточки сужались и бейдж статуса ломался на две строки. */
 .lk-generations-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: $lk-space-16;
 }
 
@@ -115,6 +117,33 @@
   padding-top: $lk-space-10;
 }
 
+.lk-generations-pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $lk-space-12;
+
+  margin-top: $lk-space-24;
+}
+
+.lk-generations-pager__counter {
+  min-width: 48px;
+
+  font-size: 13px;
+  font-weight: 500;
+  text-align: center;
+
+  color: $lk-text-muted;
+
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 900px) {
+  .lk-generations-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 560px) {
   .lk-generations-grid {
     grid-template-columns: 1fr;
@@ -189,6 +218,11 @@
 .lk-generations-badge {
   display: inline-flex;
   align-items: center;
+
+  /* Бейдж не переносится и не сжимается — из-за этого «В очереди»
+     ломалось на две строки рядом с длинными названиями. */
+  flex-shrink: 0;
+  white-space: nowrap;
 
   padding: 5px 12px;
 

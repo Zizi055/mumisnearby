@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { Play, Square, Loader2, ExternalLink } from 'lucide-react';
+import { Play, Square, Loader2, ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react';
 
 import { getGenerations, getGenerationAudio } from '../../api/generations.service';
 import { getLibraryItems } from '../../api/library.service';
@@ -29,6 +29,11 @@ export default function LibraryGenerations() {
   const [titleMap, setTitleMap] = useState(new Map());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // Страница списка: 8 карточек (4 ряда по 2), чтобы страница не росла
+  // вниз бесконечно — у активных пользователей озвучек будут сотни.
+  const PAGE_SIZE = 8;
+  const [page, setPage] = useState(0);
 
   const [audioUrls, setAudioUrls] = useState({});
   const [loadingAudioId, setLoadingAudioId] = useState(null);
@@ -91,6 +96,13 @@ export default function LibraryGenerations() {
       console.error('Не удалось подгрузить названия сказок для списка озвучек:', e);
     }
   }
+
+  const totalPages = Math.max(1, Math.ceil(generations.length / PAGE_SIZE));
+  const safePage = Math.min(page, totalPages - 1);
+  const visibleGenerations = generations.slice(
+    safePage * PAGE_SIZE,
+    safePage * PAGE_SIZE + PAGE_SIZE
+  );
 
   const getContent = (gen) =>
     titleMap.get(`${gen.content_type}:${gen.content_id}`) || null;
@@ -207,8 +219,9 @@ export default function LibraryGenerations() {
         )}
 
         {!loading && !error && generations.length > 0 && (
+          <>
           <div className="lk-generations-grid">
-            {generations.map((gen) => {
+            {visibleGenerations.map((gen) => {
               const content = getContent(gen);
               const date = getDate(gen);
 
@@ -274,6 +287,35 @@ export default function LibraryGenerations() {
               );
             })}
           </div>
+
+          {totalPages > 1 && (
+            <div className="lk-generations-pager">
+              <button
+                type="button"
+                className="lk-carousel-nav__btn"
+                onClick={() => setPage(Math.max(0, safePage - 1))}
+                disabled={safePage === 0}
+                aria-label="Предыдущая страница"
+              >
+                <ChevronLeft size={16} />
+              </button>
+
+              <span className="lk-generations-pager__counter">
+                {safePage + 1} / {totalPages}
+              </span>
+
+              <button
+                type="button"
+                className="lk-carousel-nav__btn"
+                onClick={() => setPage(Math.min(totalPages - 1, safePage + 1))}
+                disabled={safePage >= totalPages - 1}
+                aria-label="Следующая страница"
+              >
+                <ChevronRight size={16} />
+              </button>
+            </div>
+          )}
+          </>
         )}
       </div>
     </section>
