@@ -95,6 +95,12 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
 }
 
+/* Карточка с открытым меню — поверх соседних. Без этого следующая
+   карточка в сетке рисовалась выше выпадающего списка и обрезала его. */
+.lk-voice-card.is-menu-open {
+  z-index: 30;
+}
+
 /* ===== TOP ===== */
 
 .lk-voice-card__top {
@@ -253,6 +259,8 @@
   position: absolute;
   top: 48px;
   right: 16px;
+
+  z-index: 40;
 
   width: 180px;
   padding: 8px;

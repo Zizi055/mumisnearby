@@ -597,14 +597,27 @@
   color: $lk-text-muted;
 }
 
+.lk-dashboard-plan__limits-title {
+  margin: 0;
+  padding-top: $lk-space-20;
+
+  border-top: 1px solid $lk-line-soft;
+
+  font-size: 11px;
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+
+  color: $lk-text-muted;
+}
+
 .lk-dashboard-plan__limits {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
   gap: $lk-space-16 $lk-space-24;
 
-  padding-top: $lk-space-20;
-
-  border-top: 1px solid $lk-line-soft;
+  margin-top: $lk-space-14;
 }
 
 .lk-dashboard-plan__limit-head {

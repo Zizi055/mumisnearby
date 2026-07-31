@@ -136,7 +136,13 @@ export default function Dashboard() {
 
   useEffect(() => {
     load();
-    const interval = setInterval(load, 60_000);
+    const interval = setInterval(() => {
+      load();
+      // Счётчики израсходованных лимитов живут в /subscription/status и
+      // раньше подтягивались один раз при заходе на страницу — после
+      // новой озвучки цифры не менялись до перезагрузки.
+      subscription.refresh?.();
+    }, 60_000);
     return () => clearInterval(interval);
   }, []);
 
@@ -468,6 +474,13 @@ export default function Dashboard() {
           </header>
 
           {planLimits.length > 0 && (
+            <>
+            {/* Без подписи цифры читались как «прослушано», хотя лимит
+                расходуется на СОЗДАНИЕ озвучки, а не на прослушивание. */}
+            <p className="lk-dashboard-plan__limits-title">
+              Создано озвучек в этом периоде
+            </p>
+
             <div className="lk-dashboard-plan__limits">
               {planLimits.map((row) => (
                 <div key={row.key} className="lk-dashboard-plan__limit">
@@ -483,6 +496,7 @@ export default function Dashboard() {
                 </div>
               ))}
             </div>
+            </>
           )}
 
         </section>

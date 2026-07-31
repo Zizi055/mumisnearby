@@ -309,7 +309,11 @@ export default function VoiceMy() {
 
             <article
               key={voice.id}
-              className="lk-voice-card"
+              /* is-menu-open поднимает карточку над соседними: у всех
+                 карточек position: relative, и без этого следующая по
+                 порядку карточка перекрывала выпадающее меню — нижние
+                 пункты («Удалить») просто не было видно. */
+              className={`lk-voice-card ${activeMenu === voice.id ? 'is-menu-open' : ''}`}
             >
 
               {/* top */}

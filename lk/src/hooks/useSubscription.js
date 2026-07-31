@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { getSubscription } from '../api/subscription.service';
 
 // Реальная форма ответа GET /subscription/status (подтверждено по
@@ -51,6 +51,23 @@ export function useSubscription() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Счётчики limits.used меняются на бэке после каждой новой озвучки.
+  // Раньше хук ходил за статусом ровно один раз при монтировании, поэтому
+  // израсходованные лимиты не обновлялись до перезагрузки страницы.
+  // Теперь наружу отдаётся refresh(), и страница может обновлять цифры
+  // сама (см. Dashboard.jsx — общий интервал вместе с остальными данными).
+  const refresh = useCallback(async () => {
+    try {
+      const res = await getSubscription();
+      setData(normalizeSubscription(res));
+      setError(null);
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   useEffect(() => {
     let mounted = true;
 
@@ -62,5 +79,5 @@ export function useSubscription() {
     return () => { mounted = false; };
   }, []);
 
-  return { ...data, loading, error };
+  return { ...data, loading, error, refresh };
 }
