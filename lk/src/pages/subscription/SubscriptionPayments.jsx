@@ -7,7 +7,9 @@ import {
   CheckCircle,
   Clock,
   AlertCircle,
-  Loader
+  Loader,
+  ChevronLeft,
+  ChevronRight
 } from 'lucide-react';
 import LkButton from '../../components/ui/LkButton';
 
@@ -16,6 +18,7 @@ export default function SubscriptionPayments() {
   const [rawPayments, setRawPayments] = useState([]);
   const [loadStatus, setLoadStatus] = useState('loading'); // loading | success | failed
   const [selectedPayment, setSelectedPayment] = useState(null);
+  const [page, setPage] = useState(0);
 
   useEffect(() => {
     loadPayments();
@@ -47,6 +50,15 @@ export default function SubscriptionPayments() {
   }));
 
   const lastPayment = payments[0] || null;
+
+  // Список платежей растёт бесконечно — листаем по 10 (5 рядов по 2).
+  const PAGE_SIZE = 10;
+  const totalPages = Math.max(1, Math.ceil(payments.length / PAGE_SIZE));
+  const safePage = Math.min(page, totalPages - 1);
+  const visiblePayments = payments.slice(
+    safePage * PAGE_SIZE,
+    safePage * PAGE_SIZE + PAGE_SIZE
+  );
 
   useEffect(() => {
     const handleKey = (e) => {
@@ -163,9 +175,10 @@ export default function SubscriptionPayments() {
       )}
 
       {loadStatus === 'success' && payments.length > 0 && (
+      <>
       <div className="lk-payments-list">
 
-        {payments.map((item) => (
+        {visiblePayments.map((item) => (
           <div
             key={item.id}
             className={`lk-payments-item ${
@@ -206,6 +219,35 @@ export default function SubscriptionPayments() {
         ))}
 
       </div>
+
+      {totalPages > 1 && (
+        <div className="lk-payments-pager">
+          <button
+            type="button"
+            className="lk-carousel-nav__btn"
+            onClick={() => setPage(Math.max(0, safePage - 1))}
+            disabled={safePage === 0}
+            aria-label="Предыдущая страница"
+          >
+            <ChevronLeft size={16} />
+          </button>
+
+          <span className="lk-payments-pager__counter">
+            {safePage + 1} / {totalPages}
+          </span>
+
+          <button
+            type="button"
+            className="lk-carousel-nav__btn"
+            onClick={() => setPage(Math.min(totalPages - 1, safePage + 1))}
+            disabled={safePage >= totalPages - 1}
+            aria-label="Следующая страница"
+          >
+            <ChevronRight size={16} />
+          </button>
+        </div>
+      )}
+      </>
       )}
 
       {/* ACTION */}

@@ -81,10 +81,39 @@
 }
 
 
+/* Два столбца вместо одной длинной колонки — история платежей растёт
+   бесконечно, и в один ряд она превращалась в простыню. */
 .lk-payments-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+@media (max-width: 900px) {
+  .lk-payments-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+.lk-payments-pager {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  margin-top: $lk-space-24;
+}
+
+.lk-payments-pager__counter {
+  min-width: 48px;
+
+  font-size: 13px;
+  font-weight: 500;
+  text-align: center;
+
+  color: $lk-text-muted;
+
+  font-variant-numeric: tabular-nums;
 }
 
 
