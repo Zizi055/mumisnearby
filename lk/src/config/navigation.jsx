@@ -68,11 +68,12 @@ export const navigation = [
     tooltip: 'Профиль',
     children: [
       { label: 'Данные', path: '/profile/info' },
-      // ОТКЛЮЧЕНО 31.07.2026 по просьбе клиента — раздел «Дети» временно
-      // скрыт. Сам экран не удалён, см. SHOW_KIDS_SECTION в
-      // src/pages/profile/Profile.jsx. Чтобы вернуть — раскомментировать
-      // строку ниже и поставить там флаг в true.
-      // { label: 'Дети', path: '/profile/kids' },
+      // 31.07.2026: блок «Дети» на этой вкладке скрыт (SHOW_KIDS_SECTION
+      // в src/pages/profile/Profile.jsx), осталось только «Родители и
+      // близкие» — поэтому пункт назван «Семья», а не «Дети».
+      // Путь /profile/kids менять не стали: он уже в закладках и роутере.
+      // Когда вернём детей — можно переименовать обратно.
+      { label: 'Семья', path: '/profile/kids' },
       { label: 'Предпочтения', path: '/profile/preferences' },
     ],
   },

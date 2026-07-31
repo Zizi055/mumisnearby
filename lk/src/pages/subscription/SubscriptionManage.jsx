@@ -18,6 +18,26 @@ import { resolvePlanName } from '../../utils/tariffAccess';
 // ─────────────────────────────────────────────────────────────────────
 const SHOW_AUTO_RENEW = false;
 
+// ─────────────────────────────────────────────────────────────────────
+// ОТКЛЮЧЕНО 31.07.2026 по просьбе клиента: список привязанных карт и
+// блок «Способ оплаты» (вместе с модалами смены и удаления карты).
+// Код НЕ удалён — чтобы вернуть, поставь true.
+// Оплата идёт через ЮKassa на её стороне, поэтому своего хранилища карт
+// у нас всё равно нет: список был на моках (cards useState ниже).
+// ─────────────────────────────────────────────────────────────────────
+const SHOW_PAYMENT_CARDS = false;
+
+// Подписи для ключей limits из GET /subscription/status.
+const USAGE_LABELS = [
+  ['fairy_tales', 'Сказки'],
+  ['lullabies', 'Колыбельные'],
+  ['therapic', 'Терапевтические'],
+  ['family_stories', 'Семейные истории'],
+  ['poems', 'Стихи'],
+  ['stories', 'Рассказы'],
+  ['voices', 'Голоса'],
+];
+
 function formatCardNumber(value) {
   return value
     .replace(/\D/g, '')
@@ -214,9 +234,26 @@ export default function SubscriptionManage() {
   // («Хранитель » с пробелом, «вошебник» с опечаткой).
   const plan = resolvePlanName(subscription.planId, subscription.plan?.name) || '—';
 
-  const nextCharge = lastPayment
+  // Дата берётся из expires_at в /subscription/status — это конец
+  // оплаченного периода, он же дата следующего списания при активной
+  // подписке. Раньше тут ждали историю платежей, которая в этот ответ
+  // не приходит (она в /api/payments/history), поэтому всегда был «—».
+  const nextCharge = subscription.expiresAt
+    ? new Date(subscription.expiresAt).toLocaleDateString('ru-RU')
+    : lastPayment
     ? new Date(lastPayment.date).toLocaleDateString('ru-RU')
     : '—';
+
+  // limits приходят как { fairy_tales: { limit, used }, lullabies: {...}, ... }.
+  // Порядок и подписи задаём сами, но показываем только те ключи, что
+  // реально пришли — состав лимитов зависит от тарифа.
+  const usageRows = USAGE_LABELS
+    .map(([key, label]) => {
+      const entry = subscription.limits?.[key];
+      if (!entry || entry.limit == null) return null;
+      return { key, label, used: entry.used ?? 0, limit: entry.limit };
+    })
+    .filter(Boolean);
 
   const priceYear = currentPlan?.priceYear
     ? `${currentPlan.priceYear.toLocaleString('ru-RU')} ₽ / год`
@@ -380,15 +417,26 @@ export default function SubscriptionManage() {
         </div>
       </div>
 
-      <div className="lk-usage">
-        <h4>Использование</h4>
-        <UsageBar label="Сказки" value={65} max={100} />
-        <UsageBar label="Колыбельные" value={12} max={30} />
-        <UsageBar label="Терапия" value={8} max={20} />
-      </div>
+      {/* Реальное использование из limits в /subscription/status.
+          Раньше здесь стояли выдуманные 65/100, 12/30, 8/20 — цифры
+          не имели отношения к аккаунту пользователя. */}
+      {usageRows.length > 0 && (
+        <div className="lk-usage">
+          <h4>Использование</h4>
+          {usageRows.map((row) => (
+            <UsageBar
+              key={row.key}
+              label={row.label}
+              value={row.used}
+              max={row.limit}
+            />
+          ))}
+        </div>
+      )}
 
       <div className="lk-payment">
 
+        {SHOW_PAYMENT_CARDS && (
         <div className="lk-payment-list">
           {cards.map((c) => {
             const isDefault = c.id === defaultCardId;
@@ -429,7 +477,9 @@ export default function SubscriptionManage() {
             );
           })}
         </div>
+        )}
 
+        {SHOW_PAYMENT_CARDS && (
         <div className="lk-payment__card">
           <div className="lk-payment__card-info">
             <span>Способ оплаты</span>
@@ -447,6 +497,7 @@ export default function SubscriptionManage() {
             Изменить
           </LkButton>
         </div>
+        )}
 
         {SHOW_AUTO_RENEW && (
           <div className="lk-autorenew">
@@ -532,7 +583,7 @@ export default function SubscriptionManage() {
       )}
 
       {/* МОДАЛ СПОСОБА ОПЛАТЫ */}
-      {showPayment && (
+      {SHOW_PAYMENT_CARDS && showPayment && (
         <div className="lk-modal">
           <div
             className="lk-modal__overlay"
@@ -683,7 +734,7 @@ export default function SubscriptionManage() {
       )}
 
       {/* МОДАЛ УДАЛЕНИЯ КАРТЫ */}
-      {showDelete && (
+      {SHOW_PAYMENT_CARDS && showDelete && (
         <div className="lk-modal">
           <div className="lk-modal__overlay" onClick={() => setShowDelete(false)} />
           <div className="lk-modal__content">
@@ -702,7 +753,9 @@ export default function SubscriptionManage() {
 }
 
 function UsageBar({ label, value, max }) {
-  const percent = (value / max) * 100;
+  // max приходит с бэка и может быть 0 (лимит не задан) — без защиты
+  // получили бы Infinity в width и уехавшую полосу.
+  const percent = max > 0 ? Math.min(100, (value / max) * 100) : 0;
   return (
     <div className="lk-usage-item">
       <div className="lk-usage-item__head">
