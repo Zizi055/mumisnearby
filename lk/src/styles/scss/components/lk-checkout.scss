@@ -1,9 +1,12 @@
 @use '../abstracts/lk-tokens' as *;
+@use '../abstracts/lk-surface' as *;
 
 
 
+/* Верхний отступ даёт общий layout, своего не добавляем —
+   иначе страница начиналась ниже остальных. */
 .lk-checkout {
-  padding: $lk-space-32 0;
+  padding: 0;
 }
 
 .lk-checkout__inner {

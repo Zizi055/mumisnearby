@@ -1,4 +1,5 @@
 @use '../abstracts/lk-tokens' as *;
+@use '../abstracts/lk-surface' as *;
 
 
 
@@ -26,27 +27,28 @@
 
 
 
+/* Отступы, радиус, фон и рамка — из общего стандарта (%lk-card),
+   чтобы карточка тарифа совпадала с карточками на «Управлении»,
+   «Платежах» и «Бонусах». */
 .lk-tariff-card {
+  @extend %lk-card;
+
   display: flex;
   flex-direction: column;
   gap: $lk-space-16;
 
-  padding: $lk-space-24;
-  border-radius: $lk-radius-24;
-
-  background: $lk-surface;
-  border: 1px solid $lk-border;
-
   position: relative;
 
-  transition: all 0.3s ease;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 
 .lk-tariff-card:hover {
-  transform: translateY(-6px);
-  box-shadow: 0 20px 60px rgba(0,0,0,0.06);
-  border-color: $lk-line;
+  transform: translateY(-2px);
+  border-color: rgba(93, 143, 114, 0.22);
 }
 
 

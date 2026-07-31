@@ -1,8 +1,7 @@
 @use '../abstracts/lk-tokens' as *;
+@use '../abstracts/lk-surface' as *;
 .lk-bonus {
-  display: flex;
-  flex-direction: column;
-  gap: $lk-space-24;
+  @extend %lk-page-stack;
 }
 
 .lk-bonus__head {
@@ -42,6 +41,8 @@
 }
 
 .lk-bonus-item {
+  @extend %lk-card;
+
   position: relative;
 
   display: flex;
@@ -49,13 +50,11 @@
   gap: 14px;
 
   min-height: 230px;
-  padding: 20px;
-  border-radius: $lk-radius-20;
 
-  background: $lk-surface;
-  border: 1px solid $lk-border;
-
-  transition: all 0.25s ease;
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .lk-bonus-item:hover {

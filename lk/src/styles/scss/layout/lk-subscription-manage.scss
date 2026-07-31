@@ -1,10 +1,8 @@
 @use '../abstracts/lk-tokens' as *;
+@use '../abstracts/lk-surface' as *;
 
 .lk-subscription-manage {
-  max-width: 920px;
-  display: flex;
-  flex-direction: column;
-  gap: $lk-space-24;
+  @extend %lk-page-stack;
 }
 
 
@@ -21,16 +19,7 @@
 
 
 .lk-subscription-block {
-  background: $lk-surface;
-  border: 1px solid $lk-border;
-  border-radius: $lk-radius-20;
-  padding: $lk-space-24;
-  box-shadow: $lk-shadow-card;
-  transition: transform 0.2s ease;
-}
-
-.lk-subscription-block:hover {
-  transform: translateY(-2px);
+  @extend %lk-card;
 }
 
 
@@ -184,8 +173,26 @@
   }
 }
 
-.lk-usage {
-  @extend .lk-subscription-block;
+/* Карточка текущего тарифа. Раньше у неё не было ни фона, ни рамки —
+   она висела прямо на фоне страницы рядом с двумя настоящими
+   карточками, отсюда и ощущение «прилипшего» блока. */
+.lk-subscription-card {
+  @extend %lk-card;
+
+  display: flex;
+  flex-direction: column;
+  gap: $lk-space-16;
+}
+
+.lk-usage,
+.lk-subscription-help {
+  @extend %lk-card;
+}
+
+/* Один размер заголовка во всех карточках ряда. */
+.lk-usage h4,
+.lk-subscription-help h4 {
+  @extend %lk-card-title;
 }
 
 /* Компактнее: полосы тоньше, шаг между строками меньше. */

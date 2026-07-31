@@ -1,0 +1,77 @@
+@use './lk-tokens' as *;
+
+// ─────────────────────────────────────────────────────────────────────
+// ЕДИНЫЙ СТАНДАРТ ПОВЕРХНОСТЕЙ ЛК
+//
+// До этого каждая страница задавала карточке свои значения: padding
+// 20/24/28, радиус 16/20/24, разные тени и отступы между секциями.
+// Экраны «Тариф», «Управление», «Платежи», «Бонусы» выглядели как
+// сделанные разными людьми. Здесь один источник правды — правим тут,
+// меняется везде.
+// ─────────────────────────────────────────────────────────────────────
+
+// Отступ между крупными секциями страницы
+$lk-section-gap: $lk-space-24;
+
+// Внутренние отступы карточки
+$lk-card-padding: $lk-space-24;
+$lk-card-radius: $lk-radius-20;
+
+// Базовая карточка
+%lk-card {
+  padding: $lk-card-padding;
+
+  background: $lk-surface;
+
+  border: 1px solid $lk-border;
+  border-radius: $lk-card-radius;
+
+  box-shadow: $lk-shadow-card;
+}
+
+// Карточка, реагирующая на наведение (кликабельная)
+%lk-card--interactive {
+  @extend %lk-card;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    border-color: rgba(93, 143, 114, 0.22);
+  }
+}
+
+// Заголовок внутри карточки — один размер на весь ЛК
+%lk-card-title {
+  margin: 0 0 $lk-space-16;
+
+  font-size: 17px;
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+
+  color: $lk-text;
+}
+
+// Надзаголовок-метка (ВАШ ТАРИФ, ЛИМИТЫ ГЕНЕРАЦИИ и т.п.)
+%lk-card-eyebrow {
+  margin: 0 0 $lk-space-4;
+
+  font-size: 11px;
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+
+  color: $lk-text-muted;
+}
+
+// Вертикальный стек секций страницы
+%lk-page-stack {
+  display: flex;
+  flex-direction: column;
+  gap: $lk-section-gap;
+}

@@ -1,8 +1,7 @@
 @use '../abstracts/lk-tokens' as *;
+@use '../abstracts/lk-surface' as *;
 .lk-payments {
-  display: flex;
-  flex-direction: column;
-  gap: $lk-space-20;
+  @extend %lk-page-stack;
 }
 
 .lk-payments-loader {
@@ -44,12 +43,10 @@
 
 
 .lk-payments-summary {
+  @extend %lk-card;
+
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-
-  border-radius: $lk-radius-20;
-  background: $lk-surface;
-  border: 1px solid $lk-border;
   overflow: hidden;
 }
 
