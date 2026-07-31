@@ -63,6 +63,10 @@ export default function Profile() {
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState('');
   const [originalEmail, setOriginalEmail] = useState(user?.email || '');
+  const [originalName, setOriginalName] = useState(user?.name || '');
+  const [originalPhone, setOriginalPhone] = useState(
+    user?.phone_number || user?.phone || ''
+  );
 
   const [cancellingEmailChange, setCancellingEmailChange] = useState(false);
   const [emailChangedNotice, setEmailChangedNotice] = useState(false);
@@ -73,9 +77,11 @@ export default function Profile() {
     getProfile()
       .then((data) => {
         setName(data.username ?? '');
+        setOriginalName(data.username ?? '');
         setEmail(data.email ?? '');
         setOriginalEmail(data.email ?? '');
         setPhone(data.phone_number ?? '');
+        setOriginalPhone(data.phone_number ?? '');
         setPendingEmail(data.pending_email ?? '');
       })
       .catch(() => {
@@ -140,14 +146,24 @@ export default function Profile() {
     setSaveError('');
 
     try {
-      // Имя/телефон меняются сразу через PATCH /profile.
-      const updated = await updateProfile({ username: name, phone_number: phone });
+      // По спеке оба поля опциональны — шлём только изменённые.
+      const patch = {};
+      if (name !== originalName) patch.username = name;
+      if (phone !== originalPhone) patch.phone_number = phone;
 
-      setUser({
-        ...user,
-        name: updated.username ?? name,
-        phone: updated.phone_number ?? phone,
-      });
+      let updated = null;
+      if (Object.keys(patch).length > 0) {
+        updated = await updateProfile(patch);
+
+        setOriginalName(updated?.username ?? name);
+        setOriginalPhone(updated?.phone_number ?? phone);
+
+        setUser({
+          ...user,
+          name: updated?.username ?? name,
+          phone: updated?.phone_number ?? phone,
+        });
+      }
 
       // Email — отдельный подтверждаемый процесс: PATCH /profile его не
       // трогает. Если поле реально поменяли, шлём запрос на смену,

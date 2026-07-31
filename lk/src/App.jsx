@@ -68,6 +68,12 @@ function App() {
       {/* ЛК */}
       <Route element={<LkLayout />}>
 
+        {/* Голый /profile тоже должен открываться: на него ведёт аватар
+            в меню и, что важнее, на него редиректит бэк после перехода
+            по ссылке из письма — GET /profile/confirm-email-change
+            отправляет на /profile?email_changed=true. Без этого маршрута
+            подтверждение почты приводило на пустой экран. */}
+        <Route path="/profile" element={<Profile />} />
         <Route path="/profile/info" element={<Profile />} />
         <Route path="/profile/kids" element={<Profile />} />
         <Route path="/profile/preferences" element={<Profile />} />
