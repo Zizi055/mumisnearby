@@ -384,18 +384,37 @@
 
 
 /* ── ТЕКУЩИЙ ТАРИФ ─────────────────────────────────────────────── */
+/* Секция во всю ширину под hero-блоком. В узкой правой колонке шесть
+   лимитов вставали друг под другом и вытягивали карточку в «кишку»,
+   поэтому здесь — горизонтальная шапка и лимиты сеткой. */
 
 .lk-dashboard-plan {
   display: flex;
   flex-direction: column;
-  gap: $lk-space-16;
+  gap: $lk-space-20;
+
+  margin-top: $lk-space-24;
 }
 
 .lk-dashboard-plan__top {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
-  gap: $lk-space-12;
+  gap: $lk-space-20;
+
+  flex-wrap: wrap;
+}
+
+.lk-dashboard-plan__ident {
+  min-width: 0;
+}
+
+.lk-dashboard-plan__title-row {
+  display: flex;
+  align-items: center;
+  gap: $lk-space-10;
+
+  flex-wrap: wrap;
 }
 
 .lk-dashboard-plan__eyebrow {
@@ -438,7 +457,7 @@
 }
 
 .lk-dashboard-plan__until {
-  margin: 0;
+  margin: 6px 0 0;
 
   font-size: 13px;
   line-height: 1.5;
@@ -447,9 +466,13 @@
 }
 
 .lk-dashboard-plan__limits {
-  display: flex;
-  flex-direction: column;
-  gap: $lk-space-12;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: $lk-space-16 $lk-space-24;
+
+  padding-top: $lk-space-20;
+
+  border-top: 1px solid $lk-line-soft;
 }
 
 .lk-dashboard-plan__limit-head {
@@ -458,7 +481,7 @@
   justify-content: space-between;
   gap: $lk-space-8;
 
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 
   font-size: 13px;
   line-height: 1.3;
@@ -466,9 +489,20 @@
   color: $lk-text-muted;
 
   strong {
+    flex-shrink: 0;
+
+    font-size: 15px;
     font-weight: 600;
 
     color: $lk-text;
+
+    em {
+      font-style: normal;
+      font-size: 13px;
+      font-weight: 500;
+
+      color: $lk-text-muted;
+    }
   }
 }
 

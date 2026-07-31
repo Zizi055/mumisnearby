@@ -46,6 +46,26 @@ export default function Dashboard() {
       ? 'Загружаем данные подписки…'
       : 'Подписка не оформлена';
 
+  // Лимиты в фиксированном порядке (а не как отдал бэк) и только те,
+  // что реально пришли — состав зависит от тарифа.
+  const planLimits = Object.entries(LIMIT_LABELS)
+    .map(([key, label]) => {
+      const entry = subscription.limits?.[key];
+      if (!entry || entry.limit == null) return null;
+
+      const limit = entry.limit;
+      const used = entry.used ?? 0;
+
+      return {
+        key,
+        label,
+        used,
+        limit,
+        percent: limit > 0 ? Math.min(100, Math.round((used / limit) * 100)) : 0,
+      };
+    })
+    .filter(Boolean);
+
   const withPlanStat = (stats = []) =>
     stats.map((item) =>
       item.id === 'plan'
@@ -253,71 +273,8 @@ export default function Dashboard() {
           </div>
         </article>
 
-        {/* SIDE — ТАРИФ + AI */}
+        {/* SIDE — AI */}
         <aside className="lk-dashboard-top__side">
-
-          {/* ТЕКУЩИЙ ТАРИФ */}
-          {planName && (
-            <section className="lk-dashboard-plan">
-              <header className="lk-dashboard-plan__top">
-                <div>
-                  <p className="lk-dashboard-plan__eyebrow">Ваш тариф</p>
-                  <h2 className="lk-dashboard-plan__name">
-                    {planName}
-                  </h2>
-                </div>
-                {subscription.status === 'active' && (
-                  <span className="lk-dashboard-plan__badge">Активен</span>
-                )}
-              </header>
-
-              {subscription.expiresAt && (
-                <p className="lk-dashboard-plan__until">
-                  {/* Упоминание автопродления убрано 31.07.2026 вместе с
-                      тумблером в «Управлении подпиской» (SHOW_AUTO_RENEW).
-                      Вернуть — заменить строку ниже на:
-                      {subscription.autoRenew ? 'Продление' : 'Действует до'} */}
-                  Действует до{' '}
-                  {new Date(subscription.expiresAt).toLocaleDateString('ru-RU')}
-                </p>
-              )}
-
-              {Object.keys(subscription.limits || {}).length > 0 && (
-                <div className="lk-dashboard-plan__limits">
-                  {Object.entries(subscription.limits).map(([key, value]) => {
-                    const limit = value?.limit ?? 0;
-                    const used = value?.used ?? 0;
-                    const percent = limit > 0
-                      ? Math.min(100, Math.round((used / limit) * 100))
-                      : 0;
-
-                    return (
-                      <div key={key} className="lk-dashboard-plan__limit">
-                        <div className="lk-dashboard-plan__limit-head">
-                          <span>{LIMIT_LABELS[key] || key}</span>
-                          <strong>{used} / {limit}</strong>
-                        </div>
-                        <div className="lk-dashboard-plan__bar">
-                          <span style={{ width: `${percent}%` }} />
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-
-              <button
-                type="button"
-                className="lk-btn lk-btn--ghost lk-btn--md"
-                onClick={() => navigate('/subscription/tariff')}
-              >
-                <span className="lk-btn__content">
-                  Управление тарифом
-                  <ChevronRight size={16} />
-                </span>
-              </button>
-            </section>
-          )}
 
           <section className="lk-dashboard-ai">
             <div className="lk-dashboard-ai__icon">
@@ -339,6 +296,69 @@ export default function Dashboard() {
         </aside>
 
       </section>
+
+      {/* ── ТЕКУЩИЙ ТАРИФ ──
+          Раньше стоял в узкой правой колонке и вытягивался в «кишку»:
+          шесть лимитов друг под другом на 300px. Теперь во всю ширину,
+          лимиты — сеткой, шапка тарифа слева, кнопка справа. */}
+      {planName && (
+        <section className="lk-dashboard-plan">
+
+          <header className="lk-dashboard-plan__top">
+            <div className="lk-dashboard-plan__ident">
+              <p className="lk-dashboard-plan__eyebrow">Ваш тариф</p>
+
+              <div className="lk-dashboard-plan__title-row">
+                <h2 className="lk-dashboard-plan__name">{planName}</h2>
+                {subscription.status === 'active' && (
+                  <span className="lk-dashboard-plan__badge">Активен</span>
+                )}
+              </div>
+
+              {subscription.expiresAt && (
+                <p className="lk-dashboard-plan__until">
+                  {/* Упоминание автопродления убрано 31.07.2026 вместе с
+                      тумблером в «Управлении подпиской» (SHOW_AUTO_RENEW).
+                      Вернуть — заменить строку ниже на:
+                      {subscription.autoRenew ? 'Продление' : 'Действует до'} */}
+                  Действует до{' '}
+                  {new Date(subscription.expiresAt).toLocaleDateString('ru-RU')}
+                </p>
+              )}
+            </div>
+
+            <button
+              type="button"
+              className="lk-btn lk-btn--ghost lk-btn--md"
+              onClick={() => navigate('/subscription/tariff')}
+            >
+              <span className="lk-btn__content">
+                Управление тарифом
+                <ChevronRight size={16} />
+              </span>
+            </button>
+          </header>
+
+          {planLimits.length > 0 && (
+            <div className="lk-dashboard-plan__limits">
+              {planLimits.map((row) => (
+                <div key={row.key} className="lk-dashboard-plan__limit">
+                  <div className="lk-dashboard-plan__limit-head">
+                    <span>{row.label}</span>
+                    <strong>
+                      {row.used} <em>/ {row.limit}</em>
+                    </strong>
+                  </div>
+                  <div className="lk-dashboard-plan__bar">
+                    <span style={{ width: `${row.percent}%` }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+        </section>
+      )}
 
       {/* ── GRID ── */}
       <section className="lk-dashboard-grid">
