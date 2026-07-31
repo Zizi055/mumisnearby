@@ -79,9 +79,11 @@ export default function LibraryGenerations() {
         categories.map((cat) => getLibraryItems(cat).catch(() => []))
       );
 
+      // Храним элемент целиком, а не только название: из него же берём
+      // обложку (preview_url → item.image) для миниатюры в карточке.
       const map = new Map();
       results.flat().forEach((item) => {
-        map.set(`${item.type}:${item.id}`, item.title);
+        map.set(`${item.type}:${item.id}`, item);
       });
 
       setTitleMap(map);
@@ -90,8 +92,24 @@ export default function LibraryGenerations() {
     }
   }
 
+  const getContent = (gen) =>
+    titleMap.get(`${gen.content_type}:${gen.content_id}`) || null;
+
   const getTitle = (gen) =>
-    titleMap.get(`${gen.content_type}:${gen.content_id}`) || getTypeLabel(gen.content_type);
+    getContent(gen)?.title || getTypeLabel(gen.content_type);
+
+  const FALLBACK_IMAGE = `${import.meta.env.BASE_URL}img/owl.png`;
+
+  // created_at бэк для озвучек пока не отдаёт — как только начнёт,
+  // дата появится в карточке сама.
+  const getDate = (gen) => {
+    const iso = gen.created_at ?? gen.createdAt ?? gen.created ?? null;
+    if (!iso) return null;
+    const date = new Date(iso);
+    return Number.isNaN(date.getTime())
+      ? null
+      : date.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' });
+  };
 
   const getVoiceName = (voiceId) => {
     if (voiceId == null) return 'не указан';
@@ -189,52 +207,72 @@ export default function LibraryGenerations() {
         )}
 
         {!loading && !error && generations.length > 0 && (
-          <div className="lk-generations-list">
-            {generations.map((gen) => (
-              <div className="lk-generations-row" key={gen.id}>
-                <div className="lk-generations-row__main">
-                  <strong className="lk-generations-row__title">
-                    {getTitle(gen)}
-                  </strong>
-                  <span className="lk-generations-row__meta">
+          <div className="lk-generations-grid">
+            {generations.map((gen) => {
+              const content = getContent(gen);
+              const date = getDate(gen);
+
+              return (
+              <article className="lk-generation-card" key={gen.id}>
+
+                <div className="lk-generation-card__media">
+                  <img
+                    src={content?.image || FALLBACK_IMAGE}
+                    alt={getTitle(gen)}
+                    loading="lazy"
+                    onError={(e) => { e.currentTarget.src = FALLBACK_IMAGE; }}
+                  />
+                </div>
+
+                <div className="lk-generation-card__body">
+                  <div className="lk-generation-card__head">
+                    <h3 className="lk-generation-card__title">
+                      {getTitle(gen)}
+                    </h3>
+                    <StatusBadge status={gen.status} />
+                  </div>
+
+                  <p className="lk-generation-card__meta">
                     {getTypeLabel(gen.content_type)} · Голос: {getVoiceName(gen.voice_id)}
-                  </span>
-                </div>
+                  </p>
 
-                <div className="lk-generations-row__status">
-                  <StatusBadge status={gen.status} />
-                </div>
-
-                <div className="lk-generations-row__actions">
-                  {gen.status === 'ready' && (
-                    <button
-                      type="button"
-                      className="lk-btn lk-btn--sm lk-btn--secondary"
-                      onClick={() => handlePlay(gen)}
-                      disabled={loadingAudioId === gen.id}
-                    >
-                      {loadingAudioId === gen.id ? (
-                        <Loader2 size={14} className="lk-spin" />
-                      ) : playingId === gen.id ? (
-                        <Square size={14} />
-                      ) : (
-                        <Play size={14} />
-                      )}
-                      {playingId === gen.id ? 'Стоп' : 'Слушать'}
-                    </button>
+                  {date && (
+                    <p className="lk-generation-card__date">{date}</p>
                   )}
 
-                  <button
-                    type="button"
-                    className="lk-btn lk-btn--sm lk-btn--ghost"
-                    onClick={() => navigate(`/library/item/${gen.content_type}/${gen.content_id}`)}
-                  >
-                    <ExternalLink size={14} />
-                    Открыть
-                  </button>
+                  <div className="lk-generation-card__actions">
+                    {gen.status === 'ready' && (
+                      <button
+                        type="button"
+                        className="lk-btn lk-btn--sm lk-btn--secondary"
+                        onClick={() => handlePlay(gen)}
+                        disabled={loadingAudioId === gen.id}
+                      >
+                        {loadingAudioId === gen.id ? (
+                          <Loader2 size={14} className="lk-spin" />
+                        ) : playingId === gen.id ? (
+                          <Square size={14} />
+                        ) : (
+                          <Play size={14} />
+                        )}
+                        {playingId === gen.id ? 'Стоп' : 'Слушать'}
+                      </button>
+                    )}
+
+                    <button
+                      type="button"
+                      className="lk-btn lk-btn--sm lk-btn--ghost"
+                      onClick={() => navigate(`/library/item/${gen.content_type}/${gen.content_id}`)}
+                    >
+                      <ExternalLink size={14} />
+                      Открыть
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
+
+              </article>
+              );
+            })}
           </div>
         )}
       </div>

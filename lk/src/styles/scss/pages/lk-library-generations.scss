@@ -6,6 +6,136 @@
   gap: $lk-space-10;
 }
 
+
+/* ── КАРТОЧКИ ОЗВУЧЕК ──────────────────────────────────────────────
+   Два столбца вместо длинного списка строк: с обложкой сказка
+   узнаётся с одного взгляда, а список перестаёт быть простынёй. */
+
+.lk-generations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: $lk-space-16;
+}
+
+.lk-generation-card {
+  display: grid;
+  grid-template-columns: 88px minmax(0, 1fr);
+  gap: $lk-space-16;
+
+  padding: $lk-space-14;
+
+  background: $lk-white;
+
+  border: 1px solid $lk-border;
+  border-radius: $lk-radius-20;
+
+  transition:
+    border-color .18s ease,
+    transform .18s ease,
+    box-shadow .18s ease;
+
+  &:hover {
+    border-color: rgba(93, 143, 114, .22);
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 10px 22px rgba(93, 143, 114, .08);
+  }
+}
+
+.lk-generation-card__media {
+  width: 88px;
+  height: 88px;
+
+  border-radius: $lk-radius-16;
+
+  overflow: hidden;
+
+  background: $lk-surface-soft;
+
+  img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+  }
+}
+
+.lk-generation-card__body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  min-width: 0;
+}
+
+.lk-generation-card__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: $lk-space-10;
+}
+
+.lk-generation-card__title {
+  margin: 0;
+
+  font-size: 15px;
+  line-height: 1.3;
+  font-weight: 600;
+
+  color: $lk-text;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lk-generation-card__meta,
+.lk-generation-card__date {
+  margin: 0;
+
+  font-size: 12px;
+  line-height: 1.45;
+
+  color: $lk-text-muted;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lk-generation-card__actions {
+  display: flex;
+  align-items: center;
+  gap: $lk-space-8;
+
+  margin-top: auto;
+  padding-top: $lk-space-10;
+}
+
+@media (max-width: 560px) {
+  .lk-generations-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .lk-generation-card {
+    grid-template-columns: 64px minmax(0, 1fr);
+  }
+
+  .lk-generation-card__media {
+    width: 64px;
+    height: 64px;
+  }
+
+  .lk-generation-card__head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+}
+
 /* Жёсткая сетка вместо flex + space-between: при flex ширина колонок
    зависела от длины названия, поэтому бейдж статуса и кнопки прыгали
    по горизонтали от строки к строке — список «плыл». */
