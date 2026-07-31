@@ -274,14 +274,18 @@ function TariffCard({ tariff, currentPlan, billingPeriod, navigate }) {
         </div>
       )}
 
-      <ul className="lk-tariff-features">
-        {(tariff.features || []).map((f) => (
-          <li key={f}>{f}</li>
-        ))}
-      </ul>
+      {/* Рукописный список features показываем только там, где с бэка
+          нет лимитов (Конструктор). В остальных карточках он дублировал
+          и противоречил реальным цифрам: «50 сказок» в тексте против
+          30 в базе. Источник правды один — лимиты ниже. */}
+      {!tariff.limits && (
+        <ul className="lk-tariff-features">
+          {(tariff.features || []).map((f) => (
+            <li key={f}>{f}</li>
+          ))}
+        </ul>
+      )}
 
-      {/* Реальные лимиты генерации с бэка — тексты в features писались
-          руками и разъезжались с базой, эти цифры всегда актуальны. */}
       <TariffLimits tariff={tariff} />
 
       <div className="lk-tariff-footer">

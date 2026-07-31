@@ -165,16 +165,15 @@
   background: $lk-brand;
 }
 
-/* ЛИМИТЫ ГЕНЕРАЦИИ (реальные цифры с бэка) */
+/* ЛИМИТЫ ГЕНЕРАЦИИ (реальные цифры с бэка).
+   Строки разделены тонкими линиями «как в тетради» — так столбец цифр
+   читается ровно и одинаково во всех карточках. */
 .lk-tariff-limits {
   margin-top: $lk-space-16;
-  padding-top: $lk-space-16;
-
-  border-top: 1px solid $lk-line-soft;
 }
 
 .lk-tariff-limits__title {
-  margin: 0 0 $lk-space-10;
+  margin: 0 0 $lk-space-4;
 
   font-size: 11px;
   line-height: 1.2;
@@ -188,7 +187,6 @@
 .lk-tariff-limits__list {
   display: flex;
   flex-direction: column;
-  gap: 6px;
 
   list-style: none;
   padding: 0;
@@ -200,15 +198,24 @@
     justify-content: space-between;
     gap: $lk-space-8;
 
+    padding: 9px 0;
+
+    border-bottom: 1px solid rgba(93, 143, 114, 0.10);
+
     font-size: 13px;
     line-height: 1.4;
 
     color: $lk-text-muted;
 
     strong {
+      flex-shrink: 0;
+
+      font-size: 14px;
       font-weight: 600;
 
       color: $lk-text;
+
+      font-variant-numeric: tabular-nums;
     }
   }
 }
