@@ -6,6 +6,7 @@ import { createPayment } from '../../api/payments.service';
 import { getBackendPlanId, getTariffSlug } from '../../data/planIdMap';
 import { useSubscription } from '../../hooks/useSubscription';
 import { useTariffPricing } from '../../hooks/useTariffPricing';
+import PlanLimitsList from '../../components/subscription/PlanLimitsList';
 
 function formatPrice(value) {
   if (!value) return '—';
@@ -143,11 +144,10 @@ export default function Checkout() {
               <p>{plan.description}</p>
             </div>
 
-            <ul className="lk-checkout-card__features">
-              {(plan.features || []).map((feature) => (
-                <li key={feature}>{feature}</li>
-              ))}
-            </ul>
+            {/* Те же лимиты с бэка и тот же вид, что на странице
+                «Тариф». Раньше здесь был отдельный список features
+                с точками — он расходился и с карточками, и с базой. */}
+            <PlanLimitsList tariff={plan} />
           </div>
 
           {changeType === 'downgrade' && (

@@ -522,6 +522,8 @@ export default function SubscriptionManage() {
 
       </div>
 
+      {/* Обе кнопки в одном ряду: отдельный «опасный» блок с пунктирной
+          рамкой внизу выглядел как отдельная секция страницы. */}
       <div className="lk-subscription-actions">
         <LkButton
           variant="primary"
@@ -531,13 +533,12 @@ export default function SubscriptionManage() {
           Изменить тариф
           <span className="lk-btn__circle">↗</span>
         </LkButton>
-      </div>
 
-      <div className="lk-subscription-danger">
         <LkButton
           variant="danger"
           className="lk-btn--icon"
           onClick={() => setShowCancel(true)}
+          disabled={cancelling || subscription.status !== 'active'}
         >
           Отменить подписку
           <span className="lk-btn__circle">✕</span>

@@ -223,10 +223,15 @@
 
 .lk-subscription-actions {
   display: flex;
+  align-items: center;
   gap: 12px;
+
+  flex-wrap: wrap;
 }
 
-
+/* Блок .lk-subscription-danger больше не используется: кнопка отмены
+   переехала в общий ряд с «Изменить тариф». Правило оставлено на
+   случай, если пунктирный контейнер понадобится где-то ещё. */
 .lk-subscription-danger {
   margin-top: 8px;
   padding: 16px;

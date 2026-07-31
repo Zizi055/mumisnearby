@@ -7,6 +7,7 @@ import { useSubscription } from '../../hooks/useSubscription';
 import { useTariffPricing } from '../../hooks/useTariffPricing';
 import { getTariffSlug } from '../../data/planIdMap';
 import { resolvePlanName } from '../../utils/tariffAccess';
+import PlanLimitsList from '../../components/subscription/PlanLimitsList';
 // Значения берём из лимитов, пришедших с бэка (см. useTariffPricing).
 // Раньше они были прописаны формулами по level: «50 / 100+ / 3 / 20+» —
 // и расходились с реальной базой (у Сказочника не 50 сказок, а 30,
@@ -284,19 +285,10 @@ function TariffCard({ tariff, currentPlan, billingPeriod, navigate }) {
         </div>
       )}
 
-      {/* Рукописный список features показываем только там, где с бэка
-          нет лимитов (Конструктор). В остальных карточках он дублировал
-          и противоречил реальным цифрам: «50 сказок» в тексте против
-          30 в базе. Источник правды один — лимиты ниже. */}
-      {!tariff.limits && (
-        <ul className="lk-tariff-features">
-          {(tariff.features || []).map((f) => (
-            <li key={f}>{f}</li>
-          ))}
-        </ul>
-      )}
-
-      <TariffLimits tariff={tariff} />
+      {/* Единый вид для всех карточек, включая Конструктор: там, где с
+          бэка есть лимиты — цифры, где нет — текстовые пункты, но теми
+          же строками-линейками, без маркеров-точек. */}
+      <PlanLimitsList tariff={tariff} />
 
       <div className="lk-tariff-footer">
         <LkButton
@@ -315,48 +307,6 @@ function TariffCard({ tariff, currentPlan, billingPeriod, navigate }) {
       </div>
 
     </article>
-  );
-}
-
-/* ================= ЛИМИТЫ ГЕНЕРАЦИИ ================= */
-
-const LIMIT_ROWS = [
-  ['fairyTales', 'Сказки'],
-  ['lullabies', 'Колыбельные'],
-  ['therapic', 'Терапевтические'],
-  ['familyStories', 'Семейные истории'],
-  ['poems', 'Стихи'],
-  ['stories', 'Рассказы'],
-  ['voiceClones', 'Голосовые двойники'],
-];
-
-function TariffLimits({ tariff }) {
-  const limits = tariff.limits;
-  if (!limits) return null;
-
-  const rows = LIMIT_ROWS.filter(([key]) => limits[key] != null);
-  if (rows.length === 0) return null;
-
-  return (
-    <div className="lk-tariff-limits">
-      <p className="lk-tariff-limits__title">Лимиты генерации в месяц</p>
-
-      <ul className="lk-tariff-limits__list">
-        {rows.map(([key, label]) => (
-          <li key={key}>
-            <span>{label}</span>
-            <strong>{limits[key]}</strong>
-          </li>
-        ))}
-      </ul>
-
-      {tariff.audioFormat && (
-        <p className="lk-tariff-limits__note">
-          Формат аудио: {tariff.audioFormat.toUpperCase()}
-          {tariff.hasTimeCapsule ? ' · Капсула времени' : ''}
-        </p>
-      )}
-    </div>
   );
 }
 
