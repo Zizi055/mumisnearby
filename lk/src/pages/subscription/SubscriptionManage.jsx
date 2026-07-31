@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { LifeBuoy, Receipt, Gift, ChevronRight } from 'lucide-react';
 import LkButton from '../../components/ui/LkButton';
 import LkInput from '../../components/ui/LkInput';
 import LkCardPreview from '../../components/ui/LkCardPreview';
@@ -420,6 +421,30 @@ export default function SubscriptionManage() {
             <strong>{showMonthly ? priceMonth : priceYear}</strong>
           </div>
         </div>
+
+        {/* Кнопки внутри карточки, а не отдельной строкой внизу
+            страницы: колонка тарифа короче соседней, и в общем ряду
+            они «повисали» в пустоте. */}
+        <div className="lk-subscription-actions">
+          <LkButton
+            variant="primary"
+            className="lk-btn--icon"
+            onClick={() => navigate('/subscription/tariff')}
+          >
+            Изменить тариф
+            <span className="lk-btn__circle">↗</span>
+          </LkButton>
+
+          <LkButton
+            variant="danger"
+            className="lk-btn--icon"
+            onClick={() => setShowCancel(true)}
+            disabled={cancelling || subscription.status !== 'active'}
+          >
+            Отменить подписку
+            <span className="lk-btn__circle">✕</span>
+          </LkButton>
+        </div>
       </div>
 
       {/* Реальное использование из limits в /subscription/status.
@@ -438,6 +463,57 @@ export default function SubscriptionManage() {
           ))}
         </div>
       )}
+
+      {/* Третий блок ряда — короткие полезные действия, чтобы колонка
+          не пустовала и с этой страницы было куда пойти дальше. */}
+      <div className="lk-subscription-help">
+        <h4>Полезное</h4>
+
+        <button
+          type="button"
+          className="lk-subscription-help__item"
+          onClick={() => navigate('/dashboard/support')}
+        >
+          <span className="lk-subscription-help__icon">
+            <LifeBuoy size={17} />
+          </span>
+          <span className="lk-subscription-help__text">
+            <strong>Написать в поддержку</strong>
+            <span>Вопросы по тарифу и оплате</span>
+          </span>
+          <ChevronRight size={15} />
+        </button>
+
+        <button
+          type="button"
+          className="lk-subscription-help__item"
+          onClick={() => navigate('/subscription/payments')}
+        >
+          <span className="lk-subscription-help__icon">
+            <Receipt size={17} />
+          </span>
+          <span className="lk-subscription-help__text">
+            <strong>История платежей</strong>
+            <span>Чеки и списания по подписке</span>
+          </span>
+          <ChevronRight size={15} />
+        </button>
+
+        <button
+          type="button"
+          className="lk-subscription-help__item"
+          onClick={() => navigate('/subscription/bonus')}
+        >
+          <span className="lk-subscription-help__icon">
+            <Gift size={17} />
+          </span>
+          <span className="lk-subscription-help__text">
+            <strong>Бонусы и приглашения</strong>
+            <span>Месяц бесплатно за 5 друзей</span>
+          </span>
+          <ChevronRight size={15} />
+        </button>
+      </div>
 
       </div>
 
@@ -529,28 +605,6 @@ export default function SubscriptionManage() {
 
       </div>
 
-      {/* Обе кнопки в одном ряду: отдельный «опасный» блок с пунктирной
-          рамкой внизу выглядел как отдельная секция страницы. */}
-      <div className="lk-subscription-actions">
-        <LkButton
-          variant="primary"
-          className="lk-btn--icon"
-          onClick={() => navigate('/subscription/tariff')}
-        >
-          Изменить тариф
-          <span className="lk-btn__circle">↗</span>
-        </LkButton>
-
-        <LkButton
-          variant="danger"
-          className="lk-btn--icon"
-          onClick={() => setShowCancel(true)}
-          disabled={cancelling || subscription.status !== 'active'}
-        >
-          Отменить подписку
-          <span className="lk-btn__circle">✕</span>
-        </LkButton>
-      </div>
 
       {/* МОДАЛ ОТМЕНЫ */}
       {showCancel && (
