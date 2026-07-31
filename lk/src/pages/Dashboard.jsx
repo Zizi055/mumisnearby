@@ -9,6 +9,8 @@ import {
   Brain,
   Copy,
   Users,
+  Mic,
+  LifeBuoy,
 } from 'lucide-react';
 import { getDashboardOverview } from '../api/dashboard.api.js';
 import { getReferralLink } from '../api/bonus.service.js';
@@ -45,6 +47,10 @@ export default function Dashboard() {
       : subscription.loading
       ? 'Загружаем данные подписки…'
       : 'Подписка не оформлена';
+
+  // Голоса для подписи в «Быстрых действиях» — из того же ответа
+  // getDashboardOverview, отдельный запрос не нужен.
+  const readyVoicesCount = data?.readyVoices?.length ?? 0;
 
   // Лимиты в фиксированном порядке (а не как отдал бэк) и только те,
   // что реально пришли — состав зависит от тарифа.
@@ -297,10 +303,12 @@ export default function Dashboard() {
 
       </section>
 
-      {/* ── ТЕКУЩИЙ ТАРИФ ──
-          Раньше стоял в узкой правой колонке и вытягивался в «кишку»:
-          шесть лимитов друг под другом на 300px. Теперь во всю ширину,
-          лимиты — сеткой, шапка тарифа слева, кнопка справа. */}
+      {/* ── ВТОРАЯ СТРОКА: ТАРИФ + БЫСТРЫЕ ДЕЙСТВИЯ ──
+          Повторяет пропорции строки с hero (та же сетка), чтобы правая
+          колонка продолжалась под AI-рекомендациями и страница не
+          распадалась на «широкий блок под двумя узкими». */}
+      <section className="lk-dashboard-second">
+
       {planName && (
         <section className="lk-dashboard-plan">
 
@@ -359,6 +367,63 @@ export default function Dashboard() {
 
         </section>
       )}
+
+        {/* БЫСТРЫЕ ДЕЙСТВИЯ — продолжение правой колонки под
+            AI-рекомендациями. Ведут на существующие роуты. */}
+        <aside className="lk-dashboard-quick">
+          <h2 className="lk-dashboard-quick__title">Быстрые действия</h2>
+
+          <button
+            type="button"
+            className="lk-dashboard-quick__item"
+            onClick={() => navigate('/voice/my')}
+          >
+            <span className="lk-dashboard-quick__icon">
+              <Mic size={18} />
+            </span>
+            <span className="lk-dashboard-quick__text">
+              <strong>Добавить голос</strong>
+              <span>
+                {readyVoicesCount > 0
+                  ? `Записано голосов: ${readyVoicesCount}`
+                  : 'Запишите первый голосовой двойник'}
+              </span>
+            </span>
+            <ChevronRight size={16} />
+          </button>
+
+          <button
+            type="button"
+            className="lk-dashboard-quick__item"
+            onClick={() => navigate('/library/generations')}
+          >
+            <span className="lk-dashboard-quick__icon">
+              <Sparkles size={18} />
+            </span>
+            <span className="lk-dashboard-quick__text">
+              <strong>Создать сказку</strong>
+              <span>Озвучить историю своим голосом</span>
+            </span>
+            <ChevronRight size={16} />
+          </button>
+
+          <button
+            type="button"
+            className="lk-dashboard-quick__item"
+            onClick={() => navigate('/dashboard/support')}
+          >
+            <span className="lk-dashboard-quick__icon">
+              <LifeBuoy size={18} />
+            </span>
+            <span className="lk-dashboard-quick__text">
+              <strong>Поддержка</strong>
+              <span>Ответим на любой вопрос</span>
+            </span>
+            <ChevronRight size={16} />
+          </button>
+        </aside>
+
+      </section>
 
       {/* ── GRID ── */}
       <section className="lk-dashboard-grid">
