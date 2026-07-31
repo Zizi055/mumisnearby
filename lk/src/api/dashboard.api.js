@@ -123,7 +123,12 @@ export async function getDashboardOverview() {
     // которые действительно можно проиграть.
     tracks,
 
-    // ── Статы: голоса реальные, остальное — заглушки пока нет API ──
+    // ── Статы ──
+    // «Прослушиваний» и «Средняя сессия» убраны: бэк не считает ни
+    // проигрывания, ни длительность сессий, эндпоинтов под них нет — обе
+    // карточки навсегда показывали прочерк с подписью «появится после
+    // добавления API». Вместо них — цифры, которые реально есть.
+    // Когда появится аналитика прослушиваний, карточки можно вернуть.
     stats: [
       {
         id:    'activeVoices',
@@ -132,16 +137,20 @@ export async function getDashboardOverview() {
         hint:  voices.length === 0 ? 'Нет голосов' : 'Готовы к использованию',
       },
       {
-        id:    'listens',
-        value: '—',
-        label: 'Прослушиваний',
-        hint:  'Статистика появится после добавления API',
+        id:    'generationsTotal',
+        value: String(generations.length),
+        label: 'Всего озвучек',
+        hint:  generations.length === 0
+          ? 'Вы ещё ничего не озвучили'
+          : 'Создано вашим голосом',
       },
       {
-        id:    'session',
-        value: '—',
-        label: 'Средняя сессия',
-        hint:  'Данные обновятся когда появится API',
+        id:    'generationsReady',
+        value: String(tracks.length),
+        label: 'Готовы к прослушиванию',
+        hint:  generations.length - tracks.length > 0
+          ? `В обработке: ${generations.length - tracks.length}`
+          : 'Все озвучки готовы',
       },
       // Тариф заполняется в Dashboard.jsx из useSubscription() — там
       // ответ /subscription/status уже есть, второй запрос не нужен.

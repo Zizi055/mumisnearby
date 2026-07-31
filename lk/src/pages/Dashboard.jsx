@@ -12,7 +12,19 @@ import {
   Users,
   Mic,
   LifeBuoy,
+  Headphones,
+  AudioLines,
+  CreditCard,
 } from 'lucide-react';
+
+// Иконки карточек статистики. Раньше значок был только у «6 дней
+// подряд», из-за чего ряд выглядел разнородным.
+const STAT_ICONS = {
+  activeVoices: Mic,
+  generationsTotal: AudioLines,
+  generationsReady: Headphones,
+  plan: CreditCard,
+};
 import { getDashboardOverview } from '../api/dashboard.api.js';
 import { getReferralLink } from '../api/bonus.service.js';
 import { getGenerationAudio } from '../api/generations.service';
@@ -283,12 +295,15 @@ export default function Dashboard() {
 
       {/* ── STATS ── */}
       <section className="lk-dashboard-stats" aria-label="Статистика">
-        {withPlanStat(data.stats).map((item) => (
+        {withPlanStat(data.stats).map((item) => {
+          const Icon = item.icon || STAT_ICONS[item.id];
+
+          return (
           <article key={item.id} className="lk-dashboard-stat">
             <header className="lk-dashboard-stat__top">
-              {item.icon && (
+              {Icon && (
                 <div className="lk-dashboard-stat__icon">
-                  <item.icon size={18} />
+                  <Icon size={18} />
                 </div>
               )}
               <p className="lk-dashboard-stat__label">{item.label}</p>
@@ -296,7 +311,8 @@ export default function Dashboard() {
             <h3 className="lk-dashboard-stat__value">{item.value}</h3>
             <p className="lk-dashboard-stat__text">{item.hint}</p>
           </article>
-        ))}
+          );
+        })}
 
         <article className="lk-dashboard-side-card">
           <div className="lk-dashboard-side-card__icon">
