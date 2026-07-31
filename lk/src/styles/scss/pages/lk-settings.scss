@@ -162,6 +162,53 @@
   font-size: 13px;
 }
 
+.lk-settings__success {
+  padding: 10px 12px;
+  border-radius: $lk-radius-12;
+  background: rgba(93, 143, 114, 0.10);
+  color: $lk-brand-dark;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* Поле пароля с кнопкой-глазом внутри */
+.lk-settings__password-field {
+  position: relative;
+
+  .lk-settings__input {
+    padding-right: 44px;
+  }
+}
+
+.lk-settings__password-eye {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+
+  width: 32px;
+  height: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: none;
+  border-radius: 50%;
+  background: transparent;
+
+  color: $lk-text-muted;
+
+  cursor: pointer;
+
+  transition: background .18s ease, color .18s ease;
+
+  &:hover {
+    background: $lk-surface-soft;
+    color: $lk-brand-dark;
+  }
+}
+
 
 
 .lk-settings__input {

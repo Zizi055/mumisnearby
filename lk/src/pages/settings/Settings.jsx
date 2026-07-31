@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Bell, Shield, Users, Sliders } from 'lucide-react';
+import { Bell, Shield, Users, Sliders, Eye, EyeOff } from 'lucide-react';
 import { changePassword, getPasswordChangedAt } from '../../api/profile.service';
 import { useAuth } from '../../context/AuthContext';
 
@@ -31,6 +31,8 @@ export default function Settings() {
   const [passwordSaving, setPasswordSaving] = useState(false);
   const [passwordError, setPasswordError] = useState('');
   const [passwordChangedAt, setPasswordChangedAt] = useState(null);
+  const [showOldPassword, setShowOldPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
   const [twoFactor, setTwoFactor] = useState(false);
 
   useEffect(() => {
@@ -50,7 +52,23 @@ export default function Settings() {
   const [childMode, setChildMode] = useState(false);
 
   const handleSavePassword = async () => {
-    if (!oldPassword || newPassword.length < 8) return;
+    // Раньше здесь стоял молчаливый `return`: при пустом или коротком
+    // пароле кнопка просто ничего не делала и не показывала причину —
+    // выглядело как «не сохраняется и никаких уведомлений».
+    if (!oldPassword) {
+      setPasswordError('Введите текущий пароль');
+      return;
+    }
+
+    if (newPassword.length < 8) {
+      setPasswordError('Новый пароль должен быть не короче 8 символов');
+      return;
+    }
+
+    if (newPassword === oldPassword) {
+      setPasswordError('Новый пароль совпадает с текущим');
+      return;
+    }
 
     setPasswordSaving(true);
     setPasswordError('');
@@ -216,22 +234,50 @@ export default function Settings() {
 
             {showPasswordForm && (
               <div className="lk-settings__password-form">
-                <input
-                  className="lk-settings__input"
-                  type="password"
-                  placeholder="Текущий пароль"
-                  value={oldPassword}
-                  onChange={(e) => setOldPassword(e.target.value)}
-                />
-                <input
-                  className="lk-settings__input"
-                  type="password"
-                  placeholder="Новый пароль (минимум 8 символов)"
-                  value={newPassword}
-                  onChange={(e) => setNewPassword(e.target.value)}
-                />
+                <div className="lk-settings__password-field">
+                  <input
+                    className="lk-settings__input"
+                    type={showOldPassword ? 'text' : 'password'}
+                    placeholder="Текущий пароль"
+                    value={oldPassword}
+                    onChange={(e) => setOldPassword(e.target.value)}
+                  />
+                  <button
+                    type="button"
+                    className="lk-settings__password-eye"
+                    onClick={() => setShowOldPassword((v) => !v)}
+                    aria-label={showOldPassword ? 'Скрыть пароль' : 'Показать пароль'}
+                  >
+                    {showOldPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+
+                <div className="lk-settings__password-field">
+                  <input
+                    className="lk-settings__input"
+                    type={showNewPassword ? 'text' : 'password'}
+                    placeholder="Новый пароль (минимум 8 символов)"
+                    value={newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                  />
+                  <button
+                    type="button"
+                    className="lk-settings__password-eye"
+                    onClick={() => setShowNewPassword((v) => !v)}
+                    aria-label={showNewPassword ? 'Скрыть пароль' : 'Показать пароль'}
+                  >
+                    {showNewPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+
                 {passwordError && (
                   <p className="lk-settings__error">{passwordError}</p>
+                )}
+
+                {passwordSaved && (
+                  <p className="lk-settings__success">
+                    Пароль изменён. Сейчас выйдем из аккаунта — войдите с новым паролем.
+                  </p>
                 )}
                 <button
                   type="button"
