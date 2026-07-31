@@ -48,10 +48,6 @@ export default function Dashboard() {
       ? 'Загружаем данные подписки…'
       : 'Подписка не оформлена';
 
-  // Голоса для подписи в «Быстрых действиях» — из того же ответа
-  // getDashboardOverview, отдельный запрос не нужен.
-  const readyVoicesCount = data?.readyVoices?.length ?? 0;
-
   // Лимиты в фиксированном порядке (а не как отдал бэк) и только те,
   // что реально пришли — состав зависит от тарифа.
   const planLimits = Object.entries(LIMIT_LABELS)
@@ -85,6 +81,14 @@ export default function Dashboard() {
   const [currentAudio, setCurrentAudio] = useState(null);
   const [refLink, setRefLink]     = useState(null);
   const [refCopied, setRefCopied] = useState(false);
+
+  // Голоса для подписи в «Быстрых действиях» — из того же ответа
+  // getDashboardOverview, отдельный запрос не нужен.
+  // ВАЖНО: объявлять только ПОСЛЕ useState(data). Раньше эта строка
+  // стояла выше и обращалась к `data` до инициализации — const попадал
+  // в temporal dead zone, React падал с «Cannot access before
+  // initialization», и весь ЛК уходил в белый экран.
+  const readyVoicesCount = data?.readyVoices?.length ?? 0;
 
   const load = async () => {
     try {
