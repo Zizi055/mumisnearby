@@ -18,6 +18,7 @@ import {
 import LkButton from '../../components/ui/LkButton';
 
 import { useVoiceStore } from '../../store/voice.store';
+import { useSubscription } from '../../hooks/useSubscription';
 
 const trainingSteps = [
   'Файл загружен',
@@ -34,12 +35,19 @@ const emotionPresets = [
   'Терапевтичный',
 ];
 
-const voiceCategories = [
-  'Сказки',
-  'Колыбельные',
-  'Семейные истории',
-  'Терапевтические сценарии',
-];
+// Категории, доступные на тарифе. Источник правды — limits из
+// GET /subscription/status: бэк кладёт туда только те категории, которые
+// входят в оплаченный план. Раньше здесь был статический список из
+// четырёх строк, одинаковый для всех — он показывал «Терапевтические
+// сценарии» даже тем, у кого их в тарифе нет.
+const LIMIT_LABELS = {
+  fairy_tales: 'Сказки',
+  lullabies: 'Колыбельные',
+  therapic: 'Терапевтические сценарии',
+  family_stories: 'Семейные истории',
+  poems: 'Стихи',
+  stories: 'Рассказы',
+};
 
 const aiTags = [
   'мягкая речь',
@@ -76,6 +84,17 @@ export default function VoiceManage() {
     loadVoices,
     pollVoiceUntilReady,
   } = useVoiceStore();
+
+  // Реальные категории тарифа: показываем только те, что пришли в limits
+  // и у которых лимит больше нуля.
+  const subscription = useSubscription();
+
+  const availableCategories = Object.entries(LIMIT_LABELS)
+    .filter(([key]) => {
+      const entry = subscription.limits?.[key];
+      return entry && Number(entry.limit) > 0;
+    })
+    .map(([, label]) => label);
 
   const [uploadedFile, setUploadedFile] =
     useState(null);
@@ -630,25 +649,21 @@ export default function VoiceManage() {
           </h3>
 
           <p>
-            После обучения голос
-            можно использовать
-            в библиотеке сказок,
-            колыбельных и
-            семейных историй.
+            {availableCategories.length > 0
+              ? 'После обучения голос можно использовать в этих категориях — по вашему тарифу.'
+              : subscription.loading
+              ? 'Загружаем данные тарифа…'
+              : 'Оформите подписку, чтобы использовать голос в библиотеке.'}
           </p>
         </div>
 
-        <div className="lk-voice-access__items">
-
-          {voiceCategories.map(
-            (category) => (
-              <span key={category}>
-                {category}
-              </span>
-            )
-          )}
-
-        </div>
+        {availableCategories.length > 0 && (
+          <div className="lk-voice-access__items">
+            {availableCategories.map((category) => (
+              <span key={category}>{category}</span>
+            ))}
+          </div>
+        )}
 
       </div>
 
