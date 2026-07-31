@@ -205,11 +205,21 @@
 }
 
 
+/* inline-flex + width: fit-content — в колонке сводки статус был
+   блочным элементом и растягивал красную плашку на всю ширину ячейки. */
 .lk-payments-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+
+  width: fit-content;
+
   font-size: 11px;
   padding: 4px 10px;
   border-radius: $lk-radius-pill;
   font-weight: 500;
+
+  white-space: nowrap;
 }
 
 .lk-payments-status.is-success {

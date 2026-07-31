@@ -497,11 +497,13 @@ function getTariffAction(tariff, currentPlan) {
     };
   }
 
+  // ghost для неактивной кнопки текущего тарифа — она не действие,
+  // а состояние, и не должна конкурировать с «Выбрать» рядом.
   if (tariff.id === currentPlan.id) {
     return {
       label: 'Текущий тариф',
       type: 'current',
-      buttonVariant: 'secondary',
+      buttonVariant: 'ghost',
     };
   }
 
@@ -521,9 +523,11 @@ function getTariffAction(tariff, currentPlan) {
     };
   }
 
+  // secondary, а не ghost: ghost без обводки сливался с фоном карточки
+  // и рядом с «Текущий тариф» они выглядели одинаково.
   return {
     label: 'Выбрать',
     type: 'downgrade',
-    buttonVariant: 'ghost',
+    buttonVariant: 'secondary',
   };
 }

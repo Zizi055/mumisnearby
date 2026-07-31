@@ -396,6 +396,11 @@ export default function SubscriptionManage() {
         )}
       </div>
 
+      {/* Два столбца: слева тариф и суммы, справа — использование.
+          Раньше «Использование» шло отдельным широким блоком под
+          карточкой, из-за чего страница растягивалась вниз. */}
+      <div className="lk-subscription-top">
+
       <div className="lk-subscription-card">
         <div className="lk-subscription-card__top">
           <div>
@@ -433,6 +438,8 @@ export default function SubscriptionManage() {
           ))}
         </div>
       )}
+
+      </div>
 
       <div className="lk-payment">
 
