@@ -603,11 +603,17 @@ export default function Dashboard() {
                     >
                       <div className="lk-dashboard-story__content">
                         <h3>{item.title}</h3>
+                        {/* Дата появится, когда бэк начнёт отдавать
+                            created_at у озвучек. Пока её нет — вместо
+                            прочерка показываем голос, это реальные данные. */}
                         <p>
-                          {item.typeLabel}
-                          {formatTrackDate(item.createdAt)
-                            ? ` · ${formatTrackDate(item.createdAt)}`
-                            : ''}
+                          {[
+                            item.typeLabel,
+                            formatTrackDate(item.createdAt) ||
+                              (item.voice ? `Голос: ${item.voice}` : null),
+                          ]
+                            .filter(Boolean)
+                            .join(' · ')}
                         </p>
                       </div>
                       <div className="lk-dashboard-story__play">

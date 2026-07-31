@@ -56,6 +56,17 @@ const categoryMeta = {
   },
 };
 
+// ─────────────────────────────────────────────────────────────────────
+// ОТКЛЮЧЕНО 31.07.2026: фильтры «Эмоции» и «Темы» скрыты. Бэк не отдаёт
+// эти поля вместе с контентом (в library.service.js emotions и themes
+// всегда пустые массивы), поэтому пресеты были декоративными.
+// «Длительность» скрыта по той же причине: duration у всех элементов 0.
+// Код фильтров и логика в library.store.js сохранены целиком — когда бэк
+// начнёт отдавать поля, достаточно вернуть флаги в true.
+// ─────────────────────────────────────────────────────────────────────
+const SHOW_DURATION_FILTER = false;
+const SHOW_TAG_FILTERS = false;
+
 const FILTER_STORAGE_KEY = 'lk-library-filters-v3';
 
 const initialFilters = {
@@ -243,6 +254,7 @@ export default function Library() {
           </div>
 
           {/* DURATION */}
+          {SHOW_DURATION_FILTER && (
           <div className="lk-library-group">
             <div className="lk-library-group__head">
               <h3>Длительность</h3>
@@ -264,8 +276,10 @@ export default function Library() {
               ))}
             </div>
           </div>
+          )}
 
           {/* EMOTIONS */}
+          {SHOW_TAG_FILTERS && (
           <div className="lk-library-group">
             <div className="lk-library-group__head">
               <h3>Эмоции</h3>
@@ -286,8 +300,10 @@ export default function Library() {
               ))}
             </div>
           </div>
+          )}
 
           {/* THEMES */}
+          {SHOW_TAG_FILTERS && (
           <div className="lk-library-group">
             <div className="lk-library-group__head">
               <h3>Темы</h3>
@@ -308,6 +324,7 @@ export default function Library() {
               ))}
             </div>
           </div>
+          )}
 
           <div className="lk-library-filters__footer">
             <button
