@@ -68,7 +68,11 @@ export const navigation = [
     tooltip: 'Профиль',
     children: [
       { label: 'Данные', path: '/profile/info' },
-      { label: 'Дети', path: '/profile/kids' },
+      // ОТКЛЮЧЕНО 31.07.2026 по просьбе клиента — раздел «Дети» временно
+      // скрыт. Сам экран не удалён, см. SHOW_KIDS_SECTION в
+      // src/pages/profile/Profile.jsx. Чтобы вернуть — раскомментировать
+      // строку ниже и поставить там флаг в true.
+      // { label: 'Дети', path: '/profile/kids' },
       { label: 'Предпочтения', path: '/profile/preferences' },
     ],
   },

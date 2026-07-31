@@ -254,7 +254,11 @@ export default function Dashboard() {
 
               {subscription.expiresAt && (
                 <p className="lk-dashboard-plan__until">
-                  {subscription.autoRenew ? 'Продление' : 'Действует до'}{' '}
+                  {/* Упоминание автопродления убрано 31.07.2026 вместе с
+                      тумблером в «Управлении подпиской» (SHOW_AUTO_RENEW).
+                      Вернуть — заменить строку ниже на:
+                      {subscription.autoRenew ? 'Продление' : 'Действует до'} */}
+                  Действует до{' '}
                   {new Date(subscription.expiresAt).toLocaleDateString('ru-RU')}
                 </p>
               )}

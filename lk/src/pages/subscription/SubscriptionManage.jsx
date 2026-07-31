@@ -9,6 +9,15 @@ import { cancelAutoRenew } from '../../api/subscription.service';
 import { getTariffSlug } from '../../data/planIdMap';
 import { resolvePlanName } from '../../utils/tariffAccess';
 
+// ─────────────────────────────────────────────────────────────────────
+// ОТКЛЮЧЕНО 31.07.2026 по просьбе клиента: тумблер «Автопродление»
+// временно скрыт. Код НЕ удалён — чтобы вернуть, поставь true.
+// Кнопка «Отменить подписку» ниже осталась рабочей: она дёргает
+// POST /subscription/cancel, то есть отменить продление по-прежнему
+// можно, просто без отдельного переключателя.
+// ─────────────────────────────────────────────────────────────────────
+const SHOW_AUTO_RENEW = false;
+
 function formatCardNumber(value) {
   return value
     .replace(/\D/g, '')
@@ -439,24 +448,26 @@ export default function SubscriptionManage() {
           </LkButton>
         </div>
 
-        <div className="lk-autorenew">
-          <span>Автопродление</span>
-          <label className="lk-switch">
-            <input
-              type="checkbox"
-              checked={autoRenew}
-              disabled={cancelling}
-              onChange={() => {
-                // Включить автопродление обратно через API нельзя — на
-                // бэке есть только /subscription/cancel. Выключение здесь
-                // ведёт на то же подтверждение, что и кнопка ниже, чтобы
-                // не было двух путей отмены с разным поведением.
-                if (autoRenew) setShowCancel(true);
-              }}
-            />
-            <span />
-          </label>
-        </div>
+        {SHOW_AUTO_RENEW && (
+          <div className="lk-autorenew">
+            <span>Автопродление</span>
+            <label className="lk-switch">
+              <input
+                type="checkbox"
+                checked={autoRenew}
+                disabled={cancelling}
+                onChange={() => {
+                  // Включить автопродление обратно через API нельзя — на
+                  // бэке есть только /subscription/cancel. Выключение здесь
+                  // ведёт на то же подтверждение, что и кнопка ниже, чтобы
+                  // не было двух путей отмены с разным поведением.
+                  if (autoRenew) setShowCancel(true);
+                }}
+              />
+              <span />
+            </label>
+          </div>
+        )}
 
       </div>
 
