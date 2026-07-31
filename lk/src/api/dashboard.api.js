@@ -1,4 +1,6 @@
 import { api } from './client';
+import { getGenerations } from './generations.service';
+import { getLibraryItems } from './library.service';
 
 // ── Реальные данные с бэкенда ──────────────────────────────────────────────
 
@@ -11,81 +13,111 @@ async function fetchVoices() {
   }
 }
 
-async function fetchFairyTales() {
+async function fetchGenerations() {
   try {
-    const data = await api.get('/api/content/fairy-tales?skip=0&limit=5');
-    return Array.isArray(data) ? data : [];
+    return await getGenerations();
   } catch {
     return [];
   }
 }
 
-async function fetchLullabies() {
+// content_type озвучки -> категория в library.service.js
+// (истории и стихи приходят одним запросом под ключом 'poem').
+const CONTENT_TYPE_TO_CATEGORY = {
+  fairy_tale: 'fairy_tale',
+  lullaby: 'lullaby',
+  therapy: 'therapy',
+  family_story: 'family_story',
+  poem: 'poem',
+  story: 'poem',
+};
+
+const TYPE_LABELS = {
+  fairy_tale: 'Сказка',
+  lullaby: 'Колыбельная',
+  therapy: 'Терапия',
+  family_story: 'Семейная история',
+  poem: 'Стих',
+  story: 'Рассказ',
+};
+
+// Название и картинку сама озвучка не содержит — только content_type и
+// content_id. Подтягиваем их из библиотеки: по одному запросу на каждую
+// встретившуюся категорию, а не на каждую озвучку.
+async function fetchContentMap(generations) {
+  const categories = [
+    ...new Set(
+      generations
+        .map((g) => CONTENT_TYPE_TO_CATEGORY[g.content_type])
+        .filter(Boolean)
+    ),
+  ];
+
+  if (categories.length === 0) return new Map();
+
   try {
-    const data = await api.get('/api/content/lullabies?skip=0&limit=3');
-    return Array.isArray(data) ? data : [];
+    const results = await Promise.all(
+      categories.map((cat) => getLibraryItems(cat).catch(() => []))
+    );
+
+    const map = new Map();
+    results.flat().forEach((item) => {
+      map.set(`${item.type}:${item.id}`, item);
+    });
+    return map;
   } catch {
-    return [];
+    return new Map();
   }
 }
+
+const FALLBACK_IMAGE = `${import.meta.env.BASE_URL}img/owl.png`;
 
 // ── Собираем обзор дашборда ────────────────────────────────────────────────
 
 export async function getDashboardOverview() {
-  const [voices, tales, lullabies] = await Promise.all([
+  const [voices, generations] = await Promise.all([
     fetchVoices(),
-    fetchFairyTales(),
-    fetchLullabies(),
+    fetchGenerations(),
   ]);
 
+  const contentMap = await fetchContentMap(generations);
+
   const readyVoices = voices.filter((v) => v.status === 'ready' || !v.status);
-  const allContent  = [...tales, ...lullabies];
+  const voiceName = (id) =>
+    id == null ? null : voices.find((v) => v.id === id)?.name ?? null;
 
-  // «Продолжить прослушивание» — первый реальный элемент из библиотеки
-  const firstItem = allContent[0] || null;
+  // Слушать можно только готовые озвучки: у контента библиотеки аудио нет
+  // в принципе, оно появляется лишь после генерации своим голосом.
+  // Ссылка на файл живёт недолго и берётся отдельно — GET /generations/{id}/audio
+  // (см. loadTrackUrl в Dashboard.jsx), поэтому здесь её не запрашиваем.
+  const tracks = generations
+    .filter((g) => g.status === 'ready')
+    .sort((a, b) => (b.id ?? 0) - (a.id ?? 0))
+    .map((g) => {
+      const content = contentMap.get(`${g.content_type}:${g.content_id}`);
 
-  const continueListening = firstItem
-    ? {
-        id:       firstItem.id,
-        title:    firstItem.title,
-        category: tales.includes(firstItem) ? 'Сказка' : 'Колыбельная',
-        age:      firstItem.age ? `${firstItem.age}+` : '3–6 лет',
-        duration: '—',
-        progress: 0,
-        voice:    readyVoices[0]?.name || 'Голос не выбран',
-        mood:     'Спокойствие',
-        image:    firstItem.preview_url || `${import.meta.env.BASE_URL}img/owl.png`,
-        audioUrl: null,
-      }
-    : {
-        id:       null,
-        title:    'Нет активного сценария',
-        category: '—',
-        age:      '—',
-        duration: '—',
-        progress: 0,
-        voice:    '—',
-        mood:     '—',
-        image:    `${import.meta.env.BASE_URL}img/owl.png`,
-        audioUrl: null,
+      return {
+        id: g.id,
+        generationId: g.id,
+        title: content?.title || TYPE_LABELS[g.content_type] || 'Озвучка',
+        type: g.content_type,
+        typeLabel: TYPE_LABELS[g.content_type] || 'Сценарий',
+        age: content?.age ? `${content.age}+` : null,
+        image: content?.image || FALLBACK_IMAGE,
+        voice: voiceName(g.voice_id),
+        createdAt: g.created_at ?? null,
       };
-
-  // Быстрый доступ — реальные сказки
-  const quickStories = allContent.slice(0, 4).map((item) => ({
-    id:       item.id,
-    title:    item.title,
-    duration: '—',
-    audioUrl: null,
-    image:    item.preview_url || null,
-    type:     tales.includes(item) ? 'fairy_tale' : 'lullaby',
-  }));
+    });
 
   return {
     // ── Реальные данные ──
     voices,
     readyVoices,
-    quickStories,
-    continueListening,
+    generations,
+
+    // Список для секции «Продолжить» и для героя: реальные озвучки,
+    // которые действительно можно проиграть.
+    tracks,
 
     // ── Статы: голоса реальные, остальное — заглушки пока нет API ──
     stats: [
@@ -128,11 +160,6 @@ export async function getDashboardOverview() {
 
 export async function getRecentActivity() {
   return [];
-}
-
-export async function getContinueListening() {
-  const data = await getDashboardOverview();
-  return data.continueListening;
 }
 
 export async function getDashboardStats() {

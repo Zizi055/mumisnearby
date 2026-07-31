@@ -397,7 +397,9 @@
 
   margin-top: $lk-space-24;
 
-  align-items: start;
+  /* stretch, а не start — иначе блоки разной высоты «плавают»
+     относительно друг друга и низ не совпадает. */
+  align-items: stretch;
 }
 
 .lk-dashboard-plan {
@@ -409,6 +411,8 @@
 
 /* ── БЫСТРЫЕ ДЕЙСТВИЯ ──────────────────────────────────────────── */
 
+/* Акцентный блок: мягкая зелёная заливка вместо белой карточки —
+   разбавляет ряд одинаковых белых поверхностей. */
 .lk-dashboard-quick {
   display: flex;
   flex-direction: column;
@@ -416,12 +420,15 @@
 
   padding: $lk-space-28;
 
-  background: #fff;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(93, 143, 114, .14) 0%,
+      rgba(93, 143, 114, .06) 100%
+    );
 
-  border: 1px solid $lk-border;
+  border: 1px solid rgba(93, 143, 114, .20);
   border-radius: $lk-radius-24;
-
-  box-shadow: $lk-shadow-card;
 }
 
 .lk-dashboard-quick__title {
@@ -444,9 +451,9 @@
 
   padding: $lk-space-12 $lk-space-14;
 
-  background: $lk-bg;
+  background: rgba(255, 255, 255, .82);
 
-  border: 1px solid $lk-line-soft;
+  border: 1px solid rgba(255, 255, 255, .9);
   border-radius: $lk-radius-16;
 
   color: $lk-text-muted;
@@ -463,7 +470,7 @@
   &:hover {
     background: #fff;
 
-    border-color: rgba(93, 143, 114, .22);
+    border-color: rgba(93, 143, 114, .28);
 
     transform: translateY(-1px);
   }
@@ -477,7 +484,7 @@
 
   border-radius: 12px;
 
-  background: rgba(93, 143, 114, .10);
+  background: rgba(93, 143, 114, .14);
 
   color: $lk-brand-dark;
 
@@ -570,6 +577,15 @@
   font-weight: 600;
 
   color: $lk-brand-dark;
+}
+
+.lk-dashboard-hero__error {
+  margin: 0 0 $lk-space-12;
+
+  font-size: 13px;
+  line-height: 1.5;
+
+  color: $lk-error;
 }
 
 .lk-dashboard-plan__until {
@@ -752,6 +768,78 @@ color: $lk-brand-dark;
   margin-bottom: $lk-space-24;
 }
 
+.lk-dashboard-block__actions {
+  display: flex;
+  align-items: center;
+  gap: $lk-space-12;
+
+  flex-shrink: 0;
+}
+
+.lk-dashboard-block__empty {
+  padding: $lk-space-20 0;
+
+  font-size: 14px;
+  line-height: 1.6;
+
+  color: $lk-text-muted;
+}
+
+
+/* ── СТРЕЛКИ ЛИСТАНИЯ ──────────────────────────────────────────── */
+
+.lk-carousel-nav {
+  display: flex;
+  align-items: center;
+  gap: $lk-space-8;
+}
+
+.lk-carousel-nav__btn {
+  width: 34px;
+  height: 34px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #fff;
+
+  border: 1px solid $lk-border;
+  border-radius: 50%;
+
+  color: $lk-text-muted;
+
+  cursor: pointer;
+
+  transition:
+    background .18s ease,
+    border-color .18s ease,
+    color .18s ease;
+
+  &:hover:not(:disabled) {
+    background: $lk-surface-soft;
+    border-color: rgba(93, 143, 114, .28);
+    color: $lk-brand-dark;
+  }
+
+  &:disabled {
+    opacity: .4;
+    cursor: default;
+  }
+}
+
+.lk-carousel-nav__counter {
+  min-width: 38px;
+
+  font-size: 13px;
+  font-weight: 500;
+  text-align: center;
+
+  color: $lk-text-muted;
+
+  font-variant-numeric: tabular-nums;
+}
+
 .lk-dashboard-block__head h2 {
   margin-bottom: $lk-space-8;
 
@@ -809,6 +897,28 @@ color: $lk-brand-dark;
     0 10px 20px rgba(93, 143, 114, 0.08);
 }
 
+/* Активная озвучка — та, что сейчас в hero-секции. */
+.lk-dashboard-story.is-active {
+  border-color: rgba(93, 143, 114, .35);
+
+  background: rgba(93, 143, 114, .05);
+
+  .lk-dashboard-story__play {
+    background: $lk-brand;
+
+    color: #fff;
+  }
+}
+
+/* Текст карточки всегда прижат влево: раньше длинные названия
+   («Иван царевич и серый волк») центрировались и ломали общий ритм. */
+.lk-dashboard-story__content {
+  flex: 1;
+  min-width: 0;
+
+  text-align: left;
+}
+
 .lk-dashboard-story__content h3 {
   margin-bottom: $lk-space-6;
 
@@ -817,6 +927,8 @@ color: $lk-brand-dark;
   font-weight: 600;
 
   color: $lk-text;
+
+  text-align: left;
 }
 
 .lk-dashboard-story__content p {

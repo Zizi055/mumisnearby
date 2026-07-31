@@ -6,6 +6,7 @@ import {
   Pause,
   Clock3,
   ChevronRight,
+  ChevronLeft,
   Brain,
   Copy,
   Users,
@@ -14,6 +15,27 @@ import {
 } from 'lucide-react';
 import { getDashboardOverview } from '../api/dashboard.api.js';
 import { getReferralLink } from '../api/bonus.service.js';
+import { getGenerationAudio } from '../api/generations.service';
+
+// Дата создания озвучки → «сегодня» / «вчера» / «12 марта».
+function formatTrackDate(iso) {
+  if (!iso) return null;
+
+  const date = new Date(iso);
+  if (Number.isNaN(date.getTime())) return null;
+
+  const startOfDay = (d) =>
+    new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+
+  const diffDays = Math.round(
+    (startOfDay(new Date()) - startOfDay(date)) / 86_400_000
+  );
+
+  if (diffDays === 0) return 'Сегодня';
+  if (diffDays === 1) return 'Вчера';
+
+  return date.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' });
+}
 import { useSubscription } from '../hooks/useSubscription';
 import { resolvePlanName } from '../utils/tariffAccess';
 
@@ -78,9 +100,22 @@ export default function Dashboard() {
   const [data, setData]           = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress]   = useState(0);
-  const [currentAudio, setCurrentAudio] = useState(null);
   const [refLink, setRefLink]     = useState(null);
   const [refCopied, setRefCopied] = useState(false);
+
+  // Текущая озвучка в hero-секции: индекс в data.tracks. Клик по карточке
+  // в «Продолжить» переключает hero целиком — заголовок, картинку, аудио.
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [audioError, setAudioError]   = useState('');
+  const [loadingTrack, setLoadingTrack] = useState(false);
+
+  // Ссылка на файл озвучки живёт ограниченное время, поэтому берём её
+  // по запросу (GET /generations/{id}/audio) и кешируем на время сессии.
+  const [trackUrls, setTrackUrls] = useState({});
+
+  // Страница карусели в секции «Продолжить» — чтобы список не рос вниз
+  // бесконечной колонкой, а листался по 3 карточки.
+  const [page, setPage] = useState(0);
 
   // Голоса для подписи в «Быстрых действиях» — из того же ответа
   // getDashboardOverview, отдельный запрос не нужен.
@@ -94,7 +129,6 @@ export default function Dashboard() {
     try {
       const response = await getDashboardOverview();
       setData(response);
-      setCurrentAudio(response.continueListening.audioUrl);
     } catch (e) {
       console.error('Dashboard load error', e);
     }
@@ -122,25 +156,71 @@ export default function Dashboard() {
     } catch { /* clipboard недоступен */ }
   };
 
-  // Обновляем src когда меняется текущая сказка
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio || !currentAudio) return;
-    audio.src = currentAudio;
-    audio.load();
-    setProgress(0);
-  }, [currentAudio]);
+  const tracks = data?.tracks ?? [];
+  const activeTrack = tracks[activeIndex] ?? null;
 
-  const handlePlayPause = () => {
+  // Пагинация секции «Продолжить».
+  const PAGE_SIZE = 3;
+  const totalPages = Math.max(1, Math.ceil(tracks.length / PAGE_SIZE));
+  const safePage = Math.min(page, totalPages - 1);
+  const visibleTracks = tracks.slice(
+    safePage * PAGE_SIZE,
+    safePage * PAGE_SIZE + PAGE_SIZE
+  );
+
+  // Достаём (и кешируем) временную ссылку на файл озвучки.
+  const loadTrackUrl = async (track) => {
+    if (!track) return null;
+    if (trackUrls[track.id]) return trackUrls[track.id];
+
+    setLoadingTrack(true);
+    setAudioError('');
+    try {
+      const res = await getGenerationAudio(track.generationId);
+      const url = res?.url ?? null;
+      if (!url) throw new Error('Бэкенд не вернул ссылку на аудио');
+      setTrackUrls((prev) => ({ ...prev, [track.id]: url }));
+      return url;
+    } catch (e) {
+      setAudioError(e.message || 'Не удалось загрузить аудио');
+      return null;
+    } finally {
+      setLoadingTrack(false);
+    }
+  };
+
+  const playTrack = async (track) => {
     const audio = audioRef.current;
-    if (!audio) return;
+    if (!audio || !track) return;
+
+    const url = await loadTrackUrl(track);
+    if (!url) return;
+
+    if (audio.src !== url) {
+      audio.src = url;
+      audio.load();
+      setProgress(0);
+    }
+
+    try {
+      await audio.play();
+      setIsPlaying(true);
+    } catch {
+      setAudioError('Браузер заблокировал воспроизведение. Нажмите ещё раз.');
+    }
+  };
+
+  const handlePlayPause = async () => {
+    const audio = audioRef.current;
+    if (!audio || !activeTrack) return;
 
     if (isPlaying) {
       audio.pause();
-    } else {
-      audio.play().catch(() => {});
+      setIsPlaying(false);
+      return;
     }
-    setIsPlaying((v) => !v);
+
+    await playTrack(activeTrack);
   };
 
   const handleSeek = (e) => {
@@ -153,15 +233,19 @@ export default function Dashboard() {
     setProgress(newProgress);
   };
 
-  const handleStoryClick = (story) => {
-    setCurrentAudio(story.audioUrl);
+  // Клик по карточке в «Продолжить»: hero целиком переключается на эту
+  // озвучку (заголовок, картинка, аудио) и сразу начинает играть.
+  const handleStoryClick = async (track) => {
+    const index = tracks.findIndex((t) => t.id === track.id);
+    if (index === -1) return;
+
+    audioRef.current?.pause();
     setIsPlaying(false);
+    setProgress(0);
+    setActiveIndex(index);
+
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    // Небольшая задержка чтобы аудио загрузилось
-    setTimeout(() => {
-      audioRef.current?.play().catch(() => {});
-      setIsPlaying(true);
-    }, 200);
+    await playTrack(track);
   };
 
   if (!data) {
@@ -227,58 +311,90 @@ export default function Dashboard() {
 
         <article className="lk-dashboard-hero">
           <div className="lk-dashboard-hero__content">
-            <p className="lk-dashboard-hero__eyebrow">Продолжить прослушивание</p>
-
-            <h1 className="lk-dashboard-hero__title">
-              {data.continueListening.title}
-            </h1>
-
-            <div className="lk-dashboard-hero__meta">
-              <p>{data.continueListening.age}</p>
-              <span>•</span>
-              <p>{data.continueListening.duration}</p>
-              <span>•</span>
-              <p>{data.continueListening.mood}</p>
-            </div>
-
-            <p className="lk-dashboard-hero__voice">
-              Голос: {data.continueListening.voice}
+            <p className="lk-dashboard-hero__eyebrow">
+              {activeTrack ? 'Продолжить прослушивание' : 'Библиотека'}
             </p>
 
-            {/* ПРОГРЕСС */}
-            <div className="lk-dashboard-progress">
-              <div
-                className="lk-dashboard-progress__line"
-                onClick={handleSeek}
-                style={{ cursor: 'pointer' }}
-                role="slider"
-                aria-label="Прогресс воспроизведения"
-                aria-valuenow={Math.round(progress)}
-              >
-                <span style={{ width: `${progress}%` }} />
-              </div>
-              <p className="lk-dashboard-progress__value">
-                {Math.round(progress)}%
-              </p>
-            </div>
+            <h1 className="lk-dashboard-hero__title">
+              {activeTrack ? activeTrack.title : 'Пока нечего слушать'}
+            </h1>
 
-            {/* PLAY/PAUSE */}
-            <button
-              type="button"
-              className="lk-btn lk-btn--primary lk-btn--lg"
-              onClick={handlePlayPause}
-            >
-              <span className="lk-btn__content">
-                {isPlaying ? <Pause size={18} /> : <Play size={18} />}
-                {isPlaying ? 'Пауза' : 'Продолжить'}
-              </span>
-            </button>
+            {activeTrack ? (
+              <>
+                <div className="lk-dashboard-hero__meta">
+                  <p>{activeTrack.typeLabel}</p>
+                  {activeTrack.age && (<><span>•</span><p>{activeTrack.age}</p></>)}
+                  {formatTrackDate(activeTrack.createdAt) && (
+                    <><span>•</span><p>{formatTrackDate(activeTrack.createdAt)}</p></>
+                  )}
+                </div>
+
+                <p className="lk-dashboard-hero__voice">
+                  Голос: {activeTrack.voice || 'не указан'}
+                </p>
+
+                {/* ПРОГРЕСС */}
+                <div className="lk-dashboard-progress">
+                  <div
+                    className="lk-dashboard-progress__line"
+                    onClick={handleSeek}
+                    style={{ cursor: 'pointer' }}
+                    role="slider"
+                    aria-label="Прогресс воспроизведения"
+                    aria-valuenow={Math.round(progress)}
+                  >
+                    <span style={{ width: `${progress}%` }} />
+                  </div>
+                  <p className="lk-dashboard-progress__value">
+                    {Math.round(progress)}%
+                  </p>
+                </div>
+
+                {audioError && (
+                  <p className="lk-dashboard-hero__error">{audioError}</p>
+                )}
+
+                <button
+                  type="button"
+                  className="lk-btn lk-btn--primary lk-btn--lg"
+                  onClick={handlePlayPause}
+                  disabled={loadingTrack}
+                >
+                  <span className="lk-btn__content">
+                    {isPlaying ? <Pause size={18} /> : <Play size={18} />}
+                    {loadingTrack
+                      ? 'Загрузка…'
+                      : isPlaying
+                      ? 'Пауза'
+                      : 'Слушать'}
+                  </span>
+                </button>
+              </>
+            ) : (
+              <>
+                <p className="lk-dashboard-hero__voice">
+                  Озвучьте любую сказку своим голосом — она появится здесь
+                  и её можно будет слушать в один клик.
+                </p>
+
+                <button
+                  type="button"
+                  className="lk-btn lk-btn--primary lk-btn--lg"
+                  onClick={() => navigate('/library/stories')}
+                >
+                  <span className="lk-btn__content">
+                    Перейти в библиотеку
+                    <ChevronRight size={18} />
+                  </span>
+                </button>
+              </>
+            )}
           </div>
 
           <div className="lk-dashboard-hero__image">
             <img
-              src={data.continueListening.image}
-              alt={data.continueListening.title}
+              src={activeTrack?.image || `${import.meta.env.BASE_URL}img/owl.png`}
+              alt={activeTrack?.title || 'Родные голоса'}
             />
           </div>
         </article>
@@ -418,43 +534,92 @@ export default function Dashboard() {
       <section className="lk-dashboard-grid">
         <div className="lk-dashboard-main">
 
-          {/* БЫСТРЫЙ ДОСТУП */}
+          {/* БЫСТРЫЙ ДОСТУП — карусель, а не бесконечный столбец:
+              список озвучек растёт, поэтому листаем страницами по 3. */}
           <section className="lk-dashboard-block">
             <header className="lk-dashboard-block__head">
               <div>
                 <h2>Продолжить</h2>
-                <p>Быстрый доступ к последним сценариям.</p>
+                <p>Ваши озвучки — нажмите, чтобы слушать выше.</p>
               </div>
-              <button
-                type="button"
-                className="lk-btn lk-btn--ghost lk-btn--md"
-                onClick={() => navigate('/library/stories')}
-              >
-                <span className="lk-btn__content">
-                  Смотреть всё
-                  <ChevronRight size={16} />
-                </span>
-              </button>
+
+              <div className="lk-dashboard-block__actions">
+                {totalPages > 1 && (
+                  <div className="lk-carousel-nav">
+                    <button
+                      type="button"
+                      className="lk-carousel-nav__btn"
+                      onClick={() => setPage(Math.max(0, safePage - 1))}
+                      disabled={safePage === 0}
+                      aria-label="Предыдущие"
+                    >
+                      <ChevronLeft size={16} />
+                    </button>
+
+                    <span className="lk-carousel-nav__counter">
+                      {safePage + 1} / {totalPages}
+                    </span>
+
+                    <button
+                      type="button"
+                      className="lk-carousel-nav__btn"
+                      onClick={() => setPage(Math.min(totalPages - 1, safePage + 1))}
+                      disabled={safePage >= totalPages - 1}
+                      aria-label="Следующие"
+                    >
+                      <ChevronRight size={16} />
+                    </button>
+                  </div>
+                )}
+
+                <button
+                  type="button"
+                  className="lk-btn lk-btn--ghost lk-btn--md"
+                  onClick={() => navigate('/library/generations')}
+                >
+                  <span className="lk-btn__content">
+                    Смотреть всё
+                    <ChevronRight size={16} />
+                  </span>
+                </button>
+              </div>
             </header>
 
-            <div className="lk-dashboard-row">
-              {data.quickStories.map((item) => (
-                <button
-                  key={item.id}
-                  type="button"
-                  className="lk-dashboard-story"
-                  onClick={() => handleStoryClick(item)}
-                >
-                  <div className="lk-dashboard-story__content">
-                    <h3>{item.title}</h3>
-                    <p>{item.duration}</p>
-                  </div>
-                  <div className="lk-dashboard-story__play">
-                    <Play size={14} />
-                  </div>
-                </button>
-              ))}
-            </div>
+            {visibleTracks.length === 0 ? (
+              <p className="lk-dashboard-block__empty">
+                Здесь появятся сказки, которые вы озвучите своим голосом.
+              </p>
+            ) : (
+              <div className="lk-dashboard-row">
+                {visibleTracks.map((item) => {
+                  const isActive = activeTrack?.id === item.id;
+
+                  return (
+                    <button
+                      key={item.id}
+                      type="button"
+                      className={`lk-dashboard-story ${isActive ? 'is-active' : ''}`}
+                      onClick={() => handleStoryClick(item)}
+                    >
+                      <div className="lk-dashboard-story__content">
+                        <h3>{item.title}</h3>
+                        <p>
+                          {item.typeLabel}
+                          {formatTrackDate(item.createdAt)
+                            ? ` · ${formatTrackDate(item.createdAt)}`
+                            : ''}
+                        </p>
+                      </div>
+                      <div className="lk-dashboard-story__play">
+                        {isActive && isPlaying
+                          ? <Pause size={14} />
+                          : <Play size={14} />}
+                      </div>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
           </section>
 
           {/* ГОЛОСОВЫЕ МОДЕЛИ */}
