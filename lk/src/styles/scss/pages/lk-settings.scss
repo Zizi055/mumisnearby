@@ -152,6 +152,13 @@
   gap: $lk-space-12;
 
   padding-top: $lk-space-16;
+
+  /* Поля тянутся во всю ширину, кнопка — нет. У flex-колонки дети по
+     умолчанию растягиваются (align-items: stretch), из-за этого кнопка
+     «Сохранить пароль» занимала всю строку. */
+  .lk-btn {
+    align-self: flex-start;
+  }
 }
 
 .lk-settings__error {
