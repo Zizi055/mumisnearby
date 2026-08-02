@@ -217,10 +217,14 @@
   padding-top: 36px;
 }
 
+/* Иконка-персонаж лежит абсолютом в правом верхнем углу: 82px шириной
+   при right: 18px, то есть занимает 100px справа и 100px сверху.
+   Отступ был только у заголовка, поэтому описание в 2–3 строки заезжало
+   под картинку. Держим одинаковый отступ у заголовка и описания. */
 .pricing-card__title {
   margin: 0 0 14px;
   max-width: 420px;
-  padding-right: 96px;
+  padding-right: 112px;
   color: #1c1c1c;
 }
 
@@ -235,6 +239,7 @@
 .pricing-card__lead {
   margin: 0 0 24px;
   max-width: 520px;
+  padding-right: 112px;
   color: rgba(28, 28, 28, 0.74);
   line-height: 1.6;
 }
@@ -408,8 +413,10 @@
     height: 48px;
   }
 
-  .pricing-card__title {
-    padding-right: 76px;
+  /* Иконка здесь 62px при right: 18px → 80px справа, плюс зазор. */
+  .pricing-card__title,
+  .pricing-card__lead {
+    padding-right: 92px;
   }
 
   .pricing-card__price {
@@ -468,6 +475,12 @@
   .pricing-card__badge-image {
     width: 42px;
     height: 42px;
+  }
+
+  /* Иконка 54px при right: 14px → 68px справа, плюс зазор. */
+  .pricing-card__title,
+  .pricing-card__lead {
+    padding-right: 80px;
   }
 
   .pricing-card__tag {
@@ -529,5 +542,11 @@
   .pricing-card__badge-image {
     width: 36px;
     height: 36px;
+  }
+
+  /* Иконка 48px при right: 14px → 62px справа, плюс зазор. */
+  .pricing-card__title,
+  .pricing-card__lead {
+    padding-right: 74px;
   }
 }
