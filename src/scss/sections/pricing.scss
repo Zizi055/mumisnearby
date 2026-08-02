@@ -217,14 +217,22 @@
   padding-top: 36px;
 }
 
-/* Иконка-персонаж лежит абсолютом в правом верхнем углу: 82px шириной
-   при right: 18px, то есть занимает 100px справа и 100px сверху.
-   Отступ был только у заголовка, поэтому описание в 2–3 строки заезжало
-   под картинку. Держим одинаковый отступ у заголовка и описания. */
+/* Иконка-персонаж лежит абсолютом в правом верхнем углу и занимает
+   примерно 100×100 от угла карточки. Сплошной padding-right сужал бы
+   все строки, включая нижние, где иконки уже нет, — текст выглядел
+   пережатым. Вместо этого ставим невидимую «распорку» с float: right:
+   она отодвигает только те строки, что реально попадают под картинку,
+   а дальше текст идёт во всю ширину. */
+.pricing-card__title::before {
+  content: '';
+  float: right;
+  width: 104px;
+  height: 78px;
+}
+
 .pricing-card__title {
   margin: 0 0 14px;
   max-width: 420px;
-  padding-right: 112px;
   color: #1c1c1c;
 }
 
@@ -239,7 +247,6 @@
 .pricing-card__lead {
   margin: 0 0 24px;
   max-width: 520px;
-  padding-right: 112px;
   color: rgba(28, 28, 28, 0.74);
   line-height: 1.6;
 }
@@ -413,10 +420,10 @@
     height: 48px;
   }
 
-  /* Иконка здесь 62px при right: 18px → 80px справа, плюс зазор. */
-  .pricing-card__title,
-  .pricing-card__lead {
-    padding-right: 92px;
+  /* Иконка здесь 62px при right: 18px → 80px справа. */
+  .pricing-card__title::before {
+    width: 88px;
+    height: 60px;
   }
 
   .pricing-card__price {
@@ -477,10 +484,10 @@
     height: 42px;
   }
 
-  /* Иконка 54px при right: 14px → 68px справа, плюс зазор. */
-  .pricing-card__title,
-  .pricing-card__lead {
-    padding-right: 80px;
+  /* Иконка 54px при right: 14px → 68px справа. */
+  .pricing-card__title::before {
+    width: 76px;
+    height: 52px;
   }
 
   .pricing-card__tag {
@@ -544,9 +551,9 @@
     height: 36px;
   }
 
-  /* Иконка 48px при right: 14px → 62px справа, плюс зазор. */
-  .pricing-card__title,
-  .pricing-card__lead {
-    padding-right: 74px;
+  /* Иконка 48px при right: 14px → 62px справа. */
+  .pricing-card__title::before {
+    width: 70px;
+    height: 46px;
   }
 }
