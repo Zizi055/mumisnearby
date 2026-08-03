@@ -263,6 +263,53 @@
   padding: 0;
 }
 
+/* ЛИМИТЫ С БЭКА — тот же вид, что в карточках личного кабинета:
+   строки, разделённые тонкими линиями, цифры прижаты вправо. */
+
+.pricing-card__limits-title {
+  margin: 0 0 4px;
+  font-size: 11px;
+  line-height: 1.2;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: rgba(28, 28, 28, 0.5);
+}
+
+.pricing-card__limits {
+  display: flex;
+  flex-direction: column;
+}
+
+.pricing-card__limit {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+
+  padding: 11px 0;
+  border-bottom: 1px solid rgba(93, 143, 114, 0.1);
+
+  font-size: 15px;
+  line-height: 1.45;
+  color: rgba(28, 28, 28, 0.74);
+
+  strong {
+    flex-shrink: 0;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1c1c1c;
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.pricing-card__limits-note {
+  margin: 12px 0 0;
+  font-size: 14px;
+  line-height: 1.4;
+  color: rgba(28, 28, 28, 0.5);
+}
+
 .pricing-card__feature {
   position: relative;
   padding: 14px 0 14px 20px;

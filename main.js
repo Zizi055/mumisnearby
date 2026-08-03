@@ -1,4 +1,8 @@
 import './src/scss/style.scss';
+import { initLivePricing } from './src/js/pricing-live.js';
+
+// Цены и лимиты тарифов подтягиваются с бэка — те же данные, что в ЛК.
+document.addEventListener('DOMContentLoaded', initLivePricing);
 
 // Захватываем реферальный код из URL (?ref=CODE или /invite/CODE)
 (function captureRefCode() {
