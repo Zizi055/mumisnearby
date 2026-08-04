@@ -98,7 +98,21 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
+
+  flex-shrink: 0;
+
   transition: transform .2s ease;
+}
+
+/* Размер иконки. Раньше это правило существовало ТОЛЬКО внутри
+   .btn--arrow — то есть у кнопок со стрелкой в круге. У кнопок с
+   простой стрелкой (без модификатора) svg оставался без размеров:
+   в разметке иконка есть, а на экране её нет. */
+.btn__icon svg {
+  display: block;
+
+  width: 18px;
+  height: 18px;
 }
 
 .btn:hover .btn__icon {
