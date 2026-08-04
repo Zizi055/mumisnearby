@@ -198,9 +198,21 @@
   animation-delay: 0.45s;
 }
 
+/* Не .btn, но выглядеть должна так же: текст и стрелка в строку. */
 .hero-card__listen {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
   min-height: 46px;
   padding: 0 18px;
+
+  .btn__icon svg {
+    width: 16px;
+    height: 16px;
+    display: block;
+  }
   border-radius: 999px;
   border: 1.5px solid rgba(111, 146, 127, 0.6);
   background:  #222;

@@ -149,7 +149,10 @@ document.addEventListener('DOMContentLoaded', () => {
       playBtn.setAttribute('aria-pressed', String(isPlaying));
 
       if (listenBtn) {
-        listenBtn.textContent = isPlaying ? 'Остановить' : 'Послушать пример';
+        // Меняем только подпись. Раньше здесь стоял listenBtn.textContent,
+        // который переписывал всё содержимое кнопки — вместе с иконкой.
+        const label = listenBtn.querySelector('.btn__text') || listenBtn;
+        label.textContent = isPlaying ? 'Остановить' : 'Послушать пример';
         listenBtn.classList.toggle('is-playing', isPlaying);
       }
     };
