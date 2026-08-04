@@ -41,6 +41,10 @@
   display: flex;
   flex: 1;
   min-height: 0;
+
+  /* Без min-width: 0 флекс-контейнер раздувается под ширину содержимого
+     и тащит за собой всю страницу. */
+  min-width: 0;
 }
 
 /* =========================================
@@ -127,36 +131,44 @@
 @media (max-width: 768px) {
 
   /* Горизонтальное подменю */
+  /* Разделы переносятся на следующую строку, а не уезжают за правый
+     край. Раньше здесь был overflow-x: auto — формально это прокрутка,
+     но выглядит как обрезанный список: часть разделов просто не видно,
+     и что их можно листать пальцем, никак не показано. */
   .lk-subnav {
     display: flex;
     align-items: center;
-    gap: $lk-space-12;
+    flex-wrap: wrap;
+    gap: $lk-space-8 $lk-space-12;
+
+    min-width: 0;
+
     padding: 10px $lk-space-16;
+
     background: $lk-white;
     border-bottom: 1px solid $lk-line-soft;
-    overflow-x: auto;
-    scrollbar-width: none;
+
     flex-shrink: 0;
   }
 
-  .lk-subnav::-webkit-scrollbar {
-    display: none;
-  }
-
   .lk-subnav__section {
+    /* Название раздела занимает всю строку, чипы уходят под него —
+       так в одну строку помещается больше пунктов. */
+    flex: 1 0 100%;
+
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: $lk-text-muted;
-    white-space: nowrap;
-    flex-shrink: 0;
   }
 
   .lk-subnav__links {
     display: flex;
+    flex-wrap: wrap;
     gap: 6px;
-    flex-shrink: 0;
+
+    min-width: 0;
   }
 
   .lk-subnav__link {

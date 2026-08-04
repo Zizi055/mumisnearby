@@ -403,7 +403,6 @@ export default function VoiceManage() {
         <LkButton
           variant="primary"
           size="sm"
-          className="lk-btn--icon"
           onClick={() =>
             biometryConsent
               ? fileRef.current.click()

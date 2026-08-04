@@ -1,0 +1,63 @@
+@use '../abstracts/variables' as *;
+
+// ─────────────────────────────────────────────────────────────────────
+// ЕДИНЫЙ КОНТЕЙНЕР САЙТА
+//
+// До этого файла один и тот же контейнер был описан двенадцать раз —
+// в каждой секции своей копией (.pricing .container, .audience .container,
+// .about .container и так далее), у каждой со своим набором
+// медиазапросов. Значения совпадали не всегда: pricing, voices-echo и
+// loyalty-banner на 480px уходили в 14px, а на 375px в 12px, тогда как
+// соседние секции держали 20px. Страница конструктора вообще жила по
+// своей шкале 24 / 16 / 12 / 10 — вдвое уже главной.
+//
+// Здесь один источник правды. Правишь три числа — меняется весь сайт.
+//
+// ВАЖНО: селекторы вида «.pricing .container» весят больше, чем просто
+// «.container», поэтому копии в секциях обязательно удалять — иначе это
+// правило до них не дойдёт и станет только хуже.
+// ─────────────────────────────────────────────────────────────────────
+
+$container-max: 1240px;
+
+$container-pad-desktop: 40px;
+$container-pad-tablet: 28px;
+$container-pad-mobile: 20px;
+
+/* Секции используют .container, а hero, FAQ, футер и конструктор —
+   собственные BEM-классы. Разметку не трогаем, просто перечисляем их
+   здесь: правило одно на всех. */
+.container,
+.hero__container,
+.faq__container,
+.footer__container,
+.constructor__container {
+  width: 100%;
+  max-width: $container-max;
+
+  margin: 0 auto;
+  padding: 0 $container-pad-desktop;
+}
+
+/* Планшет */
+@media (max-width: 1024px) {
+  .container,
+  .hero__container,
+  .faq__container,
+  .footer__container,
+  .constructor__container {
+    padding: 0 $container-pad-tablet;
+  }
+}
+
+/* Телефон. Ниже 640px отступ больше не уменьшаем: 12–14px прижимали
+   карточки к самому краю и не совпадали с отступами шапки. */
+@media (max-width: 640px) {
+  .container,
+  .hero__container,
+  .faq__container,
+  .footer__container,
+  .constructor__container {
+    padding: 0 $container-pad-mobile;
+  }
+}

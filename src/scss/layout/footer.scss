@@ -29,11 +29,6 @@
   padding: 28px 0 34px;
 }
 
-.footer__container {
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 0 40px;
-}
 
 /* TOP */
 
@@ -257,16 +252,10 @@
 
 /* 1280px */
 @media (max-width: 1280px) {
-  .footer__container {
-    padding: 0 40px;
-  }
 }
 
 /* 1024px — планшет горизонтальный */
 @media (max-width: 1024px) {
-  .footer__container {
-    padding: 0 28px;
-  }
 
   .footer__top {
     grid-template-columns: 1fr 1fr;
@@ -298,9 +287,6 @@
     padding: 22px 0 28px;
   }
 
-  .footer__container {
-    padding: 0 20px;
-  }
 
   .footer__top {
     grid-template-columns: 1fr;
@@ -334,9 +320,6 @@
     padding: 18px 0 24px;
   }
 
-  .footer__container {
-    padding: 0 20px;
-  }
 
   .footer__top {
     gap: 18px;
@@ -367,9 +350,6 @@
 /* MOBILE PORTRAIT */
 
 @media (max-width: 480px) {
-  .footer__container {
-    padding: 0 20px;
-  }
 
   .footer__top {
     gap: 16px;
@@ -397,9 +377,6 @@
 /* SMALL MOBILE */
 
 @media (max-width: 375px) {
-  .footer__container {
-    padding: 0 20px;
-  }
 
   .footer__title {
     font-size: 22px;

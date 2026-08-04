@@ -5,11 +5,6 @@
    background: #f8f5f0;
 }
 
-.hero__container {
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 0 40px;
-}
 
 .hero__grid {
   display: grid;
@@ -521,9 +516,6 @@
     padding: 96px 0;
   }
 
-  .hero__container {
-    padding: 0 28px;
-  }
 
   .hero__grid {
     grid-template-columns: 1fr;
@@ -550,9 +542,6 @@
     padding: 72px 0 64px;
   }
 
-  .hero__container {
-    padding: 0 20px;
-  }
 
   .hero__title {
     font-size: 30px;

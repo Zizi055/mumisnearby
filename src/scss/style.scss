@@ -6,6 +6,9 @@
 @use './abstracts/lk-tokens.scss' as *;
 
 @use './base/typography';
+
+// Единый контейнер сайта — вместо двенадцати копий по секциям.
+@use './base/container';
 @use './components/buttons';
 @use './layout/header';
 @use './layout/hero';

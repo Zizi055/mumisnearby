@@ -296,12 +296,12 @@ function TariffCard({ tariff, currentPlan, billingPeriod, navigate }) {
           size="md"
           disabled={action.type === 'current'}
           onClick={handleClick}
-          className="lk-btn--icon"
+          className="lk-btn--arrow"
         >
           {action.label}
 
           {action.type !== 'current' && (
-            <ArrowUpRight size={16} />
+            <span className="lk-btn__icon"><ArrowUpRight size={16} /></span>
           )}
         </LkButton>
       </div>

@@ -10,11 +10,6 @@
   background: #f8f5f0;
 }
 
-.loyalty-banner .container {
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 0 40px;
-}
 
 /* BODY */
 
@@ -256,9 +251,6 @@ box-shadow:
     padding: 8px 0 76px;
   }
 
-  .loyalty-banner .container {
-    padding: 0 28px;
-  }
 
   .loyalty-banner__card {
     grid-template-columns: 1fr;
@@ -299,9 +291,6 @@ box-shadow:
     padding: 8px 0 58px;
   }
 
-  .loyalty-banner .container {
-    padding: 0 20px;
-  }
 
   .loyalty-banner__card {
     padding: 20px 18px;
@@ -355,9 +344,6 @@ box-shadow:
     padding: 6px 0 40px;
   }
 
-  .loyalty-banner .container {
-    padding: 0 20px;
-  }
 
   .loyalty-banner__card {
     padding: 16px 14px;
@@ -401,9 +387,6 @@ box-shadow:
 /* SMALL MOBILE */
 
 @media (max-width: 375px) {
-  .loyalty-banner .container {
-    padding: 0 20px;
-  }
 
   .loyalty-banner__card {
     padding: 14px 12px;

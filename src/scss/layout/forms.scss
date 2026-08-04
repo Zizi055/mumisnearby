@@ -11,11 +11,6 @@
   overflow: hidden;
 }
 
-.contact-block .container {
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 0 40px;
-}
 
 /* BODY */
 
@@ -298,9 +293,6 @@
     padding: 72px 0 0;
   }
 
-  .contact-block .container {
-    padding: 0 28px;
-  }
 
   .contact-block__inner {
     grid-template-columns: 1fr;
@@ -333,9 +325,6 @@
     padding: 56px 0 0;
   }
 
-  .contact-block .container {
-    padding: 0 20px;
-  }
 
   .contact-block__content,
   .contact-block__form-wrap {

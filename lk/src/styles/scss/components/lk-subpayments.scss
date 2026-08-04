@@ -453,9 +453,14 @@
     gap: $lk-space-8;
   }
 
+  /* Чипы фильтра переносятся, а не уезжают вбок — как в библиотеке
+     и в подменю разделов. */
   .lk-payments-filter {
     width: 100%;
-    overflow-x: auto;
+    min-width: 0;
+
+    flex-wrap: wrap;
+    gap: $lk-space-8;
     justify-content: flex-start;
   }
 

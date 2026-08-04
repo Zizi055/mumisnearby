@@ -7,11 +7,6 @@
   background: #f8f5f0;
 }
 
-.pricing .container {
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 0 40px;
-}
 
 .pricing__head {
   display: flex;
@@ -429,9 +424,6 @@
     padding: 72px 0 82px;
   }
 
-  .pricing .container {
-    padding: 0 28px;
-  }
 
   .pricing__grid {
     grid-template-columns: 1fr;
@@ -443,9 +435,6 @@
     padding: 56px 0 64px;
   }
 
-  .pricing .container {
-    padding: 0 20px;
-  }
 
   .pricing__head {
     margin-bottom: 26px;
@@ -501,9 +490,6 @@
     padding: 40px 0 48px;
   }
 
-  .pricing .container {
-    padding: 0 20px;
-  }
 
   .pricing__head {
     margin-bottom: 20px;
@@ -576,9 +562,6 @@
 /* SMALL MOBILE */
 
 @media (max-width: 375px) {
-  .pricing .container {
-    padding: 0 20px;
-  }
 
   .pricing-card {
     padding: 14px 12px;

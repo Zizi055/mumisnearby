@@ -205,7 +205,6 @@ export default function VoiceMy() {
         <LkButton
           variant="secondary"
           size="sm"
-          className="lk-btn--icon"
           disabled={voiceLimitReached}
           title={voiceLimitReached ? 'В пробном периоде доступен 1 голос' : undefined}
           onClick={() => {
