@@ -129,6 +129,11 @@ export default function Dashboard() {
   // бесконечной колонкой, а листался по 3 карточки.
   const [page, setPage] = useState(0);
 
+  // То же самое для голосовых моделей. Раньше они лежали одним рядом
+  // без ограничения по количеству — при пяти голосах ряд вылезал за
+  // пределы колонки и наезжал на правый блок с бонусами.
+  const [voicePage, setVoicePage] = useState(0);
+
   // Голоса для подписи в «Быстрых действиях» — из того же ответа
   // getDashboardOverview, отдельный запрос не нужен.
   // ВАЖНО: объявлять только ПОСЛЕ useState(data). Раньше эта строка
@@ -184,6 +189,15 @@ export default function Dashboard() {
   const visibleTracks = tracks.slice(
     safePage * PAGE_SIZE,
     safePage * PAGE_SIZE + PAGE_SIZE
+  );
+
+  // Пагинация голосовых моделей — те же три карточки в ряд.
+  const voices = data?.voices ?? [];
+  const voiceTotalPages = Math.max(1, Math.ceil(voices.length / PAGE_SIZE));
+  const safeVoicePage = Math.min(voicePage, voiceTotalPages - 1);
+  const visibleVoices = voices.slice(
+    safeVoicePage * PAGE_SIZE,
+    safeVoicePage * PAGE_SIZE + PAGE_SIZE
   );
 
   // Достаём (и кешируем) временную ссылку на файл озвучки.
@@ -665,20 +679,50 @@ export default function Dashboard() {
                 <h2>Голосовые модели</h2>
                 <p>Активные голоса внутри платформы.</p>
               </div>
-              <button
-                type="button"
-                className="lk-btn lk-btn--secondary lk-btn--md"
-                onClick={() => navigate('/voice/manage')}
-              >
-                <span className="lk-btn__content">
-                  Управление
-                  <ChevronRight size={16} />
-                </span>
-              </button>
+              <div className="lk-dashboard-block__actions">
+                {voiceTotalPages > 1 && (
+                  <div className="lk-carousel-nav">
+                    <button
+                      type="button"
+                      className="lk-carousel-nav__btn"
+                      onClick={() => setVoicePage(Math.max(0, safeVoicePage - 1))}
+                      disabled={safeVoicePage === 0}
+                      aria-label="Предыдущие голоса"
+                    >
+                      <ChevronLeft size={16} />
+                    </button>
+
+                    <span className="lk-carousel-nav__counter">
+                      {safeVoicePage + 1} / {voiceTotalPages}
+                    </span>
+
+                    <button
+                      type="button"
+                      className="lk-carousel-nav__btn"
+                      onClick={() => setVoicePage(Math.min(voiceTotalPages - 1, safeVoicePage + 1))}
+                      disabled={safeVoicePage >= voiceTotalPages - 1}
+                      aria-label="Следующие голоса"
+                    >
+                      <ChevronRight size={16} />
+                    </button>
+                  </div>
+                )}
+
+                <button
+                  type="button"
+                  className="lk-btn lk-btn--secondary lk-btn--md"
+                  onClick={() => navigate('/voice/manage')}
+                >
+                  <span className="lk-btn__content">
+                    Управление
+                    <ChevronRight size={16} />
+                  </span>
+                </button>
+              </div>
             </header>
 
             <div className="lk-dashboard-voices">
-              {data.voices.length === 0 && (
+              {voices.length === 0 && (
                 <p style={{ color: 'var(--lk-text-muted, #6e756f)', fontSize: 14 }}>
                   Голосов пока нет. <span
                     style={{ color: '#5d8f72', cursor: 'pointer', textDecoration: 'underline' }}
@@ -686,7 +730,7 @@ export default function Dashboard() {
                   >Добавить голос</span>
                 </p>
               )}
-              {data.voices.map((voice) => (
+              {visibleVoices.map((voice) => (
                 <article key={voice.id} className="lk-dashboard-voice">
                   <div className="lk-dashboard-voice__avatar">
                     {voice.name?.[0]?.toUpperCase() || '?'}

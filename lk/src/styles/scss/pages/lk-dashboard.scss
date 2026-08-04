@@ -970,9 +970,13 @@ display: flex;
 
 
 
+/* Было flex-row без ограничений: карточки не сжимались, ряд рос вправо
+   и при пяти голосах вылезал за колонку прямо на правый блок с бонусами.
+   Сетка из трёх равных колонок — ровно столько, сколько показывает
+   карусель, и шире контейнера уехать уже нечему. */
 .lk-dashboard-voices {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: $lk-space-16;
 }
 
@@ -980,6 +984,8 @@ display: flex;
   display: flex;
   align-items: center;
   gap: $lk-space-16;
+
+  min-width: 0;
 
   padding: $lk-space-20;
 
@@ -1010,8 +1016,10 @@ display: flex;
 
 .lk-dashboard-voice__content {
   flex: 1;
+  min-width: 0;
 }
 
+/* Длинное имя голоса не должно распирать карточку — обрезаем многоточием. */
 .lk-dashboard-voice__content h3 {
   margin-bottom: $lk-space-6;
 
@@ -1020,6 +1028,10 @@ display: flex;
   font-weight: 600;
 
   color: $lk-text;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .lk-dashboard-voice__content p {
@@ -1027,9 +1039,15 @@ display: flex;
   line-height: 1.5;
 
   color: $lk-text-muted;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .lk-dashboard-voice__status {
+  flex-shrink: 0;
+
   padding: 8px 12px;
 
   background: rgba(0, 0, 0, 0.04);
@@ -1212,5 +1230,20 @@ display: flex;
     color: $lk-brand;
     font-weight: 500;
     margin: 0;
+  }
+}
+
+/* Голосовые модели: три в ряд на широком экране, две на планшете,
+   одна на телефоне. Количество карточек на странице карусели задаётся
+   в Dashboard.jsx (PAGE_SIZE), здесь только раскладка. */
+@media (max-width: 1200px) {
+  .lk-dashboard-voices {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 640px) {
+  .lk-dashboard-voices {
+    grid-template-columns: 1fr;
   }
 }
