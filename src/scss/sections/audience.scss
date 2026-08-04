@@ -228,6 +228,11 @@
   .audience__photo {
     height: 300px;
   }
+
+  /* Блок с видео высоту не фиксируем — см. комментарий в мобильном блоке. */
+  .audience__photo--bottom {
+    height: auto;
+  }
 }
 
 /* MOBILE */
@@ -254,6 +259,17 @@
   .audience__photo {
     height: 260px;
     border-radius: 20px;
+  }
+
+  /* Контейнер был жёстко 260px, а ролик вертикальный и внутри
+     overflow:hidden — из него была видна только верхняя часть кадра.
+     Отдаём высоту содержимому: видео показывается целиком. */
+  .audience__photo--bottom {
+    height: auto;
+  }
+
+  .audience-tech__video {
+    height: auto;
   }
 
   .audience__list {

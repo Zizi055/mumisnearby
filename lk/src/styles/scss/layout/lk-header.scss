@@ -200,8 +200,16 @@
     font-size: 14px;
   }
 
-  .lk-header__breadcrumb {
+  /* Раньше здесь стояло display:none на всю строку крошек — и вместе с
+     ней с телефона пропадала единственная ссылка на маркетинговый сайт.
+     Прячем только названия разделов (они дублируются в заголовке ниже),
+     а ссылку «Родные голоса» оставляем. */
+  .lk-header__breadcrumb span {
     display: none;
+  }
+
+  .lk-header__breadcrumb-home {
+    font-size: 11px;
   }
 
   .lk-header__icon-btn {

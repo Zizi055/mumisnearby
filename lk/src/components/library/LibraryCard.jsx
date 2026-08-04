@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-
 import {
   Clock3,
   Heart,
@@ -15,8 +14,12 @@ import { useTrialStore } from '../../store/trial.store';
 import { useHasPaidPlan } from '../../store/subscription.store';
 import { getRequiredTariffLabel } from '../../utils/tariffAccess';
 
+// Запасная обложка: у стихов и рассказов preview_url в базе пустой.
+const FALLBACK_IMAGE = `${import.meta.env.BASE_URL}img/owl.png`;
+
 export default function LibraryCard({ item, isTrialLocked = false, isTariffLocked = false }) {
   const navigate = useNavigate();
+
   const toggleFavorite = useLibraryStore((s) => s.toggleFavorite);
   const trial = useTrialStore((s) => s.trial);
   const hasPaidPlan = useHasPaidPlan();
@@ -54,7 +57,14 @@ export default function LibraryCard({ item, isTrialLocked = false, isTariffLocke
     <article className={`lk-library-card ${isLocked ? 'is-trial-locked' : ''}`}>
       {/* image */}
       <div className="lk-library-card__media">
-        <img src={item.image} alt={item.title} />
+        {/* У стихов и рассказов в базе preview_url пустой — без запасной
+            картинки браузер рисовал сломанную иконку на всю карточку. */}
+        <img
+          src={item.image || FALLBACK_IMAGE}
+          alt={item.title}
+          loading="lazy"
+          onError={(e) => { e.currentTarget.src = FALLBACK_IMAGE; }}
+        />
         <div className="lk-library-card__overlay" />
 
         <div className="lk-library-card__top">

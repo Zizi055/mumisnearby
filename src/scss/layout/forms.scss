@@ -351,9 +351,12 @@
     border-radius: 18px;
   }
 
+  /* Тот же случай: фиксированная высота + object-fit: cover срезали
+     ролик по краям. На телефоне показываем кадр целиком. */
   .contact-block__illustration video,
   .contact-block__illustration .why-tech__video {
-    height: 210px;
+    height: auto;
+    object-fit: contain;
     border-radius: 18px;
   }
 

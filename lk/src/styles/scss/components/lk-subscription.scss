@@ -615,8 +615,77 @@
     font-size: 15px;
   }
 
+  /* Сравнение тарифов на телефоне.
+     Было: min-width 600px + колонка «Возможность» 220px — таблица не
+     влезала, ездила вбок, и половина цифр была за краем экрана.
+     Стало: название возможности отдельной строкой над значениями,
+     под ним четыре равные колонки по числу тарифов. Горизонтальная
+     прокрутка не нужна вовсе. */
+  .lk-compare-table {
+    overflow-x: visible;
+  }
+
   .lk-compare-row {
-    min-width: 600px;
+    min-width: 0;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 6px 4px;
+    padding: 10px 12px;
+  }
+
+  .lk-compare-row.is-head {
+    position: static;
+  }
+
+  .lk-compare-feature {
+    grid-column: 1 / -1;
+    position: static;
+    padding: 0;
+
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: $lk-text-muted;
+
+    border-right: none;
+  }
+
+  /* В шапке и в строке кнопок первая ячейка пустая — на телефоне
+     она бы просто оставляла дыру. */
+  .lk-compare-row.is-head .lk-compare-feature,
+  .lk-compare-row.is-actions > div:first-child {
+    display: none;
+  }
+
+  .lk-compare-plan,
+  .lk-compare-value,
+  .lk-compare-action {
+    padding: 0;
+    border-left: none;
+    text-align: center;
+    justify-content: center;
+  }
+
+  .lk-compare-plan {
+    gap: 2px;
+    font-size: 11px;
+    line-height: 1.3;
+  }
+
+  .lk-compare-plan strong {
+    font-size: 12px;
+  }
+
+  .lk-compare-value {
+    font-size: 13px;
+    font-weight: 500;
+  }
+
+  .lk-compare-action .lk-btn {
+    width: 100%;
+    padding-left: 4px;
+    padding-right: 4px;
+    font-size: 12px;
   }
 
   .lk-tariff-access-item {

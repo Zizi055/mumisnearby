@@ -685,9 +685,18 @@
 }
 
 @media (max-width: 640px) {
+  /* На телефоне сетка в одну колонку: карточка во всю ширину, а высота
+     обложки была жёстко зафиксирована (160px). Картинки у нас квадратные,
+     поэтому object-fit: cover срезал почти всё, кроме верхней полосы.
+     Задаём квадратный контейнер — изображение помещается целиком. */
   .lk-library-card__media {
-    height: 160px;
-    flex: 0 0 160px;
+    height: auto;
+    flex: 0 0 auto;
+    aspect-ratio: 1 / 1;
+  }
+
+  .lk-library-card__media img {
+    object-position: center;
   }
 
   .lk-card-modal-overlay {
@@ -729,10 +738,7 @@
     border-radius: 20px;
   }
 
-  .lk-library-card__media {
-    height: 150px;
-    flex: 0 0 150px;
-  }
+  /* высоту не задаём — работает aspect-ratio из блока 640px */
 
   .lk-library-card h3 {
     font-size: 15px;
@@ -756,11 +762,6 @@
 }
 
 @media (max-width: 375px) {
-  .lk-library-card__media {
-    height: 140px;
-    flex: 0 0 140px;
-  }
-
   .lk-library-card__content {
     padding: 12px 14px;
   }

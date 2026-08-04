@@ -17,6 +17,14 @@ export default function LkLayout() {
     loadSubscription();
   }, []);
 
+  // Мобильное меню закрываем на любую смену маршрута. Раньше onClose
+  // передавался в Sidebar, но нигде не вызывался: после нажатия на пункт
+  // страница менялась, а панель оставалась открытой поверх контента —
+  // приходилось тыкать в пустое место экрана.
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [location.pathname]);
+
   const hasPaidPlan = useHasPaidPlan();
   const trial = !hasPaidPlan ? getTrialInfo() : null;
 

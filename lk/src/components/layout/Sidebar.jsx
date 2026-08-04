@@ -25,6 +25,7 @@ export default function Sidebar({ isOpen, onClose }) {
                 key={item.path}
                 to={item.children[0].path}
                 aria-label={item.label}
+                onClick={onClose}
                 className={({ isActive }) =>
                   `lk-sidebar__icon ${isProfile ? 'lk-sidebar__icon--profile' : ''} ${isActive ? 'is-active' : ''}`
                 }
