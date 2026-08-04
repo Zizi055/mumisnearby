@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Percent, Users, Sparkles, Copy, Send, MessageCircle, Heart, UserCheck, Shield, ChevronDown } from 'lucide-react';
+import { Percent, Users, Sparkles, Copy, Send, MessageCircle, Heart, UserCheck, Shield, ChevronDown, ArrowUpRight } from 'lucide-react';
 import LkButton from '../../components/ui/LkButton';
 import { getBonus, claimBonus, getReferralLink, getReferralStats } from '../../api/bonus.service';
 
@@ -165,7 +165,7 @@ export default function SubscriptionBonus() {
           )}
           {claimed && (
             <p className="lk-bonus-hint" style={{ color: 'var(--lk-brand)' }}>
-              ✓ Бонус начислен — 1 месяц бесплатно
+              <><Check size={15} /> Бонус начислен — 1 месяц бесплатно</>
             </p>
           )}
 
@@ -220,7 +220,7 @@ export default function SubscriptionBonus() {
                 onClick={() => setShowInvite(true)}
               >
                 Пригласить друга
-                <span className="lk-btn__circle">↗</span>
+                <ArrowUpRight size={16} />
               </LkButton>
             </>
           )}

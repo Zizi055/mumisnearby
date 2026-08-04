@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LifeBuoy, Receipt, Gift, ChevronRight } from 'lucide-react';
+import { LifeBuoy, Receipt, Gift, ChevronRight, ArrowUpRight, X, ArrowRight } from 'lucide-react';
 import LkButton from '../../components/ui/LkButton';
 import LkInput from '../../components/ui/LkInput';
 import LkCardPreview from '../../components/ui/LkCardPreview';
@@ -139,7 +139,7 @@ function SbpBankList({ onSelect }) {
             {bank.name[0]}
           </span>
           <span className="lk-sbp-bank__name">{bank.name}</span>
-          <span className="lk-sbp-bank__arrow">→</span>
+          <span className="lk-sbp-bank__arrow"><ArrowRight size={14} /></span>
         </button>
       ))}
     </div>
@@ -432,7 +432,7 @@ export default function SubscriptionManage() {
             onClick={() => navigate('/subscription/tariff')}
           >
             Изменить тариф
-            <span className="lk-btn__circle">↗</span>
+            <ArrowUpRight size={16} />
           </LkButton>
 
           <LkButton
@@ -442,7 +442,7 @@ export default function SubscriptionManage() {
             disabled={cancelling || subscription.status !== 'active'}
           >
             Отменить подписку
-            <span className="lk-btn__circle">✕</span>
+            <X size={16} />
           </LkButton>
         </div>
       </div>
@@ -552,7 +552,7 @@ export default function SubscriptionManage() {
                       setShowDelete(true);
                     }}
                   >
-                    ✕
+                    <X size={16} />
                   </button>
                   <div className={`lk-payment-check ${isDefault ? 'is-active' : ''}`} />
                 </div>

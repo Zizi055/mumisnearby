@@ -143,38 +143,16 @@ export async function getLibraryItems(type) {
   }
 
   if (type === 'poem') {
-    // Вкладка в UI называется "Рассказы и стихи" — показываем оба реальных
-    // типа контента (poem + story) в одном списке. item.type у каждой
-    // карточки остаётся точным ('poem' или 'story'), чтобы генерация
-    // озвучки (POST /generations) уходила с правильным content_type.
-    // allSettled, а не all: если один из двух эндпоинтов отвечает ошибкой,
-    // раздел всё равно показывает второй тип, а в консоль уходит понятная
-    // причина. С Promise.all падение /stories обнуляло и стихи тоже.
-    const [poemsRes, storiesRes] = await Promise.allSettled([
-      api.get('/api/content/poems?skip=0&limit=100'),
-      api.get('/api/content/stories?skip=0&limit=100'),
-    ]);
+    const data = await api.get('/api/content/poems?skip=0&limit=100');
+    return data.map(mapPoem);
+  }
 
-    const poems =
-      poemsRes.status === 'fulfilled' && Array.isArray(poemsRes.value)
-        ? poemsRes.value.map(mapPoem)
-        : [];
-
-    const stories =
-      storiesRes.status === 'fulfilled' && Array.isArray(storiesRes.value)
-        ? storiesRes.value.map(mapStory)
-        : [];
-
-    if (poemsRes.status === 'rejected') {
-      console.warn('/api/content/poems не ответил:', poemsRes.reason?.message);
-    }
-    if (storiesRes.status === 'rejected') {
-      console.warn('/api/content/stories не ответил:', storiesRes.reason?.message);
-    }
-
-    console.info(`Рассказы и стихи: стихов ${poems.length}, рассказов ${stories.length}`);
-
-    return [...poems, ...stories];
+  // Рассказы — отдельный раздел меню (/library/short-stories). Раньше
+  // стихи и рассказы сваливались в одну вкладку «Рассказы и стихи»,
+  // и понять, чего именно сколько, было невозможно.
+  if (type === 'story') {
+    const data = await api.get('/api/content/stories?skip=0&limit=100');
+    return data.map(mapStory);
   }
 
   return [];

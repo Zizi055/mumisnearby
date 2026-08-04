@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { ArrowUpRight } from 'lucide-react';
 
 export default function Home() {
   const navigate = useNavigate();
@@ -103,7 +104,7 @@ export default function Home() {
               <div className="hero__actions">
                 <button type="button" className="btn btn--primary hero__btn">
                   <span className="btn__text">Создать голосового двойника за 10 минут</span>
-                  <span className="btn__icon">↗</span>
+                  <ArrowUpRight size={16} />
                 </button>
 
                 <button type="button" className="btn btn--ghost hero__btn">
@@ -562,7 +563,7 @@ export default function Home() {
                   aria-label="Подать заявку"
                 >
                   <span className="btn__text">Подать заявку</span>
-                  <span className="btn__icon">↗</span>
+                  <ArrowUpRight size={16} />
                 </button>
 
                 <div className="loyalty-banner__family" aria-hidden="true">
@@ -610,7 +611,7 @@ export default function Home() {
                 aria-label="Попробовать"
               >
                 <span className="btn__text">Попробовать</span>
-                <span className="btn__icon">↗</span>
+                <ArrowUpRight size={16} />
               </button>
             </div>
 

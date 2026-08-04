@@ -1,3 +1,5 @@
+import { Play } from 'lucide-react';
+
 export default function HeroCard() {
   return (
     <section className="lk-section">
@@ -23,7 +25,7 @@ export default function HeroCard() {
           </div>
 
           <div className="lk-hero-card__actions">
-            <button type="button" className="lk-icon-btn">▶</button>
+            <button type="button" className="lk-icon-btn"><Play size={16} /></button>
             <button type="button" className="lk-icon-btn">＋</button>
           </div>
         </div>

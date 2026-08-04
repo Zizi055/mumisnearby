@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { ArrowLeft, AlertCircle, ShieldCheck } from 'lucide-react';
+import { ArrowLeft, AlertCircle, ShieldCheck, ArrowRight } from 'lucide-react';
 import LkButton from '../../components/ui/LkButton';
 import { createPayment } from '../../api/payments.service';
 import { getBackendPlanId, getTariffSlug } from '../../data/planIdMap';
@@ -229,7 +229,7 @@ export default function Checkout() {
                 ? 'Обрабатываем...'
                 : changeType === 'downgrade'
                 ? 'Подтвердить смену'
-                : 'Оплатить →'}
+                : <>Оплатить <ArrowRight size={16} /></>}
             </LkButton>
 
             <p className="lk-summary__note">

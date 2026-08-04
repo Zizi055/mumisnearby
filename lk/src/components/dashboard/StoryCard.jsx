@@ -1,3 +1,5 @@
+import { Play } from 'lucide-react';
+
 export default function StoryCard({ type, title, age, imageClass = '' }) {
   return (
     <article className="lk-story-card">
@@ -9,7 +11,7 @@ export default function StoryCard({ type, title, age, imageClass = '' }) {
         <div className="lk-story-card__age">{age}</div>
       </div>
 
-      <button type="button" className="lk-story-card__play">▶</button>
+      <button type="button" className="lk-story-card__play"><Play size={14} /></button>
     </article>
   );
 }

@@ -8,15 +8,15 @@ import { getGenerations, getGenerationAudio } from '../../api/generations.servic
 import { getLibraryItems } from '../../api/library.service';
 import { useVoiceStore } from '../../store/voice.store';
 
-// content_type генерации -> категория, которую грузит library.service.js
-// (истории и стихи приходят одним запросом под ключом 'poem').
+// content_type генерации -> категория, которую грузит library.service.js.
+// Стихи и рассказы теперь два отдельных раздела и два отдельных запроса.
 const CONTENT_TYPE_TO_CATEGORY = {
   fairy_tale: 'fairy_tale',
   lullaby: 'lullaby',
   therapy: 'therapy',
   family_story: 'family_story',
   poem: 'poem',
-  story: 'poem',
+  story: 'story',
 };
 
 // Вкладка «Мои сказки» в библиотеке — список всех прошлых озвучек

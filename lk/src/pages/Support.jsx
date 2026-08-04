@@ -189,7 +189,7 @@ function SupportModal({ isOpen, onClose, onSuccess }) {
 
         {ticketStatus === 'success' ? (
           <div className="lk-support-success">
-            <div className="lk-support-success__icon">✓</div>
+            <div className="lk-support-success__icon"><Check size={20} /></div>
             <strong>Обращение отправлено</strong>
             <p>Среднее время ответа — до 15 минут.</p>
             <button type="button" onClick={handleClose}>Закрыть</button>

@@ -497,7 +497,7 @@ function getCategoryPath(type) {
     case 'therapy': return '/library/therapy';
     case 'family_story': return '/library/family';
     case 'poem': return '/library/poems';
-    case 'story': return '/library/poems';
+    case 'story': return '/library/short-stories';
     default: return '/library/stories';
   }
 }
@@ -508,8 +508,8 @@ function getTypeLabel(type) {
     case 'lullaby': return 'Колыбельные';
     case 'therapy': return 'Терапия';
     case 'family_story': return 'Семейные истории';
-    case 'poem': return 'Рассказы и стихи';
-    case 'story': return 'Рассказы и стихи';
+    case 'poem': return 'Стихи';
+    case 'story': return 'Рассказы';
     default: return 'Библиотека';
   }
 }

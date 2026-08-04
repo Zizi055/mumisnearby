@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Check, Sparkles } from 'lucide-react';
+import { Check, Sparkles, ArrowUpRight } from 'lucide-react';
 import { tariffs as staticTariffs } from '../../data/tariffs.data';
 import LkButton from '../../components/ui/LkButton';
 import { useSubscription } from '../../hooks/useSubscription';
@@ -301,7 +301,7 @@ function TariffCard({ tariff, currentPlan, billingPeriod, navigate }) {
           {action.label}
 
           {action.type !== 'current' && (
-            <span className="lk-btn__circle">↗</span>
+            <ArrowUpRight size={16} />
           )}
         </LkButton>
       </div>

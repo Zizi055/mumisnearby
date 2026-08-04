@@ -8,8 +8,7 @@ import {
   Trash2,
   LogOut,
   User,
-  Baby,
-} from 'lucide-react';
+  Baby, Check } from 'lucide-react';
 
 // ─────────────────────────────────────────────────────────────────────
 // ОТКЛЮЧЕНО 31.07.2026 по просьбе клиента: скрыт ТОЛЬКО блок «Дети».
@@ -383,7 +382,7 @@ export default function Profile() {
               disabled={saving}
             >
               <span className="lk-btn__content">
-                {saving ? 'Сохраняем…' : saved ? 'Сохранено ✓' : 'Сохранить'}
+                {saving ? 'Сохраняем…' : saved ? <>Сохранено <Check size={15} /></> : 'Сохранить'}
               </span>
             </button>
 

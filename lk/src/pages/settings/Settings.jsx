@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Bell, Shield, Users, Sliders, Eye, EyeOff } from 'lucide-react';
+import { Bell, Shield, Users, Sliders, Eye, EyeOff, Check } from 'lucide-react';
 import { changePassword, getPasswordChangedAt } from '../../api/profile.service';
 import { useAuth } from '../../context/AuthContext';
 
@@ -286,7 +286,7 @@ export default function Settings() {
                   disabled={passwordSaving}
                 >
                   <span className="lk-btn__content">
-                    {passwordSaving ? 'Сохраняем…' : passwordSaved ? 'Сохранено ✓' : 'Сохранить пароль'}
+                    {passwordSaving ? 'Сохраняем…' : passwordSaved ? <>Сохранено <Check size={15} /></> : 'Сохранить пароль'}
                   </span>
                 </button>
               </div>
