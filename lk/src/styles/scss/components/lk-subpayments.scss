@@ -251,8 +251,7 @@
 
 .lk-invoice__panel {
   position: relative;
-  width: 420px;
-  max-width: 90%;
+  width: min(420px, calc(100vw - 32px));
   margin: 80px auto;
 
   background: $lk-white;

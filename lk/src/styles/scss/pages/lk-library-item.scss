@@ -42,7 +42,7 @@
 
 .lk-item-hero {
   display: grid;
-  grid-template-columns: minmax(240px, 480px) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 480px) minmax(0, 1fr);
   gap: $lk-space-32;
   align-items: start;
 
@@ -292,7 +292,7 @@
 
 .lk-item-body {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(260px, 360px);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 360px);
   gap: $lk-space-24;
   align-items: start;
 }

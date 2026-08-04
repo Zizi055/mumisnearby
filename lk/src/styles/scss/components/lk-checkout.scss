@@ -11,7 +11,8 @@
 
 .lk-checkout__inner {
   display: grid;
-  grid-template-columns: minmax(0, 1.2fr) minmax(360px, 0.8fr);
+  /* minmax(360px, ...) не влезал на планшете — колонка распирала сетку. */
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
   gap: $lk-space-40;
   align-items: start;
 }

@@ -4,11 +4,10 @@
 .lk-dashboard {
   display: flex;
   flex-direction: column;
-  gap: $lk-space-32;
 
-  min-height: 100vh;
-
-  padding: $lk-space-32;
+  /* Отступ между секциями и внешний padding — общие для всех страниц.
+     Свой padding здесь давал двойной отступ поверх .lk-content. */
+  gap: $lk-section-gap;
 
 
 }
@@ -35,13 +34,13 @@
 
   flex-direction: column;
 
-  padding: 15px;
+  padding: $lk-card-padding;
 
   background: #fff;
 
   border: 1px solid $lk-border;
 
-  border-radius: 30px;
+  border-radius: $lk-card-radius;
 
   box-shadow: $lk-shadow-card;
 
@@ -222,7 +221,7 @@
 
 .lk-dashboard-top {
   display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(280px, 360px);
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 360px);
   gap: $lk-space-24;
 }
 
@@ -232,7 +231,7 @@
   overflow: hidden;
 
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(280px, 560px);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 560px);
 
   min-height: 420px;
 
@@ -367,11 +366,13 @@
 
 
 
+/* Отступ и радиус — из общего стандарта карточки: было 28px и 24px
+   радиуса против 24/20 на подписке, платежах и бонусах. */
 .lk-dashboard-ai,
 .lk-dashboard-plan,
 .lk-dashboard-session,
 .lk-dashboard-block {
-  padding: $lk-space-28;
+  padding: $lk-card-padding;
 
   background: #fff;
 
@@ -392,10 +393,12 @@
    с hero, справа — продолжение узкой колонки под AI-рекомендациями. */
 .lk-dashboard-second {
   display: grid;
-  grid-template-columns: minmax(0, 1.6fr) minmax(280px, 360px);
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 360px);
   gap: $lk-space-24;
 
-  margin-top: $lk-space-24;
+  /* margin-top не нужен: расстояние между секциями задаёт gap страницы.
+     Со своим margin получалось 48px вместо 24px, и вторая строка
+     отставала от первой сильнее, чем все остальные блоки друг от друга. */
 
   /* stretch, а не start — иначе блоки разной высоты «плавают»
      относительно друг друга и низ не совпадает. */
@@ -418,7 +421,7 @@
   flex-direction: column;
   gap: $lk-space-10;
 
-  padding: $lk-space-28;
+  padding: $lk-card-padding;
 
   background:
     linear-gradient(
@@ -614,7 +617,7 @@
 
 .lk-dashboard-plan__limits {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(180px, 100%), 1fr));
   gap: $lk-space-16 $lk-space-24;
 
   margin-top: $lk-space-14;
@@ -744,7 +747,7 @@ color: $lk-brand-dark;
 
 .lk-dashboard-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 360px);
   gap: $lk-space-24;
 }
 
@@ -1155,7 +1158,7 @@ display: flex;
 
 /* Виджет реферальной ссылки */
 .lk-dashboard-referral {
-  padding: $lk-space-28;
+  padding: $lk-card-padding;
   background: linear-gradient(160deg, rgba($lk-brand, 0.06) 0%, #fff 100%);
   border: 1px solid rgba($lk-brand, 0.15);
   border-radius: $lk-radius-24;

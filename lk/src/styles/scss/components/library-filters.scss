@@ -3,7 +3,9 @@
   position: sticky;
   top: 24px;
 
-  width: 320px;
+  /* Фиксированные 320px не помещались в узкую колонку на планшете. */
+  width: 100%;
+  max-width: 320px;
   height: fit-content;
 
   padding: 24px;

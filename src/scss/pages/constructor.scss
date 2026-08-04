@@ -8,7 +8,8 @@
   &__container {
     max-width: 1240px;
     margin: 0 auto;
-    padding: 0 24px;
+    /* Было 24px — вдвое уже, чем на index.html. Общая шкала: 40/28/20. */
+    padding: 0 40px;
   }
 }
 
@@ -639,7 +640,7 @@
     padding: 40px 0 72px;
 
     &__container {
-      padding: 0 16px;
+      padding: 0 28px;
     }
   }
 
@@ -748,7 +749,7 @@
     padding: 28px 0 56px;
 
     &__container {
-      padding: 0 12px;
+      padding: 0 20px;
     }
   }
 
@@ -880,7 +881,7 @@
     padding: 24px 0 48px;
 
     &__container {
-      padding: 0 10px;
+      padding: 0 20px;
     }
   }
 

@@ -148,6 +148,10 @@
 .lk-library-search {
   flex: 1;
 
+  /* Без min-width: 0 флекс-элемент с input внутри не сжимается меньше
+     ширины содержимого — поле вылезало за правый край экрана. */
+  min-width: 0;
+
   height: 40px;
 
   padding: 0 18px;
@@ -196,6 +200,8 @@
 
 .lk-library-modes {
   display: flex;
+
+  min-width: 0;
   align-items: center;
 
   gap: $lk-space-10;
@@ -270,7 +276,7 @@
   display: grid;
 
   grid-template-columns:
-    repeat(auto-fill, minmax(320px, 1fr));
+    repeat(auto-fill, minmax(min(320px, 100%), 1fr));
 
   gap: $lk-space-24;
 }
@@ -283,7 +289,8 @@
   top: 0;
   right: 0;
 
-  width: 420px;
+  /* Было width: 420px — на телефоне панель шире экрана и уезжала вбок. */
+  width: min(420px, 100vw);
   height: 100vh;
 
   z-index: 200;
@@ -582,91 +589,15 @@
   margin-top: $lk-space-8;
 }
 
-.lk-library-apply,
-.lk-library-reset {
+/* Кнопки в панели фильтров используют общий .lk-btn — раньше здесь была
+   своя реализация (.lk-library-apply / .lk-library-reset) с другой
+   высотой, шрифтом и радиусом, из-за чего на мобильном они выглядели
+   уже и площе, чем кнопки на остальных экранах. */
+.lk-library-filters__action {
   flex: 1;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  gap: 8px;
-
-  position: relative;
-
-  height: 48px;
-  padding: 0 20px;
-
-  border-radius: $lk-radius-pill;
-
-  font-size: 15px;
-  line-height: 1;
-  font-weight: 500;
-
-  white-space: nowrap;
-
-  cursor: pointer;
-
-  transition:
-    background 0.2s ease,
-    color 0.2s ease,
-    border-color 0.2s ease,
-    box-shadow 0.2s ease,
-    transform 0.1s ease;
+  width: 100%;
 }
 
-/* =========================================
-   APPLY
-========================================= */
-
-.lk-library-apply {
-  border: 1px solid transparent;
-
-  background: $lk-brand;
-
-  color: $lk-white;
-
-  box-shadow:
-    0 4px 12px rgba(93, 143, 114, 0.18);
-}
-
-.lk-library-apply:hover {
-  background: $lk-brand-dark;
-
-  transform: translateY(-1px);
-}
-
-.lk-library-apply:active {
-  transform: translateY(0);
-
-  box-shadow: none;
-}
-
-
-
-.lk-library-reset {
-  background: $lk-surface;
-
-  border: 1px solid $lk-border;
-
-  color: $lk-text;
-}
-
-.lk-library-reset:hover {
-  background: rgba(93, 143, 114, 0.06);
-
-  border-color: $lk-line;
-}
-
-.lk-library-reset:active {
-  background: rgba(93, 143, 114, 0.1);
-}
-
-
-
-/* =========================================
-   FAVORITES MODE BUTTON
-========================================= */
 
 .lk-library-mode-favorites {
   display: inline-flex;
@@ -907,10 +838,26 @@
     grid-template-columns: 1fr;
   }
 
+  /* Чипы категорий длиннее экрана — листаем их горизонтально внутри
+     своей полосы, а не выталкиваем за край страницы. Полосу прокрутки
+     прячем, инерцию оставляем. */
   .lk-library-modes {
     width: 100%;
+    min-width: 0;
 
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+
+    padding-bottom: 2px;
+  }
+
+  .lk-library-modes::-webkit-scrollbar {
+    display: none;
+  }
+
+  .lk-library-modes button {
+    flex-shrink: 0;
   }
 
   .lk-library-mobile-filter {

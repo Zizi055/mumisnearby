@@ -155,7 +155,7 @@ export default function LibraryFilters({
       <div className="lk-library-filters__footer">
         <button
           type="button"
-          className="lk-library-apply"
+          className="lk-btn lk-btn--primary lk-btn--md lk-library-filters__action"
           onClick={onClose}
         >
           Применить
@@ -163,7 +163,7 @@ export default function LibraryFilters({
 
         <button
           type="button"
-          className="lk-library-reset"
+          className="lk-btn lk-btn--secondary lk-btn--md lk-library-filters__action"
           onClick={resetFilters}
         >
           Сбросить

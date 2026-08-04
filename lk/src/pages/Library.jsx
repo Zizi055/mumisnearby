@@ -338,7 +338,7 @@ export default function Library() {
           <div className="lk-library-filters__footer">
             <button
               type="button"
-              className="lk-library-apply"
+              className="lk-btn lk-btn--primary lk-btn--md lk-library-filters__action"
               onClick={handleApplyFilters}
             >
               Применить
@@ -346,7 +346,7 @@ export default function Library() {
 
             <button
               type="button"
-              className="lk-library-reset"
+              className="lk-btn lk-btn--secondary lk-btn--md lk-library-filters__action"
               onClick={handleResetFilters}
             >
               Сбросить

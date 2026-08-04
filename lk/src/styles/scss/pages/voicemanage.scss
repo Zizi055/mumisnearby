@@ -29,7 +29,7 @@
    голос. Раньше плеер стоял отдельной полосой во всю ширину под ними. */
 .lk-voice-manage__grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.5fr) minmax(260px, 1fr) minmax(280px, 1fr);
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr);
   gap: $lk-space-16;
 
   align-items: stretch;
@@ -37,7 +37,7 @@
 
 @media (max-width: 1400px) {
   .lk-voice-manage__grid {
-    grid-template-columns: minmax(0, 1fr) minmax(260px, 1fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   }
 
   .lk-voice-player {

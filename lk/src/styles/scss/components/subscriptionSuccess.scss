@@ -47,8 +47,8 @@
 }
 
 .lk-checkout-card {
-  width: 420px;
-  padding: $lk-space-24;
+  width: min(420px, 100%);
+  padding: $lk-card-padding;
   border-radius: $lk-radius-24;
   background: $lk-surface;
   border: 1px solid $lk-border;
