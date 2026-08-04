@@ -1127,9 +1127,11 @@ display: flex;
 }
 
 @media (max-width: 768px) {
-  .lk-dashboard {
-    padding: $lk-space-20;
-  }
+  /* Здесь стояло .lk-dashboard { padding: 20px } — переопределение,
+     которое пережило удаление базового padding и добавляло 20px поверх
+     отступа .lk-content. Из-за него «Прогресс» отступал от края экрана
+     на 36px, а все остальные страницы — на 16px. Отступ страницы задаёт
+     только .lk-content, страницы своего padding не имеют. */
 
   .lk-dashboard-row {
     grid-template-columns: 1fr;

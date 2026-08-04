@@ -428,16 +428,16 @@ export default function SubscriptionManage() {
         <div className="lk-subscription-actions">
           <LkButton
             variant="primary"
-            className="lk-btn--arrow"
+           
             onClick={() => navigate('/subscription/tariff')}
           >
             Изменить тариф
-            <span className="lk-btn__icon"><ArrowUpRight size={16} /></span>
+            <ArrowUpRight size={16} />
           </LkButton>
 
           <LkButton
             variant="danger"
-            className="lk-btn--arrow"
+           
             onClick={() => setShowCancel(true)}
             disabled={cancelling || subscription.status !== 'active'}
           >

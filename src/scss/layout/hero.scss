@@ -298,6 +298,13 @@
   align-items: center;
   justify-content: center;
   transition: opacity 0.2s ease, transform 0.2s ease;
+
+  /* Раньше здесь стоял текстовый ▶ — телефоны рисуют его собственным
+     эмодзи-глифом, поэтому кнопка выглядела иначе, чем на десктопе. */
+  svg {
+    width: 18px;
+    height: 18px;
+  }
 }
 
 .hero-card__play-icon--pause {

@@ -216,11 +216,11 @@ export default function SubscriptionBonus() {
               <LkButton
                 variant="primary"
                 size="sm"
-                className="lk-btn--arrow"
+               
                 onClick={() => setShowInvite(true)}
               >
                 Пригласить друга
-                <span className="lk-btn__icon"><ArrowUpRight size={16} /></span>
+                <ArrowUpRight size={16} />
               </LkButton>
             </>
           )}

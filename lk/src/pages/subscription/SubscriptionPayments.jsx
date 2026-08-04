@@ -254,13 +254,11 @@ export default function SubscriptionPayments() {
       <div className="lk-payments-actions">
         <LkButton
           variant="primary"
-          className="lk-btn--arrow"
+         
           onClick={() => setSelectedPayment(lastPayment)}
         >
           Подробнее
-          <span className="lk-btn__icon">
-            <ArrowUpRight size={16} />
-          </span>
+          <ArrowUpRight size={16} />
         </LkButton>
       </div>
 

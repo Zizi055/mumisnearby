@@ -312,6 +312,11 @@ box-shadow:
 .why-tech-audio-box__play {
   width: 58px;
   height: 58px;
+
+  svg {
+    width: 20px;
+    height: 20px;
+  }
   border-radius: 50%;
   border: none;
   cursor: pointer;
