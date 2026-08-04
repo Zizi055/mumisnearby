@@ -538,12 +538,37 @@
     li {
       display: flex;
       justify-content: space-between;
+      align-items: flex-start;
+      gap: $lk-space-12;
       font-size: 13px;
       color: $lk-text-soft;
-      padding: 4px 0;
+      padding: 6px 0;
       border-bottom: 1px solid rgba($lk-brand, 0.08);
 
       &:last-child { border-bottom: none; }
+    }
+  }
+
+  /* Логин + почта приглашённого в одну колонку: логин часто
+     автогенерённый, узнают человека всё равно по почте. */
+  &__who {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+
+    strong {
+      font-weight: 500;
+      color: $lk-text-soft;
+    }
+
+    em {
+      font-style: normal;
+      font-size: 12px;
+      color: $lk-text-muted;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
   }
 }

@@ -60,6 +60,12 @@ export async function getAdminMe() {
   return adminApi.get(path);
 }
 
+// GET /auth/super_admin/admins — список всех администраторов, только для
+// супер-админа. Отдаёт AdminOut[]: {id, username, is_admin, created_at}.
+export async function getAdmins() {
+  return adminApi.get('/auth/super_admin/admins');
+}
+
 // POST /auth/super_admin/create — доступно только супер-админу (проверяет
 // бэк по токену в запросе). Тело: { username, password }.
 export async function createAdmin({ username, password }) {

@@ -184,7 +184,13 @@ export default function SubscriptionBonus() {
                 <ul className="lk-bonus-referred__list">
                   {referredUsers.map((u, i) => (
                     <li key={i}>
-                      <span>{u.username}</span>
+                      {/* ReferredUser отдаёт и username, и email. Логин
+                          у приглашённых часто автогенерённый, поэтому
+                          показываем почту — по ней человека реально узнать. */}
+                      <span className="lk-bonus-referred__who">
+                        <strong>{u.username}</strong>
+                        {u.email && <em>{u.email}</em>}
+                      </span>
                       <span>{new Date(u.created_at).toLocaleDateString('ru-RU')}</span>
                     </li>
                   ))}

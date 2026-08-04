@@ -108,6 +108,26 @@
   white-space: nowrap;
 }
 
+/* Причина ошибки с бэка. В отличие от .lk-generation-card__date текст
+   не обрезаем в одну строку — он и есть то, ради чего сюда смотрят. */
+.lk-generation-card__error {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+
+  margin: 0;
+
+  font-size: 12px;
+  line-height: 1.45;
+
+  color: $lk-danger;
+
+  svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+}
+
 .lk-generation-card__actions {
   display: flex;
   align-items: center;

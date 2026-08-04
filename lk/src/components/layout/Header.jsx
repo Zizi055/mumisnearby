@@ -3,39 +3,80 @@ import { useLocation } from 'react-router-dom';
 import { navigation } from '../../config/navigation';
 import { Bell, Check, Menu } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+import {
+  getNotifications,
+  markNotificationRead,
+  markAllNotificationsRead,
+  subscribeToNotifications,
+} from '../../api/notifications.service';
 import LkButton from '../ui/LkButton';
 
-const MOCK_NOTIFICATIONS = [
-  {
-    id: 1,
-    text: 'Голос «Мамин голос» успешно обучен',
-    time: '5 мин назад',
-    read: false,
-  },
-  {
-    id: 2,
-    text: 'Новая сказка добавлена в библиотеку',
-    time: '1 час назад',
-    read: false,
-  },
-  {
-    id: 3,
-    text: 'Подписка активна до 04.06.2026',
-    time: 'Вчера',
-    read: true,
-  },
-];
+// Человекочитаемое «5 минут назад» из created_at.
+function formatAgo(iso) {
+  if (!iso) return '';
+
+  const diffMs = Date.now() - new Date(iso).getTime();
+  if (Number.isNaN(diffMs)) return '';
+
+  const min = Math.floor(diffMs / 60000);
+  if (min < 1) return 'только что';
+  if (min < 60) return `${min} мин назад`;
+
+  const hours = Math.floor(min / 60);
+  if (hours < 24) return `${hours} ч назад`;
+
+  const days = Math.floor(hours / 24);
+  if (days === 1) return 'вчера';
+  if (days < 7) return `${days} дн назад`;
+
+  return new Date(iso).toLocaleDateString('ru-RU');
+}
 
 export default function Header({ onMenuToggle }) {
   const location = useLocation();
   const { user } = useAuth();
 
   const [showNotifications, setShowNotifications] = useState(false);
-  const [notifications, setNotifications] = useState(MOCK_NOTIFICATIONS);
+  // Реальные уведомления с бэка (GET /notifications). Раньше здесь стоял
+  // жёстко вписанный список из трёх записей — одинаковый у всех, включая
+  // «Подписка активна до 04.06.2026» с выдуманной датой.
+  const [notifications, setNotifications] = useState([]);
+  const [unreadFromApi, setUnreadFromApi] = useState(0);
   const [showLeaveConfirm, setShowLeaveConfirm] = useState(false);
   const panelRef = useRef(null);
 
-  const unreadCount = notifications.filter((n) => !n.read).length;
+  const unreadCount = unreadFromApi;
+
+  const loadNotifications = async () => {
+    try {
+      const res = await getNotifications();
+      setNotifications(Array.isArray(res?.items) ? res.items : []);
+      setUnreadFromApi(res?.unread_count ?? 0);
+    } catch {
+      // Не залогинен или бэк недоступен — колокольчик просто пустой,
+      // шапку из-за этого не роняем.
+      setNotifications([]);
+      setUnreadFromApi(0);
+    }
+  };
+
+  useEffect(() => {
+    loadNotifications();
+
+    // Живой поток: бэк сам сообщает, когда озвучка готова или пришёл ответ
+    // в поддержке — колокольчик обновляется сразу, а не через минуту.
+    const unsubscribe = subscribeToNotifications(() => loadNotifications());
+
+    // Подстраховка: если SSE не прошёл через прокси или соединение отвалилось,
+    // раз в пять минут всё равно перечитываем список. Раньше это был
+    // единственный механизм и опрашивал он каждую минуту.
+    const timer = setInterval(loadNotifications, 5 * 60_000);
+
+    return () => {
+      unsubscribe();
+      clearInterval(timer);
+    };
+  }, []);
 
   const current = navigation.find((item) =>
     location.pathname.startsWith(item.path)
@@ -56,14 +97,32 @@ export default function Header({ onMenuToggle }) {
     return () => document.removeEventListener('mousedown', handleClick);
   }, []);
 
-  const markAllRead = () => {
-    setNotifications((prev) => prev.map((n) => ({ ...n, read: true })));
+  // Помечаем оптимистично, чтобы точка гасла сразу, и параллельно шлём
+  // PATCH. Если запрос упал — перезагружаем список и возвращаем правду с бэка.
+  const markAllRead = async () => {
+    setNotifications((prev) => prev.map((n) => ({ ...n, is_read: true })));
+    setUnreadFromApi(0);
+    try {
+      await markAllNotificationsRead();
+    } catch {
+      loadNotifications();
+    }
   };
 
-  const markRead = (id) => {
+  const markRead = async (id) => {
+    const item = notifications.find((n) => n.id === id);
+    if (!item || item.is_read) return;
+
     setNotifications((prev) =>
-      prev.map((n) => (n.id === id ? { ...n, read: true } : n))
+      prev.map((n) => (n.id === id ? { ...n, is_read: true } : n))
     );
+    setUnreadFromApi((c) => Math.max(0, c - 1));
+
+    try {
+      await markNotificationRead(id);
+    } catch {
+      loadNotifications();
+    }
   };
 
   // Получаем инициалы или первую букву имени
@@ -160,15 +219,18 @@ export default function Header({ onMenuToggle }) {
                 {notifications.map((n) => (
                   <div
                     key={n.id}
-                    className={`lk-notif-item ${n.read ? 'is-read' : ''}`}
+                    className={`lk-notif-item ${n.is_read ? 'is-read' : ''}`}
                     onClick={() => markRead(n.id)}
                   >
                     <div className="lk-notif-item__dot" />
                     <div className="lk-notif-item__body">
-                      <p>{n.text}</p>
-                      <span>{n.time}</span>
+                      <p>{n.title}</p>
+                      {n.body && (
+                        <p className="lk-notif-item__text">{n.body}</p>
+                      )}
+                      <span>{formatAgo(n.created_at)}</span>
                     </div>
-                    {!n.read && (
+                    {!n.is_read && (
                       <button
                         type="button"
                         className="lk-notif-item__check"

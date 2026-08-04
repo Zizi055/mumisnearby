@@ -159,6 +159,19 @@
   font-weight: 700;
 }
 
+/* Пояснение под таблицей/формой: загрузка, пустой список, ограничения бэка. */
+.lk-admin-detail__hint {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  margin: 0;
+
+  font-size: 12px;
+  line-height: 1.5;
+  color: $lk-text-muted;
+}
+
 .lk-admin-login__success {
   padding: 10px 12px;
 
@@ -239,6 +252,11 @@
   color: $lk-text-soft;
 
   &:last-child { border-bottom: none; }
+}
+
+/* Таблица админов — три колонки вместо четырёх, как у пользователей. */
+.lk-admin-table--3col .lk-admin-table__row {
+  grid-template-columns: 1.4fr 1fr 1fr;
 }
 
 .lk-admin-table__row--head {

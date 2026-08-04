@@ -1,15 +1,13 @@
-import { useState } from 'react';
-import { ShieldAlert, UserPlus } from 'lucide-react';
-import { createAdmin, getStoredAdminRole } from '../../api/adminAuth.service';
+import { useEffect, useState } from 'react';
+import { Loader2, ShieldAlert, UserPlus } from 'lucide-react';
+import { createAdmin, getAdmins, getStoredAdminRole } from '../../api/adminAuth.service';
 
 // Управление админами — доступно только супер-админу (проверка роли ниже
 // на фронте; реальное разграничение прав всё равно на бэке по токену).
 //
-// На бэке пока есть только POST /auth/super_admin/create — эта форма им и
-// пользуется, создание реально работает. Списка существующих админов,
-// удаления и просмотра их активности на бэке нет вообще (не только для
-// фронта — этих эндпоинтов не существует), поэтому здесь только форма
-// создания и честная заглушка вместо списка.
+// Бэк даёт GET /auth/super_admin/admins (список) и POST /auth/super_admin/create
+// (добавление) — обе используются здесь. Удаления и логов активности
+// администраторов на бэке по-прежнему нет.
 export default function AdminAdmins() {
   const isSuperAdmin = getStoredAdminRole() === 'super_admin';
 
@@ -17,6 +15,27 @@ export default function AdminAdmins() {
   const [password, setPassword] = useState('');
   const [status, setStatus] = useState('idle'); // idle | loading | success | error
   const [error, setError] = useState('');
+
+  const [admins, setAdmins] = useState([]);
+  const [listState, setListState] = useState('loading'); // loading | ready | error
+  const [listError, setListError] = useState('');
+
+  const loadAdmins = async () => {
+    try {
+      const data = await getAdmins();
+      setAdmins(Array.isArray(data) ? data : []);
+      setListState('ready');
+    } catch (err) {
+      setListError(err.message || 'Не удалось загрузить список администраторов');
+      setListState('error');
+    }
+  };
+
+  useEffect(() => {
+    if (!isSuperAdmin) return;
+    loadAdmins();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isSuperAdmin]);
 
   if (!isSuperAdmin) {
     return (
@@ -42,6 +61,9 @@ export default function AdminAdmins() {
       setStatus('success');
       setUsername('');
       setPassword('');
+      // Перечитываем список, чтобы новый администратор появился сразу,
+      // а не после ручного обновления страницы.
+      loadAdmins();
     } catch (err) {
       setError(err.message || 'Не удалось создать администратора');
       setStatus('error');
@@ -95,14 +117,53 @@ export default function AdminAdmins() {
         </form>
       </div>
 
-      <div className="lk-admin-gate">
-        <h2>Список и активность админов пока недоступны</h2>
-        <p>
-          На бэкенде ещё нет эндпоинтов для получения списка администраторов,
-          их удаления и просмотра активности — только создание нового.
-          Как только они появятся, эта страница дополнится.
+      <div className="lk-admin-detail">
+        <h2 className="lk-admin-detail__title">
+          Администраторы{listState === 'ready' ? ` (${admins.length})` : ''}
+        </h2>
+
+        {listState === 'loading' && (
+          <p className="lk-admin-detail__hint">
+            <Loader2 size={14} className="lk-spin" /> Загружаем список…
+          </p>
+        )}
+
+        {listState === 'error' && (
+          <div className="lk-admin-login__error">{listError}</div>
+        )}
+
+        {listState === 'ready' && admins.length === 0 && (
+          <p className="lk-admin-detail__hint">Администраторов пока нет.</p>
+        )}
+
+        {listState === 'ready' && admins.length > 0 && (
+          <div className="lk-admin-table lk-admin-table--3col">
+            <div className="lk-admin-table__row lk-admin-table__row--head">
+              <span>Логин</span>
+              <span>Роль</span>
+              <span>Создан</span>
+            </div>
+
+            {admins.map((a) => (
+              <div className="lk-admin-table__row" key={a.id}>
+                <span className="lk-admin-table__name">{a.username}</span>
+                <span>{a.is_admin ? 'Администратор' : 'Супер-админ'}</span>
+                <span>
+                  {a.created_at
+                    ? new Date(a.created_at).toLocaleDateString('ru-RU')
+                    : '—'}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
+
+        <p className="lk-admin-detail__hint">
+          Удаление администраторов и журнал их действий на бэкенде пока
+          не реализованы.
         </p>
       </div>
+
     </div>
   );
 }

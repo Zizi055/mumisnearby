@@ -165,6 +165,14 @@
   line-height: 1.5;
 }
 
+/* У уведомления с бэка есть заголовок (title) и пояснение (body).
+   Первый <p> — заголовок, этот — пояснение, поэтому оно светлее и мельче. */
+.lk-notif-item__body p.lk-notif-item__text {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--color-text-secondary, #7a857e);
+}
+
 .lk-notif-item__body span {
   font-size: 11px;
   color: var(--color-text-tertiary, #9aa09c);

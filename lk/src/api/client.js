@@ -81,10 +81,13 @@ export const api = {
       body: JSON.stringify(body),
     }),
 
+  // Тело необязательно: у /notifications/{id}/read и /notifications/read-all
+  // его нет вовсе, а JSON.stringify(undefined) даёт строку "undefined",
+  // которую бэк не разберёт.
   patch: (path, body) =>
     request(path, {
       method: 'PATCH',
-      body: JSON.stringify(body),
+      ...(body === undefined ? {} : { body: JSON.stringify(body) }),
     }),
 
   del: (path) =>
