@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { Play, Square, Loader2, ExternalLink, ChevronLeft, ChevronRight, AlertCircle } from 'lucide-react';
+import { describeGenerationError } from '../../utils/generationError';
 
 import { getGenerations, getGenerationAudio } from '../../api/generations.service';
 import { getLibraryItems } from '../../api/library.service';
@@ -253,14 +254,14 @@ export default function LibraryGenerations() {
                     <p className="lk-generation-card__date">{date}</p>
                   )}
 
-                  {/* Причина ошибки с бэка (GenerationResponse.error_message).
-                      Раньше у неудачной озвучки был только красный бейдж
-                      «Ошибка» — человек не понимал, кончился ли лимит,
-                      не подошёл ли голос или упал сервис. */}
-                  {gen.status === 'failed' && gen.error_message && (
+                  {/* Причина ошибки — короткой фразой на русском.
+                      Сырой error_message с бэка сюда не попадает: это
+                      ответ ElevenLabs как есть, с английским текстом,
+                      JSON-ом и внутренними request_id. */}
+                  {gen.status === 'failed' && (
                     <p className="lk-generation-card__error">
                       <AlertCircle size={13} />
-                      <span>{gen.error_message}</span>
+                      <span>{describeGenerationError(gen.error_message)}</span>
                     </p>
                   )}
 
