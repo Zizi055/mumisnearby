@@ -193,6 +193,12 @@ export default function VoiceManage() {
       const createdVoice =
         await createVoice(file);
 
+      // Если идентификатор всё же не удалось определить — останавливаемся
+      // с понятным текстом, а не уходим в поллинг /voices/undefined.
+      if (!createdVoice?.id) {
+        throw new Error('Бэкенд не вернул идентификатор голоса');
+      }
+
       setActiveVoiceId(createdVoice.id);
 
       setTrainingStep(1);
@@ -230,7 +236,9 @@ export default function VoiceManage() {
       setTrainingError(
         error.message?.includes('истекло')
           ? 'Обучение голоса заняло слишком много времени. Обновите страницу через пару минут — модель может быть уже готова.'
-          : 'Не удалось загрузить голос. Попробуйте ещё раз.'
+          : error.message?.includes('идентификатор')
+            ? 'Запись загрузилась, но сервер не вернул идентификатор голоса. Обновите страницу — голос может быть уже в списке.'
+            : 'Не удалось загрузить голос. Попробуйте ещё раз.'
       );
     }
 

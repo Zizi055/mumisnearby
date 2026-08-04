@@ -4,7 +4,11 @@ import { api } from './client';
 export function normalizeVoice(v) {
   if (!v) return v;
   return {
-    id: v.id,
+    // Бэк в разных ответах называет идентификатор по-разному: у /voices/
+    // это id, а /voices/add в некоторых версиях отдавал voice_id. Если
+    // взять только v.id, дальше поллинг уходит на /voices/undefined и
+    // бэк отвечает 422 int_parsing.
+    id: v.id ?? v.voice_id ?? v.pk ?? null,
     name: v.name || '',
     description: v.description || '',
     status: v.status || 'ready',
@@ -23,7 +27,11 @@ export async function uploadVoice(file, description = '') {
   if (description) formData.append('description', description);
 
   const data = await api.post('/voices/add', formData);
-  return normalizeVoice(data);
+
+  // Ответ может прийти как сам объект голоса, так и обёрнутым
+  // ({voice: {...}} / {data: {...}}) — разворачиваем.
+  const payload = data?.voice ?? data?.data ?? data?.item ?? data;
+  return normalizeVoice(payload);
 }
 
 // GET /voices/
@@ -44,6 +52,12 @@ export async function getVoiceById(id) {
 // preview_url сразу после /voices/add часто ещё не готовы, обучение
 // занимает какое-то время. Поллинг вместо мгновенной фейковой анимации.
 export async function waitForVoiceReady(id, onUpdate) {
+  // Без этой проверки цикл уходил в /voices/undefined и валил в консоль
+  // по 422 каждые две секунды в течение трёх минут.
+  if (id == null || id === '' || Number.isNaN(Number(id))) {
+    throw new Error('Бэкенд не вернул идентификатор голоса');
+  }
+
   const INTERVAL = 2000;
   const TIMEOUT = 180_000;
   const start = Date.now();

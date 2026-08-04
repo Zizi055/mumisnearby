@@ -53,14 +53,36 @@ export const useVoiceStore = create((set, get) => ({
     try {
       set({ loading: true, error: null });
 
+      const before = get().voices || [];
       const newVoice = await uploadVoice(file);
 
       // Перезагружаем список с сервера — чтобы получить актуальные данные
-      const fresh = await getVoices();
-      set({ voices: fresh || [], loading: false });
+      const fresh = (await getVoices()) || [];
+      set({ voices: fresh, loading: false });
 
-      // Возвращаем голос из свежего списка или fallback на то что вернул API
-      return fresh?.find((v) => v.id === newVoice?.id) || newVoice;
+      const byId = newVoice?.id != null
+        ? fresh.find((v) => v.id === newVoice.id)
+        : null;
+      if (byId) return byId;
+
+      // Подстраховка: /voices/add не отдал идентификатор. Берём голос,
+      // которого не было в списке до загрузки, иначе — самый свежий по id.
+      const knownIds = new Set(before.map((v) => v.id));
+      const appeared = fresh.filter((v) => !knownIds.has(v.id));
+
+      const guessed =
+        appeared[appeared.length - 1] ||
+        [...fresh].sort((a, b) => Number(b.id) - Number(a.id))[0];
+
+      if (guessed) {
+        console.warn(
+          'POST /voices/add не вернул id — голос определён по списку:',
+          guessed.id
+        );
+        return guessed;
+      }
+
+      return newVoice;
     } catch (error) {
       console.error(error);
       set({ loading: false, error: error.message });
