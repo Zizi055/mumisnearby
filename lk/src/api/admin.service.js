@@ -1,7 +1,7 @@
 import { adminApi } from './adminClient';
 
 // Админские эндпоинты — /admin/support/tickets*, /admin/leads, /admin/users.
-// Требуют токен из /auth/admin/login или /auth/super_admin/login (см.
+// Требуют токен из /auth/admin/login (см.
 // adminAuth.service.js), не пользовательский токен — поэтому ходим через
 // adminApi (adminClient.js), а не через обычный api (client.js).
 

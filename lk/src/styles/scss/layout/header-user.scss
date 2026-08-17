@@ -134,9 +134,35 @@
   background: var(--color-bg-secondary, #f7f8f7);
 }
 
-.lk-notif-item.is-read .lk-notif-item__dot {
-  background: transparent;
-  border: 1.5px solid var(--color-border, #d4dbd6);
+/* Вместо безликой точки — иконка по типу уведомления: ответ поддержки,
+   готовая озвучка, ошибка, системное. Сразу видно, о чём речь. */
+.lk-notif-item__icon {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 9px;
+
+  background: rgba(93, 143, 114, 0.1);
+  color: var(--lk-brand, #5d8f72);
+}
+
+.lk-notif-item.is-read .lk-notif-item__icon {
+  background: var(--color-bg-secondary, #f2f4f2);
+  color: var(--color-text-tertiary, #9aa09c);
+}
+
+/* Кликабельные ведут на обращение или в «Мои сказки» */
+.lk-notif-item.is-clickable {
+  cursor: pointer;
+}
+
+.lk-notif-item:not(.is-clickable) {
+  cursor: default;
 }
 
 .lk-notif-item.is-read .lk-notif-item__body p {

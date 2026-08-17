@@ -249,7 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
     '.header__link, .header__mobile-link, .header__dropdown-link'
   );
 
-  // sticky header state
+  //  sticky header stateжэ
   window.addEventListener('scroll', () => {
     if (!header) return;
     header.classList.toggle('is-scrolled', window.scrollY > 10);

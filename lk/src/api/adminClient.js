@@ -2,15 +2,19 @@ const BASE_URL = import.meta.env.VITE_API_URL || '';
 
 // Отдельный HTTP-клиент для админки. /admin/* и /auth/*_admin/* эндпоинты
 // проверяют СВОЙ токен (выданный через /auth/admin/login или
-// /auth/super_admin/login), а не пользовательский из client.js — это два
+// /auth/admin/login), а не пользовательский из client.js — это два
 // разных набора учётных данных на бэке. Поэтому храним токен отдельно
 // (localStorage.adminToken), чтобы не конфликтовать с сессией обычного
 // пользователя в том же браузере.
 
+// Админские токены с 14.08.2026 подписываются отдельным ключом
+// (ADMIN_SECRET_KEY) и несут role: admin / super_admin. Все выданные
+// до выката — невалидны, нужен повторный вход.
 function handleAdminUnauthorized() {
   localStorage.removeItem('adminToken');
   localStorage.removeItem('adminRole');
   localStorage.removeItem('adminUsername');
+  localStorage.removeItem('adminIsSuper');
 
   if (!window.location.hash.includes('/admin/login')) {
     window.location.hash = '/admin/login';

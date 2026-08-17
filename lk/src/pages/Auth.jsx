@@ -41,6 +41,15 @@ export default function Auth() {
   const [status, setStatus] = useState('idle');
   const [serverError, setServerError] = useState('');
 
+  // Причину принудительного выхода кладёт client.js при 401. Показываем
+  // один раз: после выката security-правок 14.08.2026 все старые токены
+  // стали невалидными, и человека выкидывало на вход без объяснений.
+  const [sessionNotice] = useState(() => {
+    const notice = sessionStorage.getItem('authNotice');
+    sessionStorage.removeItem('authNotice');
+    return notice;
+  });
+
   // Заполняется после успешной регистрации — показываем экран "проверьте
   // почту" вместо того чтобы вести в ЛК: POST /auth/register токена не
   // выдаёт (RegisterResponse = { message }), пользователь ещё не
@@ -171,6 +180,12 @@ export default function Auth() {
       {/* ═══ ПРАВАЯ ПАНЕЛЬ ═══ */}
       <div className="auth__right">
         <div className="auth__card">
+
+          {sessionNotice === 'session_expired' && (
+            <div className="auth__notice">
+              Сессия завершена — войдите снова.
+            </div>
+          )}
 
           <div className="auth__tabs">
             <button

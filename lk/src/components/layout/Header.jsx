@@ -1,7 +1,15 @@
 import { useState, useRef, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { navigation } from '../../config/navigation';
-import { Bell, Check, Menu } from 'lucide-react';
+import {
+  Bell,
+  Check,
+  Menu,
+  MessageSquare,
+  AudioLines,
+  AlertCircle,
+  Info,
+} from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import {
   getNotifications,
@@ -10,6 +18,26 @@ import {
   subscribeToNotifications,
 } from '../../api/notifications.service';
 import LkButton from '../ui/LkButton';
+
+// Иконка по типу уведомления (NotificationType на бэке).
+const NOTIF_ICONS = {
+  ticket_reply: MessageSquare,
+  generation_ready: AudioLines,
+  generation_failed: AlertCircle,
+  system: Info,
+};
+
+// Куда ведёт уведомление. Ответ поддержки открывает само обращение,
+// готовая или упавшая озвучка — список «Мои сказки».
+function notificationLink(n) {
+  if (n.type === 'ticket_reply' && n.ticket_id) {
+    return `/dashboard/support?ticket=${n.ticket_id}`;
+  }
+  if (n.type === 'generation_ready' || n.type === 'generation_failed') {
+    return '/library/generations';
+  }
+  return null;
+}
 
 // Человекочитаемое «5 минут назад» из created_at.
 function formatAgo(iso) {
@@ -34,6 +62,7 @@ function formatAgo(iso) {
 
 export default function Header({ onMenuToggle }) {
   const location = useLocation();
+  const navigate = useNavigate();
   const { user } = useAuth();
 
   const [showNotifications, setShowNotifications] = useState(false);
@@ -106,6 +135,18 @@ export default function Header({ onMenuToggle }) {
       await markAllNotificationsRead();
     } catch {
       loadNotifications();
+    }
+  };
+
+  // Клик по уведомлению: помечаем прочитанным и уводим туда, где
+  // человек увидит суть — в обращение или в список озвучек.
+  const openNotification = (n) => {
+    markRead(n.id);
+
+    const link = notificationLink(n);
+    if (link) {
+      setShowNotifications(false);
+      navigate(link);
     }
   };
 
@@ -219,10 +260,17 @@ export default function Header({ onMenuToggle }) {
                 {notifications.map((n) => (
                   <div
                     key={n.id}
-                    className={`lk-notif-item ${n.is_read ? 'is-read' : ''}`}
-                    onClick={() => markRead(n.id)}
+                    className={`lk-notif-item ${n.is_read ? 'is-read' : ''} ${
+                      notificationLink(n) ? 'is-clickable' : ''
+                    }`}
+                    onClick={() => openNotification(n)}
                   >
-                    <div className="lk-notif-item__dot" />
+                    <div className="lk-notif-item__icon">
+                      {(() => {
+                        const Icon = NOTIF_ICONS[n.type] || Info;
+                        return <Icon size={15} />;
+                      })()}
+                    </div>
                     <div className="lk-notif-item__body">
                       <p>{n.title}</p>
                       {n.body && (

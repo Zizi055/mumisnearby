@@ -43,6 +43,7 @@ export default function LibraryItem() {
 
   const [selectedVoice, setSelectedVoice] = useState(null);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [genError, setGenError] = useState('');
   const [genStatus, setGenStatus] = useState('');
   const [audioUrl, setAudioUrl] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -126,6 +127,7 @@ export default function LibraryItem() {
     }
 
     setIsGenerating(true);
+    setGenError('');
     setGenStatus('pending');
     setAudioUrl(null);
     setIsPlaying(false);
@@ -145,6 +147,17 @@ export default function LibraryItem() {
       }, 100);
     } catch (e) {
       setGenStatus('failed');
+
+      // С 14.08.2026 бэк проверяет, что голос принадлежит пользователю
+      // (критичный пункт №5 ревью). Чужой или удалённый voice_id →
+      // 404 «Голос не найден», квота при этом не списывается.
+      // Показываем понятный текст вместо общей «ошибки сервера».
+      setGenError(
+        /голос не найден|404/i.test(e.message || '')
+          ? 'Этот голос недоступен. Выберите свой голос из списка.'
+          : 'Не удалось озвучить. Попробуйте ещё раз.'
+      );
+
       console.error('Ошибка генерации:', e);
     } finally {
       setIsGenerating(false);
@@ -446,7 +459,7 @@ export default function LibraryItem() {
 
             {genStatus === 'failed' && (
               <p className="lk-item-card__hint" style={{ color: '#c0392b' }}>
-                Ошибка генерации. Попробуйте ещё раз.
+                {genError || 'Не удалось озвучить. Попробуйте ещё раз.'}
               </p>
             )}
 

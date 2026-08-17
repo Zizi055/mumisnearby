@@ -53,7 +53,7 @@ function App() {
       <Route path="/verify-email" element={<VerifyEmail />} />
 
       {/* Админка — своя, без клиентского LkLayout (сайдбар/шапка ЛК не нужны).
-          Отдельный логин (/auth/admin/login, /auth/super_admin/login) —
+          Отдельный логин (/auth/admin/login) —
           не путать с пользовательским /auth. AdminLayout сам проверяет
           токен и редиректит на /admin/login, если доступа нет. */}
       <Route path="/admin/login" element={<AdminLogin />} />

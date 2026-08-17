@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { createTicket, getTickets, getTicket, addTicketMessage } from '../api/support.service';
 
 import {
@@ -266,8 +267,9 @@ function TicketBadge({ status }) {
   );
 }
 
-function TicketCard({ ticket }) {
-  const [isOpen, setIsOpen] = useState(false);
+function TicketCard({ ticket, autoOpen = false }) {
+  const [isOpen, setIsOpen] = useState(autoOpen);
+  const cardRef = useRef(null);
   const [detail, setDetail] = useState(null);
   const [detailStatus, setDetailStatus] = useState('idle'); // idle | loading | success | error
 
@@ -291,6 +293,15 @@ function TicketCard({ ticket }) {
     if (next && !detail) loadDetail();
   }
 
+  // Переход из уведомления «Ответ поддержки»: карточка сама раскрывается,
+  // подгружает переписку и прокручивается в видимую область.
+  useEffect(() => {
+    if (!autoOpen) return;
+    if (!detail) loadDetail();
+    cardRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [autoOpen]);
+
   async function handleReply(e) {
     e.preventDefault();
     if (!replyText.trim()) return;
@@ -311,7 +322,7 @@ function TicketCard({ ticket }) {
   const messages = detail?.messages ?? detail?.items ?? [];
 
   return (
-    <div className={`lk-ticket-card ${isOpen ? 'is-open' : ''}`}>
+    <div ref={cardRef} className={`lk-ticket-card ${isOpen ? 'is-open' : ''}`}>
       <button type="button" className="lk-ticket-card__head" onClick={handleToggle}>
         <div className="lk-ticket-card__meta">
           <TicketBadge status={ticket.status} />
@@ -397,7 +408,7 @@ function TicketCard({ ticket }) {
   );
 }
 
-function UserTickets({ onCreateTicket, refreshKey }) {
+function UserTickets({ onCreateTicket, refreshKey, focusTicketId }) {
   const [tickets, setTickets]           = useState([]);
   const [fetchStatus, setFetchStatus]   = useState('loading');
   const [filterStatus, setFilterStatus] = useState('all');
@@ -484,7 +495,13 @@ function UserTickets({ onCreateTicket, refreshKey }) {
 
       {fetchStatus === 'success' && filtered.length > 0 && (
         <div className="lk-tickets__list">
-          {filtered.map((ticket) => <TicketCard key={ticket.id} ticket={ticket} />)}
+          {filtered.map((ticket) => (
+            <TicketCard
+              key={ticket.id}
+              ticket={ticket}
+              autoOpen={String(ticket.id) === String(focusTicketId)}
+            />
+          ))}
         </div>
       )}
     </div>
@@ -496,13 +513,31 @@ function UserTickets({ onCreateTicket, refreshKey }) {
 // ========================================
 
 export default function Support() {
+  // Переход из колокольчика: /dashboard/support?ticket=12 — сразу
+  // открываем вкладку «Мои обращения» и раскрываем нужное обращение.
+  const [searchParams, setSearchParams] = useSearchParams();
+  const focusTicketId = searchParams.get('ticket');
+
   const [openedFaq, setOpenedFaq]               = useState(0);
   const [activeCategory, setActiveCategory]     = useState('knowledge');
-  const [activeTab, setActiveTab]               = useState('faq');       // faq | tickets
+  const [activeTab, setActiveTab]               = useState(focusTicketId ? 'tickets' : 'faq');
   const [isTicketOpen, setIsTicketOpen]         = useState(false);
   const [ticketsRefreshKey, setTicketsRefreshKey] = useState(0);
 
   const currentFaq = FAQ[activeCategory];
+
+  // Параметр одноразовый: убираем из адреса, чтобы при обновлении
+  // страницы обращение не раскрывалось снова.
+  useEffect(() => {
+    if (!focusTicketId) return;
+    setActiveTab('tickets');
+    const t = setTimeout(() => {
+      searchParams.delete('ticket');
+      setSearchParams(searchParams, { replace: true });
+    }, 1200);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [focusTicketId]);
 
   function openTicketModal() {
     setIsTicketOpen(true);
@@ -668,6 +703,7 @@ export default function Support() {
           <UserTickets
             onCreateTicket={openTicketModal}
             refreshKey={ticketsRefreshKey}
+            focusTicketId={focusTicketId}
           />
         )}
 

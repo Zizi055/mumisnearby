@@ -5,19 +5,21 @@ export async function getSubscription() {
   return api.get('/subscription/status');
 }
 
-// Реальный путь по спеке — POST /subscription/activate (было /subscription/checkout).
-// Тело по спеке: { plan_id, billing_period, payment_token, external_payment_id }.
-// payment_token/external_payment_id должны приходить от платёжного провайдера —
-// этой интеграции на фронте пока нет (сознательно не делаем сейчас, вне
-// текущего скоупа). Отправляем то, что реально можем заполнить с фронта —
-// сам вызов оплаты не заработает до подключения платёжного шлюза, но путь
-// и известные поля теперь верные.
-export async function createSubscriptionCheckout({ planId, billingPeriod }) {
-  return api.post('/subscription/activate', {
-    plan_id: planId,
-    billing_period: billingPeriod,
-  });
-}
+// ─────────────────────────────────────────────────────────────────────
+// УДАЛЕНО 16.08.2026 по итогам security-ревью (критичный пункт №3).
+//
+// Был POST /subscription/activate — он выдавал любому залогиненному
+// пользователю любой платный тариф на год без оплаты. Эндпоинта больше
+// нет, запрос вернёт 405.
+//
+// Единственный штатный путь активации: POST /api/payments/create →
+// оплата в ЮKassa → вебхук на бэке включает подписку. Форсировать
+// активацию с фронта нельзя и не нужно — см. SubscriptionSuccess.jsx,
+// там опрос статуса.
+//
+// Ручная выдача осталась только у админов: POST /subscription/admin/grant
+// с админским JWT.
+// ─────────────────────────────────────────────────────────────────────
 
 // POST /subscription/cancel — отключает автопродление, доступ по
 // тарифу сохраняется до конца уже оплаченного периода.

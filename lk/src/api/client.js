@@ -14,9 +14,20 @@ function parseErrorDetail(text) {
 }
 
 // ── Глобальный обработчик истёкшего токена ───────────────────────────────────
+//
+// После выката security-правок 14.08.2026 все ранее выданные JWT стали
+// невалидными: в токене теперь обязательны role и type. Пользователя
+// нельзя оставлять в бесконечных повторах с тем же Bearer — чистим
+// сохранённое и уводим на вход, а на экране входа поясняем причину.
 function handleUnauthorized() {
+  const hadToken = Boolean(localStorage.getItem('token'));
+
   localStorage.removeItem('token');
   localStorage.removeItem('user');
+
+  if (hadToken) {
+    sessionStorage.setItem('authNotice', 'session_expired');
+  }
 
   // Перенаправляем на страницу входа (HashRouter)
   if (!window.location.hash.includes('/auth')) {

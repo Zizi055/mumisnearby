@@ -2,10 +2,15 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Loader, CheckCircle, AlertCircle } from 'lucide-react';
 import { getPayments } from '../../api/payments.service';
+import { getSubscription } from '../../api/subscription.service';
 import LkButton from '../../components/ui/LkButton';
 
 const POLL_INTERVAL_MS = 2000;
-const MAX_ATTEMPTS = 8;
+
+// 15 попыток по 2 секунды = 30 секунд. Было 8 (16 секунд) — с 16.08.2026
+// вебхук перед активацией ещё раз ходит в API ЮKassa за настоящим статусом
+// (критичный пункт №4 ревью), поэтому подтверждение приходит позже.
+const MAX_ATTEMPTS = 15;
 
 // Сюда ЮKassa возвращает клиента после оплаты (Checkout.jsx уводит браузер
 // на confirmation_url, а дальше — вне нашего контроля до самого возврата).
@@ -27,6 +32,19 @@ export default function SubscriptionSuccess() {
       attempts += 1;
 
       try {
+        // Главный признак — подписка реально включилась. Её выдаёт только
+        // вебхук после проверки платежа в ЮKassa; форсировать активацию
+        // с фронта нельзя (POST /subscription/activate удалён, вернёт 405).
+        const sub = await getSubscription().catch(() => null);
+        const planId = sub?.plan?.id ?? sub?.plan_id ?? null;
+
+        if (planId) {
+          if (!cancelled) setState('success');
+          return;
+        }
+
+        // Запасная проверка по истории платежей: бэк отдаёт статус
+        // 'success', наш normalizeStatus приводит его к 'paid'.
         const payments = await getPayments();
         const latest = payments[0];
 
@@ -40,7 +58,7 @@ export default function SubscriptionSuccess() {
           return;
         }
       } catch {
-        // не удалось получить историю — попробуем ещё раз при следующей попытке
+        // не удалось получить данные — попробуем ещё раз на следующей попытке
       }
 
       if (attempts >= MAX_ATTEMPTS) {

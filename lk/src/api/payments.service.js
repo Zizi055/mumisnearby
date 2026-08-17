@@ -36,9 +36,23 @@ export async function getPayments() {
 
 // POST /api/payments/create — запускает оплату через YooKassa, возвращает
 // confirmation_url, куда нужно перенаправить пользователя для оплаты.
+//
+// С 16.08.2026 бэк принимает только 'month' и 'year'. Значение 'free'
+// отклоняется с 400: бесплатный период выдаётся исключительно пробной
+// подпиской, а не через оплату (критичный пункт №4 security-ревью).
+// Страхуемся здесь, чтобы не улететь в 400 из-за случайного значения
+// из URL или состояния переключателя.
 export async function createPayment({ planId, billingPeriod }) {
+  const period = billingPeriod === 'month' ? 'month' : 'year';
+
+  if (billingPeriod && billingPeriod !== period) {
+    console.warn(
+      `Недопустимый billing_period "${billingPeriod}" — отправляем "${period}"`
+    );
+  }
+
   return api.post('/api/payments/create', {
     plan_id: planId,
-    billing_period: billingPeriod,
+    billing_period: period,
   });
 }

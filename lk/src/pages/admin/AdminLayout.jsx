@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { LogOut } from 'lucide-react';
-import { getAdminMe, getStoredAdminRole, logoutAdmin } from '../../api/adminAuth.service';
+import { getAdminMe, checkSuperAdmin, logoutAdmin } from '../../api/adminAuth.service';
 
+// ВНИМАНИЕ: разделы «Заявки» (/admin/leads) и «Пользователи»
+// (/admin/users) убраны из меню — соответствующих эндпоинтов на бэке
+// не существует (проверено по openapi.json), страницы открывались
+// пустыми с ошибкой. Роуты и сами страницы сохранены: как только бэк
+// добавит маршруты, достаточно вернуть их сюда.
 const NAV_ITEMS = [
   { path: '/admin/support', label: 'Обращения' },
-  { path: '/admin/leads', label: 'Заявки' },
-  { path: '/admin/users', label: 'Пользователи' },
 ];
 
 const SUPER_ADMIN_NAV_ITEMS = [
@@ -14,14 +17,18 @@ const SUPER_ADMIN_NAV_ITEMS = [
   { path: '/admin/admins', label: 'Админы' },
 ];
 
-// Общая шапка админки (без клиентского LkLayout — своя, отдельная от ЛК
-// пользователя). Доступ реальный: без валидного adminToken (получен через
-// /auth/admin/login или /auth/super_admin/login) сюда не попасть — редирект
-// на /admin/login. Каждый раздел (Support/Leads/Users) — страница внутри <Outlet />.
+// Общая шапка админки (своя, отдельная от ЛК пользователя). Без валидного
+// adminToken (получен через /auth/admin/login) сюда не попасть — редирект
+// на /admin/login. Каждый раздел — страница внутри <Outlet />.
+//
+// Пункт «Админы» показываем только тем, у кого реально есть права супер-
+// админа: признака в AdminOut нет, поэтому проверяем запросом к
+// /auth/super_admin/admins (см. checkSuperAdmin).
 export default function AdminLayout() {
   const navigate = useNavigate();
   const [status, setStatus] = useState('checking'); // checking | ready
   const [admin, setAdmin] = useState(null);
+  const [isSuper, setIsSuper] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem('adminToken');
@@ -31,8 +38,9 @@ export default function AdminLayout() {
     }
 
     getAdminMe()
-      .then((data) => {
+      .then(async (data) => {
         setAdmin(data);
+        setIsSuper(await checkSuperAdmin());
         setStatus('ready');
       })
       .catch(() => {
@@ -66,7 +74,7 @@ export default function AdminLayout() {
       <nav className="lk-admin-nav">
         <span className="lk-admin-nav__title">Админ-панель</span>
         <div className="lk-admin-nav__links">
-          {(getStoredAdminRole() === 'super_admin' ? SUPER_ADMIN_NAV_ITEMS : NAV_ITEMS).map((item) => (
+          {(isSuper ? SUPER_ADMIN_NAV_ITEMS : NAV_ITEMS).map((item) => (
             <NavLink
               key={item.path}
               to={item.path}
