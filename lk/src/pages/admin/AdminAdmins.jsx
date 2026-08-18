@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Loader2, ShieldAlert, UserPlus } from 'lucide-react';
+import { Loader2, ShieldAlert, UserPlus, Eye, EyeOff } from 'lucide-react';
 import { createAdmin, getAdmins, isStoredSuperAdmin } from '../../api/adminAuth.service';
 
 // Управление админами — доступно только супер-админу (проверка роли ниже
@@ -13,6 +13,7 @@ export default function AdminAdmins() {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [status, setStatus] = useState('idle'); // idle | loading | success | error
   const [error, setError] = useState('');
 
@@ -94,12 +95,25 @@ export default function AdminAdmins() {
 
           <label className="lk-admin-login__field">
             <span>Пароль</span>
-            <input
-              type="password"
-              value={password}
-              autoComplete="new-password"
-              onChange={(e) => setPassword(e.target.value)}
-            />
+
+            {/* Пароль задаётся здесь и больше нигде не показывается —
+                возможность его перечитать перед отправкой обязательна. */}
+            <div className="lk-admin-login__password">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                autoComplete="new-password"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword((v) => !v)}
+                aria-label={showPassword ? 'Скрыть пароль' : 'Показать пароль'}
+                title={showPassword ? 'Скрыть пароль' : 'Показать пароль'}
+              >
+                {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+              </button>
+            </div>
           </label>
 
           {status === 'error' && (

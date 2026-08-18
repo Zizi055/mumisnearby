@@ -1111,3 +1111,45 @@
 .lk-admin-item.is-active.is-unread {
   background: rgba(93, 143, 114, 0.12);
 }
+
+
+/* Поле пароля с глазком. Кнопка лежит поверх правого края инпута,
+   поэтому справа резервируем место, чтобы текст под неё не заезжал. */
+.lk-admin-login__password {
+  position: relative;
+  display: flex;
+
+  input {
+    width: 100%;
+    padding-right: 44px;
+  }
+
+  button {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 32px;
+    height: 32px;
+    padding: 0;
+
+    border: none;
+    border-radius: $lk-radius-12;
+
+    background: transparent;
+    color: $lk-text-muted;
+
+    cursor: pointer;
+    transition: color 0.15s ease, background 0.15s ease;
+
+    &:hover {
+      background: $lk-surface-soft;
+      color: $lk-text;
+    }
+  }
+}

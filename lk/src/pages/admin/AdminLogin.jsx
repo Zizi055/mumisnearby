@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Eye, EyeOff } from 'lucide-react';
 import { loginAdmin, loginSuperAdmin } from '../../api/adminAuth.service';
 
 // ─────────────────────────────────────────────────────────────────────
@@ -20,6 +21,7 @@ export default function AdminLogin() {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [isSuperAdmin, setIsSuperAdmin] = useState(false);
   const [status, setStatus] = useState('idle'); // idle | loading | error
   const [error, setError] = useState('');
@@ -85,12 +87,25 @@ export default function AdminLogin() {
 
             <label className="lk-admin-login__field">
               <span>Пароль</span>
-              <input
-                type="password"
-                value={password}
-                autoComplete="current-password"
-                onChange={(e) => setPassword(e.target.value)}
-              />
+
+              {/* Глазок: пароли админки длинные и с похожими символами,
+                  вслепую их набирать — гарантированная опечатка. */}
+              <div className="lk-admin-login__password">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  value={password}
+                  autoComplete="current-password"
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword((v) => !v)}
+                  aria-label={showPassword ? 'Скрыть пароль' : 'Показать пароль'}
+                  title={showPassword ? 'Скрыть пароль' : 'Показать пароль'}
+                >
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </div>
             </label>
 
             <label className="lk-admin-login__checkbox">
