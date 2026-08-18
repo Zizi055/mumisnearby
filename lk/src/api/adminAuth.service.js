@@ -19,7 +19,7 @@ async function loginRequest(path, { username, password }) {
 
   if (!res.ok) {
     const text = await res.text();
-    throw new Error(parseErrorDetail(text) || `HTTP ${res.status}: ${text}`);
+    throw new Error(describeAuthError(res.status, text));
   }
 
   return res.json();
@@ -95,6 +95,22 @@ export async function getAdmins() {
 // ответ — AdminOut созданного администратора.
 export async function createAdmin({ username, password }) {
   return adminApi.post('/auth/super_admin/create', { username, password });
+}
+
+// Человеческий текст вместо сырого ответа. При 502 nginx отдаёт целую
+// HTML-страницу «Bad Gateway» — раньше она вываливалась в форму входа
+// как есть, вместе с тегами и комментариями для старых браузеров.
+function describeAuthError(status, text) {
+  const detail = parseErrorDetail(text);
+  if (detail) return detail;
+
+  if (status === 401) return 'Неверный логин или пароль.';
+  if (status === 502 || status === 503 || status === 504) {
+    return 'Сервер не отвечает. Попробуйте через минуту — если не поможет, нужно смотреть логи бэкенда.';
+  }
+  if (status >= 500) return 'Ошибка на сервере. Мы уже знаем о проблеме.';
+
+  return `Не удалось войти (код ${status}).`;
 }
 
 function parseErrorDetail(text) {
