@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Percent, Users, Sparkles, Copy, Send, MessageCircle, Heart, UserCheck, Shield, ChevronDown, ArrowUpRight } from 'lucide-react';
+import { Percent, Users, Sparkles, Copy, Send, MessageCircle, Heart, UserCheck, Shield, ChevronDown, ArrowUpRight, Check } from 'lucide-react';
 import LkButton from '../../components/ui/LkButton';
 import { getBonus, claimBonus, getReferralLink, getReferralStats } from '../../api/bonus.service';
 
