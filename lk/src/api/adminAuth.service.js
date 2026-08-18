@@ -8,7 +8,11 @@ import { adminApi } from './adminClient';
 // AdminOut одинаковый для обеих ролей и явного признака «это супер-админ»
 // не содержит, поэтому роль запоминаем по тому, через какой эндпоинт был
 // вход, и дополнительно проверяем делом — запросом к
-// GET /auth/super_admin/admins (см. checkSuperAdmin).
+// GET /auth/super_admin/admins.
+//
+// ВАЖНО: роли НЕ наследуются. Суперадминский токен принимают только
+// /auth/super_admin/*; на /admin/* он даёт 401 — там нужен токен
+// администратора. Это подтверждено на боевом сервере.
 
 async function loginRequest(path, { username, password }) {
   const res = await fetch(path, {
@@ -33,21 +37,12 @@ function storeSession(data, role, username) {
   }
 }
 
-// Есть ли у текущего токена права супер-админа. Признака в AdminOut нет,
-// поэтому проверяем делом: пробуем получить список администраторов.
-export async function checkSuperAdmin() {
-  try {
-    await adminApi.get('/auth/super_admin/admins');
-    localStorage.setItem('adminIsSuper', '1');
-    return true;
-  } catch {
-    localStorage.removeItem('adminIsSuper');
-    return false;
-  }
-}
-
+// Роль определяется тем, через какой эндпоинт был вход, и хранится
+// рядом с токеном. Раньше здесь был запрос к /auth/super_admin/admins
+// «на пробу» — у обычного админа он всегда отвечал 401 и мусорил в
+// консоли красной строкой при каждом входе.
 export function isStoredSuperAdmin() {
-  return localStorage.getItem('adminIsSuper') === '1';
+  return getStoredAdminRole() === 'super_admin';
 }
 
 export async function loginAdmin({ username, password }) {

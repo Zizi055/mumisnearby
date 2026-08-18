@@ -1,22 +1,35 @@
 import { useEffect, useState } from 'react';
-import { NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { LogOut } from 'lucide-react';
-import { getAdminMe, checkSuperAdmin, logoutAdmin } from '../../api/adminAuth.service';
+import { getAdminMe, isStoredSuperAdmin, logoutAdmin } from '../../api/adminAuth.service';
 
-// ВНИМАНИЕ: разделы «Заявки» (/admin/leads) и «Пользователи»
-// (/admin/users) убраны из меню — соответствующих эндпоинтов на бэке
-// не существует (проверено по openapi.json), страницы открывались
-// пустыми с ошибкой. Роуты и сами страницы сохранены: как только бэк
-// добавит маршруты, достаточно вернуть их сюда.
-const NAV_ITEMS = [
+// Роли на бэке НЕ наследуются, и меню это отражает.
+//
+// Администратор (POST /auth/admin/login) работает с /admin/*:
+// обращения, выдача подписки. Раздела «Админы» ему не видно —
+// /auth/super_admin/admins его токен не примет.
+//
+// Супер-администратор (POST /auth/super_admin/login) управляет только
+// учётками администраторов. На /admin/* его токен даёт 401, поэтому
+// «Обращения» и «Выдать подписку» ему не показываем: раньше он попадал
+// туда после входа и видел пустой экран с ошибкой.
+//
+// Разделы «Заявки» (/admin/leads) и «Пользователи» (/admin/users) убраны
+// у всех — таких эндпоинтов на бэке нет. Роуты и страницы сохранены.
+const ADMIN_NAV_ITEMS = [
   { path: '/admin/support', label: 'Обращения' },
   { path: '/admin/grant', label: 'Выдать подписку' },
 ];
 
 const SUPER_ADMIN_NAV_ITEMS = [
-  ...NAV_ITEMS,
   { path: '/admin/admins', label: 'Админы' },
 ];
+
+// Куда вести сразу после входа — зависит от роли.
+export const HOME_BY_ROLE = {
+  admin: '/admin/support',
+  super_admin: '/admin/admins',
+};
 
 // Общая шапка админки (своя, отдельная от ЛК пользователя). Без валидного
 // adminToken (получен через /auth/admin/login) сюда не попасть — редирект
@@ -27,9 +40,10 @@ const SUPER_ADMIN_NAV_ITEMS = [
 // /auth/super_admin/admins (см. checkSuperAdmin).
 export default function AdminLayout() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [status, setStatus] = useState('checking'); // checking | ready
   const [admin, setAdmin] = useState(null);
-  const [isSuper, setIsSuper] = useState(false);
+  const isSuper = isStoredSuperAdmin();
 
   useEffect(() => {
     const token = localStorage.getItem('adminToken');
@@ -39,9 +53,8 @@ export default function AdminLayout() {
     }
 
     getAdminMe()
-      .then(async (data) => {
+      .then((data) => {
         setAdmin(data);
-        setIsSuper(await checkSuperAdmin());
         setStatus('ready');
       })
       .catch(() => {
@@ -49,6 +62,17 @@ export default function AdminLayout() {
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Суперадмин, попавший по прямой ссылке в «Обращения» или «Выдать
+  // подписку», получил бы там 401 и пустой экран. Возвращаем его в
+  // доступный раздел вместо того, чтобы показывать ошибку.
+  useEffect(() => {
+    if (status !== 'ready' || !isSuper) return;
+    if (location.pathname.startsWith('/admin/admins')) return;
+
+    navigate('/admin/admins', { replace: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status, isSuper, location.pathname]);
 
   function redirectToLogin() {
     const current = window.location.hash.replace(/^#/, '') || '/admin/support';
@@ -75,7 +99,7 @@ export default function AdminLayout() {
       <nav className="lk-admin-nav">
         <span className="lk-admin-nav__title">Админ-панель</span>
         <div className="lk-admin-nav__links">
-          {(isSuper ? SUPER_ADMIN_NAV_ITEMS : NAV_ITEMS).map((item) => (
+          {(isSuper ? SUPER_ADMIN_NAV_ITEMS : ADMIN_NAV_ITEMS).map((item) => (
             <NavLink
               key={item.path}
               to={item.path}

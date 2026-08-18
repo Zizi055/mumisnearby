@@ -38,10 +38,18 @@ export default function AdminLogin() {
         await loginAdmin({ username: username.trim(), password });
       }
 
+      // Суперадмину /admin/* недоступен (там нужен админский токен),
+      // поэтому ведём его в «Админы», а не в «Обращения».
+      const home = isSuperAdmin ? '/admin/admins' : '/admin/support';
+
+      // Сохранённый redirect уважаем только если роль его потянет.
       const redirect = params.get('redirect');
-      navigate(redirect ? decodeURIComponent(redirect) : '/admin/support', {
-        replace: true,
-      });
+      const target =
+        redirect && !(isSuperAdmin && !decodeURIComponent(redirect).startsWith('/admin/admins'))
+          ? decodeURIComponent(redirect)
+          : home;
+
+      navigate(target, { replace: true });
     } catch (err) {
       // Подсказываем про вторую таблицу — самая частая причина 401.
       setError(
