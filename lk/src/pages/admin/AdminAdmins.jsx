@@ -81,7 +81,7 @@ export default function AdminAdmins() {
       <div className="lk-admin-detail">
         <h2 className="lk-admin-detail__title">Добавить администратора</h2>
 
-        <form className="lk-admin-login__form" onSubmit={handleSubmit}>
+        <form className="lk-admin-form" onSubmit={handleSubmit}>
           <label className="lk-admin-login__field">
             <span>Логин</span>
             <input
@@ -102,17 +102,21 @@ export default function AdminAdmins() {
             />
           </label>
 
-          {status === 'error' && <div className="lk-admin-login__error">{error}</div>}
+          {status === 'error' && (
+            <div className="lk-admin-login__error lk-admin-form__full">{error}</div>
+          )}
           {status === 'success' && (
-            <div className="lk-admin-login__success">
+            <div className="lk-admin-login__success lk-admin-form__full">
               Администратор создан — он может войти со своим логином и паролем.
             </div>
           )}
 
-          <button type="submit" disabled={status === 'loading'}>
-            <UserPlus size={15} className="lk-admin-login__submit-icon" />
-            {status === 'loading' ? 'Создаём…' : 'Создать'}
-          </button>
+          <div className="lk-admin-form__actions">
+            <button type="submit" disabled={status === 'loading'}>
+              <UserPlus size={15} />
+              {status === 'loading' ? 'Создаём…' : 'Создать'}
+            </button>
+          </div>
         </form>
       </div>
 

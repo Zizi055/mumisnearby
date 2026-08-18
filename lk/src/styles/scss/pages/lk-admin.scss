@@ -778,3 +778,140 @@
   color: $lk-text-muted;
   font-variant-numeric: tabular-nums;
 }
+
+
+/* =========================================================
+   ФОРМЫ ВНУТРИ ПАНЕЛИ (создание админа, выдача подписки)
+   =========================================================
+   Раньше они переиспользовали .lk-admin-login__form — стили формы
+   ВХОДА, где кнопка на всю ширину уместна: там карточка узкая, 380px.
+   В панели та же кнопка растягивалась на 1900px монитора и выглядела
+   как полоса. Здесь своя раскладка: поля в ряд, кнопка по содержимому.
+========================================================= */
+
+.lk-admin-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));
+  gap: $lk-space-16;
+
+  /* Форма не тянется во всю ширину монитора: читать и заполнять
+     поля длиной в метр невозможно. */
+  max-width: 720px;
+
+  align-items: end;
+}
+
+/* Сообщения и кнопка занимают всю строку сетки */
+.lk-admin-form__full {
+  grid-column: 1 / -1;
+}
+
+.lk-admin-form__actions {
+  grid-column: 1 / -1;
+
+  display: flex;
+  justify-content: flex-start;
+}
+
+.lk-admin-form button[type='submit'] {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  /* по содержимому, а не на всю ширину */
+  width: auto;
+  min-width: 180px;
+  height: 46px;
+  padding: 0 24px;
+
+  border: none;
+  border-radius: $lk-radius-pill;
+
+  background: $lk-brand;
+  color: $lk-white;
+
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+
+  transition: background 0.15s ease, transform 0.15s ease;
+
+  &:hover:not(:disabled) {
+    background: $lk-brand-dark;
+    transform: translateY(-1px);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: default;
+  }
+}
+
+/* Содержимое разделов панели тоже не растягиваем на весь монитор */
+.lk-admin-detail {
+  max-width: 1100px;
+}
+
+/* Таблица админов: логин пошире, остальное по содержимому */
+.lk-admin-table--3col .lk-admin-table__row {
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
+}
+
+@media (max-width: 900px) {
+  .lk-admin-form {
+    grid-template-columns: 1fr;
+  }
+
+  .lk-admin-form button[type='submit'] {
+    width: 100%;
+  }
+}
+
+
+/* Предупреждение перед опасным действием — заметнее обычной подсказки. */
+.lk-admin-detail__hint--warn {
+  align-items: flex-start;
+
+  padding: 10px 14px;
+
+  border-radius: $lk-radius-12;
+
+  background: rgba(245, 166, 35, 0.1);
+  border: 1px solid rgba(245, 166, 35, 0.25);
+
+  color: $lk-text-soft;
+
+  svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+    color: $lk-warning;
+  }
+}
+
+/* Шапка панели прижата к тем же 32px, что и содержимое страниц */
+.lk-admin-nav {
+  padding-left: $lk-space-32;
+  padding-right: $lk-space-32;
+}
+
+/* Заголовок раздела: убираем лишний воздух между плашкой и h1 */
+.lk-admin__head h1 {
+  margin-top: 2px;
+}
+
+@media (max-width: 720px) {
+  .lk-admin {
+    padding: $lk-space-16;
+  }
+
+  .lk-admin-nav {
+    flex-wrap: wrap;
+    gap: $lk-space-12;
+    padding: $lk-space-12 $lk-space-16;
+  }
+
+  .lk-admin__head h1 {
+    font-size: 22px;
+  }
+}

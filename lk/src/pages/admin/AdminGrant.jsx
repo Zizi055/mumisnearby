@@ -80,13 +80,13 @@ export default function AdminGrant() {
       <div className="lk-admin-detail">
         <h2 className="lk-admin-detail__title">Ручная активация тарифа</h2>
 
-        <p className="lk-admin-detail__hint">
+        <p className="lk-admin-detail__hint lk-admin-detail__hint--warn">
           <AlertTriangle size={14} />
           Подписка включится сразу и без оплаты. Используйте для возвратов,
           компенсаций и платежей, прошедших мимо ЮKassa.
         </p>
 
-        <form className="lk-admin-login__form" onSubmit={handleSubmit}>
+        <form className="lk-admin-form" onSubmit={handleSubmit}>
           <label className="lk-admin-login__field">
             <span>ID пользователя</span>
             <input
@@ -124,20 +124,22 @@ export default function AdminGrant() {
           </label>
 
           {status === 'error' && (
-            <div className="lk-admin-login__error">{error}</div>
+            <div className="lk-admin-login__error lk-admin-form__full">{error}</div>
           )}
 
           {status === 'success' && granted && (
-            <div className="lk-admin-login__success">
+            <div className="lk-admin-login__success lk-admin-form__full">
               Пользователю #{granted.userId} выдан «{granted.planName}»
               на {granted.period}.
             </div>
           )}
 
-          <button type="submit" disabled={status === 'loading'}>
-            <Gift size={15} className="lk-admin-login__submit-icon" />
-            {status === 'loading' ? 'Выдаём…' : 'Выдать подписку'}
-          </button>
+          <div className="lk-admin-form__actions">
+            <button type="submit" disabled={status === 'loading'}>
+              <Gift size={15} />
+              {status === 'loading' ? 'Выдаём…' : 'Выдать подписку'}
+            </button>
+          </div>
         </form>
       </div>
     </div>
