@@ -63,29 +63,6 @@ export async function loginSuperAdmin({ username, password }) {
   return data;
 }
 
-// Единый вход в панель.
-//
-// На бэке две независимые таблицы учёток — admins и super_admin — и два
-// эндпоинта. Раньше выбор был на человеке: галочка «Я супер-администратор».
-// Её постоянно забывали поставить, запрос уходил в admins, там логина нет,
-// и 401 выглядел как «неверный пароль», хотя учётка нормальная.
-//
-// Теперь пробуем обычного администратора, а на 401 — суперадмина. Лишний
-// запрос только в случае суперадминского входа, зато ошибиться нельзя.
-export async function loginToAdminPanel({ username, password }) {
-  try {
-    return await loginAdmin({ username, password });
-  } catch (adminError) {
-    try {
-      return await loginSuperAdmin({ username, password });
-    } catch {
-      // Возвращаем ошибку первой попытки: она и есть «неверный логин
-      // или пароль», текст второй ничего не добавляет.
-      throw adminError;
-    }
-  }
-}
-
 export function logoutAdmin() {
   localStorage.removeItem('adminToken');
   localStorage.removeItem('adminRole');
