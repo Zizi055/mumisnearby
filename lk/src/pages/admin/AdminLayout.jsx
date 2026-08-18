@@ -10,6 +10,7 @@ import { getAdminMe, checkSuperAdmin, logoutAdmin } from '../../api/adminAuth.se
 // добавит маршруты, достаточно вернуть их сюда.
 const NAV_ITEMS = [
   { path: '/admin/support', label: 'Обращения' },
+  { path: '/admin/grant', label: 'Выдать подписку' },
 ];
 
 const SUPER_ADMIN_NAV_ITEMS = [

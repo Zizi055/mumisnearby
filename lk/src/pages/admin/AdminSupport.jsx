@@ -11,7 +11,12 @@ import {
   Clock,
   CheckCircle,
   RefreshCw,
+  ChevronLeft,
+  ChevronRight,
 } from 'lucide-react';
+
+// Сколько обращений тянем за раз. Совпадает с page_size на бэке.
+const PAGE_SIZE = 20;
 
 // Строго по бэковому enum'у TicketStatus.
 const STATUS_CONFIG = {
@@ -61,6 +66,13 @@ export default function AdminSupport() {
   const [listStatus, setListStatus] = useState('loading'); // loading | success | failed
   const [filterStatus, setFilterStatus] = useState('all');
 
+  // Фильтрация и постраничная выдача теперь на стороне бэка
+  // (?status_filter=&page=&page_size=). Раньше грузили все обращения
+  // целиком и фильтровали в браузере — на сотне тикетов это лишний
+  // трафик и заметная задержка.
+  const [page, setPage] = useState(1);
+  const [total, setTotal] = useState(0);
+
   const [selectedId, setSelectedId] = useState(null);
   const [detail, setDetail]         = useState(null);
   const [detailStatus, setDetailStatus] = useState('idle');
@@ -70,13 +82,29 @@ export default function AdminSupport() {
 
   const [statusUpdating, setStatusUpdating] = useState(false);
 
-  useEffect(() => { loadTickets(); }, []);
+  // Перезагружаем при смене фильтра и страницы.
+  useEffect(() => {
+    loadTickets();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [filterStatus, page]);
+
+  // Смена фильтра сбрасывает на первую страницу, иначе можно попасть
+  // на пустую пятую страницу отфильтрованного списка.
+  function changeFilter(next) {
+    setFilterStatus(next);
+    setPage(1);
+  }
 
   async function loadTickets() {
     setListStatus('loading');
     try {
-      const data = await getAdminTickets();
-      setTickets(data);
+      const res = await getAdminTickets({
+        status: filterStatus,
+        page,
+        pageSize: PAGE_SIZE,
+      });
+      setTickets(res.items);
+      setTotal(res.total);
       setListStatus('success');
     } catch {
       setListStatus('failed');
@@ -126,9 +154,8 @@ export default function AdminSupport() {
     }
   }
 
-  const filtered = filterStatus === 'all'
-    ? tickets
-    : tickets.filter((t) => t.status === filterStatus);
+  // Список уже отфильтрован бэком — локально ничего не отсеиваем.
+  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
 
   const messages = detail?.messages ?? [];
 
@@ -161,9 +188,9 @@ export default function AdminSupport() {
                   key={s}
                   type="button"
                   className={`lk-admin-filter ${filterStatus === s ? 'is-active' : ''}`}
-                  onClick={() => setFilterStatus(s)}
+                  onClick={() => changeFilter(s)}
                 >
-                  {s === 'all' ? `Все (${tickets.length})` : STATUS_CONFIG[s]?.label}
+                  {s === 'all' ? `Все (${total})` : STATUS_CONFIG[s]?.label}
                 </button>
               ))}
             </div>
@@ -172,12 +199,12 @@ export default function AdminSupport() {
               <div className="lk-admin-list__loader"><Loader size={20} className="is-spinning" /></div>
             )}
 
-            {listStatus === 'success' && filtered.length === 0 && (
+            {listStatus === 'success' && tickets.length === 0 && (
               <div className="lk-admin-list__empty">Обращений нет</div>
             )}
 
             <div className="lk-admin-list__items">
-              {filtered.map((t) => (
+              {tickets.map((t) => (
                 <button
                   key={t.id}
                   type="button"
@@ -198,6 +225,34 @@ export default function AdminSupport() {
                 </button>
               ))}
             </div>
+
+            {totalPages > 1 && (
+              <div className="lk-admin-pager">
+                <button
+                  type="button"
+                  className="lk-carousel-nav__btn"
+                  onClick={() => setPage((p) => Math.max(1, p - 1))}
+                  disabled={page <= 1 || listStatus === 'loading'}
+                  aria-label="Предыдущая страница"
+                >
+                  <ChevronLeft size={16} />
+                </button>
+
+                <span className="lk-admin-pager__counter">
+                  {page} / {totalPages}
+                </span>
+
+                <button
+                  type="button"
+                  className="lk-carousel-nav__btn"
+                  onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                  disabled={page >= totalPages || listStatus === 'loading'}
+                  aria-label="Следующая страница"
+                >
+                  <ChevronRight size={16} />
+                </button>
+              </div>
+            )}
           </div>
 
           <div className="lk-admin-detail">

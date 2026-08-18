@@ -118,14 +118,19 @@
     font-weight: 600;
   }
 
-  input {
+  input,
+  select {
     height: 44px;
     padding: 0 14px;
 
     border: 1px solid $lk-border;
     border-radius: $lk-radius-12;
 
+    background: $lk-white;
+
+    font-family: inherit;
     font-size: 14px;
+    color: $lk-text;
     outline: none;
 
     &:focus { border-color: $lk-brand; }
@@ -751,4 +756,25 @@
   .lk-admin-list__items {
     max-height: 340px;
   }
+}
+
+
+/* Пагинация списка обращений. Фильтр и страницы считает бэк
+   (?status_filter=&page=&page_size=), здесь только управление. */
+.lk-admin-pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $lk-space-12;
+
+  padding: $lk-space-12 0 0;
+
+  border-top: 1px solid $lk-border;
+}
+
+.lk-admin-pager__counter {
+  font-size: 13px;
+  font-weight: 500;
+  color: $lk-text-muted;
+  font-variant-numeric: tabular-nums;
 }

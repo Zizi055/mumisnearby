@@ -62,6 +62,7 @@ function App() {
         <Route path="support" element={<AdminSupport />} />
         <Route path="leads" element={<AdminLeads />} />
         <Route path="users" element={<AdminUsers />} />
+        <Route path="grant" element={<AdminGrant />} />
         <Route path="admins" element={<AdminAdmins />} />
       </Route>
 

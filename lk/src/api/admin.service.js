@@ -5,10 +5,37 @@ import { adminApi } from './adminClient';
 // adminAuth.service.js), не пользовательский токен — поэтому ходим через
 // adminApi (adminClient.js), а не через обычный api (client.js).
 
-// GET /admin/support/tickets — все обращения всех пользователей.
-export async function getAdminTickets() {
-  const data = await adminApi.get('/admin/support/tickets');
-  return Array.isArray(data) ? data : (data?.items ?? []);
+// GET /admin/support/tickets — обращения всех пользователей.
+//
+// Бэк умеет фильтр по статусу и постраничную выдачу
+// (?status_filter=&page=&page_size=), а мы раньше тянули всё одним
+// запросом без параметров. На сотне обращений это лишний трафик и
+// заметная задержка отрисовки.
+//
+// Ответ — TicketListResponse: { items, total, page, page_size }.
+// Возвращаем его целиком, чтобы страница знала общее количество и
+// могла нарисовать пагинацию.
+export async function getAdminTickets({
+  status = null,
+  page = 1,
+  pageSize = 20,
+} = {}) {
+  const params = new URLSearchParams({
+    page: String(page),
+    page_size: String(pageSize),
+  });
+
+  // status_filter принимает значения TicketStatus: new | in_progress | resolved.
+  if (status && status !== 'all') params.set('status_filter', status);
+
+  const data = await adminApi.get(`/admin/support/tickets?${params}`);
+
+  return {
+    items: Array.isArray(data) ? data : (data?.items ?? []),
+    total: data?.total ?? (Array.isArray(data) ? data.length : 0),
+    page: data?.page ?? page,
+    pageSize: data?.page_size ?? pageSize,
+  };
 }
 
 // GET /admin/support/tickets/{id} — обращение целиком + переписка.
@@ -28,6 +55,23 @@ export async function addAdminTicketMessage(id, text) {
 // PATCH /admin/support/tickets/{id}/status — сменить статус (new/in_progress/resolved).
 export async function updateAdminTicketStatus(id, status) {
   return adminApi.patch(`/admin/support/tickets/${id}/status`, { status });
+}
+
+// ─── Ручная выдача подписки (админ) ─────────────────────────────────────────
+// POST /subscription/admin/grant — единственный легальный способ выдать
+// тариф без оплаты. Раньше это умел POST /subscription/activate, доступный
+// любому пользователю; его удалили по security-ревью (критичный пункт №3).
+//
+// Тело: { user_id, plan_id, billing_period }. billing_period — 'month'
+// или 'year'. Неизвестный пользователь или тариф → 404.
+//
+// Идёт через adminApi: требуется админский токен, пользовательский не подойдёт.
+export async function grantSubscription({ userId, planId, billingPeriod }) {
+  return adminApi.post('/subscription/admin/grant', {
+    user_id: Number(userId),
+    plan_id: Number(planId),
+    billing_period: billingPeriod === 'month' ? 'month' : 'year',
+  });
 }
 
 // ─── Заявки (лиды с главной страницы и с Конструктора) ──────────────────────
