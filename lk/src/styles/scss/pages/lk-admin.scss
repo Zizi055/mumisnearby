@@ -1074,3 +1074,40 @@
     color: $lk-text;
   }
 }
+
+
+/* Непрочитанное обращение (статус «Новое») — заметная полоса слева и
+   более контрастная тема. Иначе в списке из двадцати строк непонятно,
+   где то, что ещё никто не открывал. */
+.lk-admin-item.is-unread {
+  position: relative;
+
+  background: rgba(93, 143, 114, 0.05);
+  border-color: rgba(93, 143, 114, 0.22);
+
+  padding-left: calc(#{$lk-space-14} + 4px);
+}
+
+.lk-admin-item.is-unread::before {
+  content: '';
+
+  position: absolute;
+  left: 0;
+  top: 10px;
+  bottom: 10px;
+
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+
+  background: $lk-brand;
+}
+
+.lk-admin-item.is-unread .lk-admin-item__subject {
+  color: $lk-text;
+  font-weight: 700;
+}
+
+/* Выбранное обращение важнее метки непрочитанного */
+.lk-admin-item.is-active.is-unread {
+  background: rgba(93, 143, 114, 0.12);
+}

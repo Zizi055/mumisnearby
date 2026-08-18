@@ -120,8 +120,32 @@ export default function AdminSupport() {
       const data = await getAdminTicket(id);
       setDetail(data);
       setDetailStatus('success');
+
+      // Открыли новое обращение — значит взяли в работу. Иначе счётчик
+      // «Новых» в меню никогда не уменьшался бы: статус меняется только
+      // руками, а прочтение его не трогало.
+      if (data?.status === 'new') {
+        await takeToWork(id);
+      }
     } catch {
       setDetailStatus('error');
+    }
+  }
+
+  // Перевод «Новое» → «В работе» при открытии.
+  async function takeToWork(id) {
+    try {
+      await updateAdminTicketStatus(id, 'in_progress');
+
+      setDetail((d) => (d && d.id === id ? { ...d, status: 'in_progress' } : d));
+      setTickets((list) =>
+        list.map((t) => (t.id === id ? { ...t, status: 'in_progress' } : t))
+      );
+
+      // Сообщаем шапке, что счётчик пора пересчитать.
+      window.dispatchEvent(new CustomEvent('admin:tickets-changed'));
+    } catch {
+      // Не смогли сменить статус — не страшно, обращение всё равно открыто.
     }
   }
 
@@ -146,6 +170,7 @@ export default function AdminSupport() {
     setStatusUpdating(true);
     try {
       await updateAdminTicketStatus(selectedId, newStatus);
+      window.dispatchEvent(new CustomEvent('admin:tickets-changed'));
       await Promise.all([selectTicket(selectedId), loadTickets()]);
     } catch {
       // молча — если бэк отклонит статус, просто ничего не поменяется
@@ -208,7 +233,9 @@ export default function AdminSupport() {
                 <button
                   key={t.id}
                   type="button"
-                  className={`lk-admin-item ${selectedId === t.id ? 'is-active' : ''}`}
+                  className={`lk-admin-item ${selectedId === t.id ? 'is-active' : ''} ${
+                    t.status === 'new' ? 'is-unread' : ''
+                  }`}
                   onClick={() => selectTicket(t.id)}
                 >
                   <div className="lk-admin-item__top">

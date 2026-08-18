@@ -102,12 +102,19 @@ export default function AdminLayout() {
     const timer = setInterval(check, 30_000);
 
     const onFocus = () => check();
+
+    // Страница обращений сообщает, что статус поменялся — пересчитываем
+    // сразу, не дожидаясь следующего тика опроса.
+    const onChanged = () => check();
+
     window.addEventListener('focus', onFocus);
+    window.addEventListener('admin:tickets-changed', onChanged);
 
     return () => {
       cancelled = true;
       clearInterval(timer);
       window.removeEventListener('focus', onFocus);
+      window.removeEventListener('admin:tickets-changed', onChanged);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status, isSuper]);
