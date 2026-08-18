@@ -93,19 +93,37 @@ export default function Header({ onMenuToggle }) {
     loadNotifications();
 
     // Живой поток: бэк сам сообщает, когда озвучка готова или пришёл ответ
-    // в поддержке — колокольчик обновляется сразу, а не через минуту.
+    // в поддержке. Работает только если nginx не буферизует ответ — если
+    // не дошло, ниже есть три запасных способа обновиться.
     const unsubscribe = subscribeToNotifications(() => loadNotifications());
 
-    // Подстраховка: если SSE не прошёл через прокси или соединение отвалилось,
-    // раз в пять минут всё равно перечитываем список. Раньше это был
-    // единственный механизм и опрашивал он каждую минуту.
-    const timer = setInterval(loadNotifications, 5 * 60_000);
+    // 1. Периодический опрос. Пять минут оказалось слишком редко: человек
+    //    отвечает в поддержке и тут же смотрит на колокольчик.
+    const timer = setInterval(loadNotifications, 45_000);
+
+    // 2. Возврат на вкладку — самый частый момент, когда человек ждёт
+    //    ответа: ушёл в почту, вернулся в кабинет.
+    const onFocus = () => loadNotifications();
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') loadNotifications();
+    };
+
+    window.addEventListener('focus', onFocus);
+    document.addEventListener('visibilitychange', onVisible);
 
     return () => {
       unsubscribe();
       clearInterval(timer);
+      window.removeEventListener('focus', onFocus);
+      document.removeEventListener('visibilitychange', onVisible);
     };
   }, []);
+
+  // 3. Переход между разделами кабинета тоже повод перечитать список.
+  useEffect(() => {
+    loadNotifications();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname]);
 
   const current = navigation.find((item) =>
     location.pathname.startsWith(item.path)
