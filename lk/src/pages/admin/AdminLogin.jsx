@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { loginAdmin } from '../../api/adminAuth.service';
+import { loginAdmin, loginSuperAdmin } from '../../api/adminAuth.service';
 
 export default function AdminLogin() {
   const navigate = useNavigate();
@@ -8,6 +8,7 @@ export default function AdminLogin() {
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [isSuperAdmin, setIsSuperAdmin] = useState(false);
   const [status, setStatus] = useState('idle'); // idle | loading | error
   const [error, setError] = useState('');
 
@@ -19,9 +20,12 @@ export default function AdminLogin() {
     setError('');
 
     try {
-      // Вход один на всех: права супер-админа определяются по токену,
-      // отдельного /auth/super_admin/login на бэке не существует.
-      await loginAdmin({ username: username.trim(), password });
+      // Два разных эндпоинта и две разные таблицы учёток на бэке.
+      if (isSuperAdmin) {
+        await loginSuperAdmin({ username: username.trim(), password });
+      } else {
+        await loginAdmin({ username: username.trim(), password });
+      }
 
       const redirect = params.get('redirect');
       navigate(redirect ? decodeURIComponent(redirect) : '/admin/support', { replace: true });
@@ -57,6 +61,15 @@ export default function AdminLogin() {
                 autoComplete="current-password"
                 onChange={(e) => setPassword(e.target.value)}
               />
+            </label>
+
+            <label className="lk-admin-login__checkbox">
+              <input
+                type="checkbox"
+                checked={isSuperAdmin}
+                onChange={(e) => setIsSuperAdmin(e.target.checked)}
+              />
+              Я супер-администратор
             </label>
 
             {error && <div className="lk-admin-login__error">{error}</div>}

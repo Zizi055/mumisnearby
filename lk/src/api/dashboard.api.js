@@ -105,7 +105,7 @@ export async function getDashboardOverview() {
         age: content?.age ? `${content.age}+` : null,
         image: content?.image || FALLBACK_IMAGE,
         voice: voiceName(g.voice_id),
-        // created_at бэк для озвучек пока не отдаёт (в ответе /generations/
+        // created_at появился в GenerationResponse (обязательное поле).
         // только id, content_type, content_id, voice_id, status), поэтому
         // дата на карточках не появляется. Проверяем несколько
         // правдоподобных имён — как только поле добавят, заработает само.

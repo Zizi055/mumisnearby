@@ -134,16 +134,15 @@ export const useVoiceStore = create((set, get) => ({
 
 
 
+  // PATCH /voices/{id}/settings на бэке не реализован. Ползунки меняем
+  // локально, чтобы интерфейс не «отскакивал», но честно понимаем: до
+  // перезагрузки страницы, не дальше. Когда эндпоинт появится, достаточно
+  // вернуть await перед set() и убрать этот комментарий.
   updateVoiceSettings: async (
     id,
     settings
   ) => {
     try {
-      await updateVoiceSettingsRequest(
-        id,
-        settings
-      );
-
       set((state) => ({
         voices: state.voices.map((voice) =>
           voice.id === id
@@ -158,12 +157,10 @@ export const useVoiceStore = create((set, get) => ({
             : voice
         ),
       }));
+      await updateVoiceSettingsRequest(id, settings);
     } catch (error) {
-      console.error(error);
-
-      set({
-        error: error.message,
-      });
+      // Сервер настройки пока не хранит — в консоль, но не в интерфейс.
+      console.warn('Настройки голоса не сохранены на сервере:', error.message);
     }
   },
 

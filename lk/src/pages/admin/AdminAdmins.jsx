@@ -1,15 +1,20 @@
 import { useEffect, useState } from 'react';
-import { Loader2, ShieldAlert } from 'lucide-react';
-import { getAdmins, isStoredSuperAdmin } from '../../api/adminAuth.service';
+import { Loader2, ShieldAlert, UserPlus } from 'lucide-react';
+import { createAdmin, getAdmins, isStoredSuperAdmin } from '../../api/adminAuth.service';
 
 // Управление админами — доступно только супер-админу (проверка роли ниже
 // на фронте; реальное разграничение прав всё равно на бэке по токену).
 //
-// Бэк даёт только GET /auth/super_admin/admins — список. Создания
-// (/auth/super_admin/create), удаления и журнала действий не существует,
-// поэтому формы добавления здесь нет: она отправляла бы запрос в никуда.
+// Бэк даёт GET /auth/super_admin/admins (список) и POST
+// /auth/super_admin/create (добавление) — обе используются здесь.
+// Удаления администратора и журнала его действий на бэке нет.
 export default function AdminAdmins() {
   const isSuperAdmin = isStoredSuperAdmin();
+
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [status, setStatus] = useState('idle'); // idle | loading | success | error
+  const [error, setError] = useState('');
 
   const [admins, setAdmins] = useState([]);
   const [listState, setListState] = useState('loading'); // loading | ready | error
@@ -32,6 +37,26 @@ export default function AdminAdmins() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSuperAdmin]);
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!username.trim() || !password) return;
+
+    setStatus('loading');
+    setError('');
+
+    try {
+      await createAdmin({ username: username.trim(), password });
+      setStatus('success');
+      setUsername('');
+      setPassword('');
+      // Перечитываем список, чтобы новый администратор появился сразу.
+      loadAdmins();
+    } catch (err) {
+      setError(err.message || 'Не удалось создать администратора');
+      setStatus('error');
+    }
+  };
+
   if (!isSuperAdmin) {
     return (
       <div className="lk-admin">
@@ -52,6 +77,44 @@ export default function AdminAdmins() {
           <h1>Админы</h1>
         </div>
       </header>
+
+      <div className="lk-admin-detail">
+        <h2 className="lk-admin-detail__title">Добавить администратора</h2>
+
+        <form className="lk-admin-login__form" onSubmit={handleSubmit}>
+          <label className="lk-admin-login__field">
+            <span>Логин</span>
+            <input
+              type="text"
+              value={username}
+              autoComplete="off"
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </label>
+
+          <label className="lk-admin-login__field">
+            <span>Пароль</span>
+            <input
+              type="password"
+              value={password}
+              autoComplete="new-password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </label>
+
+          {status === 'error' && <div className="lk-admin-login__error">{error}</div>}
+          {status === 'success' && (
+            <div className="lk-admin-login__success">
+              Администратор создан — он может войти со своим логином и паролем.
+            </div>
+          )}
+
+          <button type="submit" disabled={status === 'loading'}>
+            <UserPlus size={15} className="lk-admin-login__submit-icon" />
+            {status === 'loading' ? 'Создаём…' : 'Создать'}
+          </button>
+        </form>
+      </div>
 
       <div className="lk-admin-detail">
         <h2 className="lk-admin-detail__title">

@@ -113,7 +113,7 @@ export default function LibraryGenerations() {
 
   const FALLBACK_IMAGE = `${import.meta.env.BASE_URL}img/owl.png`;
 
-  // created_at бэк для озвучек пока не отдаёт — как только начнёт,
+  // created_at теперь приходит с бэка (обязательное поле схемы). Ветки
   // дата появится в карточке сама.
   const getDate = (gen) => {
     const iso = gen.created_at ?? gen.createdAt ?? gen.created ?? null;

@@ -81,17 +81,27 @@ export async function deleteVoice(id) {
   return api.del(`/voices/${id}`);
 }
 
-// Эти эндпоинты отсутствуют в документации - надо добавить
-export async function renameVoice(id, name) {
-  return api.patch(`/voices/${id}`, { name });
+// ─────────────────────────────────────────────────────────────────────
+// НЕТ НА БЭКЕ. Проверено по openapi.json боевого сервера: у /voices
+// существуют только POST /voices/add, GET /voices/, GET /voices/{id}
+// и DELETE /voices/{id}. Ни PATCH /voices/{id}, ни /avatar, ни /settings
+// не реализованы — вызовы возвращали 404/405.
+//
+// Функции оставлены намеренно, чтобы не переписывать вызывающий код,
+// когда эндпоинты появятся. Пока каждая честно сообщает, что операция
+// недоступна, вместо молчаливой ошибки сети.
+// ─────────────────────────────────────────────────────────────────────
+
+const NOT_IMPLEMENTED = 'Эта возможность пока не поддерживается сервером.';
+
+export async function renameVoice() {
+  throw new Error(NOT_IMPLEMENTED);
 }
 
-export async function uploadVoiceAvatar(id, file) {
-  const formData = new FormData();
-  formData.append('avatar', file);
-  return api.post(`/voices/${id}/avatar`, formData);
+export async function uploadVoiceAvatar() {
+  throw new Error(NOT_IMPLEMENTED);
 }
 
-export async function updateVoiceSettings(id, settings) {
-  return api.patch(`/voices/${id}/settings`, settings);
+export async function updateVoiceSettings() {
+  throw new Error(NOT_IMPLEMENTED);
 }

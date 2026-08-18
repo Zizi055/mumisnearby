@@ -1,16 +1,14 @@
 import { adminApi } from './adminClient';
 
-// Авторизация админки. Вход ОДИН — POST /auth/admin/login (form-urlencoded,
-// как обычный /auth/login), но это ДРУГАЯ таблица учётных записей на бэке,
-// не пользователи.
+// Авторизация админки — /auth/admin/login и /auth/super_admin/login,
+// оба form-urlencoded (как обычный /auth/login). Это ДРУГАЯ таблица
+// учётных записей, не пользователи, и с 14.08.2026 токены подписываются
+// отдельным ключом (ADMIN_SECRET_KEY) и несут role: admin / super_admin.
 //
-// Отдельного входа для супер-админа не существует: маршрутов
-// /auth/super_admin/login, /create и /me на бэке нет (проверено по
-// openapi.json на сервере). Права супер-админа определяются по самому
-// токену: если аккаунт ими обладает, GET /auth/super_admin/admins ответит
-// списком, если нет — 403. Раньше фронт предлагал галочку «Я супер-
-// администратор» и слал запрос на несуществующий адрес — вход просто
-// падал с 404.
+// AdminOut одинаковый для обеих ролей и явного признака «это супер-админ»
+// не содержит, поэтому роль запоминаем по тому, через какой эндпоинт был
+// вход, и дополнительно проверяем делом — запросом к
+// GET /auth/super_admin/admins (см. checkSuperAdmin).
 
 async function loginRequest(path, { username, password }) {
   const res = await fetch(path, {
@@ -58,6 +56,13 @@ export async function loginAdmin({ username, password }) {
   return data;
 }
 
+export async function loginSuperAdmin({ username, password }) {
+  const data = await loginRequest('/auth/super_admin/login', { username, password });
+  storeSession(data, 'super_admin', username);
+  localStorage.setItem('adminIsSuper', '1');
+  return data;
+}
+
 export function logoutAdmin() {
   localStorage.removeItem('adminToken');
   localStorage.removeItem('adminRole');
@@ -69,10 +74,14 @@ export function getStoredAdminRole() {
   return localStorage.getItem('adminRole');
 }
 
-// GET /auth/admin/me — единственный маршрут профиля админа.
-// /auth/super_admin/me на бэке не существует.
+// GET /auth/admin/me или /auth/super_admin/me — зависит от того, через
+// какой эндпоинт логинились. Обе отдают одинаковый AdminOut.
 export async function getAdminMe() {
-  return adminApi.get('/auth/admin/me');
+  const path =
+    getStoredAdminRole() === 'super_admin'
+      ? '/auth/super_admin/me'
+      : '/auth/admin/me';
+  return adminApi.get(path);
 }
 
 // GET /auth/super_admin/admins — список всех администраторов, только для
@@ -81,12 +90,12 @@ export async function getAdmins() {
   return adminApi.get('/auth/super_admin/admins');
 }
 
-// ─────────────────────────────────────────────────────────────────────
-// ОТСУТСТВУЕТ НА БЭКЕ: POST /auth/super_admin/create.
-// Создание администратора из интерфейса невозможно — маршрута нет
-// (проверено по openapi.json). Функция удалена, форма на странице
-// «Админы» скрыта. Вернуть, когда бэк добавит эндпоинт.
-// ─────────────────────────────────────────────────────────────────────
+// POST /auth/super_admin/create — доступно только супер-админу
+// (разграничение на бэке по роли в токене). Тело: { username, password },
+// ответ — AdminOut созданного администратора.
+export async function createAdmin({ username, password }) {
+  return adminApi.post('/auth/super_admin/create', { username, password });
+}
 
 function parseErrorDetail(text) {
   try {
