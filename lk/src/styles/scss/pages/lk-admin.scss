@@ -915,3 +915,100 @@
     font-size: 22px;
   }
 }
+
+
+/* =========================================================
+   ПЛОТНОСТЬ И РИТМ ПАНЕЛИ ОБРАЩЕНИЙ
+   =========================================================
+   Было: слева список с шагом 8px и мелким текстом, справа карточка
+   с отступами 24px и заголовком 20px — две половины экрана выглядели
+   из разных интерфейсов. Ниже — один вертикальный ритм для обеих
+   колонок: одинаковые внутренние отступы, одинаковый шаг между
+   элементами, одинаковые радиусы.
+========================================================= */
+
+/* Обе колонки — карточки одного вида */
+.lk-admin-list {
+  gap: $lk-space-14;
+
+  padding: $lk-space-20;
+
+  border: 1px solid $lk-border;
+  border-radius: $lk-radius-24;
+
+  background: $lk-white;
+  box-shadow: $lk-shadow-card;
+
+  min-height: 0;
+}
+
+.lk-admin-detail {
+  padding: $lk-space-20;
+}
+
+/* Список прокручивается внутри своей карточки, а не тянет страницу */
+.lk-admin-list__items {
+  gap: 6px;
+
+  overflow-y: auto;
+  min-height: 0;
+  margin: 0 -4px;
+  padding: 0 4px;
+}
+
+/* Строка обращения: плотнее и с внятной иерархией */
+.lk-admin-item {
+  gap: 5px;
+
+  padding: $lk-space-12 $lk-space-14;
+
+  border-radius: $lk-radius-12;
+}
+
+.lk-admin-item__subject {
+  font-size: 13px;
+  line-height: 1.35;
+
+  /* Длинная тема не должна растягивать строку на три этажа */
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Заголовок карточки справа — на уровень тише, чем заголовок страницы */
+.lk-admin-detail__head h2 {
+  font-size: 17px;
+  line-height: 1.25;
+}
+
+.lk-admin-detail__message {
+  padding: $lk-space-12 $lk-space-14;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+/* Переписка: тот же шаг и радиус, что у строк списка */
+.lk-admin-thread__msg {
+  padding: $lk-space-12 $lk-space-14;
+  border-radius: $lk-radius-12;
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+/* Фильтры и пагинация не липнут к содержимому */
+.lk-admin-list__filters {
+  padding-bottom: $lk-space-4;
+  border-bottom: 1px solid $lk-line-soft;
+}
+
+.lk-admin-pager {
+  margin-top: auto;
+}
+
+/* Список выше — панель не должна прыгать по высоте при переключении
+   фильтра с двух обращений на двадцать. */
+.lk-admin-grid {
+  align-items: stretch;
+  min-height: 520px;
+}
