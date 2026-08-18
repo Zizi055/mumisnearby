@@ -9,6 +9,8 @@ import {
   AudioLines,
   AlertCircle,
   Info,
+  Volume2,
+  VolumeX,
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import {
@@ -17,6 +19,7 @@ import {
   markAllNotificationsRead,
   subscribeToNotifications,
 } from '../../api/notifications.service';
+import { playNotifySound, isSoundMuted, setSoundMuted } from '../../utils/notifySound';
 import LkButton from '../ui/LkButton';
 
 // Иконка по типу уведомления (NotificationType на бэке).
@@ -71,6 +74,13 @@ export default function Header({ onMenuToggle }) {
   // «Подписка активна до 04.06.2026» с выдуманной датой.
   const [notifications, setNotifications] = useState([]);
   const [unreadFromApi, setUnreadFromApi] = useState(0);
+  const [muted, setMuted] = useState(isSoundMuted);
+
+  // Предыдущее число непрочитанных. Нужно, чтобы отличить «пришло новое»
+  // от «просто перечитали список»: звук должен звучать только когда
+  // счётчик вырос. useRef, а не useState — изменение не должно
+  // вызывать перерисовку.
+  const prevUnread = useRef(null);
   const [showLeaveConfirm, setShowLeaveConfirm] = useState(false);
   const panelRef = useRef(null);
 
@@ -79,8 +89,17 @@ export default function Header({ onMenuToggle }) {
   const loadNotifications = async () => {
     try {
       const res = await getNotifications();
+      const count = res?.unread_count ?? 0;
+
       setNotifications(Array.isArray(res?.items) ? res.items : []);
-      setUnreadFromApi(res?.unread_count ?? 0);
+      setUnreadFromApi(count);
+
+      // Первая загрузка не считается: иначе звук играл бы при каждом
+      // заходе в кабинет, если есть непрочитанные с прошлого раза.
+      if (prevUnread.current !== null && count > prevUnread.current) {
+        playNotifySound();
+      }
+      prevUnread.current = count;
     } catch {
       // Не залогинен или бэк недоступен — колокольчик просто пустой,
       // шапку из-за этого не роняем.
@@ -263,11 +282,29 @@ export default function Header({ onMenuToggle }) {
             <div className="lk-notif-panel">
               <div className="lk-notif-panel__head">
                 <span>Уведомления</span>
-                {unreadCount > 0 && (
-                  <button type="button" onClick={markAllRead}>
-                    Прочитать все
+
+                <div className="lk-notif-panel__tools">
+                  <button
+                    type="button"
+                    className="lk-notif-panel__sound"
+                    onClick={() => {
+                      const next = !muted;
+                      setSoundMuted(next);
+                      setMuted(next);
+                      if (!next) playNotifySound();
+                    }}
+                    title={muted ? 'Включить звук уведомлений' : 'Выключить звук'}
+                    aria-label={muted ? 'Включить звук' : 'Выключить звук'}
+                  >
+                    {muted ? <VolumeX size={14} /> : <Volume2 size={14} />}
                   </button>
-                )}
+
+                  {unreadCount > 0 && (
+                    <button type="button" onClick={markAllRead}>
+                      Прочитать все
+                    </button>
+                  )}
+                </div>
               </div>
 
               <div className="lk-notif-panel__list">

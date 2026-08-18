@@ -1012,3 +1012,65 @@
   align-items: stretch;
   min-height: 520px;
 }
+
+
+/* Счётчик обращений, ждущих ответа. Отдельного колокольчика для админов
+   на бэке нет (/notifications работает по пользовательскому токену),
+   поэтому считаем сами по фильтру status_filter=new. */
+.lk-admin-nav__link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.lk-admin-nav__badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+
+  border-radius: $lk-radius-pill;
+
+  background: $lk-danger;
+  color: $lk-white;
+
+  font-size: 11px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+/* Переключатель звука рядом с выходом — тот же размер и вид */
+.lk-notif-panel__tools {
+  display: flex;
+  align-items: center;
+  gap: $lk-space-10;
+}
+
+.lk-notif-panel__sound {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 24px;
+  height: 24px;
+  padding: 0;
+
+  border: none;
+  border-radius: 50%;
+
+  background: transparent;
+  color: $lk-text-muted;
+
+  cursor: pointer;
+  transition: color 0.15s ease, background 0.15s ease;
+
+  &:hover {
+    background: $lk-surface-soft;
+    color: $lk-text;
+  }
+}

@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { NavLink, Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { LogOut } from 'lucide-react';
+import { LogOut, Volume2, VolumeX } from 'lucide-react';
 import { getAdminMe, isStoredSuperAdmin, logoutAdmin } from '../../api/adminAuth.service';
+import { getAdminTickets } from '../../api/admin.service';
+import { playNotifySound, isSoundMuted, setSoundMuted } from '../../utils/notifySound';
 
 // Роли на бэке НЕ наследуются, и меню это отражает.
 //
@@ -45,6 +47,14 @@ export default function AdminLayout() {
   const [admin, setAdmin] = useState(null);
   const isSuper = isStoredSuperAdmin();
 
+  // Сколько обращений висит в статусе «Новое». Отдельного колокольчика
+  // для админов на бэке нет — /notifications работает по пользовательскому
+  // токену. Поэтому считаем сами: раз в 30 секунд спрашиваем список с
+  // фильтром по статусу и берём total.
+  const [newTickets, setNewTickets] = useState(0);
+  const [muted, setMuted] = useState(isSoundMuted);
+  const prevNew = useRef(null);
+
   useEffect(() => {
     const token = localStorage.getItem('adminToken');
     if (!token) {
@@ -62,6 +72,45 @@ export default function AdminLayout() {
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Счётчик новых обращений — только для админов: суперадмину /admin/*
+  // недоступен, запрос всё равно вернёт 401.
+  useEffect(() => {
+    if (status !== 'ready' || isSuper) return;
+
+    let cancelled = false;
+
+    const check = async () => {
+      try {
+        const res = await getAdminTickets({ status: 'new', page: 1, pageSize: 1 });
+        if (cancelled) return;
+
+        setNewTickets(res.total);
+
+        // Звук только когда обращений стало больше, и не при первой
+        // загрузке — иначе звенело бы при каждом заходе в панель.
+        if (prevNew.current !== null && res.total > prevNew.current) {
+          playNotifySound();
+        }
+        prevNew.current = res.total;
+      } catch {
+        // молча: панель не должна ломаться из-за счётчика
+      }
+    };
+
+    check();
+    const timer = setInterval(check, 30_000);
+
+    const onFocus = () => check();
+    window.addEventListener('focus', onFocus);
+
+    return () => {
+      cancelled = true;
+      clearInterval(timer);
+      window.removeEventListener('focus', onFocus);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status, isSuper]);
 
   // Суперадмин, попавший по прямой ссылке в «Обращения» или «Выдать
   // подписку», получил бы там 401 и пустой экран. Возвращаем его в
@@ -106,10 +155,31 @@ export default function AdminLayout() {
               className={({ isActive }) => `lk-admin-nav__link ${isActive ? 'is-active' : ''}`}
             >
               {item.label}
+
+              {/* Сколько обращений ждут ответа. Видно из любого раздела,
+                  не нужно заходить в «Обращения» и проверять глазами. */}
+              {item.path === '/admin/support' && newTickets > 0 && (
+                <span className="lk-admin-nav__badge">{newTickets}</span>
+              )}
             </NavLink>
           ))}
         </div>
         <div className="lk-admin-nav__user">
+          {!isSuper && (
+            <button
+              type="button"
+              onClick={() => {
+                const next = !muted;
+                setSoundMuted(next);
+                setMuted(next);
+                if (!next) playNotifySound();
+              }}
+              title={muted ? 'Включить звук новых обращений' : 'Выключить звук'}
+            >
+              {muted ? <VolumeX size={15} /> : <Volume2 size={15} />}
+            </button>
+          )}
+
           <span>{admin?.username}</span>
           <button type="button" onClick={handleLogout} title="Выйти">
             <LogOut size={15} />
