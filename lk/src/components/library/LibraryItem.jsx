@@ -12,14 +12,14 @@ import {
   Square,
   Heart,
   Mic,
-  Loader2,
-} from 'lucide-react';
+  Loader2, Headphones } from 'lucide-react';
 
 import { useVoiceStore } from '../../store/voice.store';
 import { useLibraryStore } from '../../store/library.store';
 import { useTrialStore } from '../../store/trial.store';
 import { useHasPaidPlan, useTariffLevel } from '../../store/subscription.store';
 import { getRequiredTariffLabel } from '../../utils/tariffAccess';
+import { useGenerationsStore } from '../../store/generations.store';
 import TrialPaywallModal from '../trial/TrialPaywallModal';
 import {
   createGeneration,
@@ -42,6 +42,17 @@ export default function LibraryItem() {
   const previewAudioRef = useRef(null);
 
   const [selectedVoice, setSelectedVoice] = useState(null);
+
+  // Уже озвученное этим же голосом повторно не генерируем — синтез
+  // платный, а результат будет тот же. Готовую запись слушают
+  // в разделе «Мои сказки».
+  const loadGenerations = useGenerationsStore((st) => st.load);
+  const findReady = useGenerationsStore((st) => st.findReady);
+  const rememberGeneration = useGenerationsStore((st) => st.remember);
+
+  useEffect(() => {
+    loadGenerations();
+  }, [loadGenerations]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [genError, setGenError] = useState('');
   const [genStatus, setGenStatus] = useState('');
@@ -134,6 +145,7 @@ export default function LibraryItem() {
 
     try {
       const gen = await createGeneration(selectedVoice.id, type, item.id);
+      rememberGeneration(type, item.id, selectedVoice.id, gen.id);
       await waitForGeneration(gen.id, setGenStatus);
       const { url } = await getGenerationAudio(gen.id);
       setAudioUrl(url);
@@ -164,6 +176,10 @@ export default function LibraryItem() {
     }
   };
 
+  // id готовой озвучки этого материала выбранным голосом (или null)
+  const existingGenerationId = findReady(type, item?.id, selectedVoice?.id);
+  const alreadyGenerated = Boolean(existingGenerationId);
+
   const trialBlocked = !hasPaidPlan && trial && (!trial.canGenerate);
   // Доступ по тарифу: у контента есть свой access_lvl (0-4), сравниваем
   // с уровнем тарифа пользователя (0 = демо/без подписки).
@@ -175,6 +191,7 @@ export default function LibraryItem() {
       return 'Генерация...';
     }
     if (genStatus === 'failed') return 'Повторить';
+    if (alreadyGenerated) return 'Уже озвучено';
     if (tariffBlocked) return `Нужен тариф «${getRequiredTariffLabel(item?.accessLvl)}»`;
     if (trialBlocked) return 'Лимит исчерпан';
     if (audioUrl) return 'Создать новое';
@@ -315,11 +332,29 @@ export default function LibraryItem() {
               type="button"
               className={`lk-btn lk-btn--primary ${trialBlocked || tariffBlocked ? 'lk-btn--disabled' : ''}`}
               onClick={handleGenerate}
-              disabled={!selectedVoice || isGenerating || trialBlocked || tariffBlocked}
+              disabled={
+                !selectedVoice || isGenerating || trialBlocked || tariffBlocked || alreadyGenerated
+              }
+              title={
+                alreadyGenerated
+                  ? 'Этим голосом уже озвучено — послушайте в «Моих сказках»'
+                  : undefined
+              }
             >
               {isGenerating ? <Loader2 size={15} className="lk-spin" /> : <Play size={15} />}
               {generateLabel()}
             </button>
+
+            {alreadyGenerated && !audioUrl && (
+              <button
+                type="button"
+                className="lk-btn lk-btn--secondary"
+                onClick={() => navigate('/library/generations')}
+              >
+                <Headphones size={15} />
+                Слушать в «Моих сказках»
+              </button>
+            )}
 
             {audioUrl && (
               <button
@@ -477,12 +512,20 @@ export default function LibraryItem() {
             <button
               type="button"
               className="lk-btn lk-btn--primary lk-btn--full"
-              disabled={!selectedVoice || isGenerating || trialBlocked}
+              disabled={!selectedVoice || isGenerating || trialBlocked || alreadyGenerated}
               onClick={handleGenerate}
             >
               {isGenerating ? <Loader2 size={15} className="lk-spin" /> : <Play size={15} />}
               {generateLabel()}
             </button>
+
+            {alreadyGenerated && (
+              <p className="lk-item-card__hint">
+                Этот материал уже озвучен выбранным голосом. Повторная
+                генерация не нужна — запись в разделе «Мои сказки».
+                Чтобы озвучить другим голосом, выберите его выше.
+              </p>
+            )}
 
             {trialBlocked && (
               <button

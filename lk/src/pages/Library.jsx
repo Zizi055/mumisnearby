@@ -193,11 +193,26 @@ export default function Library() {
     applyFilters();
   };
 
-  const allMatchingItems = filteredItems.filter((item) => {
+  const matchingItems = filteredItems.filter((item) => {
     if (activeMode === 'favorites') return item.isFavorite;
     if (activeMode === 'new') return item.isNew;
     if (activeMode === 'folk') return item.isRussianFolk;
     return true;
+  });
+
+  // Сначала то, что доступно по тарифу, потом закрытое.
+  //
+  // Раньше порядок был как у бэка, и на «Сказочнике» первые экраны могли
+  // целиком состоять из карточек с замком: человек листает библиотеку и
+  // видит, что ему ничего нельзя. Теперь доступное сверху, а закрытое
+  // идёт после — оно по-прежнему видно и работает как витрина, но не
+  // мешает пользоваться тем, за что уже заплачено.
+  //
+  // Внутри каждой группы порядок исходный: sort в JS стабилен.
+  const allMatchingItems = [...matchingItems].sort((a, b) => {
+    const aLocked = (a.accessLvl || 0) > tariffLevel ? 1 : 0;
+    const bLocked = (b.accessLvl || 0) > tariffLevel ? 1 : 0;
+    return aLocked - bLocked;
   });
 
   const visibleItems = allMatchingItems.slice(0, visibleCount);
