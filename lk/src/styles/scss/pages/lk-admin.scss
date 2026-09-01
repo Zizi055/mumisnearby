@@ -293,9 +293,230 @@
   }
 }
 
+/* ─── Пользователи: поиск, раскрывающиеся строки, пагинация ─────────────
+   Строка кликабельна и разворачивает карточку под собой, поэтому каждая
+   пара «строка + детали» обёрнута в .lk-admin-table__group: без обёртки
+   разделительные линии рвались бы посреди раскрытой карточки. */
+
+.lk-admin-table--users .lk-admin-table__row {
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 1.2fr);
+  align-items: center;
+}
+
+.lk-admin-table__group {
+  border-bottom: 1px solid $lk-border;
+
+  &:last-child { border-bottom: none; }
+
+  .lk-admin-table__row { border-bottom: none; }
+}
+
+.lk-admin-table__row--clickable {
+  cursor: pointer;
+  transition: background 0.15s ease;
+
+  &:hover { background: $lk-surface-soft; }
+  &.is-open { background: $lk-surface-soft; }
+}
+
+.lk-admin-table__name {
+  display: flex;
+  align-items: center;
+  gap: $lk-space-6;
+
+  min-width: 0;
+
+  svg { flex-shrink: 0; color: $lk-text-muted; }
+}
+
+.lk-admin-table__id {
+  color: $lk-text-muted;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 500;
+}
+
+/* Статус подписки — приписка к названию тарифа, не отдельная колонка:
+   лишний столбец на четырёх уже имеющихся ломал таблицу на ноутбуке. */
+.lk-admin-sub {
+  display: block;
+
+  font-size: 11px;
+  font-style: normal;
+  color: $lk-text-muted;
+
+  &--active { color: $lk-success; }
+  &--expired,
+  &--cancelled { color: $lk-danger; }
+  &--pending { color: $lk-warning; }
+}
+
+.lk-admin-table__details {
+  padding: $lk-space-16;
+
+  background: $lk-bg;
+
+  font-size: 13px;
+  color: $lk-text-soft;
+
+  dl {
+    display: grid;
+    grid-template-columns: minmax(0, 180px) minmax(0, 1fr);
+    gap: $lk-space-8 $lk-space-16;
+
+    margin: 0 0 $lk-space-16;
+  }
+
+  dt {
+    color: $lk-text-muted;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  dd {
+    margin: 0;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+}
+
+.lk-admin-table__tickets {
+  display: flex;
+  flex-direction: column;
+  gap: $lk-space-4;
+
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  button {
+    padding: 0;
+
+    border: none;
+    background: none;
+
+    color: $lk-brand;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+
+    &:hover { text-decoration: underline; }
+  }
+}
+
+.lk-admin-table__action {
+  display: inline-flex;
+  align-items: center;
+  gap: $lk-space-6;
+
+  padding: $lk-space-8 $lk-space-14;
+
+  border: 1px solid $lk-border;
+  border-radius: $lk-radius-12;
+  background: $lk-white;
+
+  color: $lk-text;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover { border-color: $lk-brand; color: $lk-brand; }
+}
+
+.lk-admin-search {
+  display: flex;
+  align-items: center;
+  gap: $lk-space-8;
+  flex-wrap: wrap;
+
+  padding: $lk-space-10 $lk-space-14;
+
+  border: 1px solid $lk-border;
+  border-radius: $lk-radius-12;
+  background: $lk-white;
+
+  > svg { flex-shrink: 0; color: $lk-text-muted; }
+
+  input {
+    /* min-width: 0 обязателен: без него input внутри flex не сжимается
+       и растягивает всю страницу по горизонтали. */
+    flex: 1;
+    min-width: 0;
+
+    border: none;
+    outline: none;
+    background: none;
+
+    font: inherit;
+    font-size: 14px;
+    color: $lk-text;
+  }
+
+  button {
+    flex-shrink: 0;
+
+    padding: $lk-space-6 $lk-space-14;
+
+    border: none;
+    border-radius: $lk-radius-pill;
+    background: $lk-brand;
+
+    color: $lk-white;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+
+    &:hover { background: $lk-brand-dark; }
+  }
+}
+
+.lk-admin-search__reset {
+  background: none !important;
+  color: $lk-text-muted !important;
+
+  &:hover { color: $lk-text !important; }
+}
+
+.lk-admin-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $lk-space-16;
+  flex-wrap: wrap;
+
+  font-size: 13px;
+  color: $lk-text-muted;
+
+  button {
+    padding: $lk-space-6 $lk-space-14;
+
+    border: 1px solid $lk-border;
+    border-radius: $lk-radius-pill;
+    background: $lk-white;
+
+    font-size: 13px;
+    color: $lk-text;
+    cursor: pointer;
+
+    &:disabled { opacity: 0.4; cursor: default; }
+    &:not(:disabled):hover { border-color: $lk-brand; color: $lk-brand; }
+  }
+}
+
 @media (max-width: 720px) {
   .lk-admin-table__row {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .lk-admin-table--users .lk-admin-table__row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .lk-admin-table__details dl {
+    grid-template-columns: 1fr;
+    gap: $lk-space-4 0;
   }
 }
 

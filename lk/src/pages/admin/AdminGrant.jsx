@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { Gift, AlertTriangle } from 'lucide-react';
 import { grantSubscription } from '../../api/admin.service';
 import { PLAN_ID_MAP } from '../../data/planIdMap';
@@ -24,7 +25,11 @@ const GRANTABLE = tariffs
   .map((t) => ({ id: PLAN_ID_MAP[t.id], name: t.name }));
 
 export default function AdminGrant() {
-  const [userId, setUserId] = useState('');
+  // Со страницы «Пользователи» приходим с уже известным ID — подставляем
+  // его, чтобы админ не переписывал число руками и не ошибся.
+  const [params] = useSearchParams();
+
+  const [userId, setUserId] = useState(params.get('user') ?? '');
   const [planId, setPlanId] = useState(String(GRANTABLE[0]?.id ?? ''));
   const [billingPeriod, setBillingPeriod] = useState('year');
 

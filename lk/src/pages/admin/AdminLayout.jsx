@@ -20,11 +20,17 @@ import { playNotifySound, isSoundMuted, setSoundMuted } from '../../utils/notify
 // у всех — таких эндпоинтов на бэке нет. Роуты и страницы сохранены.
 const ADMIN_NAV_ITEMS = [
   { path: '/admin/support', label: 'Обращения' },
+  { path: '/admin/users', label: 'Пользователи' },
   { path: '/admin/grant', label: 'Выдать подписку' },
 ];
 
+// У супер-админа свой набор: /admin/* ему недоступен (там нужен админский
+// токен), но карточки пользователей есть и для него — на своём префиксе
+// /super_admin/support/users. Путь подставляется в admin.service.js по роли,
+// поэтому страница одна и та же.
 const SUPER_ADMIN_NAV_ITEMS = [
   { path: '/admin/admins', label: 'Админы' },
+  { path: '/admin/users', label: 'Пользователи' },
 ];
 
 // Куда вести сразу после входа — зависит от роли.
@@ -124,7 +130,11 @@ export default function AdminLayout() {
   // доступный раздел вместо того, чтобы показывать ошибку.
   useEffect(() => {
     if (status !== 'ready' || !isSuper) return;
-    if (location.pathname.startsWith('/admin/admins')) return;
+
+    // Разделы, которые суперадмин реально может открыть. «Пользователи»
+    // ходят на /super_admin/support/users, поэтому доступны обеим ролям.
+    const allowed = ['/admin/admins', '/admin/users'];
+    if (allowed.some((p) => location.pathname.startsWith(p))) return;
 
     navigate('/admin/admins', { replace: true });
     // eslint-disable-next-line react-hooks/exhaustive-deps

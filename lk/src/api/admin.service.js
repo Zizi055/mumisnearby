@@ -1,4 +1,5 @@
 import { adminApi } from './adminClient';
+import { isStoredSuperAdmin } from './adminAuth.service';
 
 // Админские эндпоинты — /admin/support/tickets*, /admin/leads, /admin/users.
 // Требуют токен из /auth/admin/login (см.
@@ -85,8 +86,47 @@ export async function getAdminLeads() {
 }
 
 // ─── Пользователи (ЛК) ───────────────────────────────────────────────────────
-// GET /admin/users тоже пока нет на бэке — заведён по тому же принципу.
-export async function getAdminUsers() {
-  const data = await adminApi.get('/admin/users');
-  return Array.isArray(data) ? data : (data?.items ?? []);
+// GET /admin/support/users — карточки пользователей для поддержки.
+//
+// Раньше здесь стоял /admin/users, которого на бэке никогда не было:
+// страница всегда падала в «не удалось загрузить». Реальный эндпоинт живёт
+// под префиксом поддержки и умеет поиск (?q=) по имени, почте, телефону и
+// реферальному коду плюс постраничную выдачу.
+//
+// У админа и супер-админа это ДВА разных пути: роли не наследуются, и
+// админский токен получит 401 на /super_admin/*, а супер-админский — на
+// /admin/*. Поэтому путь выбираем по сохранённой роли.
+//
+// Ответ — UserLookupListResponse: { items, total, page, page_size }.
+// Каждый item (UserLookupOut) уже содержит подписку, приглашённых и
+// обращения — отдельный запрос за карточкой не нужен.
+function usersBasePath() {
+  return isStoredSuperAdmin()
+    ? '/super_admin/support/users'
+    : '/admin/support/users';
+}
+
+export async function getAdminUsers({ page = 1, pageSize = 20, query = '' } = {}) {
+  const params = new URLSearchParams({
+    page: String(page),
+    page_size: String(pageSize),
+  });
+
+  const q = query.trim();
+  if (q) params.set('q', q);
+
+  const data = await adminApi.get(`${usersBasePath()}?${params}`);
+
+  return {
+    items: Array.isArray(data) ? data : (data?.items ?? []),
+    total: data?.total ?? (Array.isArray(data) ? data.length : 0),
+    page: data?.page ?? page,
+    pageSize: data?.page_size ?? pageSize,
+  };
+}
+
+// GET /admin/support/users/{id} — одна карточка. В списке те же поля уже
+// приходят целиком, поэтому нужно только для прямой ссылки на пользователя.
+export async function getAdminUser(id) {
+  return adminApi.get(`${usersBasePath()}/${id}`);
 }
