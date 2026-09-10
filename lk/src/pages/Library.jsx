@@ -121,10 +121,18 @@ export default function Library() {
     loadLibrary,
     setSearch,
     setType,
-    toggleFilter,
+    setFilterValues,
     resetFilters,
     applyFilters,
   } = useLibraryStore();
+
+  // Сколько фильтров реально применено. Панель на планшете и телефоне
+  // скрыта, поэтому забытый фильтр молча резал выдачу: человек видел
+  // пустую библиотеку и не понимал, почему. Теперь это видно.
+  const activeFilterCount = Object.values(filters).reduce(
+    (sum, v) => sum + (Array.isArray(v) ? v.length : 0),
+    0
+  );
 
   // Сбрасываем пагинацию при смене категории, режима или поиска
   useEffect(() => {
@@ -145,16 +153,25 @@ export default function Library() {
 
   useEffect(() => {
     const saved = localStorage.getItem(FILTER_STORAGE_KEY);
+    if (!saved) return;
 
-    if (saved) {
+    try {
       const parsed = JSON.parse(saved);
-      setDraftFilters(parsed);
 
-      Object.entries(parsed).forEach(([group, values]) => {
-        values.forEach((value) => {
-          toggleFilter(group, value);
-        });
-      });
+      // Берём только известные группы: в localStorage мог остаться формат
+      // от прошлой версии, и чужой ключ уронил бы фильтрацию.
+      const clean = Object.fromEntries(
+        Object.keys(initialFilters).map((g) => [
+          g,
+          Array.isArray(parsed[g]) ? parsed[g] : [],
+        ])
+      );
+
+      setDraftFilters(clean);
+      setFilterValues(clean);
+      applyFilters();
+    } catch {
+      localStorage.removeItem(FILTER_STORAGE_KEY);
     }
   }, []);
 
@@ -175,14 +192,7 @@ export default function Library() {
   };
 
   const handleApplyFilters = () => {
-    resetFilters();
-
-    Object.entries(draftFilters).forEach(([group, values]) => {
-      values.forEach((value) => {
-        toggleFilter(group, value);
-      });
-    });
-
+    setFilterValues(draftFilters);
     applyFilters();
     setIsFiltersOpen(false);
   };
@@ -191,6 +201,7 @@ export default function Library() {
     setDraftFilters(initialFilters);
     resetFilters();
     applyFilters();
+    setIsFiltersOpen(false);
   };
 
   const matchingItems = filteredItems.filter((item) => {
@@ -443,6 +454,9 @@ export default function Library() {
           >
             <SlidersHorizontal size={16} />
             Фильтры
+            {activeFilterCount > 0 && (
+              <span className="lk-library-mode-badge">{activeFilterCount}</span>
+            )}
           </button>
 
         </div>
@@ -483,13 +497,34 @@ export default function Library() {
         )}
 
         {/* EMPTY */}
+        {/* EMPTY.
+            Раньше здесь во всех случаях было «Ничего не найдено по вашему
+            запросу» — даже когда запроса не было, а выдачу срезал забытый
+            фильтр или раздел просто пуст. Теперь причина названа, и из
+            каждой видно, что делать. */}
         {!loading && !error && visibleItems.length === 0 && (
           <div className="lk-library-empty">
-            {activeMode === 'favorites'
-              ? 'Вы ещё не добавили ничего в избранное. Нажмите ♥ на карточке.'
-              : activeMode === 'folk'
-              ? 'Русские народные сказки не найдены.'
-              : 'Ничего не найдено по вашему запросу.'}
+            {activeMode === 'favorites' ? (
+              'Вы ещё не добавили ничего в избранное. Нажмите ♥ на карточке.'
+            ) : activeMode === 'folk' ? (
+              'Русские народные сказки не найдены.'
+            ) : filters.search.trim() ? (
+              <>Ничего не найдено по запросу «{filters.search.trim()}».</>
+            ) : activeFilterCount > 0 ? (
+              <>
+                В разделе «{currentMeta.title}» ничего не подходит под
+                выбранные фильтры.{' '}
+                <button
+                  type="button"
+                  className="lk-library-empty__reset"
+                  onClick={handleResetFilters}
+                >
+                  Сбросить фильтры
+                </button>
+              </>
+            ) : (
+              <>Раздел «{currentMeta.title}» пока пуст — материалы ещё не добавлены.</>
+            )}
           </div>
         )}
 
