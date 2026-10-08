@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
+import { isB2B } from '../config/edition';
 import { useNavigate } from 'react-router-dom';
 import {
   Sparkles,
@@ -762,6 +763,10 @@ export default function Dashboard() {
             </p>
           </section>
           {/* РЕФЕРАЛЬНАЯ ССЫЛКА */}
+          {/* Бонус «месяц бесплатно за приглашения» в корпоративной
+              версии не работает: подписку оплачивает компания, и
+              продлить её приглашением друга сотрудник не может. */}
+          {!isB2B && (
           <section className="lk-dashboard-referral">
             <div className="lk-dashboard-referral__icon">
               <Users size={18} />
@@ -796,6 +801,7 @@ export default function Dashboard() {
               </button>
             )}
           </section>
+          )}
 
         </aside>
 

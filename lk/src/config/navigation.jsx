@@ -1,6 +1,7 @@
 import { Home, Book, Mic, CreditCard, Settings, User } from 'lucide-react';
+import { isB2B } from './edition';
 
-export const navigation = [
+const b2cNavigation = [
   {
     icon: <Home size={20} strokeWidth={1.7} />,
     path: '/dashboard',
@@ -81,3 +82,38 @@ export const navigation = [
     ],
   },
 ];
+
+// ─────────────────────────────────────────────────────────────────────
+// Меню сотрудника компании (B2B).
+//
+// Отличия от B2C ровно два, и оба — состав, а не поведение:
+//
+//  1. В разделе «Подписка» остался только «Тариф», и он только для
+//     чтения. Сотрудник ничего не покупает и не отменяет: доступ оплатила
+//     компания и выдала промокодом. Показывать ему «Платежи», «Управление»
+//     и «Бонусы» — значит обещать кнопки, которые приведут к отказу бэка.
+//
+//  2. Нет пункта «Семья» в настройках: семейный доступ — история B2C
+//     подписки, в корпоративной его роль играют места компании.
+// ─────────────────────────────────────────────────────────────────────
+const b2bNavigation = b2cNavigation.map((section) => {
+  if (section.path === '/subscription') {
+    return {
+      ...section,
+      label: 'Доступ',
+      tooltip: 'Корпоративный доступ',
+      children: [{ label: 'Мой тариф', path: '/subscription/tariff' }],
+    };
+  }
+
+  if (section.path === '/settings') {
+    return {
+      ...section,
+      children: section.children.filter((c) => c.path !== '/settings/family'),
+    };
+  }
+
+  return section;
+});
+
+export const navigation = isB2B ? b2bNavigation : b2cNavigation;

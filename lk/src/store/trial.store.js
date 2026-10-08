@@ -1,3 +1,5 @@
+import { isB2B } from '../config/edition';
+
 import { create } from 'zustand';
 
 const STORAGE_KEY = 'lk_trial';
@@ -29,6 +31,12 @@ export function initTrial() {
 }
 
 export function getTrialInfo() {
+  // В корпоративной редакции пробного периода нет: сотрудник активирует
+  // промокод и сразу получает тариф, оплаченный компанией. Возвращаем
+  // null в одной точке — баннер триала, лимит «5 сказок» и пейволл
+  // отключаются во всех местах сразу, без флагов по компонентам.
+  if (isB2B) return null;
+
   const trial = readTrial();
   if (!trial) return null;
 

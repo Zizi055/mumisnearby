@@ -38,6 +38,18 @@ import AdminLeads from './pages/admin/AdminLeads.jsx';
 import AdminUsers from './pages/admin/AdminUsers.jsx';
 import AdminAdmins from './pages/admin/AdminAdmins.jsx';
 import AdminGrant from './pages/admin/AdminGrant.jsx';
+
+import { isB2B } from './config/edition';
+
+import PromoActivate from './pages/PromoActivate.jsx';
+import HrLayout from './pages/hr/HrLayout.jsx';
+import HrLogin from './pages/hr/HrLogin.jsx';
+import HrRegister from './pages/hr/HrRegister.jsx';
+import HrDashboard from './pages/hr/HrDashboard.jsx';
+import HrPromoCodes from './pages/hr/HrPromoCodes.jsx';
+import HrEmployees from './pages/hr/HrEmployees.jsx';
+import HrCompany from './pages/hr/HrCompany.jsx';
+
 function App() {
   // Ловим ?ref=CODE (или /ref/CODE) сразу при заходе в приложение — на
   // случай прямой ссылки в ЛК, минуя маркетинговый сайт. См. utils/referral.js
@@ -57,6 +69,23 @@ function App() {
           Отдельный логин (/auth/admin/login) —
           не путать с пользовательским /auth. AdminLayout сам проверяет
           токен и редиректит на /admin/login, если доступа нет. */}
+      {/* ─── Корпоративная часть — только в B2B-сборке ───────────────
+          В B2C этих роутов нет вовсе: активация промокода и кабинет
+          компании на домене для частных клиентов не нужны и только
+          путали бы. Монтируем по флагу редакции (config/edition.js). */}
+      {isB2B && <Route path="/promo" element={<PromoActivate />} />}
+      {isB2B && <Route path="/hr/login" element={<HrLogin />} />}
+      {isB2B && <Route path="/hr/register" element={<HrRegister />} />}
+      {isB2B && (
+        <Route path="/hr" element={<HrLayout />}>
+          <Route index element={<Navigate to="/hr/dashboard" replace />} />
+          <Route path="dashboard" element={<HrDashboard />} />
+          <Route path="promocodes" element={<HrPromoCodes />} />
+          <Route path="employees" element={<HrEmployees />} />
+          <Route path="company" element={<HrCompany />} />
+        </Route>
+      )}
+
       <Route path="/admin/login" element={<AdminLogin />} />
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<Navigate to="/admin/support" replace />} />
@@ -110,15 +139,26 @@ function App() {
           <Route path="analytics" element={<VoiceAnalytics />} />
         </Route>
 
+        {/* Подписка. В B2B сотрудник ничего не покупает и не отменяет:
+            доступ оплатила компания и выдала промокодом. Поэтому оплата,
+            платежи, управление, бонусы и конструктор там не смонтированы
+            — иначе прямая ссылка привела бы на экран с кнопками, которые
+            гарантированно получают отказ бэка. */}
         <Route path="/subscription" element={<Subscription />}>
           <Route index element={<Navigate to="tariff" replace />} />
           <Route path="tariff" element={<SubscriptionTariff />} />
-          <Route path="payments" element={<SubscriptionPayments />} />
-          <Route path="manage" element={<SubscriptionManage />} />
-          <Route path="bonus" element={<SubscriptionBonus />} />
-          <Route path="checkout" element={<Checkout />} />
-          <Route path="checkout/success" element={<SubscriptionSuccess />} />
-          <Route path="constructor" element={<Constructor />} />
+
+          {!isB2B && <Route path="payments" element={<SubscriptionPayments />} />}
+          {!isB2B && <Route path="manage" element={<SubscriptionManage />} />}
+          {!isB2B && <Route path="bonus" element={<SubscriptionBonus />} />}
+          {!isB2B && <Route path="checkout" element={<Checkout />} />}
+          {!isB2B && (
+            <Route path="checkout/success" element={<SubscriptionSuccess />} />
+          )}
+          {!isB2B && <Route path="constructor" element={<Constructor />} />}
+
+          {/* Старые ссылки на закрытые разделы не должны вести в пустоту. */}
+          {isB2B && <Route path="*" element={<Navigate to="/subscription/tariff" replace />} />}
         </Route>
 
       </Route>

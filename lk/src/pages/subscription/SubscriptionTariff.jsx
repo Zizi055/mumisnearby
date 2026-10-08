@@ -2,6 +2,7 @@ import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Check, Sparkles, ArrowUpRight } from 'lucide-react';
 import { tariffs as staticTariffs } from '../../data/tariffs.data';
+import { isB2B } from '../../config/edition';
 import LkButton from '../../components/ui/LkButton';
 import { useSubscription } from '../../hooks/useSubscription';
 import { useTariffPricing } from '../../hooks/useTariffPricing';
@@ -234,7 +235,7 @@ function TariffCard({ tariff, currentPlan, billingPeriod, navigate }) {
   const periodLabel = getTariffPeriodLabel(tariff, billingPeriod);
 
   const handleClick = () => {
-    if (action.type === 'current') return;
+    if (action.type === 'current' || action.type === 'locked') return;
 
     if (action.type === 'builder') {
       navigate('/subscription/constructor');
@@ -369,9 +370,9 @@ function TariffCompare({ tariffs, currentPlan, billingPeriod, navigate }) {
                 <LkButton
                   variant={action.buttonVariant}
                   size="sm"
-                  disabled={action.type === 'current'}
+                  disabled={action.type === 'current' || action.type === 'locked'}
                   onClick={() => {
-                    if (action.type === 'current') return;
+                    if (action.type === 'current' || action.type === 'locked') return;
 
                     if (action.type === 'builder') {
                       navigate('/subscription/constructor');
@@ -435,7 +436,11 @@ function TariffAccess({ currentPlan, navigate }) {
           </span>
         </div>
 
-        {locked ? (
+        {locked && isB2B ? (
+          /* Расширить доступ сотрудник не может — тариф на всю компанию.
+             Вместо кнопки в несуществующую оплату говорим, к кому идти. */
+          <span className="lk-tariff-access__status">Спросите у HR</span>
+        ) : locked ? (
           <LkButton
             variant="primary"
             size="sm"
@@ -488,6 +493,19 @@ function getRecommendedPlanForFeature(featureKey) {
 /* ================= ACTION ================= */
 
 function getTariffAction(tariff, currentPlan) {
+  // В корпоративной редакции тариф выбирает компания. Сотрудник его не
+  // покупает и не меняет, поэтому все кнопки, кроме «ваш тариф»,
+  // становятся состоянием без действия: нажатие ушло бы в
+  // /subscription/checkout, которого в этой сборке нет, и человек попал
+  // бы на пустой экран. Одна точка на оба места вызова — карточку и
+  // таблицу сравнения.
+  if (isB2B) {
+    if (currentPlan && tariff.id === currentPlan.id) {
+      return { label: 'Ваш тариф', type: 'current', buttonVariant: 'ghost' };
+    }
+    return { label: 'Тариф компании', type: 'locked', buttonVariant: 'ghost' };
+  }
+
   if (!currentPlan) {
     return {
       label: tariff.isBuilder ? 'Собрать тариф' : 'Выбрать',

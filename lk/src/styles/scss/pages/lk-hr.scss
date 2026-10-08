@@ -1,0 +1,1004 @@
+@use '../abstracts/lk-tokens' as *;
+
+// ─────────────────────────────────────────────────────────────────────
+// Кабинет компании (B2B) и активация промокода.
+//
+// Опирается на те же токены, что весь ЛК: отступы из шкалы $lk-space-*,
+// радиусы и цвета — общие. Своего набора величин здесь нет намеренно,
+// иначе корпоративная часть начала бы выглядеть «из другого проекта».
+//
+// Единый источник отступов страницы — .lk-hr-page, как .lk-content в
+// клиентском кабинете. min-width: 0 на детях — защита от горизонтальной
+// прокрутки: без него одна широкая таблица растягивает весь экран.
+// ─────────────────────────────────────────────────────────────────────
+
+.lk-hr-shell {
+  display: flex;
+  flex-direction: column;
+
+  min-height: 100vh;
+
+  background: $lk-bg;
+  box-sizing: border-box;
+}
+
+/* ─── Навигация ──────────────────────────────────────────────────── */
+
+.lk-hr-nav {
+  display: flex;
+  align-items: center;
+  gap: $lk-space-24;
+  flex-wrap: wrap;
+
+  padding: $lk-space-16 $lk-space-28;
+
+  border-bottom: 1px solid $lk-border;
+  background: $lk-white;
+}
+
+.lk-hr-nav__brand {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  margin-right: auto;
+}
+
+.lk-hr-nav__title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: $lk-text-muted;
+}
+
+.lk-hr-nav__company {
+  font-size: 15px;
+  font-weight: 600;
+  color: $lk-text;
+}
+
+.lk-hr-nav__links {
+  display: flex;
+  gap: $lk-space-6;
+  flex-wrap: wrap;
+}
+
+.lk-hr-nav__link {
+  padding: $lk-space-8 $lk-space-14;
+
+  border-radius: $lk-radius-pill;
+
+  color: $lk-text-soft;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+
+  &:hover { background: $lk-surface-soft; color: $lk-text; }
+
+  &.is-active {
+    background: $lk-surface-accent-soft;
+    color: $lk-brand-dark;
+  }
+}
+
+.lk-hr-nav__user {
+  display: flex;
+  align-items: center;
+  gap: $lk-space-10;
+
+  font-size: 13px;
+  color: $lk-text-soft;
+
+  button {
+    display: inline-flex;
+    align-items: center;
+
+    padding: $lk-space-8;
+
+    border: 1px solid $lk-border;
+    border-radius: $lk-radius-pill;
+    background: $lk-white;
+
+    color: $lk-text-soft;
+    cursor: pointer;
+
+    &:hover { border-color: $lk-danger; color: $lk-danger; }
+  }
+}
+
+/* ─── Страница ───────────────────────────────────────────────────── */
+
+.lk-hr-page {
+  display: flex;
+  flex-direction: column;
+  gap: $lk-space-20;
+
+  width: 100%;
+  max-width: 1120px;
+
+  margin: 0 auto;
+  padding: $lk-space-28;
+
+  box-sizing: border-box;
+
+  > * { min-width: 0; max-width: 100%; }
+
+  @media (max-width: 1024px) { padding: $lk-space-24; }
+  @media (max-width: 768px)  { padding: $lk-space-20; }
+  @media (max-width: 480px)  { padding: $lk-space-16; }
+}
+
+.lk-hr-page__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: $lk-space-16;
+
+  h1 { margin: $lk-space-4 0 0; }
+}
+
+.lk-hr-refresh {
+  display: inline-flex;
+  align-items: center;
+
+  padding: $lk-space-10;
+
+  border: 1px solid $lk-border;
+  border-radius: $lk-radius-pill;
+  background: $lk-white;
+
+  color: $lk-text-soft;
+  cursor: pointer;
+
+  &:hover { border-color: $lk-brand; color: $lk-brand; }
+}
+
+.is-spinning { animation: lk-hr-spin 1s linear infinite; }
+
+@keyframes lk-hr-spin {
+  to { transform: rotate(360deg); }
+}
+
+.lk-hr-loader {
+  display: flex;
+  justify-content: center;
+
+  padding: $lk-space-32;
+
+  color: $lk-text-muted;
+}
+
+/* ─── Карточки ───────────────────────────────────────────────────── */
+
+.lk-hr-card {
+  padding: $lk-card-padding;
+
+  border: 1px solid $lk-border;
+  border-radius: $lk-card-radius;
+  background: $lk-white;
+
+  &--accent {
+    border-color: $lk-brand;
+    background: $lk-surface-accent-soft;
+  }
+}
+
+.lk-hr-card__title {
+  margin: 0 0 $lk-space-16;
+}
+
+.lk-hr-card__foot {
+  margin: $lk-space-16 0 0;
+
+  font-size: 13px;
+  color: $lk-text-muted;
+}
+
+/* ─── Места ──────────────────────────────────────────────────────── */
+
+.lk-hr-seats {
+  display: flex;
+  flex-direction: column;
+  gap: $lk-space-12;
+
+  strong {
+    display: block;
+
+    margin: $lk-space-4 0;
+
+    font-size: 28px;
+    line-height: 1.1;
+    color: $lk-text;
+  }
+
+  p {
+    margin: 0;
+
+    font-size: 14px;
+    color: $lk-text-soft;
+  }
+}
+
+.lk-hr-seats__bar {
+  height: 8px;
+
+  border-radius: $lk-radius-pill;
+  background: $lk-surface-soft;
+  overflow: hidden;
+
+  span {
+    display: block;
+    height: 100%;
+
+    border-radius: $lk-radius-pill;
+    background: $lk-brand;
+
+    transition: width 0.4s ease;
+  }
+}
+
+/* ─── Метрики ────────────────────────────────────────────────────── */
+
+.lk-hr-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: $lk-space-16;
+}
+
+.lk-hr-metric {
+  display: flex;
+  flex-direction: column;
+  gap: $lk-space-4;
+
+  padding: $lk-space-20;
+
+  border: 1px solid $lk-border;
+  border-radius: $lk-card-radius;
+  background: $lk-white;
+
+  svg { color: $lk-brand; }
+
+  strong {
+    font-size: 26px;
+    line-height: 1.1;
+    color: $lk-text;
+  }
+
+  span {
+    font-size: 13px;
+    font-weight: 600;
+    color: $lk-text;
+  }
+
+  em {
+    font-size: 12px;
+    font-style: normal;
+    color: $lk-text-muted;
+  }
+}
+
+.lk-hr-actions {
+  display: flex;
+  gap: $lk-space-12;
+  flex-wrap: wrap;
+}
+
+.lk-hr-privacy {
+  margin: 0;
+
+  padding: $lk-space-14 $lk-space-16;
+
+  border-left: 3px solid $lk-brand;
+  border-radius: $lk-radius-12;
+  background: $lk-surface-soft;
+
+  font-size: 13px;
+  color: $lk-text-soft;
+}
+
+/* ─── Формы ──────────────────────────────────────────────────────── */
+
+.lk-hr-form {
+  display: flex;
+  flex-direction: column;
+  gap: $lk-space-16;
+
+  &--grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+}
+
+.lk-hr-form__full { grid-column: 1 / -1; }
+
+.lk-hr-field {
+  display: flex;
+  flex-direction: column;
+  gap: $lk-space-6;
+
+  min-width: 0;
+
+  > span {
+    font-size: 13px;
+    font-weight: 600;
+    color: $lk-text;
+
+    em {
+      font-style: normal;
+      font-weight: 500;
+      color: $lk-text-muted;
+    }
+  }
+
+  input,
+  select {
+    width: 100%;
+    min-width: 0;
+
+    padding: $lk-space-12 $lk-space-14;
+
+    border: 1px solid $lk-border;
+    border-radius: $lk-radius-12;
+    background: $lk-white;
+
+    font: inherit;
+    font-size: 15px;
+    color: $lk-text;
+
+    box-sizing: border-box;
+
+    &:focus { outline: none; border-color: $lk-brand; }
+
+    &:disabled {
+      background: $lk-surface-soft;
+      color: $lk-text-muted;
+    }
+  }
+
+  /* Стрелка селекта: своя, с отступом от края — системная вплотную
+     прижималась к рамке и обрезалась. */
+  select {
+    appearance: none;
+
+    padding-right: $lk-space-40;
+
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%236b7f70' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right $lk-space-16 center;
+  }
+}
+
+.lk-hr-field__password {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+
+  input { padding-right: $lk-space-40; }
+
+  > button {
+    position: absolute;
+    right: $lk-space-8;
+
+    display: inline-flex;
+    align-items: center;
+
+    padding: $lk-space-6;
+
+    border: none;
+    background: none;
+
+    color: $lk-text-muted;
+    cursor: pointer;
+
+    &:hover { color: $lk-text; }
+  }
+}
+
+.lk-hr-total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: $lk-space-16;
+  flex-wrap: wrap;
+
+  padding: $lk-space-16 $lk-space-20;
+
+  border-radius: $lk-radius-16;
+  background: $lk-surface-accent-soft;
+
+  strong {
+    display: block;
+
+    font-size: 24px;
+    line-height: 1.1;
+    color: $lk-brand-dark;
+  }
+
+  p {
+    margin: 0;
+
+    font-size: 13px;
+    color: $lk-text-soft;
+  }
+}
+
+.lk-hr-hint {
+  display: flex;
+  align-items: flex-start;
+  gap: $lk-space-8;
+
+  margin: 0;
+
+  font-size: 13px;
+  color: $lk-text-soft;
+
+  svg { flex-shrink: 0; margin-top: 2px; color: $lk-text-muted; }
+}
+
+.lk-hr-error,
+.lk-hr-success {
+  padding: $lk-space-12 $lk-space-14;
+
+  border-radius: $lk-radius-12;
+
+  font-size: 13px;
+}
+
+.lk-hr-error {
+  background: rgba($lk-danger, 0.08);
+  color: $lk-danger;
+}
+
+.lk-hr-success {
+  background: rgba($lk-success, 0.1);
+  color: $lk-success;
+}
+
+/* ─── Фильтры, поиск, пагинация ──────────────────────────────────── */
+
+.lk-hr-filters {
+  display: flex;
+  gap: $lk-space-8;
+  flex-wrap: wrap;
+
+  button {
+    padding: $lk-space-8 $lk-space-14;
+
+    border: 1px solid $lk-border;
+    border-radius: $lk-radius-pill;
+    background: $lk-white;
+
+    font-size: 13px;
+    font-weight: 600;
+    color: $lk-text-soft;
+    cursor: pointer;
+
+    &:hover { border-color: $lk-brand; color: $lk-brand; }
+
+    &.is-active {
+      border-color: $lk-brand;
+      background: $lk-brand;
+      color: $lk-white;
+    }
+  }
+}
+
+.lk-hr-search {
+  display: flex;
+  align-items: center;
+  gap: $lk-space-8;
+  flex-wrap: wrap;
+
+  padding: $lk-space-10 $lk-space-14;
+
+  border: 1px solid $lk-border;
+  border-radius: $lk-radius-12;
+  background: $lk-white;
+
+  > svg { flex-shrink: 0; color: $lk-text-muted; }
+
+  input {
+    flex: 1;
+    min-width: 0;
+
+    border: none;
+    outline: none;
+    background: none;
+
+    font: inherit;
+    font-size: 14px;
+    color: $lk-text;
+  }
+
+  button {
+    flex-shrink: 0;
+
+    padding: $lk-space-6 $lk-space-14;
+
+    border: none;
+    border-radius: $lk-radius-pill;
+    background: $lk-brand;
+
+    font-size: 13px;
+    font-weight: 600;
+    color: $lk-white;
+    cursor: pointer;
+
+    &:hover { background: $lk-brand-dark; }
+  }
+}
+
+.lk-hr-search__reset {
+  background: none !important;
+  color: $lk-text-muted !important;
+
+  &:hover { color: $lk-text !important; }
+}
+
+.lk-hr-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: $lk-space-16;
+  flex-wrap: wrap;
+
+  font-size: 13px;
+  color: $lk-text-muted;
+
+  button {
+    padding: $lk-space-6 $lk-space-14;
+
+    border: 1px solid $lk-border;
+    border-radius: $lk-radius-pill;
+    background: $lk-white;
+
+    font-size: 13px;
+    color: $lk-text;
+    cursor: pointer;
+
+    &:disabled { opacity: 0.4; cursor: default; }
+    &:not(:disabled):hover { border-color: $lk-brand; color: $lk-brand; }
+  }
+}
+
+/* ─── Таблицы ────────────────────────────────────────────────────── */
+
+.lk-hr-table {
+  display: flex;
+  flex-direction: column;
+
+  border: 1px solid $lk-border;
+  border-radius: $lk-radius-16;
+  background: $lk-white;
+  overflow: hidden;
+}
+
+.lk-hr-table__row {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1.6fr) minmax(0, 1fr) minmax(0, 1fr)
+    minmax(0, 1fr) minmax(0, 0.6fr);
+  gap: $lk-space-16;
+  align-items: center;
+
+  padding: $lk-space-14 $lk-space-16;
+
+  font-size: 13px;
+  color: $lk-text-soft;
+
+  &--head {
+    background: $lk-bg;
+
+    color: $lk-text-muted;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+}
+
+.lk-hr-table--employees .lk-hr-table__row {
+  grid-template-columns:
+    minmax(0, 1.4fr) minmax(0, 1.6fr) minmax(0, 1fr)
+    minmax(0, 1fr) minmax(0, 0.6fr);
+}
+
+.lk-hr-table__group {
+  border-top: 1px solid $lk-border;
+}
+
+.lk-hr-table__row--head + .lk-hr-table__group { border-top: none; }
+
+.lk-hr-table__name {
+  color: $lk-text;
+  font-weight: 600;
+}
+
+.lk-hr-table__code {
+  font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+  font-size: 13px;
+  color: $lk-text;
+  overflow-wrap: anywhere;
+}
+
+.lk-hr-table__contacts a {
+  color: $lk-brand;
+  font-size: 12px;
+  text-decoration: none;
+
+  &:hover { text-decoration: underline; }
+}
+
+.lk-hr-table__tools {
+  display: flex;
+  gap: $lk-space-4;
+  justify-content: flex-end;
+
+  button {
+    display: inline-flex;
+    align-items: center;
+
+    padding: $lk-space-6;
+
+    border: 1px solid transparent;
+    border-radius: $lk-radius-12;
+    background: none;
+
+    color: $lk-text-muted;
+    cursor: pointer;
+
+    &:hover { border-color: $lk-border; color: $lk-brand; }
+  }
+}
+
+.lk-hr-table__qr {
+  display: flex;
+  align-items: center;
+  gap: $lk-space-20;
+  flex-wrap: wrap;
+
+  padding: $lk-space-16;
+
+  background: $lk-bg;
+
+  p {
+    margin: 0 0 $lk-space-10;
+
+    max-width: 42ch;
+
+    font-size: 13px;
+    color: $lk-text-soft;
+  }
+}
+
+.lk-hr-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+
+  &--active,
+  &--used { color: $lk-success; }
+
+  &--trial { color: $lk-warning; }
+
+  &--expired,
+  &--cancelled,
+  &--deactivated { color: $lk-danger; }
+}
+
+.lk-hr-status__sub {
+  display: block;
+
+  font-size: 11px;
+  font-style: normal;
+  color: $lk-text-muted;
+}
+
+.lk-hr-dl {
+  display: grid;
+  grid-template-columns: minmax(0, 200px) minmax(0, 1fr);
+  gap: $lk-space-10 $lk-space-16;
+
+  margin: 0 0 $lk-space-16;
+
+  dt {
+    color: $lk-text-muted;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  dd {
+    margin: 0;
+    min-width: 0;
+
+    font-size: 14px;
+    color: $lk-text;
+    overflow-wrap: anywhere;
+
+    em {
+      font-style: normal;
+      color: $lk-text-muted;
+    }
+  }
+}
+
+/* ─── Свежесозданные коды ────────────────────────────────────────── */
+
+.lk-hr-codes {
+  display: flex;
+  gap: $lk-space-8;
+  flex-wrap: wrap;
+
+  margin: $lk-space-16 0;
+
+  code {
+    padding: $lk-space-6 $lk-space-10;
+
+    border: 1px solid $lk-border;
+    border-radius: $lk-radius-12;
+    background: $lk-white;
+
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    font-size: 12px;
+    color: $lk-text;
+  }
+}
+
+.lk-hr-qr {
+  display: block;
+
+  border-radius: $lk-radius-12;
+  background: $lk-white;
+
+  &--loading { background: $lk-surface-soft; }
+
+  &--failed {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 160px;
+    height: 160px;
+
+    font-size: 12px;
+    color: $lk-text-muted;
+  }
+}
+
+/* ─── Пустые состояния и заглушки ────────────────────────────────── */
+
+.lk-hr-empty,
+.lk-hr-pending {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: $lk-space-10;
+
+  min-height: 200px;
+
+  padding: $lk-space-32 $lk-space-24;
+
+  border: 1px solid $lk-border;
+  border-radius: $lk-card-radius;
+  background: $lk-white;
+
+  text-align: center;
+  font-size: 14px;
+  color: $lk-text-soft;
+
+  svg { color: $lk-text-muted; }
+
+  h2 { margin: 0; }
+
+  p {
+    margin: 0;
+    max-width: 48ch;
+  }
+}
+
+/* ─── Вход и регистрация ─────────────────────────────────────────── */
+
+.lk-hr-login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 1;
+  min-height: 100vh;
+
+  padding: $lk-space-24;
+
+  box-sizing: border-box;
+}
+
+.lk-hr-login__card {
+  width: 100%;
+  max-width: 440px;
+
+  padding: $lk-space-32;
+
+  border: 1px solid $lk-border;
+  border-radius: $lk-card-radius;
+  background: $lk-white;
+
+  box-sizing: border-box;
+
+  h1 { margin: $lk-space-6 0 $lk-space-8; }
+
+  > p {
+    margin: 0 0 $lk-space-24;
+
+    font-size: 14px;
+    color: $lk-text-soft;
+  }
+}
+
+.lk-hr-login--wide .lk-hr-login__card { max-width: 720px; }
+
+.lk-hr-login__foot {
+  margin: $lk-space-16 0 0;
+
+  font-size: 13px;
+  color: $lk-text-soft;
+
+  a {
+    color: $lk-brand;
+    font-weight: 600;
+    text-decoration: none;
+
+    &:hover { text-decoration: underline; }
+  }
+}
+
+/* ─── Активация промокода ────────────────────────────────────────── */
+
+.lk-promo-shell {
+  display: flex;
+
+  min-height: 100vh;
+
+  background: $lk-bg;
+}
+
+.lk-promo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex: 1;
+
+  padding: $lk-space-24;
+
+  box-sizing: border-box;
+}
+
+.lk-promo__card {
+  display: flex;
+  flex-direction: column;
+  gap: $lk-space-16;
+
+  width: 100%;
+  max-width: 560px;
+
+  padding: $lk-space-32;
+
+  border: 1px solid $lk-border;
+  border-radius: $lk-card-radius;
+  background: $lk-white;
+
+  box-sizing: border-box;
+
+  h1 { margin: $lk-space-6 0 0; }
+
+  > p {
+    margin: 0;
+
+    font-size: 14px;
+    color: $lk-text-soft;
+  }
+}
+
+.lk-promo__code {
+  display: flex;
+  flex-direction: column;
+  gap: $lk-space-12;
+
+  /* Код набирают с бумаги или диктуют по телефону — моноширинный шрифт
+     и разрядка снижают число опечаток. */
+  input {
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace !important;
+    font-size: 16px !important;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+}
+
+.lk-promo__status {
+  display: flex;
+  align-items: flex-start;
+  gap: $lk-space-10;
+
+  padding: $lk-space-14 $lk-space-16;
+
+  border-radius: $lk-radius-12;
+
+  font-size: 14px;
+
+  svg { flex-shrink: 0; margin-top: 2px; }
+
+  strong { display: block; }
+
+  p {
+    margin: 2px 0 0;
+
+    font-size: 13px;
+    opacity: 0.85;
+  }
+
+  &--good {
+    background: rgba($lk-success, 0.1);
+    color: $lk-success;
+  }
+
+  &--bad {
+    background: rgba($lk-danger, 0.08);
+    color: $lk-danger;
+  }
+}
+
+.lk-promo__note {
+  margin: 0;
+
+  padding: $lk-space-12 $lk-space-14;
+
+  border-left: 3px solid $lk-brand;
+  border-radius: $lk-radius-12;
+  background: $lk-surface-soft;
+
+  font-size: 13px;
+  color: $lk-text-soft;
+}
+
+.lk-promo__foot {
+  margin: 0;
+
+  font-size: 13px;
+  color: $lk-text-soft;
+
+  a {
+    color: $lk-brand;
+    font-weight: 600;
+    text-decoration: none;
+
+    &:hover { text-decoration: underline; }
+  }
+}
+
+@media (max-width: 640px) {
+  .lk-hr-table__row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .lk-hr-table--employees .lk-hr-table__row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .lk-hr-dl {
+    grid-template-columns: 1fr;
+    gap: $lk-space-4 0;
+  }
+
+  .lk-hr-login__card,
+  .lk-promo__card {
+    padding: $lk-space-20;
+  }
+}

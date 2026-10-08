@@ -5,7 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "dev:b2b": "VITE_EDITION=b2b vite",
     "build": "vite build",
+    "build:b2b": "VITE_EDITION=b2b vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -13,6 +15,7 @@
     "clsx": "^2.1.1",
     "jspdf": "^4.2.1",
     "lucide-react": "^1.11.0",
+    "qrcode": "^1.5.4",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-router-dom": "^6.28.1",

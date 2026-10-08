@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { X, Check, Sparkles, Star, Lock } from 'lucide-react';
 import { tariffs } from '../../data/tariffs.data';
+import { isB2B } from '../../config/edition';
 
 const PLANS = tariffs.filter((t) => !t.isBuilder);
 
@@ -9,6 +10,15 @@ export default function TrialPaywallModal({ reason = 'limit', onClose }) {
 
   const handleChoose = (tariffId) => {
     onClose();
+
+    // Сотрудник корпоративного клиента тариф не покупает. Ведём его на
+    // страницу тарифа — посмотреть, что открыто, — а не в оплату,
+    // которой в этой сборке нет.
+    if (isB2B) {
+      navigate('/subscription/tariff');
+      return;
+    }
+
     navigate(`/subscription/checkout?plan=${tariffId}&period=year`);
   };
 
@@ -16,7 +26,9 @@ export default function TrialPaywallModal({ reason = 'limit', onClose }) {
     ? 'Пробный период завершён'
     : 'Лимит исчерпан';
 
-  const subtitle = reason === 'expired'
+  const subtitle = isB2B
+    ? 'Этот материал открыт на другом тарифе. Тариф выбирает компания — напишите своему HR.'
+    : reason === 'expired'
     ? 'Оформите подписку, чтобы продолжить пользоваться сервисом'
     : 'Вы использовали все 5 бесплатных сказок. Выберите тариф для безлимитного доступа';
 
