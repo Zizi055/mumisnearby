@@ -139,13 +139,19 @@ export const useLibraryStore = create(
 
         console.error(error);
 
-        // 401 обрабатывается в client.js (редирект на /auth)
-        // Здесь показываем понятную ошибку
-        const is401 = error.message?.includes('401') || error.message?.includes('истекла');
+        // 401 обрабатывается в client.js (редирект на /auth).
+        // 5xx — поломка на бэке в конкретном разделе: остальные категории
+        // при этом грузятся нормально, поэтому важно не писать общее «не
+        // удалось загрузить», а честно сказать, что упал сервер.
+        const is401 =
+          error.status === 401 ||
+          error.message?.includes('401') ||
+          error.message?.includes('истекла');
+
+        const isServer = error.status >= 500;
+
         set({
-          error: is401
-            ? 'session_expired'
-            : 'load_failed',
+          error: is401 ? 'session_expired' : isServer ? 'server_error' : 'load_failed',
         });
 
       } finally {

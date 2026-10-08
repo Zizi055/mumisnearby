@@ -65,7 +65,17 @@ async function request(path, options = {}) {
 
   if (!res.ok) {
     const text = await res.text().catch(() => '');
-    throw new Error(parseErrorDetail(text) || `HTTP ${res.status}: ${text}`);
+
+    const err = new Error(parseErrorDetail(text) || `HTTP ${res.status}: ${text}`);
+
+    // Код нужен вызывающей стороне, чтобы отличить поломку на сервере (5xx)
+    // от «не нашли» и от обрыва сети. Раньше наружу шла только строка, и
+    // любая неудача выглядела одинаково — «не удалось загрузить». На 500 в
+    // одном разделе библиотеки это читалось как ошибка фронта, и мы сутки
+    // искали её не там.
+    err.status = res.status;
+
+    throw err;
   }
 
   if (res.status === 204) {

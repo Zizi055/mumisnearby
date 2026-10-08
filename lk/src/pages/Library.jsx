@@ -482,6 +482,19 @@ export default function Library() {
                 </span>
                 , чтобы видеть библиотеку.
               </>
+            ) : error === 'server_error' ? (
+              <>
+                Раздел «{currentMeta.title}» сейчас недоступен — ошибка на
+                стороне сервера. Остальные разделы библиотеки работают. Мы уже
+                знаем о проблеме.{' '}
+                <button
+                  type="button"
+                  className="lk-library-empty__reset"
+                  onClick={loadLibrary}
+                >
+                  Попробовать ещё раз
+                </button>
+              </>
             ) : (
               <>
                 Не удалось загрузить контент.{' '}
