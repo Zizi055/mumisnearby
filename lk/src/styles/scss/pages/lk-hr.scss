@@ -832,6 +832,31 @@
   max-width: 560px;
 }
 
+/* Белая плашка под формой.
+   В клиентском ЛК полей всего два и карточка не нужна — форма спокойно
+   живёт на фоне. Здесь их восемь, в две колонки: без подложки они
+   рассыпаются по бежевому фону и выглядят как набор полей, а не как
+   один бланк, который надо заполнить и отправить. */
+.auth__card--hr {
+  padding: $lk-space-32;
+
+  border: 1px solid $lk-border;
+  border-radius: $lk-card-radius;
+  background: $lk-white;
+
+  box-sizing: border-box;
+}
+
+/* Вкладки на белом фоне: подложка переключателя должна отличаться от
+   карточки, иначе активная вкладка сливается с ней. */
+.auth__card .lk-hr-tabs {
+  background: $lk-bg;
+}
+
+@media (max-width: 480px) {
+  .auth__card--hr { padding: $lk-space-20; }
+}
+
 .lk-hr-auth__lead {
   margin: 0 0 $lk-space-24;
 

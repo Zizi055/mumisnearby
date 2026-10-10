@@ -56,7 +56,9 @@ export default function HrAuthLayout({ wide = false, children }) {
       </div>
 
       <div className="auth__right">
-        <div className={`auth__card ${wide ? 'auth__card--hr-wide' : ''}`}>
+        <div
+          className={`auth__card auth__card--hr ${wide ? 'auth__card--hr-wide' : ''}`}
+        >
           <HrAuthTabs />
           {children}
         </div>
