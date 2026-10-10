@@ -100,21 +100,43 @@ server {
 }
 ```
 
-Положить в `/etc/nginx/sites-available/rodnoygolos.ru`, включить и
-проверить:
+Готовый файл лежит в репозитории: `deploy/nginx-rodnoygolos.ru.conf`.
+Вставлять его в терминал руками нельзя — zsh экранирует точку с запятой
+после URL, и `proxy_pass` ломается молча (`nginx -t` при этом проходит).
 
 ```bash
+cp deploy/nginx-rodnoygolos.ru.conf /etc/nginx/sites-available/rodnoygolos.ru
 ln -s /etc/nginx/sites-available/rodnoygolos.ru /etc/nginx/sites-enabled/
 nginx -t && systemctl reload nginx
 ```
 
+**Одного симлинка мало.** В `nginx.conf` этого сервера подключён не
+`sites-enabled/*`, а конкретный файл:
+
+```
+include /etc/nginx/sites-enabled/rodnyegolosa.ru;
+```
+
+Рядом нужна вторая строка:
+
+```
+include /etc/nginx/sites-enabled/rodnoygolos.ru;
+```
+
+Без неё конфиг не читается вовсе, а запросы уходят в блок старого
+домена и получают 301 на его https.
+
 ## 4. SSL
 
 ```bash
-certbot --nginx -d rodnoygolos.ru -d www.rodnoygolos.ru
+certbot --nginx -d rodnoygolos.ru -d www.rodnoygolos.ru --non-interactive --agree-tos --redirect
 ```
 
-Certbot сам допишет редирект на https и блок на 443.
+Certbot сам допишет редирект на https и блок на 443 — **прямо в
+`/etc/nginx/sites-available/rodnoygolos.ru`**. Поэтому повторное
+копирование конфига из репозитория стирает SSL, и после каждого `cp`
+нужно снова прогнать эту же команду: сертификат уже выпущен, certbot
+просто переустановит его.
 
 ## 5. Проверить после выката
 
