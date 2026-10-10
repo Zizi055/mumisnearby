@@ -820,9 +820,47 @@
   box-sizing: border-box;
 }
 
+/* Вкладки «Вход / Регистрация».
+   Ширина карточки у обеих одинаковая (ниже), иначе при переключении
+   экран заметно дёргается. */
+.lk-hr-tabs {
+  display: flex;
+  gap: $lk-space-4;
+
+  margin: $lk-space-12 0 $lk-space-20;
+  padding: $lk-space-4;
+
+  border-radius: $lk-radius-pill;
+  background: $lk-surface-soft;
+}
+
+.lk-hr-tabs__item {
+  flex: 1;
+
+  padding: $lk-space-10 $lk-space-16;
+
+  border-radius: $lk-radius-pill;
+
+  color: $lk-text-soft;
+  font-size: 15px;
+  font-weight: 600;
+  text-align: center;
+  text-decoration: none;
+
+  transition: background 0.15s ease, color 0.15s ease;
+
+  &:hover { color: $lk-text; }
+
+  &.is-active {
+    background: $lk-white;
+    color: $lk-brand-dark;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.07);
+  }
+}
+
 .lk-hr-login__card {
   width: 100%;
-  max-width: 440px;
+  max-width: 560px;
 
   padding: $lk-space-32;
 
@@ -846,7 +884,10 @@
   }
 }
 
-.lk-hr-login--wide .lk-hr-login__card { max-width: 720px; }
+/* Регистрация шире входа всего на полсотни пикселей: полей больше, но
+   карточка должна остаться узнаваемо той же, иначе переключение вкладок
+   выглядит как переход на другой сайт. */
+.lk-hr-login--wide .lk-hr-login__card { max-width: 620px; }
 
 .lk-hr-login__foot {
   /* Отбивка от кнопки больше, чем между самими ссылками: кнопка —

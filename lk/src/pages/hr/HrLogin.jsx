@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Eye, EyeOff } from 'lucide-react';
 import { loginHr } from '../../api/hrAuth.service';
+import HrAuthTabs from '../../components/hr/HrAuthTabs';
 
 // ─────────────────────────────────────────────────────────────────────
 // Вход HR-администратора компании.
@@ -47,9 +48,12 @@ export default function HrLogin() {
       <div className="lk-hr-login">
         <div className="lk-hr-login__card">
           <span className="lk-text-eyebrow">Кабинет компании</span>
-          <h1>Вход для HR</h1>
+
+          <HrAuthTabs />
+
           <p>
-            Управление корпоративной подпиской, промокодами и сотрудниками.
+            Войдите, чтобы управлять корпоративной подпиской, промокодами и
+            сотрудниками.
           </p>
 
           <form className="lk-hr-form" onSubmit={handleSubmit}>
@@ -95,11 +99,6 @@ export default function HrLogin() {
               {status === 'loading' ? 'Входим…' : 'Войти'}
             </button>
           </form>
-
-          <p className="lk-hr-login__foot">
-            Компании ещё нет?{' '}
-            <Link to="/hr/register">Зарегистрировать</Link>
-          </p>
 
           <p className="lk-hr-login__foot">
             Вы сотрудник и у вас есть промокод?{' '}

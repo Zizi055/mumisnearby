@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, Info } from 'lucide-react';
 import { registerCompany } from '../../api/hrAuth.service';
+import HrAuthTabs from '../../components/hr/HrAuthTabs';
 import { tariffs } from '../../data/tariffs.data';
 import { PLAN_ID_MAP } from '../../data/planIdMap';
 
@@ -106,7 +107,9 @@ export default function HrRegister() {
       <div className="lk-hr-login lk-hr-login--wide">
         <div className="lk-hr-login__card">
           <span className="lk-text-eyebrow">Кабинет компании</span>
-          <h1>Регистрация компании</h1>
+
+          <HrAuthTabs />
+
           <p>
             Первые 3 дня — бесплатно, без оплаты. Оплатить можно потом, уже
             из кабинета.
@@ -243,7 +246,8 @@ export default function HrRegister() {
           </form>
 
           <p className="lk-hr-login__foot">
-            Уже зарегистрированы? <Link to="/hr/login">Войти</Link>
+            Вы сотрудник и у вас есть промокод?{' '}
+            <Link to="/promo">Активировать доступ</Link>
           </p>
         </div>
       </div>
