@@ -834,7 +834,11 @@
 
   h1 { margin: $lk-space-6 0 $lk-space-8; }
 
-  > p {
+  /* Только вводный абзац под заголовком.
+     Без :not([class]) это правило перебивало .lk-hr-login__foot — оно
+     специфичнее (0,2,0 против 0,1,0), — и ссылки «Зарегистрировать» и
+     «Активировать доступ» прилипали вплотную к кнопке «Войти». */
+  > p:not([class]) {
     margin: 0 0 $lk-space-24;
 
     font-size: 14px;
@@ -845,9 +849,15 @@
 .lk-hr-login--wide .lk-hr-login__card { max-width: 720px; }
 
 .lk-hr-login__foot {
-  margin: $lk-space-16 0 0;
+  /* Отбивка от кнопки больше, чем между самими ссылками: кнопка —
+     главное действие, и подсказки под ней не должны читаться как её
+     продолжение. */
+  margin: $lk-space-20 0 0;
+
+  + .lk-hr-login__foot { margin-top: $lk-space-10; }
 
   font-size: 13px;
+  line-height: 1.5;
   color: $lk-text-soft;
 
   a {
