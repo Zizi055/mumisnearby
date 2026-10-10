@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { Eye, EyeOff } from 'lucide-react';
 import { loginHr } from '../../api/hrAuth.service';
-import HrAuthTabs from '../../components/hr/HrAuthTabs';
+import HrAuthLayout from '../../components/hr/HrAuthLayout';
 
 // ─────────────────────────────────────────────────────────────────────
 // Вход HR-администратора компании.
@@ -44,68 +44,60 @@ export default function HrLogin() {
   };
 
   return (
-    <div className="lk-hr-shell">
-      <div className="lk-hr-login">
-        <div className="lk-hr-login__card">
-          <span className="lk-text-eyebrow">Кабинет компании</span>
+    <HrAuthLayout>
+      <p className="lk-hr-auth__lead">
+        Войдите, чтобы управлять корпоративной подпиской, промокодами и
+        сотрудниками.
+      </p>
 
-          <HrAuthTabs />
+      <form className="lk-hr-form" onSubmit={handleSubmit}>
+        <label className="lk-hr-field">
+          <span>Рабочая почта</span>
+          <input
+            type="email"
+            value={email}
+            autoComplete="username"
+            autoCapitalize="none"
+            spellCheck="false"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </label>
 
-          <p>
-            Войдите, чтобы управлять корпоративной подпиской, промокодами и
-            сотрудниками.
-          </p>
-
-          <form className="lk-hr-form" onSubmit={handleSubmit}>
-            <label className="lk-hr-field">
-              <span>Рабочая почта</span>
-              <input
-                type="email"
-                value={email}
-                autoComplete="username"
-                autoCapitalize="none"
-                spellCheck="false"
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </label>
-
-            <label className="lk-hr-field">
-              <span>Пароль</span>
-              <div className="lk-hr-field__password">
-                <input
-                  type={showPassword ? 'text' : 'password'}
-                  value={password}
-                  autoComplete="current-password"
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-                <button
-                  type="button"
-                  onClick={() => setShowPassword((v) => !v)}
-                  aria-label={showPassword ? 'Скрыть пароль' : 'Показать пароль'}
-                  title={showPassword ? 'Скрыть пароль' : 'Показать пароль'}
-                >
-                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
-                </button>
-              </div>
-            </label>
-
-            {error && <div className="lk-hr-error">{error}</div>}
-
+        <label className="lk-hr-field">
+          <span>Пароль</span>
+          <div className="lk-hr-field__password">
+            <input
+              type={showPassword ? 'text' : 'password'}
+              value={password}
+              autoComplete="current-password"
+              onChange={(e) => setPassword(e.target.value)}
+            />
             <button
-              type="submit"
-              className="lk-btn lk-btn--primary lk-btn--md"
-              disabled={status === 'loading'}
+              type="button"
+              onClick={() => setShowPassword((v) => !v)}
+              aria-label={showPassword ? 'Скрыть пароль' : 'Показать пароль'}
+              title={showPassword ? 'Скрыть пароль' : 'Показать пароль'}
             >
-              {status === 'loading' ? 'Входим…' : 'Войти'}
+              {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
             </button>
-          </form>
+          </div>
+        </label>
 
-          <p className="lk-hr-login__foot">
-            Вы сотрудник и у вас есть промокод?{' '}
-            <Link to="/promo">Активировать доступ</Link>
-          </p>
-        </div>
-      </div>
-    </div>
+        {error && <div className="lk-hr-error">{error}</div>}
+
+        <button
+          type="submit"
+          className="lk-btn lk-btn--primary lk-btn--md"
+          disabled={status === 'loading'}
+        >
+          {status === 'loading' ? 'Входим…' : 'Войти'}
+        </button>
+      </form>
+
+      <p className="lk-hr-login__foot">
+        Вы сотрудник и у вас есть промокод?{' '}
+        <Link to="/promo">Активировать доступ</Link>
+      </p>
+    </HrAuthLayout>
   );
 }
