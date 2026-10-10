@@ -181,7 +181,14 @@ export default function HrCompany() {
 
               <label className="lk-hr-field">
                 <span>ИНН</span>
-                <input type="text" value={form.inn} inputMode="numeric" onChange={set('inn')} />
+                <input
+                  type="text"
+                  value={form.inn}
+                  required
+                  inputMode="numeric"
+                  maxLength={12}
+                  onChange={set('inn')}
+                />
               </label>
 
               <label className="lk-hr-field">
@@ -196,7 +203,12 @@ export default function HrCompany() {
 
               <label className="lk-hr-field">
                 <span>Телефон</span>
-                <input type="tel" value={form.contactPhone} onChange={set('contactPhone')} />
+                <input
+                  type="tel"
+                  value={form.contactPhone}
+                  required
+                  onChange={set('contactPhone')}
+                />
               </label>
 
               {/* Почта не редактируется: она же логин HR. Смена логина —

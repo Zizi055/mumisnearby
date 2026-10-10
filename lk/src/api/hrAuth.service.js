@@ -39,10 +39,15 @@ export async function loginHr({ email, password }) {
 export async function registerCompany(payload) {
   const data = await hrApi.post('/b2b/companies/register', {
     name: payload.name,
-    inn: payload.inn || null,
+    // ИНН и телефон обязательны: без ИНН не выставить счёт и не
+    // подписать договор, а по корпоративным заявкам менеджер звонит —
+    // почта в компаниях часто уходит в общий ящик. Отправляем только
+    // цифры: бэк хранит их без скобок и дефисов, иначе один и тот же
+    // телефон приходит в трёх разных видах.
+    inn: payload.inn.replace(/\D/g, ''),
     contact_name: payload.contactName,
     contact_email: payload.contactEmail,
-    contact_phone: payload.contactPhone || null,
+    contact_phone: payload.contactPhone.replace(/[^\d+]/g, ''),
     plan_id: Number(payload.planId),
     seats_total: Number(payload.seatsTotal),
     billing_period: 'year',

@@ -57,6 +57,28 @@ export default function HrRegister() {
       return;
     }
 
+    // ИНН обязателен: без него нельзя выставить счёт и подписать договор,
+    // а корпоративный клиент без документов нам не клиент. Проверяем и
+    // длину: у юрлица 10 цифр, у ИП — 12. Опечатка в реквизитах
+    // всплывает уже в бухгалтерии, поэтому ловим здесь.
+    const inn = form.inn.replace(/\D/g, '');
+
+    if (inn.length !== 10 && inn.length !== 12) {
+      setError('ИНН состоит из 10 цифр у юридического лица или 12 у ИП.');
+      setStatus('error');
+      return;
+    }
+
+    // Телефон обязателен: менеджер связывается по корпоративным заявкам
+    // голосом, почта в компаниях часто уходит в общий ящик.
+    const phoneDigits = form.contactPhone.replace(/\D/g, '');
+
+    if (phoneDigits.length < 10) {
+      setError('Укажите телефон для связи — минимум 10 цифр.');
+      setStatus('error');
+      return;
+    }
+
     if (form.password.length < 8) {
       setError('Пароль должен быть не короче 8 символов.');
       setStatus('error');
@@ -97,11 +119,14 @@ export default function HrRegister() {
             </label>
 
             <label className="lk-hr-field">
-              <span>ИНН <em>— для счёта, необязательно</em></span>
+              <span>ИНН <em>— 10 цифр у юрлица, 12 у ИП</em></span>
               <input
                 type="text"
                 value={form.inn}
+                required
                 inputMode="numeric"
+                maxLength={12}
+                placeholder="7701234567"
                 onChange={set('inn')}
               />
             </label>
@@ -129,10 +154,12 @@ export default function HrRegister() {
             </label>
 
             <label className="lk-hr-field">
-              <span>Телефон <em>— необязательно</em></span>
+              <span>Телефон <em>— для связи менеджера</em></span>
               <input
                 type="tel"
                 value={form.contactPhone}
+                required
+                placeholder="+7 900 000-00-00"
                 onChange={set('contactPhone')}
               />
             </label>

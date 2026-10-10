@@ -20,9 +20,11 @@ export function getCompany() {
 export function updateCompany({ name, inn, contactName, contactPhone }) {
   return hrApi.patch('/b2b/company', {
     name,
-    inn: inn || null,
+    // Только цифры — как и при регистрации. Иначе один и тот же телефон
+    // хранится в базе в трёх видах и не ищется поиском.
+    inn: String(inn).replace(/\D/g, ''),
     contact_name: contactName,
-    contact_phone: contactPhone || null,
+    contact_phone: String(contactPhone).replace(/[^\d+]/g, ''),
   });
 }
 
