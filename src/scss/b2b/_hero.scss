@@ -1,0 +1,253 @@
+// Первый экран: тёмная плашка с градиентом, слева оффер, справа
+// карточка с примером звучания. Канвас с бегущей волной лежит внутри
+// плашки под контентом.
+
+.rg-hero {
+  padding: 26px 0 0;
+}
+
+.rg-hero__panel {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(36px, 5vw, 68px) clamp(24px, 4vw, 56px);
+  border-radius: var(--rg-radius);
+  background: var(--rg-grad-dark);
+  color: #fff;
+}
+
+// Тёплое пятно в правом верхнем углу — иначе градиент читается плоским.
+.rg-hero__panel::before {
+  content: '';
+  position: absolute;
+  top: -140px;
+  right: -120px;
+  width: 540px;
+  height: 540px;
+  background: var(--rg-glow);
+  pointer-events: none;
+}
+
+// Канвас занимает нижнюю половину плашки: волна идёт под текстом и
+// уходит за правый край. Содержимое поверх неё — z-index на .rg-hero__grid.
+.rg-hero__wave {
+  position: absolute;
+  inset: auto 0 0 0;
+  width: 100%;
+  height: 58%;
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.rg-hero__crumbs {
+  position: relative;
+  z-index: 1;
+  margin-bottom: clamp(22px, 3vw, 34px);
+  font-size: 10px;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+  color: var(--rg-text-on-dark-muted);
+}
+
+.rg-hero__grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  gap: clamp(28px, 4vw, 52px);
+  align-items: end;
+}
+
+.rg-hero__title em {
+  display: block;
+  font-style: normal;
+  color: var(--rg-green-300);
+}
+
+.rg-hero__lead {
+  max-width: 30em;
+  margin-top: 20px;
+  font-size: clamp(14px, 1.2vw, 16px);
+  line-height: 1.55;
+  color: var(--rg-text-on-dark);
+}
+
+.rg-hero__actions {
+  margin-top: clamp(24px, 3vw, 34px);
+}
+
+.rg-hero__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 26px;
+  margin-top: 26px;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--rg-text-on-dark-muted);
+}
+
+// ── Карточка прослушивания ──────────────────────────────────────────
+
+.rg-player {
+  padding: 24px;
+  border: 1px solid var(--rg-line-on-dark);
+  border-radius: var(--rg-radius);
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(6px);
+}
+
+.rg-player__kicker {
+  font-size: 10px;
+  letter-spacing: 0.17em;
+  text-transform: uppercase;
+  color: var(--rg-text-on-dark-muted);
+}
+
+.rg-player__title {
+  margin-top: 10px;
+  font-size: clamp(16px, 1.5vw, 19px);
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.rg-player__text {
+  margin-top: 10px;
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--rg-text-on-dark);
+}
+
+.rg-player__bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.rg-player__play {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--rg-green-500);
+  color: #fff;
+  transition: background-color 0.25s var(--rg-ease);
+
+  &:hover {
+    background: var(--rg-green-600);
+  }
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  // Иконка паузы показывается только во время воспроизведения.
+  .rg-player__icon--pause {
+    display: none;
+  }
+
+  &.is-playing .rg-player__icon--play {
+    display: none;
+  }
+
+  &.is-playing .rg-player__icon--pause {
+    display: block;
+  }
+}
+
+.rg-player__track {
+  position: relative;
+  flex: 1;
+  height: 3px;
+  border-radius: 2px;
+  background: rgba(255, 255, 255, 0.25);
+  overflow: hidden;
+}
+
+.rg-player__progress {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0;
+  background: #fff;
+  transition: width 0.15s linear;
+}
+
+.rg-player__time {
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  color: var(--rg-text-on-dark-muted);
+}
+
+// ── Цифры под первым экраном ────────────────────────────────────────
+
+.rg-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.rg-stat {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 176px;
+  padding: 24px 22px;
+  border-radius: var(--rg-radius);
+  color: #fff;
+
+  &:nth-child(1) { background: var(--rg-grad-green); }
+  &:nth-child(2) { background: var(--rg-grad-dark); }
+  &:nth-child(3) { background: var(--rg-grad-deep); }
+  &:nth-child(4) { background: var(--rg-grad-steel); }
+}
+
+.rg-stat__value {
+  font-size: clamp(32px, 3.2vw, 44px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -0.02em;
+
+  small {
+    margin-left: 3px;
+    font-size: 0.42em;
+    font-weight: 700;
+  }
+}
+
+.rg-stat__label {
+  font-size: 12px;
+  line-height: 1.45;
+  color: var(--rg-text-on-dark);
+}
+
+@media (max-width: 900px) {
+  .rg-hero__grid {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .rg-hero__wave {
+    height: 42%;
+  }
+
+  .rg-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .rg-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .rg-stat {
+    min-height: 0;
+    gap: 14px;
+  }
+}

@@ -1,0 +1,77 @@
+// Длинные текстовые блоки: «Технология с человеческим смыслом» и
+// манифест «Родные голоса — для тех, кто верит…».
+//
+// Здесь главное — длина строки. Текст из ТЗ объёмный, и на всю ширину
+// контейнера он нечитаем, поэтому колонка ограничена по ширине, а не
+// растянута по сетке секции.
+
+.rg-essay {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: clamp(28px, 5vw, 64px);
+  align-items: start;
+}
+
+.rg-essay__aside {
+  position: sticky;
+  top: 104px;
+}
+
+.rg-essay__quote {
+  margin-top: 22px;
+  padding-left: 20px;
+  border-left: 2px solid var(--rg-green-500);
+  font-size: clamp(15px, 1.5vw, 18px);
+  font-weight: 600;
+  line-height: 1.45;
+}
+
+.rg-essay__body {
+  max-width: 62ch;
+}
+
+.rg-essay__body p + p {
+  margin-top: 16px;
+}
+
+.rg-essay__body p {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--rg-text-muted);
+}
+
+// Последний абзац — смысловая точка блока, поэтому тёмный и плотнее.
+.rg-essay__body p:last-child {
+  font-weight: 600;
+  color: var(--rg-text);
+}
+
+.rg-section--dark .rg-essay__body p {
+  color: var(--rg-text-on-dark);
+}
+
+.rg-section--dark .rg-essay__body p:last-child {
+  color: #fff;
+}
+
+.rg-essay__media {
+  margin-top: 26px;
+  overflow: hidden;
+  border-radius: var(--rg-radius);
+
+  video,
+  img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+@media (max-width: 900px) {
+  .rg-essay {
+    grid-template-columns: 1fr;
+  }
+
+  .rg-essay__aside {
+    position: static;
+  }
+}

@@ -1,0 +1,159 @@
+// Тарифы. Три карточки одной высоты: цена и кнопка прижаты к низу
+// через margin-top: auto, иначе при разной длине списков кнопки
+// разъезжаются по вертикали и блок выглядит небрежно.
+
+.rg-plans {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  align-items: stretch;
+}
+
+.rg-plan {
+  display: flex;
+  flex-direction: column;
+  padding: 32px 28px;
+  border: 1px solid var(--rg-line);
+  border-radius: var(--rg-radius);
+  background: var(--rg-paper);
+}
+
+// Средний тариф выбирает большинство — он и выделен цветом.
+.rg-plan--featured {
+  border-color: transparent;
+  background: var(--rg-grad-dark);
+  color: #fff;
+}
+
+.rg-plan__badge {
+  display: inline-block;
+  align-self: flex-start;
+  margin-bottom: 16px;
+  padding: 5px 10px;
+  border-radius: 2px;
+  background: var(--rg-green-500);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: #fff;
+}
+
+.rg-plan__kicker {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--rg-text-muted);
+}
+
+.rg-plan__name {
+  margin: 6px 0 14px;
+  font-size: clamp(19px, 1.9vw, 23px);
+}
+
+.rg-plan__for {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--rg-text-muted);
+}
+
+.rg-plan__list {
+  margin: 20px 0;
+  padding-top: 18px;
+  border-top: 1px solid var(--rg-line);
+}
+
+.rg-plan__list li {
+  position: relative;
+  padding: 7px 0 7px 18px;
+  font-size: 13.5px;
+  line-height: 1.5;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 14px;
+    left: 0;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--rg-green-500);
+  }
+}
+
+.rg-plan__price {
+  margin-top: auto;
+  padding-top: 18px;
+}
+
+.rg-plan__amount {
+  display: block;
+  font-size: clamp(25px, 2.6vw, 31px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.rg-plan__period {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--rg-text-muted);
+}
+
+.rg-plan__cta {
+  margin-top: 16px;
+}
+
+// Перекраска внутренностей выделенной карточки — одним блоком, чтобы
+// не дублировать модификатор у каждого элемента в разметке.
+.rg-plan--featured {
+  .rg-plan__kicker,
+  .rg-plan__period { color: var(--rg-text-on-dark-muted); }
+
+  .rg-plan__for { color: var(--rg-text-on-dark); }
+
+  .rg-plan__list { border-top-color: var(--rg-line-on-dark); }
+
+  .rg-plan__list li::before { background: var(--rg-green-300); }
+}
+
+// Пояснение к моделям оплаты под карточками.
+.rg-plans__note {
+  margin-top: 20px;
+  padding: 22px 26px;
+  border-radius: var(--rg-radius);
+  background: var(--rg-paper-2);
+}
+
+.rg-plans__models {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-top: 14px;
+}
+
+.rg-plans__model {
+  position: relative;
+  padding-left: 18px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--rg-text-muted);
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 8px;
+    left: 0;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--rg-green-500);
+  }
+}
+
+@media (max-width: 900px) {
+  .rg-plans,
+  .rg-plans__models {
+    grid-template-columns: 1fr;
+  }
+}

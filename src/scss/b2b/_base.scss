@@ -1,0 +1,111 @@
+// Сброс и типографическая база корпоративной редакции.
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: 'Montserrat', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--rg-text);
+  background: var(--rg-paper);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img,
+video,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+// Якорные ссылки не должны заводить заголовок под липкую шапку.
+[id] {
+  scroll-margin-top: 104px;
+}
+
+// ── Заголовки ───────────────────────────────────────────────────────
+// Кегль задан через clamp, чтобы длинные формулировки из ТЗ не вставали
+// лесенкой на средних экранах: размер уменьшается раньше, чем строка
+// успевает разорваться в неудачном месте.
+
+%rg-heading {
+  margin: 0;
+  font-weight: 800;
+  line-height: 1.14;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  text-wrap: balance;
+}
+
+.rg-h1 {
+  @extend %rg-heading;
+  font-size: clamp(24px, 3.2vw, 42px);
+}
+
+.rg-h2 {
+  @extend %rg-heading;
+  font-size: clamp(21px, 2.3vw, 30px);
+}
+
+.rg-h3 {
+  @extend %rg-heading;
+  font-size: clamp(15px, 1.3vw, 17px);
+  line-height: 1.3;
+  letter-spacing: 0;
+}
+
+p {
+  margin: 0;
+}
+
+.rg-lead {
+  font-size: clamp(15px, 1.2vw, 17px);
+  line-height: 1.55;
+  color: var(--rg-text-muted);
+}
+
+// Сопроводительный текст поверх тёмной плашки.
+.rg-lead--on-dark {
+  color: var(--rg-text-on-dark);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

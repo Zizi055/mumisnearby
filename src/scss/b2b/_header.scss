@@ -1,0 +1,178 @@
+// Шапка. Липкая, с белой подложкой: первый экран тёмный, и прозрачная
+// шапка на нём сливалась бы с градиентом.
+
+.rg-header {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--rg-line);
+}
+
+.rg-header__inner {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  height: 72px;
+}
+
+.rg-brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  flex: none;
+  font-size: 12px;
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.rg-brand__mark {
+  width: 32px;
+  height: 32px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--rg-grad-green);
+}
+
+.rg-nav {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-left: auto;
+}
+
+.rg-nav__link {
+  position: relative;
+  padding: 4px 0;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--rg-text-muted);
+  transition: color 0.2s var(--rg-ease);
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: var(--rg-green-500);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s var(--rg-ease);
+  }
+
+  &:hover,
+  &.is-active {
+    color: var(--rg-text);
+  }
+
+  &:hover::after,
+  &.is-active::after {
+    transform: scaleX(1);
+  }
+}
+
+.rg-header__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: none;
+}
+
+// Вход сотрудника — второстепенное действие, поэтому текстовая ссылка,
+// а не вторая кнопка рядом с «Оставить заявку».
+.rg-header__login {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--rg-text-muted);
+  transition: color 0.2s var(--rg-ease);
+
+  &:hover {
+    color: var(--rg-green-600);
+  }
+}
+
+.rg-burger {
+  display: none;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--rg-line);
+  border-radius: var(--rg-radius-sm);
+  background: transparent;
+
+  span {
+    display: block;
+    width: 16px;
+    height: 1.5px;
+    margin: 3px auto;
+    background: var(--rg-text);
+    transition: transform 0.25s var(--rg-ease), opacity 0.2s var(--rg-ease);
+  }
+
+  &[aria-expanded='true'] span:nth-child(1) {
+    transform: translateY(4.5px) rotate(45deg);
+  }
+
+  &[aria-expanded='true'] span:nth-child(2) {
+    opacity: 0;
+  }
+
+  &[aria-expanded='true'] span:nth-child(3) {
+    transform: translateY(-4.5px) rotate(-45deg);
+  }
+}
+
+// ── Мобильное меню ──────────────────────────────────────────────────
+
+.rg-mobile-menu {
+  display: none;
+  border-top: 1px solid var(--rg-line);
+  background: #fff;
+
+  &.is-open {
+    display: block;
+  }
+}
+
+.rg-mobile-menu__inner {
+  display: grid;
+  gap: 2px;
+  padding: 12px 0 20px;
+}
+
+.rg-mobile-menu__link {
+  padding: 12px 0;
+  font-size: 13px;
+  font-weight: 600;
+  border-bottom: 1px solid var(--rg-line);
+}
+
+.rg-mobile-menu__cta {
+  margin-top: 14px;
+}
+
+@media (max-width: 1040px) {
+  .rg-nav,
+  .rg-header__login {
+    display: none;
+  }
+
+  .rg-burger {
+    display: block;
+  }
+}
+
+@media (max-width: 560px) {
+  .rg-header__actions .rg-btn {
+    display: none;
+  }
+}

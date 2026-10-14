@@ -1,0 +1,75 @@
+// «Кому в вашей компании это нужно в первую очередь».
+//
+// Пять целевых групп из ТЗ. Первая — самая массовая — занимает две
+// колонки: в ней длиннее текст и она важнее остальных для HR.
+
+.rg-audience {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.rg-audience__item {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--rg-line);
+  border-radius: var(--rg-radius);
+  background: var(--rg-paper);
+}
+
+.rg-audience__item--wide {
+  grid-column: span 2;
+}
+
+// Медиа-слот. Пока фотографий нет, внутри лежит градиентная заглушка
+// нужной пропорции — она не ломает вёрстку и заменяется на <img>
+// один в один, без правок стилей.
+.rg-audience__media {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: var(--rg-grad-steel);
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.rg-audience__item:nth-child(2) .rg-audience__media { background: var(--rg-grad-green); }
+.rg-audience__item:nth-child(3) .rg-audience__media { background: var(--rg-grad-deep); }
+.rg-audience__item:nth-child(4) .rg-audience__media { background: var(--rg-grad-dark); }
+.rg-audience__item:nth-child(5) .rg-audience__media { background: var(--rg-grad-green); }
+
+.rg-audience__body {
+  flex: 1;
+  padding: 24px;
+}
+
+.rg-audience__text {
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--rg-text-muted);
+}
+
+@media (max-width: 1040px) {
+  .rg-audience {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .rg-audience__item--wide {
+    grid-column: span 2;
+  }
+}
+
+@media (max-width: 700px) {
+  .rg-audience {
+    grid-template-columns: 1fr;
+  }
+
+  .rg-audience__item--wide {
+    grid-column: auto;
+  }
+}

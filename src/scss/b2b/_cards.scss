@@ -1,0 +1,143 @@
+// Карточная сетка. Один компонент обслуживает четыре секции —
+// «Проблема», «Как это работает», «Почему это срабатывает» и
+// «Гарантии»: у них одинаковая структура «номер — заголовок — абзац»,
+// и разводить под каждую свой блок значило бы копировать стили.
+
+.rg-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.rg-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.rg-grid--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+.rg-card {
+  display: flex;
+  flex-direction: column;
+  padding: 28px 26px;
+  border: 1px solid var(--rg-line);
+  border-radius: var(--rg-radius);
+  background: var(--rg-paper);
+  transition: border-color 0.3s var(--rg-ease), transform 0.3s var(--rg-ease);
+
+  &:hover {
+    border-color: var(--rg-green-500);
+    transform: translateY(-2px);
+  }
+}
+
+// Цветная полоска сверху — единственное место, где в светлой части
+// появляется акцент. Оттенок чередуется по порядку карточек.
+.rg-card__strip {
+  width: 44px;
+  height: 3px;
+  margin-bottom: 20px;
+  border-radius: 2px;
+  background: var(--rg-green-500);
+}
+
+.rg-card:nth-child(2) .rg-card__strip { background: var(--rg-ink-500); }
+.rg-card:nth-child(3) .rg-card__strip { background: var(--rg-green-700); }
+.rg-card:nth-child(4) .rg-card__strip { background: var(--rg-ink-700); }
+
+.rg-card__no {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  color: var(--rg-green-600);
+}
+
+.rg-card__title {
+  margin: 12px 0;
+}
+
+.rg-card__text {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--rg-text-muted);
+}
+
+// Иконка шага — svg из общего набора ассетов, подложка нейтральная.
+.rg-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  margin-bottom: 18px;
+  border-radius: var(--rg-radius-sm);
+  background: var(--rg-paper-2);
+
+  img {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+// ── Тёмный вариант, для секций на графитовом фоне ───────────────────
+
+.rg-card--dark {
+  border-color: var(--rg-line-on-dark);
+  background: rgba(255, 255, 255, 0.04);
+  color: #fff;
+
+  &:hover {
+    border-color: var(--rg-green-500);
+  }
+
+  .rg-card__text {
+    color: var(--rg-text-on-dark);
+  }
+
+  .rg-card__no {
+    color: var(--rg-green-300);
+  }
+
+  .rg-card__icon {
+    background: rgba(255, 255, 255, 0.07);
+  }
+}
+
+// Секция целиком на графите: «Почему это срабатывает на уровне инстинкта».
+.rg-section--dark {
+  background: var(--rg-grad-dark);
+  color: #fff;
+
+  .rg-h2,
+  .rg-h3 {
+    color: #fff;
+  }
+
+  .rg-lead {
+    color: var(--rg-text-on-dark);
+  }
+}
+
+// Строка-вывод под карточками («Знакомо? Теперь у этой проблемы…»).
+.rg-note {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-top: 22px;
+  padding: 22px 26px;
+  border-radius: var(--rg-radius);
+  background: var(--rg-paper-2);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.rg-note--on-dark {
+  background: rgba(255, 255, 255, 0.05);
+  color: #fff;
+}
+
+@media (max-width: 1040px) {
+  .rg-grid--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 760px) {
+  .rg-grid--3,
+  .rg-grid--4 { grid-template-columns: 1fr; }
+}
