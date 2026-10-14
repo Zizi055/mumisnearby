@@ -25,26 +25,27 @@
   grid-column: span 2;
 }
 
-// Медиа-слот. Пока фотографий нет, внутри лежит градиентная заглушка
-// нужной пропорции — она не ломает вёрстку и заменяется на <img>
-// один в один, без правок стилей.
-// position: relative нужен значку в углу — он позиционируется от слота.
+// Медиа-слот.
+//
+// Высота фиксированная и одинаковая у всех карточек ряда: пропорции
+// исходников отличаются (2.84:1 у широкой, 1.76:1 у остальных), и если
+// отдать высоту им, подписи в соседних карточках встанут на разном
+// уровне.
+//
+// object-fit: contain, а не cover. Иллюстрации нарисованы на почти
+// белом фоне, и подложка слота тоже белая — кадр вписывается целиком и
+// незаметно сливается с ней. Обрезка здесь недопустима: cover съел бы
+// фигуры по краям, а они и есть содержание картинки.
 .rg-audience__media {
-  position: relative;
-  aspect-ratio: 16 / 9;
-  background: var(--rg-grad-steel);
+  height: clamp(160px, 17vw, 210px);
+  background: var(--rg-paper);
 
   img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
   }
 }
-
-.rg-audience__item:nth-child(2) .rg-audience__media { background: var(--rg-grad-green); }
-.rg-audience__item:nth-child(3) .rg-audience__media { background: var(--rg-grad-deep); }
-.rg-audience__item:nth-child(4) .rg-audience__media { background: var(--rg-grad-dark); }
-.rg-audience__item:nth-child(5) .rg-audience__media { background: var(--rg-grad-green); }
 
 .rg-audience__body {
   flex: 1;
@@ -75,20 +76,4 @@
   .rg-audience__item--wide {
     grid-column: auto;
   }
-}
-
-// Иконка в углу карточки аудитории — поверх цветной подложки.
-.rg-audience__badge {
-  position: absolute;
-  top: space(3);
-  left: space(3);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: space(8);
-  height: space(8);
-  border-radius: var(--rg-radius-sm);
-  background: rgba(18, 22, 31, 0.5);
-  backdrop-filter: blur(4px);
-  color: #fff;
 }
