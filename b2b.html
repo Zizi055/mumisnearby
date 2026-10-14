@@ -138,6 +138,14 @@
         <path d="m3.9 6.6 8.1 6.4 8.1-6.4" />
       </symbol>
 
+      <!-- Вход: дверь со стрелкой внутрь. Силуэт человека тут читался бы
+           как «профиль», а кабинет открывается только по логину. -->
+      <symbol id="i-login" viewBox="0 0 24 24">
+        <path d="M14 4.5h3.5a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H14" />
+        <path d="M10.2 8.2 14 12l-3.8 3.8" />
+        <path d="M14 12H4.5" />
+      </symbol>
+
       <symbol id="i-doc" viewBox="0 0 24 24">
         <path d="M6 3.5h7.6L18.5 8.4V20.5H6Z" />
         <path d="M13.4 3.5v5h5" />
@@ -170,7 +178,7 @@
             aria-label="Кабинет компании"
             title="Кабинет компании"
           >
-            <img src="/src/assets/img/index/account.svg" alt="" />
+            <svg class="rg-icon" aria-hidden="true"><use href="#i-login" /></svg>
           </a>
 
           <a class="rg-btn rg-btn--primary" href="#lead">Оставить заявку</a>
