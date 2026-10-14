@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build && cd lk && npm install && npm run build && cd .. && cp -r lk/dist dist/lk",
+    "build:b2b": "node scripts/build-b2b.mjs",
     "preview": "vite preview"
   },
   "keywords": [],
