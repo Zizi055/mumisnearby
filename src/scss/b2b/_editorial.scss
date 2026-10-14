@@ -1,3 +1,5 @@
+@use 'scale' as *;
+
 // Длинные текстовые блоки: «Технология с человеческим смыслом» и
 // манифест «Родные голоса — для тех, кто верит…».
 //
@@ -8,18 +10,18 @@
 .rg-essay {
   display: grid;
   grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
-  gap: clamp(28px, 5vw, 64px);
+  gap: space-fluid(7, 5vw, 10);
   align-items: start;
 }
 
 .rg-essay__aside {
   position: sticky;
-  top: 104px;
+  top: calc(var(--rg-header-h) + #{space(7)});
 }
 
 .rg-essay__quote {
-  margin-top: 22px;
-  padding-left: 20px;
+  margin-top: space(6);
+  padding-left: space(5);
   border-left: 2px solid var(--rg-green-500);
   font-size: clamp(15px, 1.5vw, 18px);
   font-weight: 600;
@@ -31,7 +33,7 @@
 }
 
 .rg-essay__body p + p {
-  margin-top: 16px;
+  margin-top: space(4);
 }
 
 .rg-essay__body p {
@@ -55,7 +57,7 @@
 }
 
 .rg-essay__media {
-  margin-top: 26px;
+  margin-top: space(6);
   overflow: hidden;
   border-radius: var(--rg-radius);
 
@@ -74,4 +76,8 @@
   .rg-essay__aside {
     position: static;
   }
+}
+
+.rg-essay__actions {
+  margin-top: space(6);
 }

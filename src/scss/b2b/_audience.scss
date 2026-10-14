@@ -1,3 +1,5 @@
+@use 'scale' as *;
+
 // «Кому в вашей компании это нужно в первую очередь».
 //
 // Пять целевых групп из ТЗ. Первая — самая массовая — занимает две
@@ -6,7 +8,7 @@
 .rg-audience {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
+  gap: space(4);
 }
 
 .rg-audience__item {
@@ -45,11 +47,11 @@
 
 .rg-audience__body {
   flex: 1;
-  padding: 24px;
+  padding: space(6);
 }
 
 .rg-audience__text {
-  margin-top: 10px;
+  margin-top: space(3);
   font-size: 14px;
   line-height: 1.6;
   color: var(--rg-text-muted);
@@ -73,4 +75,20 @@
   .rg-audience__item--wide {
     grid-column: auto;
   }
+}
+
+// Иконка в углу карточки аудитории — поверх цветной подложки.
+.rg-audience__badge {
+  position: absolute;
+  top: space(3);
+  left: space(3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: space(8);
+  height: space(8);
+  border-radius: var(--rg-radius-sm);
+  background: rgba(18, 22, 31, 0.5);
+  backdrop-filter: blur(4px);
+  color: #fff;
 }

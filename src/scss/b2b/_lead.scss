@@ -1,10 +1,12 @@
+@use 'scale' as *;
+
 // Форма заявки — целым цветным экраном, как финальный аккорд страницы.
 // Все CTA лендинга ведут сюда.
 
 .rg-lead-panel {
   position: relative;
   overflow: hidden;
-  padding: clamp(32px, 4.5vw, 54px) clamp(24px, 4vw, 48px);
+  padding: space-fluid(7, 4.5vw, 10) space-fluid(6, 4vw, 9);
   border-radius: var(--rg-radius);
   background: var(--rg-grad-dark);
   color: #fff;
@@ -26,21 +28,21 @@
   z-index: 1;
   display: grid;
   grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
-  gap: clamp(26px, 4vw, 52px);
+  gap: space-fluid(7, 4vw, 9);
   align-items: start;
 }
 
 .rg-lead-panel__text {
-  margin-top: 16px;
+  margin-top: space(4);
   font-size: 15px;
   line-height: 1.6;
   color: var(--rg-text-on-dark);
 }
 
 .rg-lead-panel__contacts {
-  margin-top: 24px;
+  margin-top: space(6);
   display: grid;
-  gap: 8px;
+  gap: space(2);
   font-size: 13px;
   color: var(--rg-text-on-dark-muted);
 
@@ -51,18 +53,18 @@
 
 .rg-form {
   display: grid;
-  gap: 12px;
+  gap: space(3);
 }
 
 .rg-form__row {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
+  gap: space(3);
 }
 
 .rg-form__field {
   display: grid;
-  gap: 6px;
+  gap: space(1);
 }
 
 .rg-form__label {
@@ -75,7 +77,7 @@
 .rg-form__input,
 .rg-form__textarea {
   width: 100%;
-  padding: 13px 15px;
+  padding: space(4);
   border: 1px solid var(--rg-line-on-dark);
   border-radius: var(--rg-radius-sm);
   background: rgba(255, 255, 255, 0.07);
@@ -96,7 +98,7 @@
 }
 
 .rg-form__textarea {
-  min-height: 96px;
+  min-height: space(12);
   resize: vertical;
 }
 
@@ -105,8 +107,8 @@
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  margin-top: 4px;
+  gap: space(4);
+  margin-top: space(1);
 }
 
 .rg-form__consent {

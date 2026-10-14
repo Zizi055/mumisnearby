@@ -1,15 +1,16 @@
+@use 'scale' as *;
+
 // Первый экран: тёмная плашка с градиентом, слева оффер, справа
-// карточка с примером звучания. Канвас с бегущей волной лежит внутри
-// плашки под контентом.
+// карточка с примером звучания. Спираль идёт фоном под содержимым.
 
 .rg-hero {
-  padding: 26px 0 0;
+  padding-top: space(6);
 }
 
 .rg-hero__panel {
   position: relative;
   overflow: hidden;
-  padding: clamp(36px, 5vw, 68px) clamp(24px, 4vw, 56px) clamp(48px, 6vw, 84px);
+  padding: space-fluid(7, 5vw, 10) space-fluid(6, 4vw, 9);
   border-radius: var(--rg-radius);
   background: var(--rg-grad-dark);
   color: #fff;
@@ -17,7 +18,7 @@
 
 // Тёплое пятно в правом верхнем углу — иначе градиент читается плоским.
 // Медленное дыхание держит первый экран живым и в те секунды, когда
-// гребень волны ушёл за край.
+// гребень спирали ушёл за край.
 .rg-hero__panel::before {
   content: '';
   position: absolute;
@@ -42,13 +43,8 @@
   }
 }
 
-// Спираль идёт фоном через всю плашку.
-//
-// Чтобы она не спорила с текстом, работают две вещи. Маска гасит
-// спираль по диагонали: в левом верхнем углу, где лежит заголовок,
-// от неё остаётся едва заметный след, к правому нижнему она набирает
-// полную силу. И поверх неё лежит затемняющая вуаль — ::after плашки,
-// без которой белый текст на светлых узлах терял контраст.
+// Маска гасит спираль по диагонали: у заголовка от неё остаётся след,
+// к правому нижнему углу она набирает полную силу.
 $dna-fade: linear-gradient(
   108deg,
   rgba(0, 0, 0, 0.14) 0%,
@@ -67,7 +63,8 @@ $dna-fade: linear-gradient(
   mask-image: $dna-fade;
 }
 
-// Вуаль между спиралью и контентом.
+// Вуаль между спиралью и контентом: без неё белый текст на светлых
+// узлах терял контраст.
 .rg-hero__panel::after {
   content: '';
   position: absolute;
@@ -84,7 +81,7 @@ $dna-fade: linear-gradient(
 .rg-hero__crumbs {
   position: relative;
   z-index: 1;
-  margin-bottom: clamp(22px, 3vw, 34px);
+  margin-bottom: space-fluid(6, 3vw, 7);
   font-size: 10px;
   letter-spacing: 0.17em;
   text-transform: uppercase;
@@ -96,7 +93,7 @@ $dna-fade: linear-gradient(
   z-index: 1;
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
-  gap: clamp(28px, 4vw, 52px);
+  gap: space-fluid(7, 4vw, 9);
   align-items: end;
 }
 
@@ -108,21 +105,21 @@ $dna-fade: linear-gradient(
 
 .rg-hero__lead {
   max-width: 30em;
-  margin-top: 20px;
+  margin-top: space(5);
   font-size: clamp(14px, 1.2vw, 16px);
   line-height: 1.55;
   color: var(--rg-text-on-dark);
 }
 
 .rg-hero__actions {
-  margin-top: clamp(24px, 3vw, 34px);
+  margin-top: space-fluid(6, 3vw, 7);
 }
 
 .rg-hero__meta {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 26px;
-  margin-top: 26px;
+  gap: space(2) space(6);
+  margin-top: space(6);
   font-size: 10px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -132,7 +129,7 @@ $dna-fade: linear-gradient(
 // ── Карточка прослушивания ──────────────────────────────────────────
 
 .rg-player {
-  padding: 24px;
+  padding: space(6);
   border: 1px solid var(--rg-line-on-dark);
   border-radius: var(--rg-radius);
   background: rgba(255, 255, 255, 0.06);
@@ -147,14 +144,14 @@ $dna-fade: linear-gradient(
 }
 
 .rg-player__title {
-  margin-top: 10px;
+  margin-top: space(3);
   font-size: clamp(16px, 1.5vw, 19px);
   font-weight: 700;
   line-height: 1.3;
 }
 
 .rg-player__text {
-  margin-top: 10px;
+  margin-top: space(3);
   font-size: 13px;
   line-height: 1.55;
   color: var(--rg-text-on-dark);
@@ -163,16 +160,16 @@ $dna-fade: linear-gradient(
 .rg-player__bar {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-top: 22px;
+  gap: space(3);
+  margin-top: space(6);
 }
 
 .rg-player__play {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: space(9);
+  height: space(9);
   flex: none;
   padding: 0;
   border: 0;
@@ -232,15 +229,16 @@ $dna-fade: linear-gradient(
 .rg-stats {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 12px;
+  gap: space(4);
 }
 
 .rg-stat {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  gap: space(5);
   min-height: 176px;
-  padding: 24px 22px;
+  padding: space(6);
   border-radius: var(--rg-radius);
   color: #fff;
 
@@ -257,7 +255,7 @@ $dna-fade: linear-gradient(
   letter-spacing: -0.02em;
 
   small {
-    margin-left: 3px;
+    margin-left: space(1);
     font-size: 0.42em;
     font-weight: 700;
   }
@@ -287,6 +285,5 @@ $dna-fade: linear-gradient(
 
   .rg-stat {
     min-height: 0;
-    gap: 14px;
   }
 }

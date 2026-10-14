@@ -1,3 +1,5 @@
+@use 'scale' as *;
+
 // Примитивы, общие для всех секций: сетка, заголовочная группа,
 // кнопки, появление при скролле.
 
@@ -8,12 +10,20 @@
   padding: 0 var(--rg-gutter);
 }
 
+// Вертикальный ритм страницы. Одно значение на все секции — именно
+// повторяющийся интервал между блоками создаёт ощущение собранности.
 .rg-section {
-  padding: clamp(52px, 6vw, 84px) 0;
+  padding: space-fluid(9, 6vw, 12) 0;
 }
 
 .rg-section--tint {
   background: var(--rg-paper-2);
+}
+
+// Секция, примыкающая к предыдущей вплотную: цифры под первым экраном
+// читаются как его продолжение, и полный интервал их оторвал бы.
+.rg-section--attached {
+  padding-top: space-fluid(6, 3vw, 7);
 }
 
 // Шапка секции: слева заголовок, справа пояснение. Две колонки вместо
@@ -22,16 +32,16 @@
 .rg-section__head {
   display: grid;
   grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
-  gap: clamp(20px, 4vw, 48px);
+  gap: space-fluid(5, 4vw, 9);
   align-items: start;
-  margin-bottom: clamp(28px, 3.4vw, 42px);
+  margin-bottom: space-fluid(7, 3.5vw, 9);
 }
 
 .rg-eyebrow {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
-  margin-bottom: 14px;
+  gap: space(2);
+  margin-bottom: space(3);
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.17em;
@@ -40,7 +50,7 @@
 
   &::before {
     content: '';
-    width: 22px;
+    width: space(6);
     height: 1px;
     background: currentColor;
   }
@@ -56,13 +66,16 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 9px;
-  padding: 14px 26px;
+  gap: space(2);
+  // Высота 48px при кегле 12: совпадает с высотой поля формы и с
+  // квадратными кнопками в шапке.
+  padding: space(4) space(6);
   border: 1px solid transparent;
   border-radius: var(--rg-radius-sm);
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.06em;
+  line-height: 1;
   text-transform: uppercase;
   white-space: nowrap;
   transition: background-color 0.25s var(--rg-ease), border-color 0.25s var(--rg-ease),
@@ -134,7 +147,7 @@
 .rg-btn-row {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: space(3);
 }
 
 // ── Появление секций при скролле ────────────────────────────────────
@@ -145,7 +158,7 @@
 
 .rg-reveal-ready [data-reveal] {
   opacity: 0;
-  transform: translateY(18px);
+  transform: translateY(space(5));
   transition: opacity 0.6s var(--rg-ease), transform 0.6s var(--rg-ease);
 }
 
@@ -156,11 +169,11 @@
 
 @media (max-width: 900px) {
   :root {
-    --rg-gutter: 20px;
+    --rg-gutter: #{space(5)};
   }
 
   .rg-section__head {
     grid-template-columns: 1fr;
-    gap: 14px;
+    gap: space(4);
   }
 }

@@ -47,5 +47,6 @@
   --rg-radius-sm: 3px;
   --rg-shell:     1180px; // ширина контентной колонки
   --rg-gutter:    32px;
+  --rg-header-h:  72px;   // липкая шапка: от неё считаются якоря и sticky
   --rg-ease:      cubic-bezier(0.22, 0.61, 0.36, 1);
 }

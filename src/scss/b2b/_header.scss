@@ -1,3 +1,5 @@
+@use 'scale' as *;
+
 // Шапка. Липкая, с белой подложкой: первый экран тёмный, и прозрачная
 // шапка на нём сливалась бы с градиентом.
 
@@ -13,14 +15,14 @@
 .rg-header__inner {
   display: flex;
   align-items: center;
-  gap: 32px;
-  height: 72px;
+  gap: space(7);
+  height: var(--rg-header-h);
 }
 
 .rg-brand {
   display: flex;
   align-items: center;
-  gap: 11px;
+  gap: space(3);
   flex: none;
   font-size: 12px;
   font-weight: 800;
@@ -30,8 +32,8 @@
 }
 
 .rg-brand__mark {
-  width: 32px;
-  height: 32px;
+  width: space(7);
+  height: space(7);
   flex: none;
   border-radius: 50%;
   background: var(--rg-grad-green);
@@ -40,13 +42,13 @@
 .rg-nav {
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: space(5);
   margin-left: auto;
 }
 
 .rg-nav__link {
   position: relative;
-  padding: 4px 0;
+  padding: space(1) 0;
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.07em;
@@ -85,7 +87,7 @@
 .rg-header__actions {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: space(2);
   flex: none;
 }
 
@@ -111,17 +113,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: space(9);
+  height: space(9);
   flex: none;
   border: 1px solid var(--rg-line);
   border-radius: var(--rg-radius-sm);
   transition: border-color 0.25s var(--rg-ease), background-color 0.25s var(--rg-ease);
 
-  img {
-    width: 18px;
-    height: 18px;
-  }
+
 
   &:hover {
     border-color: var(--rg-green-500);
@@ -131,8 +130,8 @@
 
 .rg-burger {
   display: none;
-  width: 40px;
-  height: 40px;
+  width: space(9);
+  height: space(9);
   padding: 0;
   border: 1px solid var(--rg-line);
   border-radius: var(--rg-radius-sm);
@@ -140,7 +139,7 @@
 
   span {
     display: block;
-    width: 16px;
+    width: space(4);
     height: 1.5px;
     margin: 3px auto;
     background: var(--rg-text);
@@ -174,19 +173,19 @@
 
 .rg-mobile-menu__inner {
   display: grid;
-  gap: 2px;
-  padding: 12px 0 20px;
+  gap: 0;
+  padding: space(2) 0 space(5);
 }
 
 .rg-mobile-menu__link {
-  padding: 12px 0;
+  padding: space(3) 0;
   font-size: 13px;
   font-weight: 600;
   border-bottom: 1px solid var(--rg-line);
 }
 
 .rg-mobile-menu__cta {
-  margin-top: 14px;
+  margin-top: space(4);
 }
 
 // Порог подобран по факту: шесть пунктов без переносов плюс ссылка
