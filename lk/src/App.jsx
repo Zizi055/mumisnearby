@@ -93,7 +93,9 @@ function App() {
         <Route path="support" element={<AdminSupport />} />
         <Route path="leads" element={<AdminLeads />} />
         <Route path="users" element={<AdminUsers />} />
-        <Route path="companies" element={<AdminCompanies />} />
+        {/* Юрлица живут только в корпоративной редакции: на
+            rodnyegolosa.ru этот раздел не нужен и не должен появляться. */}
+        {isB2B && <Route path="companies" element={<AdminCompanies />} />}
         <Route path="grant" element={<AdminGrant />} />
         <Route path="admins" element={<AdminAdmins />} />
       </Route>

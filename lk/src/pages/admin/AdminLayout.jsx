@@ -4,6 +4,7 @@ import { LogOut, Volume2, VolumeX } from 'lucide-react';
 import { getAdminMe, isStoredSuperAdmin, logoutAdmin } from '../../api/adminAuth.service';
 import { getAdminTickets } from '../../api/admin.service';
 import { playNotifySound, isSoundMuted, setSoundMuted } from '../../utils/notifySound';
+import { isB2B } from '../../config/edition';
 
 // Роли на бэке НЕ наследуются, и меню это отражает.
 //
@@ -18,10 +19,13 @@ import { playNotifySound, isSoundMuted, setSoundMuted } from '../../utils/notify
 //
 // Разделы «Заявки» (/admin/leads) и «Пользователи» (/admin/users) убраны
 // у всех — таких эндпоинтов на бэке нет. Роуты и страницы сохранены.
+// «Компании» — только в корпоративной редакции. Админ-панель собирается
+// из общего кода, и без этой проверки раздел юрлиц появился бы и на
+// rodnyegolosa.ru, где компаний нет.
 const ADMIN_NAV_ITEMS = [
   { path: '/admin/support', label: 'Обращения' },
   { path: '/admin/users', label: 'Пользователи' },
-  { path: '/admin/companies', label: 'Компании' },
+  ...(isB2B ? [{ path: '/admin/companies', label: 'Компании' }] : []),
   { path: '/admin/grant', label: 'Выдать подписку' },
 ];
 
