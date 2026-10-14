@@ -9,9 +9,9 @@
 .rg-hero__panel {
   position: relative;
   overflow: hidden;
-  // Нижний отступ больше верхнего: под контентом лежит полоса волны,
+  // Нижний отступ больше верхнего: под контентом лежит полоса спирали,
   // и текст не должен на неё наезжать.
-  padding: clamp(36px, 5vw, 68px) clamp(24px, 4vw, 56px) clamp(96px, 11vw, 148px);
+  padding: clamp(36px, 5vw, 68px) clamp(24px, 4vw, 56px) clamp(130px, 16vw, 206px);
   border-radius: var(--rg-radius);
   background: var(--rg-grad-dark);
   color: #fff;
@@ -44,13 +44,13 @@
   }
 }
 
-// Волна — полосой по самому низу плашки, а не на пол-экрана: так она
-// заметна и при этом не проходит под кнопками, где съедала бы контраст.
-.rg-hero__wave {
+// Спираль — полосой по нижнему краю плашки, а не фоном на весь экран:
+// под заголовком она превращалась бы в рябь и роняла читаемость.
+.rg-hero__dna {
   position: absolute;
   inset: auto 0 0 0;
   width: 100%;
-  height: clamp(64px, 8vw, 104px);
+  height: clamp(104px, 13vw, 168px);
   pointer-events: none;
 
   // Края гасим маской, иначе столбики обрываются о границу плашки.

@@ -9,7 +9,7 @@
 import '../../scss/b2b.scss';
 
 import { initMobileMenu, initSectionHighlight } from './navigation.js';
-import { initVoiceWave } from './voice-wave.js';
+import { initDnaHelix } from './dna-helix.js';
 import { initPlayers } from './player.js';
 import { initAccordion } from './accordion.js';
 import { initLeadForms } from './lead-form.js';
@@ -18,7 +18,7 @@ import { initReveal } from './reveal.js';
 function bootstrap() {
   initMobileMenu();
   initSectionHighlight();
-  initVoiceWave(document.querySelector('[data-voice-wave]'));
+  initDnaHelix(document.querySelector('[data-dna]'));
   initPlayers();
   initAccordion();
   initLeadForms();
