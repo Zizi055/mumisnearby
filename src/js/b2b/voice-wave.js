@@ -10,11 +10,12 @@
  * полтора миллисекунды и не трогает layout.
  */
 
-const BAR_GAP = 11; // шаг между столбиками, px
+const BAR_GAP = 10; // шаг между столбиками, px
 const BAR_WIDTH = 3;
-const SPEED = 0.00022; // доля ширины в миллисекунду — полный проход ≈ 4,5 с
-const PULSE_WIDTH = 0.17; // ширина «горба» в долях от ширины канваса
-const FLOOR = 0.14; // остаточная амплитуда вне горба
+const RADIUS = 1.5;
+const SPEED = 0.00019; // доля ширины в миллисекунду — полный проход ≈ 5 с
+const PULSE_WIDTH = 0.15; // ширина «горба» в долях от ширины канваса
+const FLOOR = 0.16; // остаточная амплитуда вне горба
 
 /**
  * Негромкая фоновая неровность: сумма трёх несоразмерных синусов даёт
@@ -35,6 +36,9 @@ export function initVoiceWave(canvas) {
   if (!ctx) return;
 
   const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  // roundRect появился в Safari только в 16.4 — на старых версиях
+  // рисуем те же столбики с прямыми углами, без исключения в консоли.
+  const hasRoundRect = typeof ctx.roundRect === 'function';
   let width = 0;
   let height = 0;
   let frame = null;
@@ -55,23 +59,38 @@ export function initVoiceWave(canvas) {
     ctx.clearRect(0, 0, width, height);
 
     const count = Math.ceil(width / BAR_GAP);
-    const baseline = height;
-    const head = (time * SPEED) % 1.4 - 0.2; // выходит за края, чтобы не «рождаться» из ничего
+    const axis = height / 2; // столбики растут симметрично вверх и вниз
     const sigma = PULSE_WIDTH;
+
+    // Горб выходит за оба края: иначе волна «рождается» и «умирает»
+    // прямо на границе канваса, и это видно.
+    const head = ((time * SPEED) % 1.4) - 0.2;
+    // Второй горб идёт навстречу и вдвое медленнее — чтобы полоса не
+    // замирала в паузах между проходами основного.
+    const echo = 1.2 - (((time * SPEED) / 2) % 1.4);
 
     for (let i = 0; i <= count; i += 1) {
       const x = i * BAR_GAP;
       const position = width === 0 ? 0 : x / width;
-      const distance = position - head;
-      const pulse = Math.exp(-(distance * distance) / (2 * sigma * sigma));
 
-      const amplitude = FLOOR + pulse * (0.55 + texture(i, time) * 0.3);
-      const barHeight = Math.max(2, amplitude * height);
+      const main = Math.exp(-((position - head) ** 2) / (2 * sigma * sigma));
+      const back = Math.exp(-((position - echo) ** 2) / (2 * sigma * sigma)) * 0.45;
+      const pulse = Math.min(1, main + back);
 
-      // Чем выше столбик, тем он заметнее: прозрачность привязана к
-      // амплитуде, иначе фоновая часть волны спорит с текстом поверх неё.
-      ctx.fillStyle = `rgba(127, 192, 160, ${(0.18 + pulse * 0.52).toFixed(3)})`;
-      ctx.fillRect(x, baseline - barHeight, BAR_WIDTH, barHeight);
+      const amplitude = FLOOR + pulse * (0.8 + texture(i, time) * 0.2);
+      const half = Math.max(1.5, (amplitude * height) / 2);
+
+      // Прозрачность привязана к амплитуде: фоновая часть волны не
+      // должна спорить с текстом, а гребень обязан быть заметным.
+      ctx.fillStyle = `rgba(127, 192, 160, ${(0.24 + pulse * 0.6).toFixed(3)})`;
+
+      if (hasRoundRect) {
+        ctx.beginPath();
+        ctx.roundRect(x, axis - half, BAR_WIDTH, half * 2, RADIUS);
+        ctx.fill();
+      } else {
+        ctx.fillRect(x, axis - half, BAR_WIDTH, half * 2);
+      }
     }
   };
 

@@ -40,7 +40,7 @@
 .rg-nav {
   display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 20px;
   margin-left: auto;
 }
 
@@ -49,8 +49,12 @@
   padding: 4px 0;
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
+  // Пункт меню не переносится: разрыв «КАК ЭТО / РАБОТАЕТ» ломал строку
+  // шапки на две и ронял всю её высоту. Если места не хватает — меню
+  // целиком уходит под бургер, это честнее, чем лесенка из подписей.
+  white-space: nowrap;
   color: var(--rg-text-muted);
   transition: color 0.2s var(--rg-ease);
 
@@ -97,6 +101,31 @@
 
   &:hover {
     color: var(--rg-green-600);
+  }
+}
+
+// Кабинет компании. Иконка, а не подпись: действие для тех, кто уже
+// клиент, и ставить рядом с «Оставить заявку» вторую равнозначную
+// кнопку нельзя — сбивается приоритет.
+.rg-header__profile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex: none;
+  border: 1px solid var(--rg-line);
+  border-radius: var(--rg-radius-sm);
+  transition: border-color 0.25s var(--rg-ease), background-color 0.25s var(--rg-ease);
+
+  img {
+    width: 18px;
+    height: 18px;
+  }
+
+  &:hover {
+    border-color: var(--rg-green-500);
+    background: var(--rg-paper-2);
   }
 }
 
@@ -160,9 +189,16 @@
   margin-top: 14px;
 }
 
-@media (max-width: 1040px) {
-  .rg-nav,
+// Порог подобран по факту: шесть пунктов без переносов плюс ссылка
+// входа, иконка кабинета и кнопка перестают помещаться около 1200px.
+@media (max-width: 1200px) {
   .rg-header__login {
+    display: none;
+  }
+}
+
+@media (max-width: 1080px) {
+  .rg-nav {
     display: none;
   }
 
