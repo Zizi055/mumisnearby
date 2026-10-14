@@ -13,7 +13,7 @@
  */
 
 const NODE_STEP = 15; // расстояние между узлами вдоль оси, px
-const TURNS = 2.4; // сколько витков укладывается по ширине
+const TURNS = 3.2; // сколько витков укладывается по ширине
 const SPIN = 0.00055; // скорость вращения, рад/мс — оборот примерно за 11 с
 const DRIFT = 0.00014; // скорость бегущего блика вдоль спирали
 const RUNG_EVERY = 2; // перемычка не на каждом узле — иначе рябит
@@ -56,7 +56,7 @@ export function initDnaHelix(canvas) {
    */
   const node = (t, turn, side) => {
     const angle = t * Math.PI * 2 * TURNS + turn + side;
-    const radius = height * 0.34;
+    const radius = height * 0.3;
 
     return {
       x: t * width,

@@ -9,9 +9,7 @@
 .rg-hero__panel {
   position: relative;
   overflow: hidden;
-  // Нижний отступ больше верхнего: под контентом лежит полоса спирали,
-  // и текст не должен на неё наезжать.
-  padding: clamp(36px, 5vw, 68px) clamp(24px, 4vw, 56px) clamp(92px, 10vw, 128px);
+  padding: clamp(36px, 5vw, 68px) clamp(24px, 4vw, 56px) clamp(48px, 6vw, 84px);
   border-radius: var(--rg-radius);
   background: var(--rg-grad-dark);
   color: #fff;
@@ -44,18 +42,43 @@
   }
 }
 
-// Спираль — полосой по нижнему краю плашки, а не фоном на весь экран:
-// под заголовком она превращалась бы в рябь и роняла читаемость.
+// Спираль идёт фоном через всю плашку.
+//
+// Чтобы она не спорила с текстом, работают две вещи. Маска гасит
+// спираль по диагонали: в левом верхнем углу, где лежит заголовок,
+// от неё остаётся едва заметный след, к правому нижнему она набирает
+// полную силу. И поверх неё лежит затемняющая вуаль — ::after плашки,
+// без которой белый текст на светлых узлах терял контраст.
+$dna-fade: linear-gradient(
+  108deg,
+  rgba(0, 0, 0, 0.14) 0%,
+  rgba(0, 0, 0, 0.34) 32%,
+  rgba(0, 0, 0, 0.72) 62%,
+  #000 100%
+);
+
 .rg-hero__dna {
   position: absolute;
-  inset: auto 0 0 0;
+  inset: 0;
   width: 100%;
-  height: clamp(80px, 9vw, 116px);
+  height: 100%;
   pointer-events: none;
+  -webkit-mask-image: $dna-fade;
+  mask-image: $dna-fade;
+}
 
-  // Края гасим маской, иначе столбики обрываются о границу плашки.
-  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
-  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+// Вуаль между спиралью и контентом.
+.rg-hero__panel::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    rgba(19, 24, 34, 0.82) 0%,
+    rgba(19, 24, 34, 0.52) 42%,
+    rgba(19, 24, 34, 0) 72%
+  );
+  pointer-events: none;
 }
 
 .rg-hero__crumbs {
