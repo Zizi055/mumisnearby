@@ -6,6 +6,11 @@ import TrialBanner from '../trial/TrialBanner';
 import { navigation } from '../../config/navigation';
 import { useSubscriptionStore, useHasPaidPlan } from '../../store/subscription.store';
 import { getTrialInfo } from '../../store/trial.store';
+import CompanyBlockNotice from './CompanyBlockNotice';
+import {
+  COMPANY_BLOCK_EVENT,
+  getCompanyBlock,
+} from '../../utils/companyBlock';
 
 export default function LkLayout() {
   const location = useLocation();
@@ -28,10 +33,25 @@ export default function LkLayout() {
   const hasPaidPlan = useHasPaidPlan();
   const trial = !hasPaidPlan ? getTrialInfo() : null;
 
+  // Сотрудник корпоративного клиента, которому отключили доступ: бэк
+  // отвечает 403 на любой запрос, и показывать кабинет бессмысленно —
+  // все разделы будут пустыми с ошибками. Вместо него один экран с
+  // объяснением, куда идти.
+  const [companyBlock, setCompanyBlock] = useState(getCompanyBlock);
+
+  useEffect(() => {
+    const onBlock = (e) => setCompanyBlock(e.detail);
+
+    window.addEventListener(COMPANY_BLOCK_EVENT, onBlock);
+    return () => window.removeEventListener(COMPANY_BLOCK_EVENT, onBlock);
+  }, []);
+
   const currentSection =
     navigation.find((item) =>
       location.pathname.startsWith(item.path)
     ) || navigation[0];
+
+  if (companyBlock) return <CompanyBlockNotice />;
 
   return (
     <div className="lk">

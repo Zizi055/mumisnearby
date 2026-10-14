@@ -1,3 +1,8 @@
+import {
+  detectCompanyBlock,
+  detectCompanyStaffFromPaymentError,
+} from '../utils/companyBlock';
+
 const BASE_URL = import.meta.env.VITE_API_URL || '';
 
 // Бэк отдаёт ошибки как { "detail": "текст" } — вытаскиваем человеко-
@@ -65,8 +70,22 @@ async function request(path, options = {}) {
 
   if (!res.ok) {
     const text = await res.text().catch(() => '');
+    const detail = parseErrorDetail(text);
 
-    const err = new Error(parseErrorDetail(text) || `HTTP ${res.status}: ${text}`);
+    const err = new Error(detail || `HTTP ${res.status}: ${text}`);
+
+    // Сотрудник корпоративного клиента: компанию выключили или договор
+    // истёк. Бэк отвечает 403 на ЛЮБОЙ его запрос, поэтому ловим это
+    // здесь, а не в каждом экране — один всё равно забыли бы. Оболочка
+    // кабинета покажет объяснение вместо пейволла: платить сотруднику
+    // нечего, ему нужно к администратору своей компании.
+    const blocked = detectCompanyBlock(res.status, detail);
+    if (blocked) err.companyBlock = blocked;
+
+    // Отдельный признак: попытка оплаты у сотрудника даёт 403 с текстом
+    // «Тариф сотрудника оплачивает компания». Пока who_am_i не отдаёт
+    // company_id, это единственный надёжный способ его распознать.
+    detectCompanyStaffFromPaymentError(res.status, detail);
 
     // Код нужен вызывающей стороне, чтобы отличить поломку на сервере (5xx)
     // от «не нашли» и от обрыва сети. Раньше наружу шла только строка, и

@@ -169,6 +169,192 @@
   color: $lk-text-muted;
 }
 
+/* Баннер состояния договора.
+   Показывается, когда компанию выключили или срок истёк: кнопки в
+   кабинете при этом остаются видимыми, но бэк на них отвечает 403.
+   Без явного объяснения это читается как поломка интерфейса. */
+.lk-hr-banner {
+  display: flex;
+  align-items: flex-start;
+  gap: $lk-space-12;
+
+  width: 100%;
+  max-width: 1120px;
+
+  margin: 0 auto;
+  padding: $lk-space-14 $lk-space-28;
+
+  background: rgba($lk-danger, 0.07);
+  border-bottom: 1px solid rgba($lk-danger, 0.2);
+
+  box-sizing: border-box;
+
+  svg { flex-shrink: 0; margin-top: 2px; color: $lk-danger; }
+
+  strong {
+    display: block;
+    color: $lk-danger;
+    font-size: 14px;
+  }
+
+  p {
+    margin: 2px 0 0;
+
+    font-size: 13px;
+    line-height: 1.5;
+    color: $lk-text-soft;
+  }
+}
+
+/* ─── Слоты по уровням тарифов ───────────────────────────────────── */
+
+.lk-hr-levels {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: $lk-space-16;
+}
+
+.lk-hr-level {
+  display: flex;
+  flex-direction: column;
+  gap: $lk-space-8;
+
+  padding: $lk-space-16;
+
+  border: 1px solid $lk-border;
+  border-radius: $lk-radius-12;
+
+  p {
+    margin: 0;
+
+    font-size: 12px;
+    color: $lk-text-muted;
+  }
+}
+
+.lk-hr-level__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: $lk-space-8;
+
+  span {
+    font-size: 13px;
+    color: $lk-text-soft;
+  }
+
+  strong {
+    font-size: 15px;
+    color: $lk-text;
+  }
+}
+
+/* ─── Что слушают ────────────────────────────────────────────────── */
+
+.lk-hr-chips {
+  display: flex;
+  gap: $lk-space-8;
+  flex-wrap: wrap;
+}
+
+.lk-hr-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: $lk-space-6;
+
+  padding: $lk-space-6 $lk-space-12;
+
+  border: 1px solid $lk-border;
+  border-radius: $lk-radius-pill;
+
+  font-size: 13px;
+  color: $lk-text-soft;
+
+  em {
+    font-style: normal;
+    font-weight: 600;
+    color: $lk-text;
+  }
+}
+
+/* ─── Выданные доступы ───────────────────────────────────────────── */
+
+/* Пароль показывается ровно один раз: бэк его больше не отдаёт.
+   Поэтому крупно, моноширинным и с кнопкой копирования рядом. */
+.lk-hr-creds {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: $lk-space-12;
+
+  margin: $lk-space-16 0;
+
+  > div {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+
+    padding: $lk-space-12 $lk-space-14;
+
+    border-radius: $lk-radius-12;
+    background: $lk-white;
+  }
+
+  span {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: $lk-text-muted;
+  }
+
+  code {
+    font-family: ui-monospace, 'SF Mono', Menlo, monospace;
+    font-size: 14px;
+    color: $lk-text;
+    overflow-wrap: anywhere;
+  }
+}
+
+/* Селект тарифа прямо в строке таблицы — менять его приходится часто,
+   и открывать ради этого карточку сотрудника было бы лишним шагом. */
+.lk-hr-inline-select {
+  width: 100%;
+  min-width: 0;
+  max-width: 180px;
+
+  padding: $lk-space-6 $lk-space-28 $lk-space-6 $lk-space-10;
+
+  border: 1px solid $lk-border;
+  border-radius: $lk-radius-12;
+  background: $lk-white;
+
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%236b7f70' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right $lk-space-10 center;
+
+  font: inherit;
+  font-size: 13px;
+  color: $lk-text;
+
+  &:disabled {
+    background-color: $lk-surface-soft;
+    color: $lk-text-muted;
+  }
+}
+
+.lk-hr-table--staff .lk-hr-table__row {
+  grid-template-columns:
+    minmax(0, 1.2fr) minmax(0, 1.6fr) minmax(0, 1fr)
+    minmax(0, 0.9fr) minmax(0, 0.5fr);
+}
+
+.lk-hr-hint--warn {
+  color: $lk-danger;
+
+  svg { color: $lk-danger; }
+}
+
 /* ─── Карточки ───────────────────────────────────────────────────── */
 
 .lk-hr-card {
@@ -690,6 +876,8 @@
   &--expired,
   &--cancelled,
   &--deactivated { color: $lk-danger; }
+
+  &--trial { color: $lk-warning; }
 }
 
 .lk-hr-status__sub {
@@ -805,6 +993,62 @@
   }
 }
 
+/* ─── Блокировка сотрудника корпоративного клиента ───────────────── */
+
+.lk-company-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 100vh;
+
+  padding: $lk-space-24;
+
+  background: $lk-bg;
+  box-sizing: border-box;
+}
+
+.lk-company-block__card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $lk-space-12;
+
+  width: 100%;
+  max-width: 480px;
+
+  padding: $lk-space-40 $lk-space-32;
+
+  border: 1px solid $lk-border;
+  border-radius: $lk-card-radius;
+  background: $lk-white;
+
+  text-align: center;
+  box-sizing: border-box;
+
+  svg { color: $lk-text-muted; }
+
+  h1 { margin: 0; }
+
+  p {
+    margin: 0;
+
+    font-size: 14px;
+    line-height: 1.6;
+    color: $lk-text-soft;
+  }
+}
+
+.lk-company-block__action {
+  padding: $lk-space-14 $lk-space-16;
+
+  border-left: 3px solid $lk-brand;
+  border-radius: $lk-radius-12;
+  background: $lk-surface-soft;
+
+  text-align: left;
+}
+
 /* ─── Вход и регистрация ─────────────────────────────────────────── */
 
 .lk-hr-login {
@@ -855,6 +1099,17 @@
 
 @media (max-width: 480px) {
   .auth__card--hr { padding: $lk-space-20; }
+}
+
+.lk-hr-auth__title {
+  margin: 0 0 $lk-space-8;
+}
+
+.lk-hr-auth__note {
+  margin-top: $lk-space-20;
+  padding-top: $lk-space-16;
+
+  border-top: 1px solid $lk-border;
 }
 
 .lk-hr-auth__lead {

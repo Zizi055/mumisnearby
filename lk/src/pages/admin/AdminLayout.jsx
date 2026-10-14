@@ -21,6 +21,7 @@ import { playNotifySound, isSoundMuted, setSoundMuted } from '../../utils/notify
 const ADMIN_NAV_ITEMS = [
   { path: '/admin/support', label: 'Обращения' },
   { path: '/admin/users', label: 'Пользователи' },
+  { path: '/admin/companies', label: 'Компании' },
   { path: '/admin/grant', label: 'Выдать подписку' },
 ];
 

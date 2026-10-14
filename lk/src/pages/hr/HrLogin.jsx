@@ -1,16 +1,21 @@
 import { useState } from 'react';
-import { Link, useNavigate, useSearchParams } from 'react-router-dom';
-import { Eye, EyeOff } from 'lucide-react';
-import { loginHr } from '../../api/hrAuth.service';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Eye, EyeOff, Info } from 'lucide-react';
+import { loginCompany } from '../../api/company.service';
 import HrAuthLayout from '../../components/hr/HrAuthLayout';
 
 // ─────────────────────────────────────────────────────────────────────
-// Вход HR-администратора компании.
+// Вход в кабинет компании.
 //
-// Третья роль на бэке, помимо пользователя и админа поддержки: своя
-// таблица учёток, свой POST /auth/hr/login, токен с role: hr. Поэтому
-// отдельный экран, а не галочка на общем входе — HR и сотрудник могут
-// сидеть в одном браузере, и путать их сессии нельзя.
+// Логин — ПОЧТА компании, не название и не выдуманный логин. На бэке
+// поле формы называется username (наследие OAuth2PasswordRequestForm),
+// но принимает именно email: об этом легко забыть и потом долго искать
+// причину 401.
+//
+// Самостоятельной регистрации нет — компании заводит администратор
+// сервиса при заключении договора. Поэтому здесь нет вкладки
+// «Регистрация», а есть объяснение, откуда берутся доступы: иначе
+// человек ищет несуществующую кнопку.
 // ─────────────────────────────────────────────────────────────────────
 
 export default function HrLogin() {
@@ -31,10 +36,10 @@ export default function HrLogin() {
     setError('');
 
     try {
-      await loginHr({ email: email.trim(), password });
+      await loginCompany({ email: email.trim(), password });
 
       const redirect = params.get('redirect');
-      navigate(redirect ? decodeURIComponent(redirect) : '/hr/dashboard', {
+      navigate(redirect ? decodeURIComponent(redirect) : '/company/dashboard', {
         replace: true,
       });
     } catch (err) {
@@ -45,20 +50,22 @@ export default function HrLogin() {
 
   return (
     <HrAuthLayout>
+      <h1 className="lk-hr-auth__title">Кабинет компании</h1>
+
       <p className="lk-hr-auth__lead">
-        Войдите, чтобы управлять корпоративной подпиской, промокодами и
-        сотрудниками.
+        Управление сотрудниками, тарифами и статистикой использования.
       </p>
 
       <form className="lk-hr-form" onSubmit={handleSubmit}>
         <label className="lk-hr-field">
-          <span>Рабочая почта</span>
+          <span>Почта компании</span>
           <input
             type="email"
             value={email}
             autoComplete="username"
             autoCapitalize="none"
             spellCheck="false"
+            placeholder="b2b@company.ru"
             onChange={(e) => setEmail(e.target.value)}
           />
         </label>
@@ -94,9 +101,16 @@ export default function HrLogin() {
         </button>
       </form>
 
+      <p className="lk-hr-hint lk-hr-auth__note">
+        <Info size={14} />
+        Доступ создаёт менеджер сервиса при заключении договора. Если доступа
+        ещё нет — оставьте заявку на главной странице.
+      </p>
+
       <p className="lk-hr-login__foot">
-        Вы сотрудник и у вас есть промокод?{' '}
-        <Link to="/promo">Активировать доступ</Link>
+        Вы сотрудник компании? Входите в{' '}
+        <a href="#/auth">обычный личный кабинет</a> по почте, которую выдал
+        работодатель.
       </p>
     </HrAuthLayout>
   );

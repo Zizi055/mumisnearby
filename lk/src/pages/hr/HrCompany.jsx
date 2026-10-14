@@ -1,24 +1,28 @@
 import { useEffect, useState } from 'react';
-import { Loader, Save, Info } from 'lucide-react';
-import { getCompany, updateCompany } from '../../api/b2b.service';
-import { isNotImplemented } from '../../api/hrClient';
-import { tariffs } from '../../data/tariffs.data';
-import { getTariffSlug } from '../../data/planIdMap';
+import { Loader, Save, Info, AlertCircle, Eye, EyeOff } from 'lucide-react';
+import {
+  getCompanyProfile,
+  changeCompanyPassword,
+  getSlots,
+  readSlotLevel,
+  logoutCompany,
+} from '../../api/company.service';
+import { isNotImplemented } from '../../api/companyClient';
 import HrPending from '../../components/hr/HrPending';
 
 // ─────────────────────────────────────────────────────────────────────
-// Данные компании и состояние подписки.
+// Карточка компании: реквизиты, договор, пакет слотов, смена пароля.
 //
-// Тариф и количество мест здесь только показываются, но не меняются:
-// и то и другое влияет на сумму к оплате, поэтому идёт через оплату или
-// через менеджера, а не через тихое сохранение формы.
+// Реквизиты и пакет компания НЕ редактирует — их задаёт администратор
+// сервиса при заключении договора. Единственное, что здесь можно
+// изменить, — пароль. Поэтому поля показаны только для чтения, а не
+// формой с неработающей кнопкой «Сохранить».
 // ─────────────────────────────────────────────────────────────────────
 
-const STATUS_LABELS = {
-  trial: 'пробный период',
-  active: 'активна',
-  expired: 'истекла',
-  cancelled: 'отменена',
+const LEVEL_LABELS = {
+  1: 'Уровень 1 · Сказочник',
+  2: 'Уровень 2 · Хранитель',
+  3: 'Уровень 3 · Волшебник',
 };
 
 function formatDate(iso) {
@@ -34,17 +38,17 @@ function formatDate(iso) {
   }
 }
 
-function formatMoney(value) {
-  return new Intl.NumberFormat('ru-RU').format(value) + ' ₽';
-}
-
 export default function HrCompany() {
   const [company, setCompany] = useState(null);
-  const [form, setForm] = useState({ name: '', inn: '', contactName: '', contactPhone: '' });
+  const [slots, setSlots] = useState(null);
 
   const [status, setStatus] = useState('loading'); // loading | ready | pending | failed
   const [error, setError] = useState('');
+
+  const [pwd, setPwd] = useState({ oldPassword: '', newPassword: '', repeat: '' });
+  const [showPwd, setShowPwd] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [pwdError, setPwdError] = useState('');
   const [saved, setSaved] = useState(false);
 
   useEffect(() => {
@@ -56,14 +60,9 @@ export default function HrCompany() {
     setError('');
 
     try {
-      const data = await getCompany();
-      setCompany(data);
-      setForm({
-        name: data?.name ?? '',
-        inn: data?.inn ?? '',
-        contactName: data?.contact_name ?? '',
-        contactPhone: data?.contact_phone ?? '',
-      });
+      const [profile, slotsData] = await Promise.all([getCompanyProfile(), getSlots()]);
+      setCompany(profile);
+      setSlots(slotsData);
       setStatus('ready');
     } catch (err) {
       if (isNotImplemented(err)) {
@@ -75,32 +74,44 @@ export default function HrCompany() {
     }
   }
 
-  const handleSave = async (e) => {
+  const handlePassword = async (e) => {
     e.preventDefault();
 
+    if (pwd.newPassword.length < 8) {
+      setPwdError('Новый пароль должен быть не короче 8 символов.');
+      return;
+    }
+
+    if (pwd.newPassword !== pwd.repeat) {
+      setPwdError('Пароли не совпадают.');
+      return;
+    }
+
     setSaving(true);
-    setError('');
+    setPwdError('');
     setSaved(false);
 
     try {
-      const data = await updateCompany(form);
-      setCompany(data ?? company);
+      await changeCompanyPassword(pwd);
+
       setSaved(true);
-      setTimeout(() => setSaved(false), 2500);
+      setPwd({ oldPassword: '', newPassword: '', repeat: '' });
+
+      // Бэк инвалидирует токен сразу после смены пароля, поэтому любой
+      // следующий запрос дал бы 401 посреди работы. Выходим сами и
+      // предупреждаем — так понятнее, чем внезапный выброс на вход.
+      setTimeout(() => {
+        logoutCompany();
+        window.location.hash = '/company/login';
+      }, 2200);
     } catch (err) {
-      setError(err.message || 'Не удалось сохранить');
+      setPwdError(err.message || 'Не удалось сменить пароль');
     } finally {
       setSaving(false);
     }
   };
 
   if (status === 'pending') return <HrPending what="Данные компании" />;
-
-  const set = (key) => (e) => setForm((f) => ({ ...f, [key]: e.target.value }));
-
-  const slug = getTariffSlug(company?.plan_id);
-  const plan = tariffs.find((t) => t.id === slug);
-  const seats = company?.seats_total ?? 0;
 
   return (
     <div className="lk-hr-page">
@@ -119,6 +130,7 @@ export default function HrCompany() {
 
       {status === 'failed' && (
         <div className="lk-hr-pending">
+          <AlertCircle size={26} />
           <h2>Не удалось загрузить данные</h2>
           <p>{error}</p>
           <button type="button" className="lk-btn lk-btn--secondary lk-btn--md" onClick={load}>
@@ -130,99 +142,128 @@ export default function HrCompany() {
       {status === 'ready' && (
         <>
           <section className="lk-hr-card">
-            <h2 className="lk-hr-card__title">Подписка</h2>
+            <h2 className="lk-hr-card__title">Реквизиты и договор</h2>
 
             <dl className="lk-hr-dl">
-              <dt>Тариф</dt>
-              <dd>{plan?.name ?? `#${company?.plan_id ?? '—'}`}</dd>
+              <dt>Название</dt>
+              <dd>{company?.name ?? '—'}</dd>
+
+              <dt>ИНН</dt>
+              <dd>{company?.inn ?? '—'}</dd>
+
+              <dt>Почта</dt>
+              <dd>{company?.email ?? '—'}</dd>
+
+              <dt>Телефон</dt>
+              <dd>{company?.phone || '—'}</dd>
 
               <dt>Статус</dt>
               <dd>
-                <em className={`lk-hr-status lk-hr-status--${company?.status}`}>
-                  {STATUS_LABELS[company?.status] ?? company?.status ?? '—'}
+                <em
+                  className={`lk-hr-status lk-hr-status--${
+                    company?.is_active === false ? 'cancelled' : 'active'
+                  }`}
+                >
+                  {company?.is_active === false ? 'приостановлен' : 'активен'}
                 </em>
               </dd>
 
-              <dt>Мест оплачено</dt>
-              <dd>{seats}</dd>
-
-              {plan?.priceYear && seats > 0 && (
-                <>
-                  <dt>Стоимость в год</dt>
-                  <dd>
-                    {formatMoney(plan.priceYear * seats)}
-                    <em> — {formatMoney(plan.priceYear)} за сотрудника</em>
-                  </dd>
-                </>
-              )}
-
-              <dt>Действует с</dt>
-              <dd>{formatDate(company?.started_at)}</dd>
-
-              <dt>Действует до</dt>
+              <dt>Договор до</dt>
               <dd>{formatDate(company?.expires_at)}</dd>
             </dl>
 
             <p className="lk-hr-hint">
               <Info size={14} />
-              Сменить тариф или докупить места можно через персонального
-              менеджера — это меняет сумму к оплате.
+              Реквизиты, количество мест и срок договора меняет менеджер
+              сервиса — напишите ему, если что-то нужно поправить.
             </p>
           </section>
 
           <section className="lk-hr-card">
-            <h2 className="lk-hr-card__title">Реквизиты и контакты</h2>
+            <h2 className="lk-hr-card__title">Пакет</h2>
 
-            <form className="lk-hr-form lk-hr-form--grid" onSubmit={handleSave}>
-              <label className="lk-hr-field">
-                <span>Название компании</span>
-                <input type="text" value={form.name} required onChange={set('name')} />
-              </label>
+            <dl className="lk-hr-dl">
+              <dt>Мест всего</dt>
+              <dd>
+                {slots?.staff_limit ?? 0}
+                <em> — занято {slots?.staff_used ?? 0}</em>
+              </dd>
 
+              {[1, 2, 3].map((lvl) => {
+                const l = readSlotLevel(slots, lvl);
+                if (l.limit === 0) return null;
+
+                return (
+                  <div key={lvl} style={{ display: 'contents' }}>
+                    <dt>{LEVEL_LABELS[lvl]}</dt>
+                    <dd>
+                      {l.used} из {l.limit}
+                      <em>{l.free > 0 ? ` — свободно ${l.free}` : ' — слоты закончились'}</em>
+                    </dd>
+                  </div>
+                );
+              })}
+            </dl>
+          </section>
+
+          <section className="lk-hr-card">
+            <h2 className="lk-hr-card__title">Смена пароля</h2>
+
+            <form className="lk-hr-form lk-hr-form--grid" onSubmit={handlePassword}>
               <label className="lk-hr-field">
-                <span>ИНН</span>
+                <span>Текущий пароль</span>
                 <input
-                  type="text"
-                  value={form.inn}
+                  type={showPwd ? 'text' : 'password'}
+                  value={pwd.oldPassword}
                   required
-                  inputMode="numeric"
-                  maxLength={12}
-                  onChange={set('inn')}
+                  autoComplete="current-password"
+                  onChange={(e) => setPwd((p) => ({ ...p, oldPassword: e.target.value }))}
                 />
               </label>
 
               <label className="lk-hr-field">
-                <span>Контактное лицо</span>
-                <input
-                  type="text"
-                  value={form.contactName}
-                  required
-                  onChange={set('contactName')}
-                />
+                <span>Новый пароль <em>— минимум 8 символов</em></span>
+                <div className="lk-hr-field__password">
+                  <input
+                    type={showPwd ? 'text' : 'password'}
+                    value={pwd.newPassword}
+                    required
+                    autoComplete="new-password"
+                    onChange={(e) => setPwd((p) => ({ ...p, newPassword: e.target.value }))}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPwd((v) => !v)}
+                    aria-label={showPwd ? 'Скрыть пароли' : 'Показать пароли'}
+                  >
+                    {showPwd ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
               </label>
 
               <label className="lk-hr-field">
-                <span>Телефон</span>
+                <span>Повторите новый</span>
                 <input
-                  type="tel"
-                  value={form.contactPhone}
+                  type={showPwd ? 'text' : 'password'}
+                  value={pwd.repeat}
                   required
-                  onChange={set('contactPhone')}
+                  autoComplete="new-password"
+                  onChange={(e) => setPwd((p) => ({ ...p, repeat: e.target.value }))}
                 />
               </label>
 
-              {/* Почта не редактируется: она же логин HR. Смена логина —
-                  отдельная процедура с подтверждением, как в клиентском
-                  кабинете, а не поле в общей форме. */}
-              <label className="lk-hr-field">
-                <span>Почта <em>— логин, менять через поддержку</em></span>
-                <input type="email" value={company?.contact_email ?? ''} disabled />
-              </label>
+              <p className="lk-hr-hint lk-hr-form__full">
+                <Info size={14} />
+                После смены пароля текущая сессия закроется — нужно будет войти
+                заново.
+              </p>
 
-              {error && <div className="lk-hr-error lk-hr-form__full">{error}</div>}
+              {pwdError && <div className="lk-hr-error lk-hr-form__full">{pwdError}</div>}
 
               {saved && (
-                <div className="lk-hr-success lk-hr-form__full">Изменения сохранены.</div>
+                <div className="lk-hr-success lk-hr-form__full">
+                  Пароль изменён. Сейчас переведём вас на страницу входа.
+                </div>
               )}
 
               <div className="lk-hr-form__full">
@@ -232,7 +273,7 @@ export default function HrCompany() {
                   disabled={saving}
                 >
                   <Save size={15} />
-                  {saving ? 'Сохраняем…' : 'Сохранить'}
+                  {saving ? 'Сохраняем…' : 'Сменить пароль'}
                 </button>
               </div>
             </form>

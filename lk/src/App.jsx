@@ -41,14 +41,12 @@ import AdminGrant from './pages/admin/AdminGrant.jsx';
 
 import { isB2B } from './config/edition';
 
-import PromoActivate from './pages/PromoActivate.jsx';
 import HrLayout from './pages/hr/HrLayout.jsx';
 import HrLogin from './pages/hr/HrLogin.jsx';
-import HrRegister from './pages/hr/HrRegister.jsx';
 import HrDashboard from './pages/hr/HrDashboard.jsx';
-import HrPromoCodes from './pages/hr/HrPromoCodes.jsx';
 import HrEmployees from './pages/hr/HrEmployees.jsx';
 import HrCompany from './pages/hr/HrCompany.jsx';
+import AdminCompanies from './pages/admin/AdminCompanies.jsx';
 
 function App() {
   // Ловим ?ref=CODE (или /ref/CODE) сразу при заходе в приложение — на
@@ -73,18 +71,21 @@ function App() {
           В B2C этих роутов нет вовсе: активация промокода и кабинет
           компании на домене для частных клиентов не нужны и только
           путали бы. Монтируем по флагу редакции (config/edition.js). */}
-      {isB2B && <Route path="/promo" element={<PromoActivate />} />}
-      {isB2B && <Route path="/hr/login" element={<HrLogin />} />}
-      {isB2B && <Route path="/hr/register" element={<HrRegister />} />}
+      {isB2B && <Route path="/company/login" element={<HrLogin />} />}
       {isB2B && (
-        <Route path="/hr" element={<HrLayout />}>
-          <Route index element={<Navigate to="/hr/dashboard" replace />} />
+        <Route path="/company" element={<HrLayout />}>
+          <Route index element={<Navigate to="/company/dashboard" replace />} />
           <Route path="dashboard" element={<HrDashboard />} />
-          <Route path="promocodes" element={<HrPromoCodes />} />
-          <Route path="employees" element={<HrEmployees />} />
-          <Route path="company" element={<HrCompany />} />
+          <Route path="staff" element={<HrEmployees />} />
+          <Route path="profile" element={<HrCompany />} />
         </Route>
       )}
+
+      {/* Старые адреса из первой версии: промокодов и самостоятельной
+          регистрации на бэке не оказалось. Ссылки могли разойтись по
+          письмам и закладкам — уводим на вход, а не в 404. */}
+      {isB2B && <Route path="/hr/*" element={<Navigate to="/company/login" replace />} />}
+      {isB2B && <Route path="/promo" element={<Navigate to="/auth" replace />} />}
 
       <Route path="/admin/login" element={<AdminLogin />} />
       <Route path="/admin" element={<AdminLayout />}>
@@ -92,6 +93,7 @@ function App() {
         <Route path="support" element={<AdminSupport />} />
         <Route path="leads" element={<AdminLeads />} />
         <Route path="users" element={<AdminUsers />} />
+        <Route path="companies" element={<AdminCompanies />} />
         <Route path="grant" element={<AdminGrant />} />
         <Route path="admins" element={<AdminAdmins />} />
       </Route>

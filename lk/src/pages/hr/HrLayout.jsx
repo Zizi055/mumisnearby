@@ -1,85 +1,101 @@
 import { useEffect, useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { LogOut } from 'lucide-react';
-import { getHrMe, logoutHr, getStoredCompanyName } from '../../api/hrAuth.service';
-import { isNotImplemented } from '../../api/hrClient';
+import { LogOut, AlertTriangle } from 'lucide-react';
+import {
+  getCompanyProfile,
+  logoutCompany,
+  getStoredCompanyName,
+} from '../../api/company.service';
+import { isNotImplemented, COMPANY_TOKEN_KEY } from '../../api/companyClient';
 
 // ─────────────────────────────────────────────────────────────────────
 // Оболочка кабинета компании.
 //
-// Своя, не LkLayout: у HR нет библиотеки, голоса и профиля ребёнка —
-// сайдбар клиентского кабинета ему не нужен и только путал бы.
+// Своя, не LkLayout: компании не нужны библиотека, запись голоса и
+// профиль ребёнка — сайдбар клиентского кабинета только мешал бы.
 //
-// Пока корпоративный модуль не выкачен на бэк, /auth/hr/me отвечает 404.
-// В этом случае НЕ выкидываем на логин (токен-то валидный, просто
-// эндпоинта нет) — пускаем внутрь, а экраны сами показывают заглушку.
-// Иначе фронт нельзя было бы ни посмотреть, ни показать заказчику до
-// готовности бэка.
+// Отдельно показываем состояние договора. После истечения expires_at
+// компания ещё может войти и смотреть данные, но добавлять сотрудников
+// и менять тарифы уже нельзя — бэк отвечает 403. Без явного баннера это
+// выглядит как поломка: кнопки есть, а ничего не происходит.
 // ─────────────────────────────────────────────────────────────────────
 
-const HR_NAV_ITEMS = [
-  { path: '/hr/dashboard', label: 'Обзор' },
-  { path: '/hr/promocodes', label: 'Промокоды' },
-  { path: '/hr/employees', label: 'Сотрудники' },
-  { path: '/hr/company', label: 'Компания' },
+const NAV_ITEMS = [
+  { path: '/company/dashboard', label: 'Обзор' },
+  { path: '/company/staff', label: 'Сотрудники' },
+  { path: '/company/profile', label: 'Компания' },
 ];
+
+function formatDate(iso) {
+  if (!iso) return '';
+  try {
+    return new Intl.DateTimeFormat('ru-RU', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+    }).format(new Date(iso));
+  } catch {
+    return iso;
+  }
+}
 
 export default function HrLayout() {
   const navigate = useNavigate();
 
   const [status, setStatus] = useState('checking'); // checking | ready
-  const [admin, setAdmin] = useState(null);
-  const [company, setCompany] = useState(getStoredCompanyName());
+  const [company, setCompany] = useState(null);
+  const [name, setName] = useState(getStoredCompanyName());
 
   useEffect(() => {
-    const token = localStorage.getItem('hrToken');
-
-    if (!token) {
-      const current = window.location.hash.replace(/^#/, '') || '/hr/dashboard';
-      navigate(`/hr/login?redirect=${encodeURIComponent(current)}`, { replace: true });
+    if (!localStorage.getItem(COMPANY_TOKEN_KEY)) {
+      const current = window.location.hash.replace(/^#/, '') || '/company/dashboard';
+      navigate(`/company/login?redirect=${encodeURIComponent(current)}`, {
+        replace: true,
+      });
       return;
     }
 
-    getHrMe()
+    getCompanyProfile()
       .then((data) => {
-        setAdmin(data);
-        if (data?.company_name) setCompany(data.company_name);
+        setCompany(data);
+        if (data?.name) setName(data.name);
         setStatus('ready');
       })
       .catch((err) => {
-        if (isNotImplemented(err)) {
-          setStatus('ready');
-          return;
-        }
-        // 401 уже обработан в hrClient — он сам уведёт на /hr/login.
-        setStatus('ready');
+        // Эндпоинта ещё нет на этом сервере — пускаем внутрь, экраны
+        // сами покажут заглушку. 401 уже увёл на вход из companyClient.
+        if (isNotImplemented(err)) setStatus('ready');
+        else setStatus('ready');
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function handleLogout() {
-    logoutHr();
-    navigate('/hr/login', { replace: true });
+    logoutCompany();
+    navigate('/company/login', { replace: true });
   }
 
   if (status === 'checking') {
     return (
       <div className="lk-hr-shell">
-        <div className="lk-hr-login__card">Проверяем доступ…</div>
+        <div className="lk-hr-page">Проверяем доступ…</div>
       </div>
     );
   }
+
+  const expired =
+    company && (company.is_active === false || isPast(company.expires_at));
 
   return (
     <div className="lk-hr-shell">
       <nav className="lk-hr-nav">
         <div className="lk-hr-nav__brand">
           <span className="lk-hr-nav__title">Кабинет компании</span>
-          {company && <span className="lk-hr-nav__company">{company}</span>}
+          {name && <span className="lk-hr-nav__company">{name}</span>}
         </div>
 
         <div className="lk-hr-nav__links">
-          {HR_NAV_ITEMS.map((item) => (
+          {NAV_ITEMS.map((item) => (
             <NavLink
               key={item.path}
               to={item.path}
@@ -93,14 +109,37 @@ export default function HrLayout() {
         </div>
 
         <div className="lk-hr-nav__user">
-          {admin?.full_name && <span>{admin.full_name}</span>}
           <button type="button" onClick={handleLogout} title="Выйти">
             <LogOut size={16} />
           </button>
         </div>
       </nav>
 
-      <Outlet />
+      {expired && (
+        <div className="lk-hr-banner">
+          <AlertTriangle size={16} />
+          <div>
+            <strong>
+              {company.is_active === false
+                ? 'Доступ компании приостановлен'
+                : `Договор истёк ${formatDate(company.expires_at)}`}
+            </strong>
+            <p>
+              Сотрудники не могут пользоваться сервисом, добавлять новых и
+              менять тарифы нельзя. Данные сохранены — обратитесь к менеджеру
+              для продления.
+            </p>
+          </div>
+        </div>
+      )}
+
+      <Outlet context={{ company, expired }} />
     </div>
   );
+}
+
+function isPast(iso) {
+  if (!iso) return false;
+  const t = new Date(iso).getTime();
+  return Number.isFinite(t) && t < Date.now();
 }

@@ -1,19 +1,39 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Loader, RefreshCw, Users, Ticket, Mic, AudioLines } from 'lucide-react';
-import { getCompanyStats } from '../../api/b2b.service';
-import { isNotImplemented } from '../../api/hrClient';
+import { Loader, RefreshCw, Users, Mic, AudioLines, AlertCircle } from 'lucide-react';
+import { getCompanyStats, readSlotLevel } from '../../api/company.service';
+import { isNotImplemented } from '../../api/companyClient';
 import HrPending from '../../components/hr/HrPending';
 
 // ─────────────────────────────────────────────────────────────────────
-// Обзор для HR: сколько мест занято, сколько кодов выдано и работают ли
-// люди с сервисом.
+// Обзор компании: сколько мест занято, по каким уровням тарифов, как
+// сотрудники пользуются сервисом.
 //
 // Содержимого здесь намеренно нет — ни названий сказок, ни записей, ни
-// имён детей. HR видит только факт активности. Это требование 152-ФЗ и,
-// что важнее, условие доверия: льготу, при которой работодатель может
-// слушать записи семьи, сотрудники просто не включат.
+// имён детей. Компания видит только факт активности. Это и 152-ФЗ, и
+// условие доверия: льготу, при которой работодатель может слушать
+// записи семьи, сотрудники просто не включат.
+//
+// Два разных счётчика, которые легко перепутать:
+//   staff_used  — заведённых аккаунтов (даже без тарифа)
+//   used уровня — активных подписок этого уровня
+// Сотрудник без тарифа занимает место, но не занимает слот.
 // ─────────────────────────────────────────────────────────────────────
+
+const LEVEL_LABELS = {
+  1: 'Уровень 1 · Сказочник',
+  2: 'Уровень 2 · Хранитель',
+  3: 'Уровень 3 · Волшебник',
+};
+
+const CONTENT_LABELS = {
+  fairy_tale: 'Сказки',
+  lullaby: 'Колыбельные',
+  therapy: 'Терапевтические',
+  family_story: 'Семейные истории',
+  poem: 'Стихи',
+  story: 'Рассказы',
+};
 
 function formatDate(iso) {
   if (!iso) return '—';
@@ -56,10 +76,15 @@ export default function HrDashboard() {
 
   if (status === 'pending') return <HrPending what="Статистика компании" />;
 
-  const used = stats?.seats_used ?? 0;
-  const totalSeats = stats?.seats_total ?? 0;
-  const free = stats?.seats_free ?? Math.max(0, totalSeats - used);
-  const fillPercent = totalSeats > 0 ? Math.round((used / totalSeats) * 100) : 0;
+  const slots = stats?.slots;
+  const staffUsed = slots?.staff_used ?? 0;
+  const staffLimit = slots?.staff_limit ?? 0;
+  const staffFree = Math.max(0, staffLimit - staffUsed);
+  const fill = staffLimit > 0 ? Math.round((staffUsed / staffLimit) * 100) : 0;
+
+  const gen = stats?.generations;
+  const voicesTotal = (stats?.staff ?? []).reduce((s, u) => s + (u.voices || 0), 0);
+  const withoutVoice = (stats?.staff ?? []).filter((u) => !u.voices).length;
 
   return (
     <div className="lk-hr-page">
@@ -69,12 +94,7 @@ export default function HrDashboard() {
           <h1>Обзор</h1>
         </div>
 
-        <button
-          type="button"
-          className="lk-hr-refresh"
-          onClick={load}
-          title="Обновить"
-        >
+        <button type="button" className="lk-hr-refresh" onClick={load} title="Обновить">
           <RefreshCw size={16} className={status === 'loading' ? 'is-spinning' : ''} />
         </button>
       </header>
@@ -87,6 +107,7 @@ export default function HrDashboard() {
 
       {status === 'failed' && (
         <div className="lk-hr-pending">
+          <AlertCircle size={26} />
           <h2>Не удалось загрузить статистику</h2>
           <p>{error}</p>
           <button type="button" className="lk-btn lk-btn--secondary lk-btn--md" onClick={load}>
@@ -97,80 +118,124 @@ export default function HrDashboard() {
 
       {status === 'ready' && (
         <>
-          {/* Места — главная цифра: от неё зависит, можно ли выдавать
-              новые промокоды. */}
           <section className="lk-hr-card">
             <div className="lk-hr-seats">
               <div>
-                <span className="lk-text-eyebrow">Места</span>
+                <span className="lk-text-eyebrow">Сотрудники</span>
                 <strong>
-                  {used} из {totalSeats}
+                  {staffUsed} из {staffLimit}
                 </strong>
                 <p>
-                  {free > 0
-                    ? `Свободно ${free} — на столько сотрудников ещё можно выдать коды.`
-                    : 'Все места заняты. Чтобы подключить ещё сотрудников, нужно докупить места.'}
+                  {staffFree > 0
+                    ? `Свободно ${staffFree} — на столько человек ещё можно завести доступ.`
+                    : 'Все места заняты. Чтобы подключить ещё сотрудников, обратитесь к менеджеру.'}
                 </p>
               </div>
 
               <div className="lk-hr-seats__bar" aria-hidden="true">
-                <span style={{ width: `${fillPercent}%` }} />
+                <span style={{ width: `${fill}%` }} />
               </div>
             </div>
 
-            {stats?.expires_at && (
-              <p className="lk-hr-card__foot">
-                Подписка активна до {formatDate(stats.expires_at)}
-              </p>
-            )}
+            <p className="lk-hr-card__foot">
+              Договор действует до {formatDate(stats?.expires_at)}
+              {stats?.is_expired && ' — срок истёк'}
+            </p>
+          </section>
+
+          {/* Слоты по уровням. Именно они ограничивают, какой тариф можно
+              выдать: несколько тарифов одного уровня делят общую кучу. */}
+          <section className="lk-hr-card">
+            <h2 className="lk-hr-card__title">Слоты по уровням тарифов</h2>
+
+            <div className="lk-hr-levels">
+              {[1, 2, 3].map((lvl) => {
+                const l = readSlotLevel(slots, lvl);
+                const pct = l.limit > 0 ? Math.round((l.used / l.limit) * 100) : 0;
+
+                return (
+                  <article key={lvl} className="lk-hr-level">
+                    <div className="lk-hr-level__head">
+                      <span>{LEVEL_LABELS[lvl]}</span>
+                      <strong>
+                        {l.used} / {l.limit}
+                      </strong>
+                    </div>
+
+                    <div className="lk-hr-seats__bar" aria-hidden="true">
+                      <span style={{ width: `${pct}%` }} />
+                    </div>
+
+                    <p>
+                      {l.limit === 0
+                        ? 'Слоты этого уровня не оплачены'
+                        : l.free > 0
+                        ? `Свободно ${l.free}`
+                        : 'Слоты закончились'}
+                    </p>
+                  </article>
+                );
+              })}
+            </div>
           </section>
 
           <div className="lk-hr-metrics">
             <article className="lk-hr-metric">
-              <Ticket size={18} />
-              <strong>{stats?.promo_issued ?? 0}</strong>
-              <span>Промокодов выдано</span>
-              <em>
-                активировано {stats?.promo_activated ?? 0}, просрочено{' '}
-                {stats?.promo_expired ?? 0}
-              </em>
+              <Users size={18} />
+              <strong>{stats?.staff?.length ?? 0}</strong>
+              <span>Сотрудников подключено</span>
+              <em>с доступом в приложение</em>
             </article>
 
             <article className="lk-hr-metric">
               <Mic size={18} />
-              <strong>{stats?.voices_recorded ?? 0}</strong>
+              <strong>{voicesTotal}</strong>
               <span>Голосов записано</span>
-              <em>сотрудники, дошедшие до главного шага</em>
+              <em>
+                {withoutVoice > 0
+                  ? `${withoutVoice} ещё не записали`
+                  : 'записали все'}
+              </em>
             </article>
 
             <article className="lk-hr-metric">
               <AudioLines size={18} />
-              <strong>{stats?.generations_count ?? 0}</strong>
+              <strong>{gen?.total ?? 0}</strong>
               <span>Озвучек создано</span>
-              <em>за всё время</em>
-            </article>
-
-            <article className="lk-hr-metric">
-              <Users size={18} />
-              <strong>{stats?.active_employees_30d ?? 0}</strong>
-              <span>Активны за 30 дней</span>
-              <em>пользовались сервисом в последний месяц</em>
+              <em>
+                готово {gen?.by_status?.ready ?? 0}
+                {gen?.by_status?.failed ? `, ошибок ${gen.by_status.failed}` : ''}
+              </em>
             </article>
           </div>
 
+          {gen?.by_content_type && Object.keys(gen.by_content_type).length > 0 && (
+            <section className="lk-hr-card">
+              <h2 className="lk-hr-card__title">Что слушают</h2>
+
+              <div className="lk-hr-chips">
+                {Object.entries(gen.by_content_type)
+                  .sort((a, b) => b[1] - a[1])
+                  .map(([type, count]) => (
+                    <span key={type} className="lk-hr-chip">
+                      {CONTENT_LABELS[type] ?? type}
+                      <em>{count}</em>
+                    </span>
+                  ))}
+              </div>
+            </section>
+          )}
+
           <div className="lk-hr-actions">
-            <Link to="/hr/promocodes" className="lk-btn lk-btn--primary lk-btn--md">
-              Выдать промокоды
-            </Link>
-            <Link to="/hr/employees" className="lk-btn lk-btn--secondary lk-btn--md">
+            <Link to="/company/staff" className="lk-btn lk-btn--primary lk-btn--md">
               Сотрудники
             </Link>
           </div>
 
           <p className="lk-hr-privacy">
-            Здесь видно только то, пользуется ли сотрудник сервисом. Что
-            именно он озвучивает, какие записи сделал и как зовут его детей —
-            компании недоступно.
+            Здесь видно только то, пользуется ли сотрудник сервисом. Что именно
+            он озвучивает, какие записи сделал и как зовут его детей — компании
+            недоступно.
           </p>
         </>
       )}

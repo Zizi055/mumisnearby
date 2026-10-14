@@ -70,10 +70,13 @@ export const adminApi = {
       ...options,
     }),
 
+  // Тело необязательно: у ряда PATCH-ручек его нет вовсе, а
+  // JSON.stringify(undefined) даёт строку "undefined", которую бэк не
+  // разберёт и ответит 422.
   patch: (path, body) =>
     request(path, {
       method: 'PATCH',
-      body: JSON.stringify(body),
+      ...(body === undefined ? {} : { body: JSON.stringify(body) }),
     }),
 
   del: (path) =>
