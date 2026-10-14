@@ -57,23 +57,6 @@
   color: var(--rg-text-muted);
 }
 
-// Иконка шага — svg из общего набора ассетов, подложка нейтральная.
-.rg-card__icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 46px;
-  height: 46px;
-  margin-bottom: 18px;
-  border-radius: var(--rg-radius-sm);
-  background: var(--rg-paper-2);
-
-  img {
-    width: 24px;
-    height: 24px;
-  }
-}
-
 // ── Тёмный вариант, для секций на графитовом фоне ───────────────────
 
 .rg-card--dark {
@@ -91,10 +74,6 @@
 
   .rg-card__no {
     color: var(--rg-green-300);
-  }
-
-  .rg-card__icon {
-    background: rgba(255, 255, 255, 0.07);
   }
 }
 

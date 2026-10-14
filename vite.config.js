@@ -16,6 +16,11 @@ export default defineConfig({
         main: resolve(__dirname, 'index.html'),
         constructor: resolve(__dirname, 'constructor.html'),
         b2b: resolve(__dirname, 'b2b.html'),
+        // privacy.html лежала в корне, но в список входов не попадала —
+        // vite её не копировал, и ссылка «Политика конфиденциальности»
+        // отдавала 404 на обоих доменах. Страница самостоятельная, без
+        // стилей сборки, так что добавление её только копирует.
+        privacy: resolve(__dirname, 'privacy.html'),
       },
     },
   },
