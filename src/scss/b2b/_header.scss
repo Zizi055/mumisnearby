@@ -1,4 +1,5 @@
 @use 'scale' as *;
+@use 'type' as *;
 
 // Шапка. Липкая, с белой подложкой: первый экран тёмный, и прозрачная
 // шапка на нём сливалась бы с градиентом.
@@ -24,11 +25,14 @@
   align-items: center;
   gap: space(3);
   flex: none;
+  // Логотип — единственное место, где роль переопределяется: название
+  // в две строки требует плотного интерлиньяжа и меньшего трекинга,
+  // чем служебные подписи того же кегля.
+  @include type(overline);
   font-size: 12px;
   font-weight: 800;
   line-height: 1.12;
   letter-spacing: 0.03em;
-  text-transform: uppercase;
 }
 
 .rg-brand__mark {
@@ -48,11 +52,8 @@
 
 .rg-nav__link {
   position: relative;
+  @include type(overline);
   padding: space(1) 0;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.07em;
-  text-transform: uppercase;
   // Пункт меню не переносится: разрыв «КАК ЭТО / РАБОТАЕТ» ломал строку
   // шапки на две и ронял всю её высоту. Если места не хватает — меню
   // целиком уходит под бургер, это честнее, чем лесенка из подписей.
@@ -94,10 +95,7 @@
 // Вход сотрудника — второстепенное действие, поэтому текстовая ссылка,
 // а не вторая кнопка рядом с «Оставить заявку».
 .rg-header__login {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  @include type(overline);
   color: var(--rg-text-muted);
   transition: color 0.2s var(--rg-ease);
 
@@ -178,8 +176,8 @@
 }
 
 .rg-mobile-menu__link {
+  @include type(body-xs);
   padding: space(3) 0;
-  font-size: 13px;
   font-weight: 600;
   border-bottom: 1px solid var(--rg-line);
 }

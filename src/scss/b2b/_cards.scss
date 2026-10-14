@@ -1,4 +1,5 @@
 @use 'scale' as *;
+@use 'type' as *;
 
 // Карточная сетка. Один компонент обслуживает четыре секции —
 // «Проблема», «Как это работает», «Почему это срабатывает» и
@@ -49,7 +50,7 @@
 .rg-card:nth-child(4) .rg-card__strip { background: var(--rg-ink-700); }
 
 .rg-card__no {
-  font-size: 11px;
+  @include type(overline);
   font-weight: 800;
   letter-spacing: 0.14em;
   color: var(--rg-green-600);
@@ -60,8 +61,7 @@
 }
 
 .rg-card__text {
-  font-size: 14px;
-  line-height: 1.6;
+  @include type(body-sm);
   color: var(--rg-text-muted);
 }
 
@@ -111,8 +111,7 @@
   padding: space(6) space(7);
   border-radius: var(--rg-radius);
   background: var(--rg-paper-2);
-  font-size: 15px;
-  font-weight: 600;
+  @include type(title-sm);
 }
 
 @media (max-width: 1040px) {

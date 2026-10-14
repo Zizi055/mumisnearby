@@ -1,4 +1,5 @@
 @use 'scale' as *;
+@use 'type' as *;
 
 // Форма заявки — целым цветным экраном, как финальный аккорд страницы.
 // Все CTA лендинга ведут сюда.
@@ -33,17 +34,16 @@
 }
 
 .rg-lead-panel__text {
+  @include type(body);
   margin-top: space(4);
-  font-size: 15px;
-  line-height: 1.6;
   color: var(--rg-text-on-dark);
 }
 
 .rg-lead-panel__contacts {
   margin-top: space(6);
   display: grid;
+  @include type(body-xs);
   gap: space(2);
-  font-size: 13px;
   color: var(--rg-text-on-dark-muted);
 
   a:hover {
@@ -68,9 +68,7 @@
 }
 
 .rg-form__label {
-  font-size: 10px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  @include type(micro);
   color: var(--rg-text-on-dark-muted);
 }
 
@@ -82,7 +80,7 @@
   border-radius: var(--rg-radius-sm);
   background: rgba(255, 255, 255, 0.07);
   font: inherit;
-  font-size: 14px;
+  @include type(body-sm);
   color: #fff;
   transition: border-color 0.25s var(--rg-ease), background-color 0.25s var(--rg-ease);
 
@@ -112,24 +110,22 @@
 }
 
 .rg-form__consent {
+  @include type(caption);
   max-width: 44ch;
-  font-size: 11px;
-  line-height: 1.5;
   color: var(--rg-text-on-dark-muted);
 }
 
 // Статус отправки. Цвет задаётся только модификатором — без него строка
 // пустая и места не занимает.
 .rg-form__status {
-  font-size: 13px;
-  line-height: 1.5;
+  @include type(body-xs);
 
   &:empty {
     display: none;
   }
 
   &.is-error {
-    color: #ff9f8f;
+    color: var(--rg-danger);
   }
 
   &.is-success {

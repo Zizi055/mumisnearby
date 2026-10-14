@@ -1,4 +1,5 @@
 @use 'scale' as *;
+@use 'type' as *;
 
 // Примитивы, общие для всех секций: сетка, заголовочная группа,
 // кнопки, появление при скролле.
@@ -41,11 +42,8 @@
   display: inline-flex;
   align-items: center;
   gap: space(2);
+  @include type(micro);
   margin-bottom: space(3);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.17em;
-  text-transform: uppercase;
   color: var(--rg-green-600);
 
   &::before {
@@ -61,6 +59,19 @@
 }
 
 // ── Кнопки ──────────────────────────────────────────────────────────
+//
+// Один класс .rg-btn задаёт геометрию и поведение, модификатор —
+// только окраску. Иерархия на странице держится на том, что сплошная
+// зелёная кнопка в каждом блоке одна: она и есть целевое действие.
+//
+//   --primary  целевое действие: «Оставить заявку»
+//   --dark     то же действие на светлом фоне, где зелёный спорит с
+//              акцентами карточек
+//   --outline  второстепенное действие на светлом фоне
+//   --ghost    второстепенное действие поверх тёмной плашки
+//
+// Высота 48px совпадает с полем формы и с квадратными кнопками шапки,
+// поэтому элементы выстраиваются в одну линию без подгонок.
 
 .rg-btn {
   display: inline-flex;
@@ -72,11 +83,9 @@
   padding: space(4) space(6);
   border: 1px solid transparent;
   border-radius: var(--rg-radius-sm);
-  font-size: 12px;
+  @include type(overline);
   font-weight: 700;
-  letter-spacing: 0.06em;
   line-height: 1;
-  text-transform: uppercase;
   white-space: nowrap;
   transition: background-color 0.25s var(--rg-ease), border-color 0.25s var(--rg-ease),
     color 0.25s var(--rg-ease), transform 0.25s var(--rg-ease);

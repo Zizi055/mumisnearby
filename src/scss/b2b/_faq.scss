@@ -1,4 +1,5 @@
 @use 'scale' as *;
+@use 'type' as *;
 
 // FAQ и подвал.
 
@@ -20,9 +21,7 @@
   border: 0;
   background: transparent;
   text-align: left;
-  font-size: 15px;
-  font-weight: 600;
-  line-height: 1.45;
+  @include type(title-sm);
   transition: color 0.2s var(--rg-ease);
 
   &:hover {
@@ -67,8 +66,8 @@
 
 .rg-faq__answer {
   max-width: 68ch;
+  @include type(body-sm);
   padding-bottom: space(6);
-  font-size: 14.5px;
   line-height: 1.65;
   color: var(--rg-text-muted);
 }

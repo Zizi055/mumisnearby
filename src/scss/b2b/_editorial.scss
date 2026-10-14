@@ -1,4 +1,5 @@
 @use 'scale' as *;
+@use 'type' as *;
 
 // Длинные текстовые блоки: «Технология с человеческим смыслом» и
 // манифест «Родные голоса — для тех, кто верит…».
@@ -23,9 +24,7 @@
   margin-top: space(6);
   padding-left: space(5);
   border-left: 2px solid var(--rg-green-500);
-  font-size: clamp(15px, 1.5vw, 18px);
-  font-weight: 600;
-  line-height: 1.45;
+  @include type(title-sm);
 }
 
 .rg-essay__body {
@@ -37,7 +36,7 @@
 }
 
 .rg-essay__body p {
-  font-size: 15px;
+  @include type(body);
   line-height: 1.7;
   color: var(--rg-text-muted);
 }
