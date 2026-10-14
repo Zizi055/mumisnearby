@@ -55,18 +55,6 @@
   color: #fff;
 }
 
-.rg-essay__media {
-  margin-top: space(6);
-  overflow: hidden;
-  border-radius: var(--rg-radius);
-
-  video,
-  img {
-    width: 100%;
-    height: auto;
-  }
-}
-
 @media (max-width: 900px) {
   .rg-essay {
     grid-template-columns: 1fr;
