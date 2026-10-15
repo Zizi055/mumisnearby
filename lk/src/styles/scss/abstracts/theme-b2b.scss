@@ -94,3 +94,54 @@
 .theme-b2b .lk-voice-card {
   border-radius: 6px;
 }
+
+/* ── Экран входа ───────────────────────────────────────────────────
+   Левая панель — та же графитовая плашка, что первый экран лендинга:
+   человек переходит из сайта в кабинет и не должен чувствовать, что
+   попал в другой продукт. Заголовок прописными и с зелёной второй
+   строкой — по той же типографической роли, что h2 на лендинге. */
+
+.theme-b2b .auth__left {
+  background: linear-gradient(118deg, #273043 0%, #1b2231 52%, #12161f 100%);
+}
+
+.theme-b2b .auth__tagline h1 {
+  font-size: clamp(22px, 2.6vw, 30px);
+  font-weight: 800;
+  line-height: 1.16;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+  text-shadow: none;
+
+  em {
+    font-style: normal;
+    color: #7fc0a0;
+  }
+}
+
+.theme-b2b .auth__tagline p,
+.theme-b2b .auth__feature {
+  color: rgba(255, 255, 255, 0.62);
+}
+
+.theme-b2b .auth__feature-dot {
+  background: #7fc0a0;
+  box-shadow: none;
+}
+
+/* Переключатель и вкладки: прямоугольные, как всё в корпоративной
+   редакции. Пилюли остались бы единственным скруглением на экране. */
+
+.theme-b2b .auth__roles,
+.theme-b2b .auth__role,
+.theme-b2b .auth__tab,
+.theme-b2b .auth__submit,
+.theme-b2b .auth__input {
+  border-radius: 3px;
+}
+
+.theme-b2b .auth__intro h2 {
+  text-transform: uppercase;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+}

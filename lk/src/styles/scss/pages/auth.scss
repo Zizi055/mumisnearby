@@ -159,22 +159,25 @@
   }
 }
 
-/* Пояснение под переключателем на вкладке сотрудника: объясняет
-   отсутствие регистрации до того, как человек начнёт её искать. */
-.auth__role-note {
+/* Шапка формы: кто входит и что его ждёт. У частного клиента её нет —
+   там сразу вкладки «Войти / Регистрация», и лишний заголовок только
+   отодвинул бы форму вниз. */
+.auth__intro {
   margin-bottom: $lk-space-24;
-  padding: 14px 16px;
-  border-radius: $lk-radius-12;
-  background: $lk-bg;
-  font-size: 13px;
-  line-height: 1.5;
-  color: $lk-text-muted;
 
-  strong {
-    display: block;
-    margin-bottom: 4px;
+  h2 {
+    margin: 0;
+    font-size: 21px;
+    font-weight: 700;
+    line-height: 1.2;
     color: $lk-text;
-    font-weight: 600;
+  }
+
+  p {
+    margin: $lk-space-8 0 0;
+    font-size: 13.5px;
+    line-height: 1.55;
+    color: $lk-text-muted;
   }
 }
 

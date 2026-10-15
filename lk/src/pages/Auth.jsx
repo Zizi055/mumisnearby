@@ -10,6 +10,56 @@ import { useAuth } from '../context/AuthContext';
 import AuthDNA from './AuthDNA';
 import '../styles/scss/pages/auth.scss';
 
+// Что написано на экране входа для каждой роли.
+//
+// Левая панель меняется вместе с вкладкой не ради разнообразия:
+// человек должен понять, что попал к своей двери, ещё до того как
+// прочитает форму. Для компании это про управление, для сотрудника —
+// про запись голоса, для частного клиента — про подарок ребёнку.
+const ROLE_COPY = {
+  [ROLES.company]: {
+    brand: 'Родной Голос',
+    title: 'Голос родителя',
+    accent: 'остаётся рядом',
+    lead: 'Корпоративная льгота, которая возвращает родителям вечер с ребёнком.',
+    features: [
+      'Сотрудники, тарифы и слоты в одном окне',
+      'Статистика использования льготы',
+      'Записи сотрудника работодателю недоступны',
+    ],
+    heading: 'Кабинет компании',
+    note: 'Управление сотрудниками, тарифами и статистикой использования.',
+  },
+
+  [ROLES.staff]: {
+    brand: 'Родной Голос',
+    title: 'Ваш голос',
+    accent: 'вместо расстояния',
+    lead: 'Запишите тридцать секунд — и ребёнок будет засыпать под вашу сказку.',
+    features: [
+      'Голосовой двойник за тридцать секунд записи',
+      '100+ сказок, колыбельных и сценариев',
+      'Доступ оплачивает работодатель',
+    ],
+    heading: 'Вход для сотрудника',
+    note: 'Почта и пароль те, что выдал работодатель. Регистрация не нужна — аккаунт уже создан вашей компанией.',
+  },
+
+  [ROLES.person]: {
+    brand: 'Родные голоса',
+    title: 'Голос близких —',
+    accent: 'в каждой сказке',
+    lead: 'Создайте голосового двойника и подарите ребёнку сказки, рассказанные именно вами.',
+    features: [
+      'Голосовые двойники родных',
+      'Библиотека из 100+ сказок',
+      'Терапевтические сценарии',
+    ],
+    heading: null,
+    note: null,
+  },
+};
+
 function validateEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
@@ -39,6 +89,8 @@ export default function Auth() {
   // Кто входит: юрлицо, сотрудник или частный клиент. В B2C всегда
   // 'person' — переключателя там нет.
   const [role, setRole] = useState(() => resolveInitialRole(searchParams));
+
+  const copy = ROLE_COPY[role] ?? ROLE_COPY[ROLES.person];
 
   const [tab, setTab] = useState('login');
   const [name, setName] = useState('');
@@ -175,30 +227,25 @@ export default function Auth() {
 
           <div className="auth__brand">
             <Sparkles size={16} />
-            Родные голоса
+            {copy.brand}
           </div>
 
           <div className="auth__tagline">
-            <h1>Голос близких —<br />в каждой сказке</h1>
-            <p>
-              Создайте голосового двойника и подарите ребёнку
-              сказки, рассказанные именно вами.
-            </p>
+            <h1>
+              {copy.title}
+              <br />
+              <em>{copy.accent}</em>
+            </h1>
+            <p>{copy.lead}</p>
           </div>
 
           <div className="auth__features">
-            <div className="auth__feature">
-              <span className="auth__feature-dot" />
-              Голосовые двойники родных
-            </div>
-            <div className="auth__feature">
-              <span className="auth__feature-dot" />
-              Библиотека из 100+ сказок
-            </div>
-            <div className="auth__feature">
-              <span className="auth__feature-dot" />
-              Терапевтические сценарии
-            </div>
+            {copy.features.map((feature) => (
+              <div className="auth__feature" key={feature}>
+                <span className="auth__feature-dot" />
+                {feature}
+              </div>
+            ))}
           </div>
 
         </div>
@@ -238,11 +285,10 @@ export default function Auth() {
           </div>
           )}
 
-          {role === ROLES.staff && (
-            <div className="auth__role-note">
-              <strong>Вход для сотрудника</strong>
-              Почта и пароль те, что выдал работодатель. Регистрация не нужна —
-              аккаунт уже создан вашей компанией.
+          {copy.heading && (
+            <div className="auth__intro">
+              <h2>{copy.heading}</h2>
+              <p>{copy.note}</p>
             </div>
           )}
 
