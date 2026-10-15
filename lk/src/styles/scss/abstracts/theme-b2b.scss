@@ -129,15 +129,87 @@
   box-shadow: none;
 }
 
-/* Переключатель и вкладки: прямоугольные, как всё в корпоративной
-   редакции. Пилюли остались бы единственным скруглением на экране. */
+/* ── Органы управления на экране входа ─────────────────────────────
 
-.theme-b2b .auth__roles,
-.theme-b2b .auth__role,
-.theme-b2b .auth__tab,
-.theme-b2b .auth__submit,
-.theme-b2b .auth__input {
+   Одной подменой цвета здесь не обойтись, и в этом была ошибка первой
+   попытки: токены стали графитовыми, а кнопки остались зелёными
+   пилюлями — экран по-прежнему читался как «Родные голоса».
+
+   Селекторы составные (.theme-b2b .auth__role.is-active), потому что
+   базовые состояния в auth.scss заданы через .auth__role.is-active —
+   это две единицы специфичности, и правило темы обязано быть не ниже,
+   иначе оно просто не применится. */
+
+.theme-b2b .auth__right {
+  background: var(--lk-surface);
+}
+
+.theme-b2b .auth__roles {
+  background: var(--lk-bg);
   border-radius: 3px;
+}
+
+.theme-b2b .auth__role {
+  border-radius: 2px;
+}
+
+/* Активная роль — графит, а не зелёный. Зелёный в корпоративной
+   палитре закреплён за целевым действием: если им красить ещё и
+   переключатель, кнопка «Войти» перестаёт быть главной на экране. */
+.theme-b2b .auth__role.is-active {
+  background: var(--lk-ink-800);
+  color: #fff;
+}
+
+/* Вкладки «Войти / Регистрация» — подчёркиванием, а не пилюлями.
+   Два ряда одинаковых пилюль подряд читались как один переключатель
+   из пяти кнопок. */
+.theme-b2b .auth__tabs {
+  display: flex;
+  gap: 22px;
+  border-bottom: 1px solid var(--lk-border);
+}
+
+.theme-b2b .auth__tab {
+  position: relative;
+  height: auto;
+  padding: 0 0 11px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.theme-b2b .auth__tab.is-active {
+  background: transparent;
+  color: var(--lk-text);
+  box-shadow: none;
+}
+
+.theme-b2b .auth__tab.is-active::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 -1px 0;
+  height: 2px;
+  background: var(--lk-brand);
+}
+
+.theme-b2b .auth__submit,
+.theme-b2b .auth__input,
+.theme-b2b .auth__card .lk-btn {
+  border-radius: 3px;
+}
+
+.theme-b2b .auth__submit {
+  box-shadow: none;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }
 
 .theme-b2b .auth__intro h2 {
