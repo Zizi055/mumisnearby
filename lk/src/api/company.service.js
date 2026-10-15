@@ -1,4 +1,5 @@
 import { companyApi, COMPANY_TOKEN_KEY, COMPANY_NAME_KEY } from './companyClient';
+import { closeCompanyAsAdmin, isAdminMode } from './companySession';
 
 // ─────────────────────────────────────────────────────────────────────
 // Кабинет компании: вход, профиль, каталог тарифов, слоты, сотрудники,
@@ -40,13 +41,16 @@ export async function loginCompany({ email, password }) {
   return data;
 }
 
+// Выход из кабинета не трогает админскую сессию: администратор
+// закрывает карточку компании, но из админки не выходит.
 export function logoutCompany() {
+  closeCompanyAsAdmin();
   localStorage.removeItem(COMPANY_TOKEN_KEY);
   localStorage.removeItem(COMPANY_NAME_KEY);
 }
 
 export function hasCompanySession() {
-  return !!localStorage.getItem(COMPANY_TOKEN_KEY);
+  return !!localStorage.getItem(COMPANY_TOKEN_KEY) || isAdminMode();
 }
 
 export function getStoredCompanyName() {

@@ -1419,3 +1419,187 @@
     margin-top: 2px;
   }
 }
+
+/* ─── Выбор компании под административным доступом ───────────────────
+   Отдельный экран перед кабинетом: админ видит десятки юрлиц и должен
+   сказать, чей кабинет открывает. Набран теми же токенами, что сам
+   кабинет, — это его первый шаг, а не самостоятельная страница. */
+
+.lk-pick {
+  box-sizing: border-box;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: $lk-space-48 $lk-space-24;
+}
+
+.lk-pick__head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: $lk-space-16;
+
+  margin-bottom: $lk-space-32;
+}
+
+.lk-pick__kicker {
+  margin: 0 0 $lk-space-8;
+
+  color: $lk-text-muted;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.lk-pick__title {
+  margin: 0 0 $lk-space-8;
+
+  color: $lk-text;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.lk-pick__lead {
+  margin: 0;
+
+  color: $lk-text-muted;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.lk-pick__logout {
+  display: inline-flex;
+  align-items: center;
+  gap: $lk-space-8;
+  flex-shrink: 0;
+
+  padding: $lk-space-8 $lk-space-16;
+
+  border: 1px solid $lk-border;
+  border-radius: 6px;
+  background: $lk-white;
+
+  color: $lk-text-muted;
+  font-size: 13px;
+  font-weight: 600;
+
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+
+  &:hover {
+    border-color: $lk-text-muted;
+    color: $lk-text;
+  }
+}
+
+.lk-pick__search {
+  display: flex;
+  align-items: center;
+  gap: $lk-space-8;
+
+  margin-bottom: $lk-space-16;
+  padding: 0 $lk-space-16;
+
+  border: 1px solid $lk-border;
+  border-radius: 6px;
+  background: $lk-white;
+
+  color: $lk-text-muted;
+
+  input {
+    flex: 1;
+    min-width: 0;
+
+    height: 44px;
+    padding: 0;
+
+    border: 0;
+    background: transparent;
+
+    color: $lk-text;
+    font: inherit;
+    font-size: 14px;
+
+    &:focus { outline: none; }
+  }
+}
+
+.lk-pick__list {
+  display: grid;
+  gap: $lk-space-8;
+
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+}
+
+.lk-pick__item {
+  display: flex;
+  align-items: center;
+  gap: $lk-space-16;
+  width: 100%;
+
+  padding: $lk-space-16;
+
+  border: 1px solid $lk-border;
+  border-radius: 6px;
+  background: $lk-white;
+
+  color: $lk-text-muted;
+  text-align: left;
+
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    border-color: rgba(var(--lk-brand-rgb), 0.5);
+    box-shadow: $lk-shadow-card;
+  }
+}
+
+.lk-pick__icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+
+  width: 38px;
+  height: 38px;
+
+  border-radius: 6px;
+  background: $lk-surface-soft;
+
+  color: $lk-text;
+}
+
+.lk-pick__body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.lk-pick__name {
+  color: $lk-text;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.lk-pick__meta {
+  font-size: 13px;
+}
+
+.lk-pick__note,
+.lk-pick__error {
+  margin: 0;
+
+  color: $lk-text-muted;
+  font-size: 14px;
+  line-height: 1.55;
+}
+
+.lk-pick__error {
+  color: $lk-danger;
+}

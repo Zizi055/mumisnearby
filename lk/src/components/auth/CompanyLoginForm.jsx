@@ -39,7 +39,9 @@ async function signIn(login, password) {
   } catch (companyError) {
     try {
       await loginAdmin({ username: login, password });
-      return '/admin/companies';
+      // Не в админку: человек выбрал вкладку «Компания» и ждёт кабинет
+      // компании. Сначала только спрашиваем, чей именно.
+      return '/company/select';
     } catch {
       // Про админский адрес человеку знать незачем: он выбрал вкладку
       // «Компания» и ждёт ответа про неё.

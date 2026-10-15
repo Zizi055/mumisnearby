@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { LogOut, AlertTriangle } from 'lucide-react';
+import { LogOut, AlertTriangle, Repeat2 } from 'lucide-react';
 import {
   getCompanyProfile,
   logoutCompany,
   getStoredCompanyName,
+  hasCompanySession,
 } from '../../api/company.service';
-import { isNotImplemented, COMPANY_TOKEN_KEY } from '../../api/companyClient';
+import { isNotImplemented } from '../../api/companyClient';
+import { getCompanyAsAdmin, closeCompanyAsAdmin } from '../../api/companySession';
 
 // ─────────────────────────────────────────────────────────────────────
 // Оболочка кабинета компании.
@@ -44,10 +46,14 @@ export default function HrLayout() {
 
   const [status, setStatus] = useState('checking'); // checking | ready
   const [company, setCompany] = useState(null);
-  const [name, setName] = useState(getStoredCompanyName());
+  // Под административной учёткой название берётся из выбранной
+  // карточки: запрос профиля ещё не вернулся, а шапка уже должна
+  // показывать, чей кабинет открыт.
+  const asAdmin = getCompanyAsAdmin();
+  const [name, setName] = useState(asAdmin?.name || getStoredCompanyName());
 
   useEffect(() => {
-    if (!localStorage.getItem(COMPANY_TOKEN_KEY)) {
+    if (!hasCompanySession()) {
       const current = window.location.hash.replace(/^#/, '') || '/company/dashboard';
       navigate(`/company/login?redirect=${encodeURIComponent(current)}`, {
         replace: true,
@@ -73,6 +79,13 @@ export default function HrLayout() {
   function handleLogout() {
     logoutCompany();
     navigate('/company/login', { replace: true });
+  }
+
+  // Админ не выходит из своей учётки — он закрывает карточку компании
+  // и возвращается к списку.
+  function handleSwitchCompany() {
+    closeCompanyAsAdmin();
+    navigate('/company/select', { replace: true });
   }
 
   if (status === 'checking') {
@@ -109,6 +122,15 @@ export default function HrLayout() {
         </div>
 
         <div className="lk-hr-nav__user">
+          {asAdmin && (
+            <button
+              type="button"
+              onClick={handleSwitchCompany}
+              title="Выбрать другую компанию"
+            >
+              <Repeat2 size={16} />
+            </button>
+          )}
           <button type="button" onClick={handleLogout} title="Выйти">
             <LogOut size={16} />
           </button>
