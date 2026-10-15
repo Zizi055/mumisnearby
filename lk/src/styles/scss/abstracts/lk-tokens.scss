@@ -1,37 +1,89 @@
-/* surfaces */
-$lk-bg: #f6f7f2;
-$lk-surface: #fcfcf8;
-$lk-surface-soft: #eef4ee;
-$lk-surface-accent: #c8d9cd;
-$lk-surface-accent-soft: #c2d4c7;
+/* ──────────────────────────────────────────────────────────────────
+   ТОКЕНЫ ЛИЧНОГО КАБИНЕТА
 
-/* text */
-$lk-text: #202020;
-$lk-text-soft: #4b4b4b;
-$lk-text-muted: #6e756f;
+   Цвета объявлены переменными CSS, а не Sass: кабинет собирается в двух
+   редакциях из одного кода, и палитру нужно подменять целиком — тёплая
+   зелёная у «Родных голосов», графитовая у корпоративной версии. Sass
+   считает значения на этапе сборки, поэтому через него такое не сделать.
 
-/* borders */
-$lk-border: #e6e8e6;
-$lk-line: #e6e8e6;
-$lk-line-soft: #edf0ed;
+   Sass-переменные ниже оставлены как псевдонимы: на них ссылаются
+   восемь тысяч строк стилей, и переписывать их все ради смены палитры
+   бессмысленно.
 
-/* brand */
-$lk-brand: #5d8f72;
-$lk-brand-dark: #4e7d63;
+   Рядом с каждым цветом лежит его RGB-тройка. Она нужна для
+   полупрозрачных заливок: rgba(var(--lk-brand-rgb), 0.08) — единственный
+   способ задать произвольную прозрачность от переменной так, чтобы это
+   работало и в старых браузерах.
 
-/* states */
-$lk-success: #5d8f72;
-$lk-danger: #e54848;
-$lk-warning: #f5a623;
-$lk-error: #ce2e2e;
+   Размеры и отступы остаются Sass-переменными: они в обеих редакциях
+   одинаковые, а вычисления вроде $lk-space-24 * 2 на var() не работают.
+   ────────────────────────────────────────────────────────────────── */
 
-/* base */
-$lk-white: #ffffff;
+:root {
+  /* поверхности */
+  --lk-bg: #f6f7f2;
+  --lk-surface: #fcfcf8;
+  --lk-surface-soft: #eef4ee;
+  --lk-surface-accent: #c8d9cd;
+  --lk-surface-accent-soft: #c2d4c7;
 
-/* shadows */
-$lk-shadow-card: 0 8px 24px rgba(93, 143, 114, 0.06);
+  /* текст */
+  --lk-text: #202020;
+  --lk-text-soft: #4b4b4b;
+  --lk-text-muted: #6e756f;
 
-/* radius */
+  /* границы */
+  --lk-border: #e6e8e6;
+  --lk-line: #e6e8e6;
+  --lk-line-soft: #edf0ed;
+
+  /* акцент */
+  --lk-brand: #5d8f72;
+  --lk-brand-rgb: 93, 143, 114;
+  --lk-brand-dark: #4e7d63;
+  --lk-brand-dark-rgb: 78, 125, 99;
+
+  /* состояния */
+  --lk-success: #5d8f72;
+  --lk-success-rgb: 93, 143, 114;
+  --lk-danger: #e54848;
+  --lk-danger-rgb: 229, 72, 72;
+  --lk-warning: #f5a623;
+  --lk-error: #ce2e2e;
+
+  --lk-white: #ffffff;
+  --lk-shadow-card: 0 8px 24px rgba(93, 143, 114, 0.06);
+}
+
+/* ── Псевдонимы для существующих стилей ─────────────────────────── */
+
+$lk-bg: var(--lk-bg);
+$lk-surface: var(--lk-surface);
+$lk-surface-soft: var(--lk-surface-soft);
+$lk-surface-accent: var(--lk-surface-accent);
+$lk-surface-accent-soft: var(--lk-surface-accent-soft);
+
+$lk-text: var(--lk-text);
+$lk-text-soft: var(--lk-text-soft);
+$lk-text-muted: var(--lk-text-muted);
+
+$lk-border: var(--lk-border);
+$lk-line: var(--lk-line);
+$lk-line-soft: var(--lk-line-soft);
+
+$lk-brand: var(--lk-brand);
+$lk-brand-dark: var(--lk-brand-dark);
+
+$lk-success: var(--lk-success);
+$lk-danger: var(--lk-danger);
+$lk-warning: var(--lk-warning);
+$lk-error: var(--lk-error);
+
+$lk-white: var(--lk-white);
+$lk-shadow-card: var(--lk-shadow-card);
+
+/* ── Размеры ────────────────────────────────────────────────────── */
+
 $lk-radius-12: 12px;
 $lk-radius-16: 16px;
 $lk-radius-20: 20px;
@@ -39,7 +91,6 @@ $lk-radius-24: 24px;
 $lk-radius-32: 32px;
 $lk-radius-pill: 999px;
 
-/* spacing */
 $lk-space-4: 4px;
 $lk-space-6: 6px;
 $lk-space-8: 8px;

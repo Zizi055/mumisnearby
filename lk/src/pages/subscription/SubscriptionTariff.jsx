@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Check, Sparkles, ArrowUpRight } from 'lucide-react';
 import { tariffs as staticTariffs } from '../../data/tariffs.data';
 import { isB2B } from '../../config/edition';
+import CompanyPaidNotice from '../../components/subscription/CompanyPaidNotice';
 import LkButton from '../../components/ui/LkButton';
 import { useSubscription } from '../../hooks/useSubscription';
 import { useTariffPricing } from '../../hooks/useTariffPricing';
@@ -128,7 +129,7 @@ export default function SubscriptionTariff() {
   const [billingPeriod, setBillingPeriod] = useState('year');
 
   // Реальный тариф пользователя — из /subscription/status, а не заглушка.
-  const { planId, plan: apiPlan } = useSubscription();
+  const { planId, plan: apiPlan, expiresAt } = useSubscription();
 
   // Цены — из GET /subscription/{plan_id} поверх статичных данных
   // (см. useTariffPricing) — чтобы не расходились с тем, что реально
@@ -152,6 +153,15 @@ export default function SubscriptionTariff() {
 
   return (
     <section className="lk-tariffs">
+
+      {/* В корпоративной редакции тариф сотруднику назначает компания:
+          объясняем это до того, как он нажмёт на карточку и получит 403. */}
+      {isB2B && (
+        <CompanyPaidNotice
+          planName={currentPlanName}
+          expiresAt={expiresAt}
+        />
+      )}
 
       <div className="lk-tariffs__head">
         <div>

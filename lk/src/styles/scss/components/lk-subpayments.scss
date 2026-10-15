@@ -137,7 +137,7 @@
 .lk-payments-item.is-active {
   border-color: $lk-brand;
   background: $lk-surface-soft;
-  box-shadow: 0 0 0 1px rgba(93, 143, 114, 0.15);
+  box-shadow: 0 0 0 1px rgba(var(--lk-brand-rgb), 0.15);
 }
 
 
@@ -159,8 +159,8 @@
 
   background: linear-gradient(
     135deg,
-    rgba(93, 143, 114, 0.12),
-    rgba(93, 143, 114, 0.05)
+    rgba(var(--lk-brand-rgb), 0.12),
+    rgba(var(--lk-brand-rgb), 0.05)
   );
 
   color: $lk-brand;
@@ -171,7 +171,7 @@
 
 .lk-payments-item__icon:hover {
   transform: scale(1.08);
-  background: rgba(93, 143, 114, 0.18);
+  background: rgba(var(--lk-brand-rgb), 0.18);
 }
 
 
@@ -220,7 +220,7 @@
 }
 
 .lk-payments-status.is-success {
-  background: rgba(93, 143, 114, 0.12);
+  background: rgba(var(--lk-brand-rgb), 0.12);
   color: $lk-brand;
 }
 
@@ -278,7 +278,7 @@
 }
 
 .lk-invoice-status.is-paid {
-  background: rgba(93, 143, 114, 0.12);
+  background: rgba(var(--lk-brand-rgb), 0.12);
   color: $lk-brand;
 }
 
@@ -327,7 +327,7 @@
 
 .lk-payments-status.is-paid,
 .lk-invoice-status.is-paid {
-  background: rgba(93, 143, 114, 0.12);
+  background: rgba(var(--lk-brand-rgb), 0.12);
   color: $lk-brand;
 }
 

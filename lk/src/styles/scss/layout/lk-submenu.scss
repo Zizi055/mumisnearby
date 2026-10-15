@@ -40,7 +40,7 @@
 
 
 .lk-submenu__link:hover {
-  background: rgba(93, 143, 114, 0.08);
+  background: rgba(var(--lk-brand-rgb), 0.08);
   color: $lk-text;
   transform: translateX(2px);
 }

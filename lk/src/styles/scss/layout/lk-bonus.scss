@@ -66,19 +66,19 @@
 .lk-bonus-item.is-accent {
   background: linear-gradient(
     135deg,
-    rgba(93, 143, 114, 0.12),
-    rgba(93, 143, 114, 0.03)
+    rgba(var(--lk-brand-rgb), 0.12),
+    rgba(var(--lk-brand-rgb), 0.03)
   );
 }
 
 .lk-bonus-item.is-primary {
   background: linear-gradient(
     135deg,
-    rgba(93, 143, 114, 0.18),
-    rgba(93, 143, 114, 0.05)
+    rgba(var(--lk-brand-rgb), 0.18),
+    rgba(var(--lk-brand-rgb), 0.05)
   );
 
-  border-color: rgba(93, 143, 114, 0.35);
+  border-color: rgba(var(--lk-brand-rgb), 0.35);
 }
 
 .lk-bonus-item.is-soft {
@@ -103,7 +103,7 @@
   flex-shrink: 0;
 
   border-radius: $lk-radius-12;
-  background: rgba(93, 143, 114, 0.1);
+  background: rgba(var(--lk-brand-rgb), 0.1);
   color: $lk-brand;
 }
 
@@ -138,7 +138,7 @@
   padding: 4px 9px;
   border-radius: $lk-radius-pill;
 
-  background: rgba(93, 143, 114, 0.14);
+  background: rgba(var(--lk-brand-rgb), 0.14);
   color: $lk-brand;
 
   white-space: nowrap;
@@ -218,7 +218,7 @@
 }
 
 .lk-bonus-ref__copy:hover {
-  background: rgba(93, 143, 114, 0.1);
+  background: rgba(var(--lk-brand-rgb), 0.1);
   color: $lk-brand;
 }
 
@@ -283,7 +283,7 @@
   padding: 12px 14px;
   border-radius: $lk-radius-16;
 
-  background: rgba(93, 143, 114, 0.08);
+  background: rgba(var(--lk-brand-rgb), 0.08);
 }
 
 .lk-invite__code span {
@@ -543,7 +543,7 @@
       font-size: 13px;
       color: $lk-text-soft;
       padding: 6px 0;
-      border-bottom: 1px solid rgba($lk-brand, 0.08);
+      border-bottom: 1px solid rgba(var(--lk-brand-rgb), 0.08);
 
       &:last-child { border-bottom: none; }
     }
@@ -576,18 +576,18 @@
 /* Социальные карточки */
 .lk-bonus-item.is-social {
   background: linear-gradient(135deg, #f0f4f2 0%, #e8eeeb 100%);
-  border-color: rgba($lk-brand, 0.15);
+  border-color: rgba(var(--lk-brand-rgb), 0.15);
 }
 
 .lk-bonus-item__badge.is-social {
-  background: rgba($lk-brand-dark, 0.1);
+  background: rgba(var(--lk-brand-dark-rgb), 0.1);
   color: $lk-brand-dark;
 }
 
 .lk-bonus-docs {
   margin-top: 12px;
   padding-top: 12px;
-  border-top: 1px solid rgba($lk-brand, 0.12);
+  border-top: 1px solid rgba(var(--lk-brand-rgb), 0.12);
 
   &__title {
     font-size: 12px;
@@ -635,8 +635,8 @@
   padding: 14px 18px;
   margin-bottom: $lk-space-16;
   border-radius: $lk-radius-12;
-  background: linear-gradient(135deg, rgba($lk-brand, 0.1), rgba($lk-brand-dark, 0.08));
-  border: 1px solid rgba($lk-brand, 0.2);
+  background: linear-gradient(135deg, rgba(var(--lk-brand-rgb), 0.1), rgba(var(--lk-brand-dark-rgb), 0.08));
+  border: 1px solid rgba(var(--lk-brand-rgb), 0.2);
   color: $lk-text;
   font-size: 14px;
 

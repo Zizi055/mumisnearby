@@ -86,7 +86,7 @@
     }
 
     .trial-banner__icon {
-      background: #5d8f72;
+      background: var(--lk-brand);
       color: #fff;
     }
 
@@ -103,7 +103,7 @@
     }
 
     .trial-banner__cta {
-      background: #5d8f72;
+      background: var(--lk-brand);
       color: #fff;
     }
   }
@@ -136,8 +136,8 @@
 }
 
 @keyframes trial-pulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(93, 143, 114, 0.4); }
-  50% { box-shadow: 0 0 0 6px rgba(93, 143, 114, 0); }
+  0%, 100% { box-shadow: 0 0 0 0 rgba(var(--lk-brand-rgb), 0.4); }
+  50% { box-shadow: 0 0 0 6px rgba(var(--lk-brand-rgb), 0); }
 }
 
 @media (max-width: 600px) {

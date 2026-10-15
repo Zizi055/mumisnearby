@@ -134,12 +134,7 @@
     border-color: $lk-brand;
 
     box-shadow:
-      0 0 0 3px rgba(
-        93,
-        143,
-        114,
-        0.12
-      );
+      0 0 0 3px rgba(var(--lk-brand-rgb), 0.12);
   }
 }
 
@@ -172,7 +167,7 @@
 .lk-settings__success {
   padding: 10px 12px;
   border-radius: $lk-radius-12;
-  background: rgba(93, 143, 114, 0.10);
+  background: rgba(var(--lk-brand-rgb), 0.10);
   color: $lk-brand-dark;
   font-size: 13px;
   font-weight: 500;
@@ -253,12 +248,7 @@
     background: $lk-white;
 
     box-shadow:
-      0 0 0 3px rgba(
-        93,
-        143,
-        114,
-        0.12
-      );
+      0 0 0 3px rgba(var(--lk-brand-rgb), 0.12);
   }
 }
 

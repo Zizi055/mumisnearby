@@ -182,7 +182,7 @@
 
   border-radius: $lk-radius-12;
 
-  background: rgba(93, 143, 114, 0.1);
+  background: rgba(var(--lk-brand-rgb), 0.1);
   color: $lk-brand;
   font-size: 13px;
 }
@@ -227,7 +227,7 @@
   &:hover { color: $lk-text; }
 
   &.is-active {
-    background: rgba(93, 143, 114, 0.1);
+    background: rgba(var(--lk-brand-rgb), 0.1);
     color: $lk-brand;
     font-weight: 600;
   }
@@ -548,7 +548,7 @@
 
   border-radius: $lk-radius-pill;
 
-  background: rgba(93, 143, 114, 0.08);
+  background: rgba(var(--lk-brand-rgb), 0.08);
 
   color: $lk-brand;
 
@@ -585,7 +585,7 @@
 
   cursor: pointer;
 
-  &:hover { border-color: rgba(93, 143, 114, 0.2); color: $lk-text; }
+  &:hover { border-color: rgba(var(--lk-brand-rgb), 0.2); color: $lk-text; }
 }
 
 @keyframes lk-admin-spin { to { transform: rotate(360deg); } }
@@ -674,7 +674,7 @@
 
   &.is-active {
     border-color: transparent;
-    background: rgba(93, 143, 114, 0.1);
+    background: rgba(var(--lk-brand-rgb), 0.1);
     color: $lk-brand;
     font-weight: 600;
   }
@@ -718,11 +718,11 @@
 
   transition: border-color 0.15s ease;
 
-  &:hover { border-color: rgba(93, 143, 114, 0.25); }
+  &:hover { border-color: rgba(var(--lk-brand-rgb), 0.25); }
 
   &.is-active {
     border-color: $lk-brand;
-    background: rgba(93, 143, 114, 0.04);
+    background: rgba(var(--lk-brand-rgb), 0.04);
   }
 }
 
@@ -771,7 +771,7 @@
   background: rgba(148, 163, 184, 0.12);
   color: $lk-text-muted;
 
-  &.is-new       { background: rgba(93, 143, 114, 0.1);  color: $lk-brand; }
+  &.is-new       { background: rgba(var(--lk-brand-rgb), 0.1);  color: $lk-brand; }
   &.is-progress  { background: rgba(234, 179, 8, 0.12);  color: #a16207; }
   &.is-resolved  { background: rgba(34, 197, 94, 0.12);  color: #15803d; }
 }
@@ -956,7 +956,7 @@
 
     &:focus {
       border-color: $lk-brand;
-      box-shadow: 0 0 0 3px rgba(93, 143, 114, 0.12);
+      box-shadow: 0 0 0 3px rgba(var(--lk-brand-rgb), 0.12);
     }
   }
 
@@ -1303,8 +1303,8 @@
 .lk-admin-item.is-unread {
   position: relative;
 
-  background: rgba(93, 143, 114, 0.05);
-  border-color: rgba(93, 143, 114, 0.22);
+  background: rgba(var(--lk-brand-rgb), 0.05);
+  border-color: rgba(var(--lk-brand-rgb), 0.22);
 
   padding-left: calc(#{$lk-space-14} + 4px);
 }
@@ -1330,7 +1330,7 @@
 
 /* Выбранное обращение важнее метки непрочитанного */
 .lk-admin-item.is-active.is-unread {
-  background: rgba(93, 143, 114, 0.12);
+  background: rgba(var(--lk-brand-rgb), 0.12);
 }
 
 

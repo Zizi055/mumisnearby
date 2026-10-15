@@ -62,11 +62,11 @@
 
   transform: translateY(-2px);
 
-  border-color: rgba(93, 143, 114, 0.18);
+  border-color: rgba(var(--lk-brand-rgb), 0.18);
 
   box-shadow:
 
-    0 12px 24px rgba(93, 143, 114, 0.08);
+    0 12px 24px rgba(var(--lk-brand-rgb), 0.08);
 
 }
 
@@ -103,7 +103,7 @@
 
   border-radius: 12px;
 
-  background: rgba(93, 143, 114, 0.08);
+  background: rgba(var(--lk-brand-rgb), 0.08);
 
   color: $lk-brand;
 
@@ -174,7 +174,7 @@
 
   border-radius: 999px;
 
-  background: rgba(93, 143, 114, 0.08);
+  background: rgba(var(--lk-brand-rgb), 0.08);
 
 }
 
@@ -203,7 +203,7 @@
 
   border-radius: $lk-radius-pill;
 
-  background: rgba(93, 143, 114, 0.08);
+  background: rgba(var(--lk-brand-rgb), 0.08);
 }
 
 .lk-dashboard-side-card__progress span {
@@ -262,7 +262,7 @@
   margin-bottom: $lk-space-16;
   padding: 8px 14px;
 
-  background: rgba(93, 143, 114, 0.12);
+  background: rgba(var(--lk-brand-rgb), 0.12);
 
   border-radius: $lk-radius-pill;
 
@@ -322,7 +322,7 @@
 
   overflow: hidden;
 
-  background: rgba(93, 143, 114, 0.1);
+  background: rgba(var(--lk-brand-rgb), 0.1);
 
   border-radius: $lk-radius-pill;
 }
@@ -426,11 +426,11 @@
   background:
     linear-gradient(
       180deg,
-      rgba(93, 143, 114, .14) 0%,
-      rgba(93, 143, 114, .06) 100%
+      rgba(var(--lk-brand-rgb), .14) 0%,
+      rgba(var(--lk-brand-rgb), .06) 100%
     );
 
-  border: 1px solid rgba(93, 143, 114, .20);
+  border: 1px solid rgba(var(--lk-brand-rgb), .20);
   border-radius: $lk-radius-24;
 }
 
@@ -473,7 +473,7 @@
   &:hover {
     background: #fff;
 
-    border-color: rgba(93, 143, 114, .28);
+    border-color: rgba(var(--lk-brand-rgb), .28);
 
     transform: translateY(-1px);
   }
@@ -487,7 +487,7 @@
 
   border-radius: 12px;
 
-  background: rgba(93, 143, 114, .14);
+  background: rgba(var(--lk-brand-rgb), .14);
 
   color: $lk-brand-dark;
 
@@ -573,7 +573,7 @@
 
   border-radius: $lk-radius-pill;
 
-  background: rgba(93, 143, 114, 0.12);
+  background: rgba(var(--lk-brand-rgb), 0.12);
 
   font-size: 12px;
   line-height: 1.4;
@@ -659,7 +659,7 @@
 
   border-radius: $lk-radius-pill;
 
-  background: rgba(93, 143, 114, 0.10);
+  background: rgba(var(--lk-brand-rgb), 0.10);
 
   overflow: hidden;
 
@@ -673,7 +673,7 @@
     background:
       linear-gradient(
         90deg,
-        rgba(93, 143, 114, 1) 0%,
+        rgba(var(--lk-brand-rgb), 1) 0%,
         rgba(74, 118, 93, 1) 100%
       );
 
@@ -690,7 +690,7 @@ color: $lk-brand-dark;
     linear-gradient(
       180deg,
       rgba(92, 255, 160, 0.14),
-      rgba(93, 143, 114, 0.06)
+      rgba(var(--lk-brand-rgb), 0.06)
     );
     display: flex;
   align-items: center;
@@ -767,7 +767,7 @@ color: $lk-brand-dark;
     linear-gradient(
       180deg,
       rgba(92, 255, 160, 0.14),
-      rgba(93, 143, 114, 0.06)
+      rgba(var(--lk-brand-rgb), 0.06)
     );
 
     display: flex;
@@ -834,7 +834,7 @@ color: $lk-brand-dark;
 
   &:hover:not(:disabled) {
     background: $lk-surface-soft;
-    border-color: rgba(93, 143, 114, .28);
+    border-color: rgba(var(--lk-brand-rgb), .28);
     color: $lk-brand-dark;
   }
 
@@ -907,17 +907,17 @@ color: $lk-brand-dark;
 .lk-dashboard-story:hover {
   transform: translateY(-2px);
 
-  border-color: rgba(93, 143, 114, 0.2);
+  border-color: rgba(var(--lk-brand-rgb), 0.2);
 
   box-shadow:
-    0 10px 20px rgba(93, 143, 114, 0.08);
+    0 10px 20px rgba(var(--lk-brand-rgb), 0.08);
 }
 
 /* Активная озвучка — та, что сейчас в hero-секции. */
 .lk-dashboard-story.is-active {
-  border-color: rgba(93, 143, 114, .35);
+  border-color: rgba(var(--lk-brand-rgb), .35);
 
-  background: rgba(93, 143, 114, .05);
+  background: rgba(var(--lk-brand-rgb), .05);
 
   .lk-dashboard-story__play {
     background: $lk-brand;
@@ -964,7 +964,7 @@ display: flex;
   align-items: center;
   justify-content: center;
 
-  background: rgba(93, 143, 114, 0.08);
+  background: rgba(var(--lk-brand-rgb), 0.08);
 
   border-radius: 50%;
 
@@ -1064,7 +1064,7 @@ display: flex;
 }
 
 .lk-dashboard-voice__status.is-active {
-  background: rgba(93, 143, 114, 0.12);
+  background: rgba(var(--lk-brand-rgb), 0.12);
 
   color: $lk-brand;
 }
@@ -1161,8 +1161,8 @@ display: flex;
 /* Виджет реферальной ссылки */
 .lk-dashboard-referral {
   padding: $lk-card-padding;
-  background: linear-gradient(160deg, rgba($lk-brand, 0.06) 0%, #fff 100%);
-  border: 1px solid rgba($lk-brand, 0.15);
+  background: linear-gradient(160deg, rgba(var(--lk-brand-rgb), 0.06) 0%, #fff 100%);
+  border: 1px solid rgba(var(--lk-brand-rgb), 0.15);
   border-radius: $lk-radius-24;
   box-shadow: $lk-shadow-card;
   display: flex;
@@ -1174,7 +1174,7 @@ display: flex;
     width: 40px;
     height: 40px;
     border-radius: 12px;
-    background: linear-gradient(180deg, rgba($lk-brand, 0.15), rgba($lk-brand, 0.06));
+    background: linear-gradient(180deg, rgba(var(--lk-brand-rgb), 0.15), rgba(var(--lk-brand-rgb), 0.06));
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1200,8 +1200,8 @@ display: flex;
     align-items: center;
     gap: 8px;
     padding: 8px 12px;
-    background: rgba($lk-brand, 0.06);
-    border: 1px solid rgba($lk-brand, 0.12);
+    background: rgba(var(--lk-brand-rgb), 0.06);
+    border: 1px solid rgba(var(--lk-brand-rgb), 0.12);
     border-radius: $lk-radius-12;
 
     span {

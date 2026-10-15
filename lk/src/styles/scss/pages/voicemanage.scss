@@ -100,7 +100,7 @@
   background:
     radial-gradient(
       circle at top right,
-      rgba(93, 143, 114, 0.08),
+      rgba(var(--lk-brand-rgb), 0.08),
       transparent 38%
     );
 
@@ -128,8 +128,8 @@
   background:
     linear-gradient(
       180deg,
-      rgba(93, 143, 114, 0.14),
-      rgba(93, 143, 114, 0.06)
+      rgba(var(--lk-brand-rgb), 0.14),
+      rgba(var(--lk-brand-rgb), 0.06)
     );
 
   color: $lk-brand;
@@ -174,7 +174,7 @@
 
   border-radius: $lk-radius-20;
 
-  border: 1px dashed rgba(93, 143, 114, 0.24);
+  border: 1px dashed rgba(var(--lk-brand-rgb), 0.24);
 
   background:
     linear-gradient(
@@ -200,7 +200,7 @@
 .lk-voice-upload__drop:hover {
   transform: translateY(-2px);
 
-  border-color: rgba(93, 143, 114, 0.48);
+  border-color: rgba(var(--lk-brand-rgb), 0.48);
 
   background:
     linear-gradient(
@@ -277,7 +277,7 @@
 }
 
 .lk-voice-training__badge.is-ready {
-  background: rgba(93, 143, 114, 0.12);
+  background: rgba(var(--lk-brand-rgb), 0.12);
   color: $lk-brand;
 }
 
@@ -362,7 +362,7 @@
   background:
     linear-gradient(
       90deg,
-      rgba(93, 143, 114, 1),
+      rgba(var(--lk-brand-rgb), 1),
       rgba(126, 180, 148, 1)
     );
 
@@ -398,7 +398,7 @@
   height: 52px;
   border-radius: 14px;
   background: linear-gradient(135deg, #e8f5ee, #c8e6d4);
-  color: #5d8f72;
+  color: var(--lk-brand);
   font-size: 22px;
   font-weight: 700;
   display: flex;
@@ -443,8 +443,8 @@
    как чужеродный баннер. Стало: светлая карточка в тон остальному ЛК,
    акцент оставлен только на кнопке и заполненной части таймлайна. */
 .lk-voice-player__body {
-  background: rgba(93, 143, 114, 0.05);
-  border: 1px solid rgba(93, 143, 114, 0.14);
+  background: rgba(var(--lk-brand-rgb), 0.05);
+  border: 1px solid rgba(var(--lk-brand-rgb), 0.14);
   border-radius: 16px;
   padding: 16px 18px;
   display: flex;
@@ -473,7 +473,7 @@
   border-radius: 2px;
   /* Волна перекрашена под светлый фон — на белом белые полоски
      раньше были не видны вовсе. */
-  background: rgba(93, 143, 114, 0.28);
+  background: rgba(var(--lk-brand-rgb), 0.28);
   transition: background 0.3s;
 }
 
@@ -528,7 +528,7 @@
 .lk-voice-player__wave span:nth-child(48) { height: 20px; animation-delay: 1.92s; }
 
 .lk-voice-player__wave.is-playing span {
-  background: rgba(93, 143, 114, 0.75);
+  background: rgba(var(--lk-brand-rgb), 0.75);
   animation: voiceBar 0.9s ease-in-out infinite alternate;
 }
 
@@ -551,7 +551,7 @@
     height: 3px;
     -webkit-appearance: none;
     appearance: none;
-    background: rgba(93, 143, 114, 0.20);
+    background: rgba(var(--lk-brand-rgb), 0.20);
     border-radius: 2px;
     outline: none;
     cursor: pointer;
@@ -562,7 +562,7 @@
       height: 14px;
       border-radius: 50%;
       background: $lk-brand;
-      box-shadow: 0 1px 4px rgba(93, 143, 114, 0.35);
+      box-shadow: 0 1px 4px rgba(var(--lk-brand-rgb), 0.35);
       cursor: pointer;
     }
 
@@ -648,8 +648,8 @@
   background:
     linear-gradient(
       180deg,
-      rgba(93, 143, 114, 0.9),
-      rgba(93, 143, 114, 0.34)
+      rgba(var(--lk-brand-rgb), 0.9),
+      rgba(var(--lk-brand-rgb), 0.34)
     );
 
   animation: lkVoiceWave 1.1s ease-in-out infinite;
@@ -804,7 +804,7 @@
   background:
     linear-gradient(
       180deg,
-      rgba(93, 143, 114, 1),
+      rgba(var(--lk-brand-rgb), 1),
       rgba(78, 121, 96, 1)
     );
 
@@ -841,8 +841,8 @@
   background:
     linear-gradient(
       180deg,
-      rgba(93, 143, 114, 0.12),
-      rgba(93, 143, 114, 0.08)
+      rgba(var(--lk-brand-rgb), 0.12),
+      rgba(var(--lk-brand-rgb), 0.08)
     );
 
   color: $lk-brand;
@@ -906,7 +906,7 @@
   background:
     linear-gradient(
       180deg,
-      rgba(93, 143, 114, 1),
+      rgba(var(--lk-brand-rgb), 1),
       rgba(78, 121, 96, 1)
     );
 
@@ -926,7 +926,7 @@
   transform: translateY(-1px);
 
   box-shadow:
-    0 14px 28px rgba(93, 143, 114, 0.2);
+    0 14px 28px rgba(var(--lk-brand-rgb), 0.2);
 }
 
 /* =========================================
@@ -996,8 +996,8 @@
 
   border-radius: 16px;
 
-  background: rgba(93,143,114,0.05);
-  border: 1.5px solid rgba(93,143,114,0.15);
+  background: rgba(var(--lk-brand-rgb), 0.05);
+  border: 1.5px solid rgba(var(--lk-brand-rgb), 0.15);
 
   cursor: pointer;
 
@@ -1005,7 +1005,7 @@
 }
 
 .lk-voice-consent:hover {
-  border-color: rgba(93,143,114,0.3);
+  border-color: rgba(var(--lk-brand-rgb), 0.3);
 }
 
 .lk-voice-consent input[type="checkbox"] {
@@ -1020,7 +1020,7 @@
   margin-top: 1px;
 
   border-radius: 6px;
-  border: 1.5px solid rgba(93,143,114,0.35);
+  border: 1.5px solid rgba(var(--lk-brand-rgb), 0.35);
   background: white;
 
   transition: 0.2s ease;
@@ -1029,8 +1029,8 @@
 }
 
 .lk-voice-consent input:checked + .lk-voice-consent__box {
-  background: #5d8f72;
-  border-color: #5d8f72;
+  background: var(--lk-brand);
+  border-color: var(--lk-brand);
 }
 
 .lk-voice-consent input:checked + .lk-voice-consent__box::after {
@@ -1052,14 +1052,14 @@
 }
 
 .lk-voice-consent__link {
-  color: #5d8f72;
+  color: var(--lk-brand);
   font-weight: 500;
   text-decoration: underline;
   text-underline-offset: 2px;
 }
 
 .lk-voice-consent__link:hover {
-  color: #4e7d63;
+  color: var(--lk-brand-dark);
 }
 
 .lk-voice-upload__drop.is-disabled {

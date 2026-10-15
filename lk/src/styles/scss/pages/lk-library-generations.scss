@@ -37,11 +37,11 @@
     box-shadow .18s ease;
 
   &:hover {
-    border-color: rgba(93, 143, 114, .22);
+    border-color: rgba(var(--lk-brand-rgb), .22);
 
     transform: translateY(-2px);
 
-    box-shadow: 0 10px 22px rgba(93, 143, 114, .08);
+    box-shadow: 0 10px 22px rgba(var(--lk-brand-rgb), .08);
   }
 }
 
@@ -262,7 +262,7 @@
 }
 
 .lk-generations-badge.is-ready {
-  background: rgba(93, 143, 114, 0.12);
+  background: rgba(var(--lk-brand-rgb), 0.12);
   color: $lk-brand;
 }
 

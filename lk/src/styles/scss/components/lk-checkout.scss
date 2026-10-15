@@ -77,7 +77,7 @@
   background:
     linear-gradient(
       180deg,
-      rgba(93, 143, 114, 0.04) 0%,
+      rgba(var(--lk-brand-rgb), 0.04) 0%,
       rgba(255, 255, 255, 0) 42%
     ),
     $lk-surface;
@@ -105,7 +105,7 @@
   padding: 4px 10px;
   border-radius: $lk-radius-pill;
 
-  background: rgba(93, 143, 114, 0.1);
+  background: rgba(var(--lk-brand-rgb), 0.1);
   color: $lk-brand;
 
   font-size: 12px;
@@ -212,7 +212,7 @@
   background:
     linear-gradient(
       180deg,
-      rgba(93, 143, 114, 0.08) 0%,
+      rgba(var(--lk-brand-rgb), 0.08) 0%,
       rgba(255, 255, 255, 0) 38%
     ),
     $lk-surface;
@@ -220,7 +220,7 @@
   border: 1px solid $lk-border;
   box-shadow:
     0 18px 50px rgba(0, 0, 0, 0.045),
-    0 0 0 1px rgba(93, 143, 114, 0.02);
+    0 0 0 1px rgba(var(--lk-brand-rgb), 0.02);
 }
 
 .lk-summary__head {
@@ -244,7 +244,7 @@
   padding: 4px 9px;
   border-radius: $lk-radius-pill;
 
-  background: rgba(93, 143, 114, 0.1);
+  background: rgba(var(--lk-brand-rgb), 0.1);
   color: $lk-brand;
 
   font-size: 12px;
@@ -280,7 +280,7 @@
   padding: $lk-space-10 $lk-space-12;
   border-radius: $lk-radius-12;
 
-  background: rgba(93, 143, 114, 0.08);
+  background: rgba(var(--lk-brand-rgb), 0.08);
 
   font-size: 12px;
   line-height: 1.4;

@@ -48,13 +48,13 @@
 
 .lk-tariff-card:hover {
   transform: translateY(-2px);
-  border-color: rgba(93, 143, 114, 0.22);
+  border-color: rgba(var(--lk-brand-rgb), 0.22);
 }
 
 
 .lk-tariff-card.is-current {
   border: 1px solid $lk-brand;
-  background: rgba(93, 143, 114, 0.05);
+  background: rgba(var(--lk-brand-rgb), 0.05);
 }
 
 
@@ -66,13 +66,13 @@
 
   background: linear-gradient(
     180deg,
-    rgba(93, 143, 114, 0.12) 0%,
-    rgba(93, 143, 114, 0.03) 100%
+    rgba(var(--lk-brand-rgb), 0.12) 0%,
+    rgba(var(--lk-brand-rgb), 0.03) 100%
   );
 
   box-shadow:
-    0 0 0 1px rgba(93,143,114,0.1),
-    0 20px 60px rgba(93,143,114,0.2);
+    0 0 0 1px rgba(var(--lk-brand-rgb), 0.1),
+    0 20px 60px rgba(var(--lk-brand-rgb), 0.2);
 }
 
 
@@ -204,7 +204,7 @@
 
     padding: 9px 0;
 
-    border-bottom: 1px solid rgba(93, 143, 114, 0.10);
+    border-bottom: 1px solid rgba(var(--lk-brand-rgb), 0.10);
 
     font-size: 13px;
     line-height: 1.45;
@@ -265,7 +265,7 @@
 
     padding: 9px 0;
 
-    border-bottom: 1px solid rgba(93, 143, 114, 0.10);
+    border-bottom: 1px solid rgba(var(--lk-brand-rgb), 0.10);
 
     font-size: 13px;
     line-height: 1.4;
@@ -453,7 +453,7 @@
 
 .lk-compare-plan:hover,
 .lk-compare-plan:hover ~ .lk-compare-value {
-  background: rgba(93, 143, 114, 0.06);
+  background: rgba(var(--lk-brand-rgb), 0.06);
 }
 
 
@@ -500,7 +500,7 @@
 }
 
 .lk-tariff-access-item.is-open {
-  background: rgba(93, 143, 114, 0.06);
+  background: rgba(var(--lk-brand-rgb), 0.06);
 }
 
 .lk-tariff-access__status {
@@ -520,8 +520,8 @@
 
   background: linear-gradient(
     180deg,
-    rgba(93, 143, 114, 0.10) 0%,
-    rgba(93, 143, 114, 0.02) 100%
+    rgba(var(--lk-brand-rgb), 0.10) 0%,
+    rgba(var(--lk-brand-rgb), 0.02) 100%
   );
 }
 .lk-tariff-price__note {

@@ -113,7 +113,7 @@
 }
 
 .lk-btn--ghost:hover {
-  --btn-bg: rgba(93, 143, 114, 0.08);
+  --btn-bg: rgba(var(--lk-brand-rgb), 0.08);
   --btn-color: #{$lk-text};
 }
 

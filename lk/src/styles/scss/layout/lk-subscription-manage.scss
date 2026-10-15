@@ -126,7 +126,7 @@
 
   &:hover {
     background: #fff;
-    border-color: rgba(93, 143, 114, .24);
+    border-color: rgba(var(--lk-brand-rgb), .24);
     transform: translateY(-1px);
   }
 }
@@ -139,7 +139,7 @@
 
   border-radius: 11px;
 
-  background: rgba(93, 143, 114, .10);
+  background: rgba(var(--lk-brand-rgb), .10);
 
   color: $lk-brand-dark;
 
@@ -285,7 +285,7 @@
   padding: 3px 8px;
 
   border-radius: $lk-radius-pill;
-  background: rgba(93,143,114,0.12);
+  background: rgba(var(--lk-brand-rgb), 0.12);
   color: $lk-brand;
 }
 
@@ -413,7 +413,7 @@
   color: $lk-brand;
 
   white-space: nowrap;
-  border: 1px solid rgba(93, 143, 114, 0.2);
+  border: 1px solid rgba(var(--lk-brand-rgb), 0.2);
 }
 
 /* маленькая точка (как в Linear) */

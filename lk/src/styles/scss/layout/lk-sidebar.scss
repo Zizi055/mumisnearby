@@ -53,13 +53,13 @@
 }
 
 .lk-sidebar__icon:hover {
-  background: rgba(93, 143, 114, 0.08);
+  background: rgba(var(--lk-brand-rgb), 0.08);
   color: $lk-brand;
   transform: translateY(-1px);
 }
 
 .lk-sidebar__icon.is-active {
-  background: rgba(93, 143, 114, 0.12);
+  background: rgba(var(--lk-brand-rgb), 0.12);
   color: $lk-brand;
 }
 
@@ -167,7 +167,7 @@
 
   .lk-sidebar__icon:hover {
     transform: none;
-    background: rgba(93, 143, 114, 0.08);
+    background: rgba(var(--lk-brand-rgb), 0.08);
   }
 
   /* здесь сайдбар — полноценный список, название показываем как

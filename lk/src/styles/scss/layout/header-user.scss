@@ -20,7 +20,7 @@
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background: var(--lk-brand, #5d8f72);
+  background: var(--lk-brand, var(--lk-brand));
   color: #fff;
   font-size: 13px;
   font-weight: 500;
@@ -96,7 +96,7 @@
 
 .lk-notif-panel__head button {
   font-size: 12px;
-  color: var(--lk-brand, #5d8f72);
+  color: var(--lk-brand, var(--lk-brand));
   background: none;
   border: none;
   cursor: pointer;
@@ -147,8 +147,8 @@
 
   border-radius: 9px;
 
-  background: rgba(93, 143, 114, 0.1);
-  color: var(--lk-brand, #5d8f72);
+  background: rgba(var(--lk-brand-rgb), 0.1);
+  color: var(--lk-brand, var(--lk-brand));
 }
 
 .lk-notif-item.is-read .lk-notif-item__icon {
@@ -174,7 +174,7 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background: var(--lk-brand, #5d8f72);
+  background: var(--lk-brand, var(--lk-brand));
   flex-shrink: 0;
   margin-top: 5px;
 }
@@ -220,8 +220,8 @@
 }
 
 .lk-notif-item__check:hover {
-  background: var(--lk-brand, #5d8f72);
-  border-color: var(--lk-brand, #5d8f72);
+  background: var(--lk-brand, var(--lk-brand));
+  border-color: var(--lk-brand, var(--lk-brand));
   color: #fff;
 }
 
@@ -233,7 +233,7 @@
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background: var(--lk-brand, #5d8f72);
+  background: var(--lk-brand, var(--lk-brand));
   color: #fff;
   font-size: 13px;
   font-weight: 500;
@@ -243,7 +243,7 @@
 }
 
 .lk-sidebar__icon--profile.is-active .lk-sidebar__avatar {
-  box-shadow: 0 0 0 2px var(--lk-brand, #5d8f72);
+  box-shadow: 0 0 0 2px var(--lk-brand, var(--lk-brand));
   outline: 2px solid #fff;
 }
 

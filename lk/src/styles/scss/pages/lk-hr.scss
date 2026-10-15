@@ -184,8 +184,8 @@
   margin: 0 auto;
   padding: $lk-space-14 $lk-space-28;
 
-  background: rgba($lk-danger, 0.07);
-  border-bottom: 1px solid rgba($lk-danger, 0.2);
+  background: rgba(var(--lk-danger-rgb), 0.07);
+  border-bottom: 1px solid rgba(var(--lk-danger-rgb), 0.2);
 
   box-sizing: border-box;
 
@@ -633,12 +633,12 @@
 }
 
 .lk-hr-error {
-  background: rgba($lk-danger, 0.08);
+  background: rgba(var(--lk-danger-rgb), 0.08);
   color: $lk-danger;
 }
 
 .lk-hr-success {
-  background: rgba($lk-success, 0.1);
+  background: rgba(var(--lk-success-rgb), 0.1);
   color: $lk-success;
 }
 
@@ -1306,12 +1306,12 @@
   }
 
   &--good {
-    background: rgba($lk-success, 0.1);
+    background: rgba(var(--lk-success-rgb), 0.1);
     color: $lk-success;
   }
 
   &--bad {
-    background: rgba($lk-danger, 0.08);
+    background: rgba(var(--lk-danger-rgb), 0.08);
     color: $lk-danger;
   }
 }
@@ -1361,5 +1361,61 @@
   .lk-hr-login__card,
   .lk-promo__card {
     padding: $lk-space-20;
+  }
+}
+
+/* ── Плашка «доступ оплачен компанией» в кабинете сотрудника ────────
+   Графитовая, а не зелёная: это не успех и не ошибка, а объяснение
+   положения дел. Зелёный на всю ширину читался бы как поздравление. */
+
+.lk-company-paid {
+  display: flex;
+  gap: $lk-space-14;
+  align-items: flex-start;
+  margin-bottom: $lk-section-gap;
+  padding: $lk-space-20 $lk-space-24;
+  border-radius: $lk-card-radius;
+  background: var(--lk-ink-800, #1b2231);
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.lk-company-paid__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 38px;
+  height: 38px;
+  flex: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+.lk-company-paid__title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.lk-company-paid__text {
+  margin-top: 4px;
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+
+.lk-company-paid__privacy {
+  display: flex;
+  gap: 7px;
+  align-items: flex-start;
+  margin-top: $lk-space-12;
+  padding-top: $lk-space-12;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.62);
+
+  svg {
+    flex: none;
+    margin-top: 2px;
   }
 }

@@ -10,6 +10,13 @@ import {
 } from './context/AuthContext';
 
 import './styles/scss/style.scss';
+import { isB2B } from './config/edition';
+
+// Графитовая тема корпоративной редакции. Класс ставится до первого
+// рендера, поэтому кабинет не успевает мигнуть зелёной палитрой.
+if (isB2B) {
+  document.documentElement.classList.add('theme-b2b');
+}
 
 createRoot(
   document.getElementById('root')

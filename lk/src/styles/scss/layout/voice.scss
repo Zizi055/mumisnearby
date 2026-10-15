@@ -361,9 +361,9 @@
   .lk-input:focus {
     outline: none;
     background: #fff;
-    border-color: #5D8F72;
+    border-color: var(--lk-brand);
 
-    box-shadow: 0 0 0 3px rgba(93, 143, 114, 0.12);
+    box-shadow: 0 0 0 3px rgba(var(--lk-brand-rgb), 0.12);
   }
 
   .lk-input:hover {

@@ -91,8 +91,8 @@
   background:
     linear-gradient(
       135deg,
-      rgba(93,143,114,0.12),
-      rgba(93,143,114,0.06)
+      rgba(var(--lk-brand-rgb), 0.12),
+      rgba(var(--lk-brand-rgb), 0.06)
     );
 }
 
@@ -232,7 +232,7 @@
 
   border-radius: 999px;
 
-  background: linear-gradient(180deg, rgba(93,143,114,0.12), rgba(93,143,114,0.07));
+  background: linear-gradient(180deg, rgba(var(--lk-brand-rgb), 0.12), rgba(var(--lk-brand-rgb), 0.07));
 
   color: $lk-brand;
 
@@ -383,11 +383,11 @@
   background:
     linear-gradient(
       135deg,
-      rgba(93,143,114,0.07),
-      rgba(93,143,114,0.03)
+      rgba(var(--lk-brand-rgb), 0.07),
+      rgba(var(--lk-brand-rgb), 0.03)
     );
 
-  border-color: rgba(93,143,114,0.15);
+  border-color: rgba(var(--lk-brand-rgb), 0.15);
 }
 
 .lk-item-card h3 {
@@ -470,12 +470,12 @@
 
 .lk-item-voice:hover {
   border-color: $lk-brand;
-  background: rgba(93,143,114,0.03);
+  background: rgba(var(--lk-brand-rgb), 0.03);
 }
 
 .lk-item-voice.is-active {
   border-color: $lk-brand;
-  background: rgba(93,143,114,0.06);
+  background: rgba(var(--lk-brand-rgb), 0.06);
 }
 
 .lk-item-voice__avatar {
@@ -552,7 +552,7 @@
 }
 
 .lk-item-voice__preview:hover {
-  background: rgba(93,143,114,0.14);
+  background: rgba(var(--lk-brand-rgb), 0.14);
 }
 
 .lk-item-voice__check {
