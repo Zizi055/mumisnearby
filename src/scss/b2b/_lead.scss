@@ -125,11 +125,11 @@
   }
 
   &.is-error {
-    color: var(--rg-danger);
+    color: var(--rg-danger-on-dark);
   }
 
   &.is-success {
-    color: var(--rg-green-300);
+    color: var(--rg-success-on-dark);
   }
 }
 

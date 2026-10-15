@@ -99,7 +99,7 @@
   }
 
   &:focus-visible {
-    outline: 2px solid var(--rg-green-300);
+    outline: 2px solid var(--rg-accent-on-dark);
     outline-offset: 3px;
   }
 
@@ -110,11 +110,11 @@
 }
 
 .rg-btn--primary {
-  background: var(--rg-green-500);
+  background: var(--rg-action);
   color: #fff;
 
   &:hover {
-    background: var(--rg-green-600);
+    background: var(--rg-action-hover);
   }
 }
 
