@@ -6,9 +6,10 @@ import { loginCompany } from '../../api/company.service';
 // ─────────────────────────────────────────────────────────────────────
 // Форма входа юрлица внутри общего экрана авторизации.
 //
-// Логин — ПОЧТА компании, не название. На бэке поле формы называется
-// username (наследие OAuth2PasswordRequestForm), но принимает email:
-// об этом легко забыть и потом долго искать причину 401.
+// Поле называется «Логин», а не «Почта компании»: на бэке это
+// username (наследие OAuth2PasswordRequestForm), и пока туда
+// подставляют почту, но завязывать подпись на текущий формат значения
+// не стоит — поменяется формат, придётся править интерфейс.
 //
 // Самостоятельной регистрации нет — компании заводит администратор при
 // заключении договора. Поэтому вместо вкладки «Регистрация» здесь
@@ -49,14 +50,17 @@ export default function CompanyLoginForm() {
   return (
     <form className="auth__form" onSubmit={handleSubmit}>
       <div className="auth__field">
-        <label className="auth__label" htmlFor="company-email">
-          Почта компании
+        <label className="auth__label" htmlFor="company-login">
+          Логин
         </label>
+        {/* type="text", а не "email": браузер не должен отбрасывать
+            логин только потому, что в нём нет собачки. Проверять формат
+            — работа бэкенда, он и скажет, что не так. */}
         <input
           className="auth__input"
-          id="company-email"
-          type="email"
-          placeholder="b2b@company.ru"
+          id="company-login"
+          type="text"
+          placeholder="логин компании"
           value={email}
           autoComplete="username"
           autoCapitalize="none"
