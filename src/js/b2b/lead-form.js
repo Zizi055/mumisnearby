@@ -59,7 +59,12 @@ export function initLeadForms(root = document) {
           body: JSON.stringify(payload),
         });
 
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        // Проверяем не только код, но и тип ответа. Если nginx не
+        // проксирует /leads на бэкенд, запрос упирается в статику и
+        // возвращает 200 с html-страницей — форма отрапортовала бы об
+        // успехе, а заявка никуда бы не ушла.
+        const isJson = (response.headers.get('content-type') || '').includes('json');
+        if (!response.ok || !isJson) throw new Error(`HTTP ${response.status}`);
 
         form.reset();
         setStatus(status, MESSAGES.sent, 'success');
