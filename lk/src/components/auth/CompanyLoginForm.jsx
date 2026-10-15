@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowRight, Eye, EyeOff, Info } from 'lucide-react';
 import { loginCompany } from '../../api/company.service';
+import { loginAdmin } from '../../api/adminAuth.service';
 
 // ─────────────────────────────────────────────────────────────────────
 // Форма входа юрлица внутри общего экрана авторизации.
@@ -11,17 +12,47 @@ import { loginCompany } from '../../api/company.service';
 // подставляют почту, но завязывать подпись на текущий формат значения
 // не стоит — поменяется формат, придётся править интерфейс.
 //
+// Запрос устроен ровно так же, как вход в админку: POST,
+// x-www-form-urlencoded, поля username и password. Отличаются только
+// адрес и ключ, под которым лежит токен, — и это не формальность:
+// токен компании принимают /companies/*, токен администратора —
+// /admin/*, перекрёстно оба дают 401.
+//
+// Поэтому форма пробует оба адреса подряд. Человек со стороны сервиса
+// и человек со стороны клиента набирают логин в одном и том же поле,
+// а разводит их результат запроса, а не выбор вкладки, — иначе
+// администратор упирается в «неверный логин» на своих же доступах.
+//
 // Самостоятельной регистрации нет — компании заводит администратор при
 // заключении договора. Поэтому вместо вкладки «Регистрация» здесь
 // объяснение, откуда берутся доступы: иначе человек ищет кнопку,
 // которой не существует.
 // ─────────────────────────────────────────────────────────────────────
 
+// Порядок важен: сначала учётка компании — это основной сценарий
+// вкладки, и администраторов на весь сервис единицы. Пароль уходит на
+// второй адрес только после отказа на первом.
+async function signIn(login, password) {
+  try {
+    await loginCompany({ email: login, password });
+    return '/company/dashboard';
+  } catch (companyError) {
+    try {
+      await loginAdmin({ username: login, password });
+      return '/admin/companies';
+    } catch {
+      // Про админский адрес человеку знать незачем: он выбрал вкладку
+      // «Компания» и ждёт ответа про неё.
+      throw companyError;
+    }
+  }
+}
+
 export default function CompanyLoginForm() {
   const navigate = useNavigate();
   const [params] = useSearchParams();
 
-  const [email, setEmail] = useState('');
+  const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [status, setStatus] = useState('idle'); // idle | loading
@@ -29,18 +60,16 @@ export default function CompanyLoginForm() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if (!email.trim() || !password) return;
+    if (!login.trim() || !password) return;
 
     setStatus('loading');
     setError('');
 
     try {
-      await loginCompany({ email: email.trim(), password });
+      const home = await signIn(login.trim(), password);
 
       const redirect = params.get('redirect');
-      navigate(redirect ? decodeURIComponent(redirect) : '/company/dashboard', {
-        replace: true,
-      });
+      navigate(redirect ? decodeURIComponent(redirect) : home, { replace: true });
     } catch (err) {
       setError(err.message || 'Не удалось войти');
       setStatus('idle');
@@ -60,12 +89,12 @@ export default function CompanyLoginForm() {
           className="auth__input"
           id="company-login"
           type="text"
-          placeholder="логин компании"
-          value={email}
+          placeholder="логин"
+          value={login}
           autoComplete="username"
           autoCapitalize="none"
           spellCheck="false"
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={(e) => setLogin(e.target.value)}
         />
       </div>
 
