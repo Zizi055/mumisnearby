@@ -1,7 +1,10 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Eye, EyeOff, ArrowRight, Sparkles, MailCheck } from 'lucide-react';
 import { login, register, resendVerification } from '../api/auth.service';
+import { isB2B } from '../config/edition';
+import RoleSwitch, { ROLES, resolveInitialRole, rememberRole } from '../components/auth/RoleSwitch';
+import CompanyLoginForm from '../components/auth/CompanyLoginForm';
 import { getStoredReferralCode, clearStoredReferralCode } from '../utils/referral';
 import { useAuth } from '../context/AuthContext';
 import AuthDNA from './AuthDNA';
@@ -30,7 +33,12 @@ function getRedirectPath() {
 
 export default function Auth() {
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { setUser } = useAuth();
+
+  // Кто входит: юрлицо, сотрудник или частный клиент. В B2C всегда
+  // 'person' — переключателя там нет.
+  const [role, setRole] = useState(() => resolveInitialRole(searchParams));
 
   const [tab, setTab] = useState('login');
   const [name, setName] = useState('');
@@ -126,6 +134,25 @@ export default function Auth() {
     }
   };
 
+  const handleRoleSwitch = (nextRole) => {
+    setRole(nextRole);
+    rememberRole(nextRole);
+
+    // Роль живёт в адресе, чтобы ссылку на нужную вкладку можно было
+    // дать прямо из шапки сайта и из письма сотруднику.
+    const next = new URLSearchParams(searchParams);
+    next.set('role', nextRole);
+    setSearchParams(next, { replace: true });
+
+    // Сотрудник не регистрируется — аккаунт ему создаёт компания.
+    if (nextRole !== ROLES.person) setTab('login');
+
+    setTouched({ name: false, email: false, password: false });
+    setServerError('');
+    setStatus('idle');
+    setAwaitingVerification(null);
+  };
+
   const handleTabSwitch = (newTab) => {
     setTab(newTab);
     setTouched({ name: false, email: false, password: false });
@@ -187,6 +214,12 @@ export default function Auth() {
             </div>
           )}
 
+          <RoleSwitch value={role} onChange={handleRoleSwitch} />
+
+          {/* Вкладка «Регистрация» есть только у частного клиента:
+              сотруднику аккаунт создаёт компания, юрлицо заводит
+              менеджер сервиса. */}
+          {role === ROLES.person && (
           <div className="auth__tabs">
             <button
               type="button"
@@ -203,8 +236,19 @@ export default function Auth() {
               Регистрация
             </button>
           </div>
+          )}
 
-          {awaitingVerification ? (
+          {role === ROLES.staff && (
+            <div className="auth__role-note">
+              <strong>Вход для сотрудника</strong>
+              Почта и пароль те, что выдал работодатель. Регистрация не нужна —
+              аккаунт уже создан вашей компанией.
+            </div>
+          )}
+
+          {role === ROLES.company ? (
+            <CompanyLoginForm />
+          ) : awaitingVerification ? (
             <div className="auth__reset-success">
               <div className="auth__reset-success__icon">
                 <MailCheck size={32} />

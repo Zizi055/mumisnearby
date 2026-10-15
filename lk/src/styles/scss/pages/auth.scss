@@ -115,6 +115,89 @@
 }
 
 /* ========================================
+   AUTH — ПЕРЕКЛЮЧАТЕЛЬ РОЛИ
+   ========================================
+
+   Кто входит: юрлицо, сотрудник или частный клиент. Сегментированный
+   переключатель, а не выпадающий список: вариантов три, они равноправны
+   и все должны быть видны сразу — человеку надо узнать себя, а не
+   искать себя в списке.
+
+   Стоит выше вкладок «Войти / Регистрация» и визуально тяжелее их:
+   сначала выбирают, кто ты, потом что делаешь. */
+
+.auth__roles {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 4px;
+  padding: 4px;
+  margin-bottom: $lk-space-20;
+  background: $lk-bg;
+  border-radius: $lk-radius-pill;
+}
+
+.auth__role {
+  height: 40px;
+  padding: 0 6px;
+  border: 0;
+  border-radius: $lk-radius-pill;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 600;
+  color: $lk-text-muted;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.2s ease, color 0.2s ease;
+
+  &:hover {
+    color: $lk-text;
+  }
+
+  &.is-active {
+    background: $lk-brand-dark;
+    color: $lk-white;
+  }
+}
+
+/* Пояснение под переключателем на вкладке сотрудника: объясняет
+   отсутствие регистрации до того, как человек начнёт её искать. */
+.auth__role-note {
+  margin-bottom: $lk-space-24;
+  padding: 14px 16px;
+  border-radius: $lk-radius-12;
+  background: $lk-bg;
+  font-size: 13px;
+  line-height: 1.5;
+  color: $lk-text-muted;
+
+  strong {
+    display: block;
+    margin-bottom: 4px;
+    color: $lk-text;
+    font-weight: 600;
+  }
+}
+
+/* Сноска под формой компании. */
+.auth__hint {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  margin-top: $lk-space-8;
+  padding: 13px 15px;
+  border-radius: $lk-radius-12;
+  background: $lk-bg;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: $lk-text-muted;
+
+  svg {
+    flex: none;
+    margin-top: 2px;
+  }
+}
+
+/* ========================================
    AUTH — TABS
 ======================================== */
 
