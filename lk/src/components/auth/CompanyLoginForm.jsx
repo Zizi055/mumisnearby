@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ArrowRight, Eye, EyeOff, Info } from 'lucide-react';
 import { loginCompany } from '../../api/company.service';
-import { loginAdmin } from '../../api/adminAuth.service';
+import { loginAdmin, loginSuperAdmin } from '../../api/adminAuth.service';
 
 // ─────────────────────────────────────────────────────────────────────
 // Форма входа юрлица внутри общего экрана авторизации.
@@ -18,10 +18,11 @@ import { loginAdmin } from '../../api/adminAuth.service';
 // токен компании принимают /companies/*, токен администратора —
 // /admin/*, перекрёстно оба дают 401.
 //
-// Поэтому форма пробует оба адреса подряд. Человек со стороны сервиса
-// и человек со стороны клиента набирают логин в одном и том же поле,
-// а разводит их результат запроса, а не выбор вкладки, — иначе
-// администратор упирается в «неверный логин» на своих же доступах.
+// Поэтому форма пробует адреса подряд (см. DOORS ниже). Человек со
+// стороны сервиса и человек со стороны клиента набирают логин в одном
+// и том же поле, а разводит их результат запроса, а не выбор вкладки,
+// — иначе администратор упирается в «неверный логин» на своих же
+// доступах.
 //
 // Самостоятельной регистрации нет — компании заводит администратор при
 // заключении договора. Поэтому вместо вкладки «Регистрация» здесь
@@ -29,26 +30,40 @@ import { loginAdmin } from '../../api/adminAuth.service';
 // которой не существует.
 // ─────────────────────────────────────────────────────────────────────
 
-// Порядок важен: сначала учётка компании — это основной сценарий
-// вкладки, и администраторов на весь сервис единицы. Пароль уходит на
-// второй адрес только после отказа на первом.
-async function signIn(login, password) {
-  try {
-    await loginCompany({ email: login, password });
-    return '/company/dashboard';
-  } catch (companyError) {
+// Учётных таблиц на бэке три, и каждая со своим адресом входа:
+// юрлицо, администратор, суперадминистратор. Пароль уходит на
+// следующий адрес только после отказа на предыдущем.
+//
+// Порядок — от частого к редкому: компаний будут десятки, а людей со
+// стороны сервиса единицы.
+const DOORS = [
+  { open: (username, password) => loginCompany({ email: username, password }),
+    home: '/company/dashboard' },
+  { open: (username, password) => loginAdmin({ username, password }),
+    home: '/company/select' },
+  { open: (username, password) => loginSuperAdmin({ username, password }),
+    home: '/company/select' },
+];
+
+async function signIn(username, password) {
+  // Показываем ошибку первой двери — она про тот сценарий, который
+  // человек имел в виду. Исключение: 404 означает, что корпоративный
+  // модуль ещё не выкачен на сервер, и такой ответ не про доступы
+  // вовсе — тогда берём последнюю осмысленную ошибку.
+  let first = null;
+  let last = null;
+
+  for (const door of DOORS) {
     try {
-      await loginAdmin({ username: login, password });
-      // Не в админку: человек выбрал вкладку «Компания» и ждёт кабинет
-      // компании. Сначала только спрашиваем, чей именно.
-      return '/company/select';
-    } catch (adminError) {
-      // 404 на входе юрлица значит, что корпоративный модуль ещё не
-      // выкачен на этот сервер. Показывать «Not Found» в таком случае
-      // бессмысленно — человек видел бы ошибку не про свои доступы.
-      throw companyError.status === 404 ? adminError : companyError;
+      await door.open(username, password);
+      return door.home;
+    } catch (error) {
+      first ??= error;
+      last = error;
     }
   }
+
+  throw first.status === 404 ? last : first;
 }
 
 export default function CompanyLoginForm() {
