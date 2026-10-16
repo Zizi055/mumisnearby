@@ -29,7 +29,9 @@ export async function loginCompany({ email, password }) {
 
   if (!res.ok) {
     const text = await res.text().catch(() => '');
-    throw new Error(describeLoginError(res.status, text));
+    const err = new Error(describeLoginError(res.status, text));
+    err.status = res.status;
+    throw err;
   }
 
   const data = await res.json();
