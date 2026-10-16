@@ -1,5 +1,24 @@
 @use '../abstracts/lk-tokens' as *;
 
+/* ─── Контентная колонка ─────────────────────────────────────────────
+   Ширина и боковые поля те же, что на корпоративном лендинге: колонка
+   1180, поля 32. Раньше шапка шла во всю ширину окна, а содержимое и
+   плашки — в колонке 1120, и на широком экране логотип начинался с 32
+   пикселей, а карточки с четырёхсот. Три разные левые границы на одном
+   экране — это и есть ощущение, что страница собрана из кусков.
+
+   Боковое поле считается формулой, а не margin: auto, потому что
+   шапке и плашке нужен фон во всю ширину, а содержимому внутри них —
+   та же колонка, что у карточек. */
+
+$hr-col: 1180px;
+$hr-gutter: $lk-space-32;
+
+@mixin hr-column {
+  padding-left: max(#{$hr-gutter}, calc((100% - #{$hr-col}) / 2));
+  padding-right: max(#{$hr-gutter}, calc((100% - #{$hr-col}) / 2));
+}
+
 // ─────────────────────────────────────────────────────────────────────
 // Кабинет компании (B2B) и активация промокода.
 //
@@ -30,7 +49,9 @@
   gap: $lk-space-24;
   flex-wrap: wrap;
 
-  padding: $lk-space-16 $lk-space-28;
+  padding-top: $lk-space-16;
+  padding-bottom: $lk-space-16;
+  @include hr-column;
 
   border-bottom: 1px solid $lk-border;
   background: $lk-white;
@@ -115,10 +136,10 @@
   gap: $lk-space-20;
 
   width: 100%;
-  max-width: 1120px;
 
-  margin: 0 auto;
-  padding: $lk-space-28;
+  padding-top: $lk-space-32;
+  padding-bottom: $lk-space-48;
+  @include hr-column;
 
   box-sizing: border-box;
 
@@ -179,10 +200,10 @@
   gap: $lk-space-12;
 
   width: 100%;
-  max-width: 1120px;
 
-  margin: 0 auto;
-  padding: $lk-space-14 $lk-space-28;
+  padding-top: $lk-space-16;
+  padding-bottom: $lk-space-16;
+  @include hr-column;
 
   background: rgba(var(--lk-danger-rgb), 0.07);
   border-bottom: 1px solid rgba(var(--lk-danger-rgb), 0.2);
@@ -1427,6 +1448,15 @@
 
 .lk-pick {
   box-sizing: border-box;
+
+  /* Карточка списка по центру экрана, а не прижата к верхней кромке.
+     Шапки на этом шаге ещё нет — компания не выбрана, показывать в ней
+     нечего, — и без центрирования страница выглядит обрезанной. */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  min-height: 100vh;
   max-width: 640px;
   margin: 0 auto;
   padding: $lk-space-48 $lk-space-24;
