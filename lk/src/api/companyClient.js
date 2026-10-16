@@ -1,6 +1,26 @@
 import { resolveCompanyRequest, closeCompanyAsAdmin, isAdminMode } from './companySession';
+import { demoCompanyResponse } from './mock/company.demo';
 
 const BASE_URL = import.meta.env.VITE_API_URL || '';
+
+// Поднимается, как только хотя бы один ответ пришёл из демо-данных.
+// Кабинет по нему показывает плашку: человек должен видеть, что цифры
+// на экране ненастоящие, иначе он унесёт их в переговоры.
+let demoActive = false;
+
+export function isDemoData() {
+  return demoActive;
+}
+
+function parseBody(body) {
+  if (typeof body !== 'string') return null;
+
+  try {
+    return JSON.parse(body);
+  } catch {
+    return null;
+  }
+}
 
 // ─────────────────────────────────────────────────────────────────────
 // HTTP-клиент кабинета компании.
@@ -65,6 +85,20 @@ async function request(path, options = {}) {
   if (res.status === 401) {
     handleUnauthorized();
     throw new Error('Сессия истекла. Войдите заново.');
+  }
+
+  // 404 здесь значит одно: корпоративного модуля на этом сервере ещё
+  // нет. Пока его нет, кабинет показывает демо-данные — иначе три
+  // пустых экрана, на которых нечего согласовывать. Любой другой код
+  // ответа проходит как обычная ошибка: подменять настоящий отказ
+  // сервера выдуманными данными нельзя.
+  if (res.status === 404) {
+    const demo = demoCompanyResponse(url, options.method || 'GET', parseBody(options.body));
+
+    if (demo !== undefined) {
+      demoActive = true;
+      return demo;
+    }
   }
 
   if (!res.ok) {

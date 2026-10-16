@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { LogOut, AlertTriangle, Repeat2 } from 'lucide-react';
+import { LogOut, AlertTriangle, Repeat2, FlaskConical } from 'lucide-react';
 import {
   getCompanyProfile,
   logoutCompany,
   getStoredCompanyName,
   hasCompanySession,
 } from '../../api/company.service';
-import { isNotImplemented } from '../../api/companyClient';
+import { isDemoData } from '../../api/companyClient';
 import { getCompanyAsAdmin, closeCompanyAsAdmin } from '../../api/companySession';
 
 // ─────────────────────────────────────────────────────────────────────
@@ -45,6 +45,7 @@ export default function HrLayout() {
   const navigate = useNavigate();
 
   const [status, setStatus] = useState('checking'); // checking | ready
+  const [demo, setDemo] = useState(false);
   const [company, setCompany] = useState(null);
   // Под административной учёткой название берётся из выбранной
   // карточки: запрос профиля ещё не вернулся, а шапка уже должна
@@ -65,13 +66,15 @@ export default function HrLayout() {
       .then((data) => {
         setCompany(data);
         if (data?.name) setName(data.name);
+        setDemo(isDemoData());
         setStatus('ready');
       })
-      .catch((err) => {
-        // Эндпоинта ещё нет на этом сервере — пускаем внутрь, экраны
-        // сами покажут заглушку. 401 уже увёл на вход из companyClient.
-        if (isNotImplemented(err)) setStatus('ready');
-        else setStatus('ready');
+      .catch(() => {
+        // Внутрь пускаем в любом случае: 401 уже увёл на вход из
+        // companyClient, а остальные ошибки экраны показывают сами —
+        // запирать человека на экране загрузки из-за одного неудачного
+        // запроса незачем.
+        setStatus('ready');
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -136,6 +139,21 @@ export default function HrLayout() {
           </button>
         </div>
       </nav>
+
+      {demo && (
+        <div className="lk-hr-banner lk-hr-banner--demo">
+          <FlaskConical size={16} />
+          <div>
+            <strong>Это демонстрационные данные</strong>
+            <p>
+              Корпоративный раздел ещё не выкачен на сервер, поэтому кабинет
+              показывает придуманную компанию и семерых несуществующих
+              сотрудников. Так выглядят экраны с настоящими данными. Плашка
+              исчезнет сама, как только бэкенд начнёт отвечать.
+            </p>
+          </div>
+        </div>
+      )}
 
       {expired && (
         <div className="lk-hr-banner">

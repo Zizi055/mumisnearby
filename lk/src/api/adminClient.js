@@ -1,3 +1,5 @@
+import { demoCompanyResponse } from './mock/company.demo';
+
 const BASE_URL = import.meta.env.VITE_API_URL || '';
 
 // Отдельный HTTP-клиент для админки. /admin/* и /auth/*_admin/* эндпоинты
@@ -45,6 +47,15 @@ async function request(path, options = {}) {
   if (res.status === 401) {
     handleAdminUnauthorized();
     throw new Error('Сессия администратора истекла. Войдите снова.');
+  }
+
+  // Раздел компаний на сервере ещё не выкачен, а список нужен, чтобы
+  // попасть в кабинет. demoCompanyResponse отвечает только на адреса
+  // компаний и возвращает undefined для всего остального, поэтому
+  // остальная админка 404 получает как обычно.
+  if (res.status === 404) {
+    const demo = demoCompanyResponse(path, options.method || 'GET');
+    if (demo !== undefined) return demo;
   }
 
   if (!res.ok) {
