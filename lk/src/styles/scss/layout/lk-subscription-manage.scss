@@ -137,7 +137,7 @@
   width: 34px;
   height: 34px;
 
-  border-radius: 11px;
+  border-radius: var(--lk-r, 11px);
 
   background: rgba(var(--lk-brand-rgb), .10);
 
@@ -219,13 +219,13 @@
 .lk-usage-item__bar {
   height: 5px;
   background: $lk-line-soft;
-  border-radius: 999px;
+  border-radius: var(--lk-pill, 999px);
   overflow: hidden;
 
   div {
     height: 100%;
     background: linear-gradient(90deg, $lk-brand, $lk-brand-dark);
-    border-radius: 999px;
+    border-radius: var(--lk-pill, 999px);
     transition: width 0.4s ease;
   }
 }
@@ -317,7 +317,7 @@
     position: absolute;
     inset: 0;
     background: $lk-line;
-    border-radius: 999px;
+    border-radius: var(--lk-pill, 999px);
     transition: 0.2s ease;
   }
 

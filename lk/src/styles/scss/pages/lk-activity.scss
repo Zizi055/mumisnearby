@@ -22,7 +22,7 @@
   padding: 20px;
 
   border: 1px solid $lk-border;
-  border-radius: 28px;
+  border-radius: var(--lk-r, 28px);
 
   background:
     linear-gradient(
@@ -46,7 +46,7 @@
 
   margin-bottom: 22px;
 
-  border-radius: 16px;
+  border-radius: var(--lk-r, 16px);
 
   background:
     linear-gradient(
@@ -97,7 +97,7 @@
   padding: 32px;
 
   border: 1px solid $lk-border;
-  border-radius: 32px;
+  border-radius: var(--lk-r, 32px);
 
   background:
     linear-gradient(
@@ -152,7 +152,7 @@
   padding: 0 18px;
 
   border: 1px solid $lk-border;
-  border-radius: 999px;
+  border-radius: var(--lk-pill, 999px);
 
   background: $lk-white;
 
@@ -196,7 +196,7 @@
   padding: 22px;
 
   border: 1px solid $lk-border;
-  border-radius: 24px;
+  border-radius: var(--lk-r, 24px);
 
   background: $lk-white;
 
@@ -228,7 +228,7 @@
 
   flex-shrink: 0;
 
-  border-radius: 18px;
+  border-radius: var(--lk-r, 18px);
 
   background:
     linear-gradient(
@@ -285,7 +285,7 @@
 
   padding: 8px 14px;
 
-  border-radius: 999px;
+  border-radius: var(--lk-pill, 999px);
 
   background:
     rgba(var(--lk-brand-rgb), 0.08);
@@ -332,7 +332,7 @@
 
   padding: 10px 14px;
 
-  border-radius: 999px;
+  border-radius: var(--lk-pill, 999px);
 
   background:
     rgba(var(--lk-brand-rgb), 0.05);

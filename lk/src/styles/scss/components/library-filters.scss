@@ -10,7 +10,7 @@
 
   padding: 24px;
 
-  border-radius: 28px;
+  border-radius: var(--lk-r, 28px);
 
   background:
     linear-gradient(
@@ -58,7 +58,7 @@
   height: 36px;
 
   border: none;
-  border-radius: 12px;
+  border-radius: var(--lk-r, 12px);
 
   background:
     linear-gradient(
@@ -102,7 +102,7 @@
 
   padding: 0 16px 0 42px;
 
-  border-radius: 16px;
+  border-radius: var(--lk-r, 16px);
 
   border: 1px solid rgba(148,163,184,0.16);
 
@@ -182,7 +182,7 @@
 
   padding: 0 22px;
 
-  border-radius: 999px;
+  border-radius: var(--lk-pill, 999px);
 
   border:
     1.5px solid rgba(var(--lk-brand-rgb), 0.45);
@@ -236,7 +236,7 @@
   flex: 1;
   height: 54px;
 
-  border-radius: 18px;
+  border-radius: var(--lk-r, 18px);
 
   font-size: 16px;
   font-weight: 600;

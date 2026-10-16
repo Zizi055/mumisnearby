@@ -315,7 +315,7 @@
   font-size: 11px;
   padding: 3px 8px;
 
-  border-radius: 999px;
+  border-radius: var(--lk-pill, 999px);
 
   background: rgba(var(--lk-brand-rgb), 0.14);
   color: $lk-brand;

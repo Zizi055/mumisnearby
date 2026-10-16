@@ -15,13 +15,21 @@
    способ задать произвольную прозрачность от переменной так, чтобы это
    работало и в старых браузерах.
 
-   Размеры и отступы остаются Sass-переменными: они в обеих редакциях
-   одинаковые, а вычисления вроде $lk-space-24 * 2 на var() не работают.
+   Отступы и радиусы — тоже переменные CSS, по той же причине. У
+   «Родных голосов» своя шкала с шагами 6, 10, 14, 28, 56; корпоративный
+   лендинг построен на шкале кратной четырём, без промежуточных
+   значений. Держать кабинет на одной шкале, а сайт рядом на другой —
+   это и есть то самое ощущение «сделано разными людьми», поэтому
+   корпоративная тема подменяет шкалу целиком (см. theme-b2b.scss).
+
+   Платой идёт запрет на арифметику: $lk-space-24 * 2 на var() не
+   посчитается. Где нужно удвоение, пишем calc().
    ────────────────────────────────────────────────────────────────── */
 
 :root {
   /* поверхности */
   --lk-bg: #f6f7f2;
+  --lk-page-bg: #f8f5f0;
   --lk-surface: #fcfcf8;
   --lk-surface-soft: #eef4ee;
   --lk-surface-accent: #c8d9cd;
@@ -84,27 +92,50 @@ $lk-shadow-card: var(--lk-shadow-card);
 
 /* ── Размеры ────────────────────────────────────────────────────── */
 
-$lk-radius-12: 12px;
-$lk-radius-16: 16px;
-$lk-radius-20: 20px;
-$lk-radius-24: 24px;
-$lk-radius-32: 32px;
-$lk-radius-pill: 999px;
+:root {
+  --lk-radius-12: 12px;
+  --lk-radius-16: 16px;
+  --lk-radius-20: 20px;
+  --lk-radius-24: 24px;
+  --lk-radius-32: 32px;
 
-$lk-space-4: 4px;
-$lk-space-6: 6px;
-$lk-space-8: 8px;
-$lk-space-10: 10px;
-$lk-space-12: 12px;
-$lk-space-14: 14px;
-$lk-space-16: 16px;
-$lk-space-20: 20px;
-$lk-space-24: 24px;
-$lk-space-28: 28px;
-$lk-space-32: 32px;
-$lk-space-40: 40px;
-$lk-space-48: 48px;
-$lk-space-56: 56px;
+  --lk-space-4: 4px;
+  --lk-space-6: 6px;
+  --lk-space-8: 8px;
+  --lk-space-10: 10px;
+  --lk-space-12: 12px;
+  --lk-space-14: 14px;
+  --lk-space-16: 16px;
+  --lk-space-20: 20px;
+  --lk-space-24: 24px;
+  --lk-space-28: 28px;
+  --lk-space-32: 32px;
+  --lk-space-40: 40px;
+  --lk-space-48: 48px;
+  --lk-space-56: 56px;
+}
+
+$lk-radius-12: var(--lk-radius-12);
+$lk-radius-16: var(--lk-radius-16);
+$lk-radius-20: var(--lk-radius-20);
+$lk-radius-24: var(--lk-radius-24);
+$lk-radius-32: var(--lk-radius-32);
+$lk-radius-pill: var(--lk-pill, 999px);
+
+$lk-space-4: var(--lk-space-4);
+$lk-space-6: var(--lk-space-6);
+$lk-space-8: var(--lk-space-8);
+$lk-space-10: var(--lk-space-10);
+$lk-space-12: var(--lk-space-12);
+$lk-space-14: var(--lk-space-14);
+$lk-space-16: var(--lk-space-16);
+$lk-space-20: var(--lk-space-20);
+$lk-space-24: var(--lk-space-24);
+$lk-space-28: var(--lk-space-28);
+$lk-space-32: var(--lk-space-32);
+$lk-space-40: var(--lk-space-40);
+$lk-space-48: var(--lk-space-48);
+$lk-space-56: var(--lk-space-56);
 
 /* ── РАСКЛАДКА СТРАНИЦЫ ────────────────────────────────────────────
    Один вертикальный ритм на весь ЛК. Раньше каждая страница брала своё:

@@ -19,7 +19,7 @@
   padding: 40px;
 
   border: 1px solid $lk-border;
-  border-radius: 32px;
+  border-radius: var(--lk-r, 32px);
 
   background:
     linear-gradient(
@@ -38,7 +38,7 @@
   margin-bottom: 18px;
   padding: 10px 16px;
 
-  border-radius: 999px;
+  border-radius: var(--lk-pill, 999px);
 
   background:
     rgba(var(--lk-brand-rgb), 0.08);
@@ -87,7 +87,7 @@
   padding: 0 20px;
 
   border: 1px solid $lk-border;
-  border-radius: 20px;
+  border-radius: var(--lk-r, 20px);
 
   background: $lk-white;
 }
@@ -121,7 +121,7 @@
   padding: 32px;
 
   border: 1px solid $lk-border;
-  border-radius: 32px;
+  border-radius: var(--lk-r, 32px);
 
   background: #fff;
 
@@ -138,7 +138,7 @@
 
   margin-bottom: 22px;
 
-  border-radius: 18px;
+  border-radius: var(--lk-r, 18px);
 
   background:
     linear-gradient(
@@ -239,7 +239,7 @@
   padding: 0 24px;
 
   border: 1px solid $lk-border;
-  border-radius: 24px;
+  border-radius: var(--lk-r, 24px);
 
   background: #fff;
 
@@ -275,7 +275,7 @@
   padding: 32px;
 
   border: 1px solid $lk-border;
-  border-radius: 32px;
+  border-radius: var(--lk-r, 32px);
 
   background: #fff;
 
@@ -313,7 +313,7 @@
 
 .lk-support-faq__item {
   border: 1px solid $lk-border;
-  border-radius: 24px;
+  border-radius: var(--lk-r, 24px);
 
   overflow: hidden;
 
@@ -378,7 +378,7 @@
   padding: 32px;
 
   border: 1px solid $lk-border;
-  border-radius: 32px;
+  border-radius: var(--lk-r, 32px);
 
  background:
     linear-gradient(
@@ -400,7 +400,7 @@
 
   margin-bottom: 22px;
 
-  border-radius: 18px;
+  border-radius: var(--lk-r, 18px);
 
   background:
     linear-gradient(
@@ -542,7 +542,7 @@ $lk-gradient-brand: linear-gradient(135deg, var(--lk-brand) 0%, #79ab89 100%);
   padding: 34px;
 
   border: 1px solid $lk-border;
-  border-radius: 32px;
+  border-radius: var(--lk-r, 32px);
 
   background: $lk-surface;
 
@@ -568,7 +568,7 @@ $lk-gradient-brand: linear-gradient(135deg, var(--lk-brand) 0%, #79ab89 100%);
   margin-bottom: 12px;
   padding: 8px 14px;
 
-  border-radius: 999px;
+  border-radius: var(--lk-pill, 999px);
 
   background: rgba(var(--lk-brand-rgb), 0.08);
 
@@ -602,7 +602,7 @@ $lk-gradient-brand: linear-gradient(135deg, var(--lk-brand) 0%, #79ab89 100%);
   flex-shrink: 0;
 
   border: none;
-  border-radius: 14px;
+  border-radius: var(--lk-r, 14px);
 
   background: rgba(var(--lk-brand-rgb), 0.06);
 
@@ -785,7 +785,7 @@ $lk-gradient-brand: linear-gradient(135deg, var(--lk-brand) 0%, #79ab89 100%);
 
   margin-bottom: 24px;
 
-  border-radius: 24px;
+  border-radius: var(--lk-r, 24px);
 
   background: $lk-gradient-brand;
 
@@ -867,7 +867,7 @@ $lk-gradient-brand: linear-gradient(135deg, var(--lk-brand) 0%, #79ab89 100%);
   padding: 0 18px;
 
   border: 1px solid $lk-border;
-  border-radius: 999px;
+  border-radius: var(--lk-pill, 999px);
 
   background: transparent;
 
@@ -945,7 +945,7 @@ $lk-gradient-brand: linear-gradient(135deg, var(--lk-brand) 0%, #79ab89 100%);
   height: 36px;
 
   border: 1px solid $lk-border;
-  border-radius: 12px;
+  border-radius: var(--lk-r, 12px);
 
   background: transparent;
 
@@ -986,7 +986,7 @@ $lk-gradient-brand: linear-gradient(135deg, var(--lk-brand) 0%, #79ab89 100%);
   padding: 0 14px;
 
   border: 1px solid $lk-border;
-  border-radius: 999px;
+  border-radius: var(--lk-pill, 999px);
 
   background: transparent;
 
@@ -1022,7 +1022,7 @@ $lk-gradient-brand: linear-gradient(135deg, var(--lk-brand) 0%, #79ab89 100%);
 
   padding: 0 5px;
 
-  border-radius: 999px;
+  border-radius: var(--lk-pill, 999px);
 
   background: rgba(var(--lk-brand-rgb), 0.12);
 
@@ -1048,7 +1048,7 @@ $lk-gradient-brand: linear-gradient(135deg, var(--lk-brand) 0%, #79ab89 100%);
 
 .lk-ticket-card {
   border: 1px solid $lk-border;
-  border-radius: 18px;
+  border-radius: var(--lk-r, 18px);
 
   background: $lk-white;
 
@@ -1206,7 +1206,7 @@ $lk-gradient-brand: linear-gradient(135deg, var(--lk-brand) 0%, #79ab89 100%);
   padding: 12px 14px;
 
   border: 1px solid $lk-border;
-  border-radius: 14px;
+  border-radius: var(--lk-r, 14px);
 
   background: $lk-surface;
 
@@ -1304,7 +1304,7 @@ $lk-gradient-brand: linear-gradient(135deg, var(--lk-brand) 0%, #79ab89 100%);
 
   padding: 0 10px;
 
-  border-radius: 999px;
+  border-radius: var(--lk-pill, 999px);
 
   font-size: 11px;
   font-weight: 700;
@@ -1392,7 +1392,7 @@ $lk-gradient-brand: linear-gradient(135deg, var(--lk-brand) 0%, #79ab89 100%);
   width: 56px;
   height: 56px;
 
-  border-radius: 18px;
+  border-radius: var(--lk-r, 18px);
 
   background: rgba(var(--lk-brand-rgb), 0.06);
 
@@ -1472,12 +1472,12 @@ $lk-gradient-brand: linear-gradient(135deg, var(--lk-brand) 0%, #79ab89 100%);
 
   .lk-support-hero__card {
     padding: 24px;
-    border-radius: 24px;
+    border-radius: var(--lk-r, 24px);
   }
 
   .lk-support-faq {
     padding: 24px;
-    border-radius: 24px;
+    border-radius: var(--lk-r, 24px);
   }
 }
 
@@ -1494,7 +1494,7 @@ $lk-gradient-brand: linear-gradient(135deg, var(--lk-brand) 0%, #79ab89 100%);
 
   .lk-support-hero__content {
     padding: 28px;
-    border-radius: 24px;
+    border-radius: var(--lk-r, 24px);
   }
 
   .lk-support-hero__content h1 {
@@ -1516,12 +1516,12 @@ $lk-gradient-brand: linear-gradient(135deg, var(--lk-brand) 0%, #79ab89 100%);
     height: 62px;
     padding: 0 18px;
     font-size: 14px;
-    border-radius: 18px;
+    border-radius: var(--lk-r, 18px);
   }
 
   .lk-support-faq {
     padding: 20px;
-    border-radius: 22px;
+    border-radius: var(--lk-r, 22px);
   }
 
   .lk-support-faq__head h2 {
@@ -1531,7 +1531,7 @@ $lk-gradient-brand: linear-gradient(135deg, var(--lk-brand) 0%, #79ab89 100%);
   .lk-support-help,
   .lk-support-status {
     padding: 24px;
-    border-radius: 24px;
+    border-radius: var(--lk-r, 24px);
   }
 
   .lk-support-side {
@@ -1541,7 +1541,7 @@ $lk-gradient-brand: linear-gradient(135deg, var(--lk-brand) 0%, #79ab89 100%);
   .lk-support-modal {
     max-width: calc(100vw - 32px);
     padding: 24px;
-    border-radius: 24px;
+    border-radius: var(--lk-r, 24px);
   }
 
   .lk-support-modal__head h2 {
@@ -1575,7 +1575,7 @@ $lk-gradient-brand: linear-gradient(135deg, var(--lk-brand) 0%, #79ab89 100%);
 @media (max-width: 640px) {
   .lk-support-hero__content {
     padding: 20px;
-    border-radius: 20px;
+    border-radius: var(--lk-r, 20px);
   }
 
   .lk-support-hero__content h1 {
@@ -1590,7 +1590,7 @@ $lk-gradient-brand: linear-gradient(135deg, var(--lk-brand) 0%, #79ab89 100%);
   .lk-support-categories button {
     height: 54px;
     font-size: 14px;
-    border-radius: 16px;
+    border-radius: var(--lk-r, 16px);
   }
 
   .lk-support-faq__trigger {
@@ -1608,7 +1608,7 @@ $lk-gradient-brand: linear-gradient(135deg, var(--lk-brand) 0%, #79ab89 100%);
   .lk-support-modal {
     max-height: 95vh;
     padding: 20px;
-    border-radius: 20px;
+    border-radius: var(--lk-r, 20px);
   }
 
   .lk-support-modal__head h2 {
@@ -1624,7 +1624,7 @@ $lk-gradient-brand: linear-gradient(135deg, var(--lk-brand) 0%, #79ab89 100%);
 @media (max-width: 480px) {
   .lk-support-hero__content {
     padding: 16px;
-    border-radius: 18px;
+    border-radius: var(--lk-r, 18px);
   }
 
   .lk-support-hero__content h1 {
@@ -1640,18 +1640,18 @@ $lk-gradient-brand: linear-gradient(135deg, var(--lk-brand) 0%, #79ab89 100%);
     height: 52px;
     padding: 0 14px;
     gap: 10px;
-    border-radius: 16px;
+    border-radius: var(--lk-r, 16px);
   }
 
   .lk-support-faq {
     padding: 16px;
-    border-radius: 18px;
+    border-radius: var(--lk-r, 18px);
   }
 
   .lk-support-help,
   .lk-support-status {
     padding: 18px;
-    border-radius: 20px;
+    border-radius: var(--lk-r, 20px);
   }
 
   .lk-support-help strong {
@@ -1660,7 +1660,7 @@ $lk-gradient-brand: linear-gradient(135deg, var(--lk-brand) 0%, #79ab89 100%);
 
   .lk-support-modal {
     padding: 16px;
-    border-radius: 18px;
+    border-radius: var(--lk-r, 18px);
   }
 
   .lk-support-modal__head {

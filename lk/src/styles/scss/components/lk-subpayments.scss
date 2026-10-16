@@ -151,7 +151,7 @@
 .lk-payments-item__icon {
   width: 36px;
   height: 36px;
-  border-radius: 10px;
+  border-radius: var(--lk-r, 10px);
 
   display: flex;
   align-items: center;

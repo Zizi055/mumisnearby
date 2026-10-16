@@ -26,7 +26,7 @@
 
   border: 1px solid rgba(255, 255, 255, 0.58);
 
-  border-radius: 28px;
+  border-radius: var(--lk-r, 28px);
 
   backdrop-filter: blur(24px);
 
@@ -109,7 +109,7 @@
 
   padding: 0 16px;
 
-  border-radius: 999px;
+  border-radius: var(--lk-pill, 999px);
 
   background:
     linear-gradient(
@@ -148,7 +148,7 @@
 
   margin-bottom: 20px;
 
-  border-radius: 18px;
+  border-radius: var(--lk-r, 18px);
 
   background:
     linear-gradient(
@@ -280,7 +280,7 @@
   width: 48px;
   height: 48px;
 
-  border-radius: 16px;
+  border-radius: var(--lk-r, 16px);
 
   background:
     linear-gradient(
@@ -354,7 +354,7 @@
 
   overflow: hidden;
 
-  border-radius: 999px;
+  border-radius: var(--lk-pill, 999px);
 
   background: rgba(226, 232, 240, 0.7);
 }
@@ -467,7 +467,7 @@
 .lk-analytics-table__row {
   padding: 18px 20px;
 
-  border-radius: 20px;
+  border-radius: var(--lk-r, 20px);
 
   background:
     linear-gradient(
@@ -538,7 +538,7 @@
 .lk-analytics-meta__item {
   padding: 16px 18px;
 
-  border-radius: 18px;
+  border-radius: var(--lk-r, 18px);
 
   background:
     linear-gradient(
@@ -571,13 +571,13 @@
 
 
 .recharts-tooltip-wrapper {
-  border-radius: 16px !important;
+  border-radius: var(--lk-r, 16px) !important;
 }
 
 .recharts-default-tooltip {
   border: none !important;
 
-  border-radius: 16px !important;
+  border-radius: var(--lk-r, 16px) !important;
 
   background:
     rgba(255, 255, 255, 0.94) !important;

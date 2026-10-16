@@ -23,7 +23,7 @@
   gap: 24px;
 
   padding: 24px;
-  border-radius: 20px;
+  border-radius: var(--lk-r, 20px);
 
   background: #fff;
   border: 1px solid #E5E7EB;
@@ -57,7 +57,7 @@
   height: fit-content;
   padding: 8px 12px;
 
-  border-radius: 999px;
+  border-radius: var(--lk-pill, 999px);
   background: rgba(16, 185, 129, 0.1);
 
   font-size: 12px;
@@ -82,7 +82,7 @@
   gap: 16px;
 
   padding: 20px;
-  border-radius: 20px;
+  border-radius: var(--lk-r, 20px);
 
   background: #fff;
   border: 1px solid #E5E7EB;
@@ -113,7 +113,7 @@
   width: 52px;
   height: 52px;
 
-  border-radius: 14px;
+  border-radius: var(--lk-r, 14px);
   background: #F3F4F6;
 
   display: flex;
@@ -136,7 +136,7 @@
   height: 36px;
 
   border: none;
-  border-radius: 10px;
+  border-radius: var(--lk-r, 10px);
 
   background: #F9FAFB;
   cursor: pointer;
@@ -228,7 +228,7 @@
 
 .lk-voice-status {
   padding: 6px 10px;
-  border-radius: 999px;
+  border-radius: var(--lk-pill, 999px);
   font-size: 12px;
   font-weight: 500;
 }
@@ -265,7 +265,7 @@
   width: 180px;
   padding: 8px;
 
-  border-radius: 14px;
+  border-radius: var(--lk-r, 14px);
   background: #fff;
   border: 1px solid #E5E7EB;
   box-shadow: 0 10px 30px rgba(0,0,0,0.08);
@@ -283,7 +283,7 @@
   gap: 8px;
 
   padding: 10px 12px;
-  border-radius: 10px;
+  border-radius: var(--lk-r, 10px);
 
   background: transparent;
   border: none;
@@ -308,7 +308,7 @@
 
 .lk-voices-empty {
   padding: 24px;
-  border-radius: 20px;
+  border-radius: var(--lk-r, 20px);
   border: 1px dashed #E5E7EB;
   background: #fff;
 
@@ -344,7 +344,7 @@
 
     padding: 0 14px;
 
-    border-radius: 12px;
+    border-radius: var(--lk-r, 12px);
     border: 1px solid #E5E7EB;
     background: #F9FAFB;
 
@@ -373,7 +373,7 @@
 .lk-voice-card__avatar {
   width: 48px;
   height: 48px;
-  border-radius: 14px;
+  border-radius: var(--lk-r, 14px);
   background: #F3F4F6;
 
   display: flex;
@@ -476,12 +476,12 @@
 
   .lk-voices-hero {
     padding: 12px;
-    border-radius: 16px;
+    border-radius: var(--lk-r, 16px);
   }
 
   .lk-voice-card {
     padding: 14px;
-    border-radius: 16px;
+    border-radius: var(--lk-r, 16px);
   }
 
   .lk-voice-dropdown {

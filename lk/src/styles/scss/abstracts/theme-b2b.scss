@@ -6,6 +6,12 @@
    превратится во вторую таблицу стилей, которую придётся чинить при
    каждой правке кабинета.
 
+   Селекторы начинаются с html, а не просто с класса. Sass требует,
+   чтобы @use стоял в начале файла, поэтому тема физически не может
+   быть подключена последней и проиграет любому правилу страницы с
+   такой же специфичностью. Лишний тег в селекторе поднимает её на
+   единицу и снимает зависимость от порядка подключения.
+
    Палитра та же, что на корпоративном лендинге, значения сверены с
    src/scss/b2b/_tokens.scss. Содержимое кабинета остаётся светлым:
    человек работает в нём подолгу, и тёмный фон под таблицами и формами
@@ -13,9 +19,10 @@
    лендинге, где он держит крупные плоскости, а зелёный работает точечно.
    ────────────────────────────────────────────────────────────────── */
 
-.theme-b2b {
+html.theme-b2b {
   /* поверхности: нейтральный серый вместо тёплого зеленоватого */
   --lk-bg: #f4f5f7;
+  --lk-page-bg: #f4f5f7;
   --lk-surface: #ffffff;
   --lk-surface-soft: #eef1f4;
   --lk-surface-accent: #dde6e1;
@@ -58,6 +65,152 @@
   --lk-ink-900: #12161f;
   --lk-ink-800: #1b2231;
   --lk-ink-700: #273043;
+
+  /* ── Шкала отступов лендинга ─────────────────────────────────────
+     Корпоративный сайт построен на шаге 4 px: 4, 8, 12, 16, 20, 24, 32,
+     40, 48, 64, 80, 96. Промежуточных значений там нет вовсе, и это не
+     придирка — именно случайные 14 и 28 рядом с ровными 16 и 32 дают
+     ощущение неаккуратной вёрстки, когда по отдельности каждое выглядит
+     нормально.
+
+     У кабинета своя шкала, с шагами 6, 10, 14, 28 и 56. Пять значений
+     не совпадают, и каждое здесь приведено к ближайшему шагу лендинга.
+     Округляла вверх: кабинет и так плотнее сайта, а сжимать и без того
+     тесные промежутки между иконкой и подписью некуда. */
+  --lk-space-6: 8px;
+  --lk-space-10: 12px;
+  --lk-space-14: 16px;
+  --lk-space-28: 32px;
+  --lk-space-56: 64px;
+
+  /* ── Радиусы ─────────────────────────────────────────────────────
+     На лендинге радиус ровно один — 6 px. Скругления в двадцать и
+     тридцать два пикселя рядом с ним читаются как другой продукт,
+     поэтому вся шкала схлопывается в одно значение. Пилюли остаются
+     пилюлями: их форма несёт смысл, а не стиль. */
+  --lk-radius-12: 6px;
+  --lk-radius-16: 6px;
+  --lk-radius-20: 6px;
+  --lk-radius-24: 6px;
+  --lk-radius-32: 6px;
+
+  /* Сто скруглений по кабинету заданы числами прямо в правилах — они
+     писались до того, как появились токены. Переписывать их в токены
+     значило бы менять вид «Родных голосов», где 18 и 22 стоят
+     осознанно. Поэтому они записаны как var(--lk-r, 18px): в B2C
+     переменная не объявлена и берётся запасное значение, то есть ровно
+     прежнее, а здесь одна строка снизу приводит их все к шести. */
+  --lk-r: 6px;
+
+  /* Пилюли тоже уходят. На корпоративном сайте нет ни одной скруглённой
+     до упора формы, и ряд пилюль посреди графитовых карточек читается
+     как кусок другого интерфейса. Круги (border-radius: 50%) это не
+     затрагивает — они заданы процентами. */
+  --lk-pill: 6px;
+
+  /* Кривая движения с лендинга — там ею заданы все переходы. */
+  --lk-ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* ── Типографика ───────────────────────────────────────────────────
+   Montserrat вместо Inter, те же веса, что на лендинге. Подключается в
+   main.jsx и только в корпоративной сборке.
+
+   Ниже — роли из DESIGN-SYSTEM.md, применённые к тем элементам
+   кабинета, которые им соответствуют. Переносить сюда все пятнадцать
+   ролей смысла нет: кабинет не повторяет лендинг поэкранно, ему нужны
+   заголовки, подписи и органы управления. */
+
+html.theme-b2b body,
+html.theme-b2b input,
+html.theme-b2b textarea,
+html.theme-b2b select,
+html.theme-b2b button {
+  font-family: 'Montserrat', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+/* Роль h2 — только заголовок экрана. Кегль задан явно: без него
+   прописные на унаследованных от B2C сорока пикселях выглядят как
+   вывеска, а на сайте заголовок секции это 21–30.
+
+   Прописные дальше по дереву не идут намеренно. Заголовок внутри
+   карточки — это роль h3, и набранный капителью он начинает спорить с
+   заголовком экрана: два одинаковых по начертанию блока на расстоянии
+   в сто пикселей читаются как два раздела, а не как раздел и карточка
+   внутри него. */
+html.theme-b2b h1 {
+  font-size: clamp(21px, 2.4vw, 30px);
+  font-weight: 800;
+  line-height: 1.16;
+  letter-spacing: -0.01em;
+  text-transform: uppercase;
+}
+
+/* Роль h3: заголовки карточек и блоков. Начертание то же, регистр
+   обычный, кегль свой у каждой страницы — его тема не трогает. */
+html.theme-b2b h2,
+html.theme-b2b h3,
+html.theme-b2b h4 {
+  font-weight: 800;
+  letter-spacing: -0.005em;
+  text-transform: none;
+}
+
+html.theme-b2b .lk-hr-card__title {
+  font-size: clamp(15px, 1.2vw, 17px);
+  line-height: 1.3;
+}
+
+/* Роль overline: кнопки и пункты навигации. 11 px, 600, прописные,
+   трекинг 0.07em — тот же набор, что у .rg-btn на лендинге. */
+html.theme-b2b .lk-btn,
+html.theme-b2b .lk-hr-nav__link {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+/* Роль micro: подписи полей и ячеек. */
+html.theme-b2b label,
+html.theme-b2b .lk-stats__label,
+html.theme-b2b .lk-profile__label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ── Кнопки ────────────────────────────────────────────────────────
+   Высота 48 px — она же у поля формы, поэтому ряд «поле + кнопка»
+   выстраивается без подгонок. На лендинге это опорная величина, из
+   которой собрана вся шапка. */
+
+html.theme-b2b .lk-btn {
+  min-height: 48px;
+  border-radius: 6px;
+  transition: background-color 0.25s var(--lk-ease), transform 0.25s var(--lk-ease);
+}
+
+html.theme-b2b .lk-btn:hover {
+  transform: translateY(-1px);
+}
+
+html.theme-b2b .lk-btn:active {
+  transform: none;
+}
+
+/* Фокус с клавиатуры снимать нельзя: без него по кабинету невозможно
+   пройти без мыши. Обводка та же, что на сайте. */
+html.theme-b2b :focus-visible {
+  outline: 2px solid #7fc0a0;
+  outline-offset: 3px;
+}
+
+/* Мелкие кнопки под правило высоты не попадают: кнопка «удалить» в
+   строке таблицы ростом с поле ввода разорвала бы строку. */
+html.theme-b2b .lk-btn--sm {
+  min-height: 0;
 }
 
 /* ── Навигация ─────────────────────────────────────────────────────
@@ -65,25 +218,25 @@
    сайдбар — главный узнаваемый признак корпоративной версии, его не
    получить одной подменой токена, потому что в светлой теме он белый. */
 
-.theme-b2b .lk-sidebar {
+html.theme-b2b .lk-sidebar {
   background: var(--lk-ink-900);
   border-right-color: rgba(255, 255, 255, 0.08);
   color: rgba(255, 255, 255, 0.62);
 }
 
-.theme-b2b .lk-sidebar a,
-.theme-b2b .lk-sidebar button {
+html.theme-b2b .lk-sidebar a,
+html.theme-b2b .lk-sidebar button {
   color: rgba(255, 255, 255, 0.62);
 }
 
-.theme-b2b .lk-sidebar a:hover,
-.theme-b2b .lk-sidebar button:hover {
+html.theme-b2b .lk-sidebar a:hover,
+html.theme-b2b .lk-sidebar button:hover {
   background: rgba(255, 255, 255, 0.06);
   color: #fff;
 }
 
-.theme-b2b .lk-sidebar .is-active,
-.theme-b2b .lk-sidebar a.active {
+html.theme-b2b .lk-sidebar .is-active,
+html.theme-b2b .lk-sidebar a.active {
   background: rgba(255, 255, 255, 0.1);
   color: #fff;
 }
@@ -94,12 +247,12 @@
    тема сажает кабинет на тот же радиус. Кнопки-пилюли остаются
    пилюлями: их форма несёт смысл, а не стиль. */
 
-.theme-b2b .lk-card,
-.theme-b2b .lk-panel,
-.theme-b2b .auth__card,
-.theme-b2b .lk-table,
-.theme-b2b .lk-story-card,
-.theme-b2b .lk-voice-card {
+html.theme-b2b .lk-card,
+html.theme-b2b .lk-panel,
+html.theme-b2b .auth__card,
+html.theme-b2b .lk-table,
+html.theme-b2b .lk-story-card,
+html.theme-b2b .lk-voice-card {
   border-radius: 6px;
 }
 
@@ -109,11 +262,11 @@
    попал в другой продукт. Заголовок прописными и с зелёной второй
    строкой — по той же типографической роли, что h2 на лендинге. */
 
-.theme-b2b .auth__left {
+html.theme-b2b .auth__left {
   background: linear-gradient(118deg, #273043 0%, #1b2231 52%, #12161f 100%);
 }
 
-.theme-b2b .auth__tagline h1 {
+html.theme-b2b .auth__tagline h1 {
   font-size: clamp(22px, 2.6vw, 30px);
   font-weight: 800;
   line-height: 1.16;
@@ -127,12 +280,12 @@
   }
 }
 
-.theme-b2b .auth__tagline p,
-.theme-b2b .auth__feature {
+html.theme-b2b .auth__tagline p,
+html.theme-b2b .auth__feature {
   color: rgba(255, 255, 255, 0.62);
 }
 
-.theme-b2b .auth__feature-dot {
+html.theme-b2b .auth__feature-dot {
   background: #7fc0a0;
   box-shadow: none;
 }
@@ -143,28 +296,28 @@
    попытки: токены стали графитовыми, а кнопки остались зелёными
    пилюлями — экран по-прежнему читался как «Родные голоса».
 
-   Селекторы составные (.theme-b2b .auth__role.is-active), потому что
+   Селекторы составные (html.theme-b2b .auth__role.is-active), потому что
    базовые состояния в auth.scss заданы через .auth__role.is-active —
    это две единицы специфичности, и правило темы обязано быть не ниже,
    иначе оно просто не применится. */
 
-.theme-b2b .auth__right {
+html.theme-b2b .auth__right {
   background: var(--lk-surface);
 }
 
-.theme-b2b .auth__roles {
+html.theme-b2b .auth__roles {
   background: var(--lk-bg);
   border-radius: 3px;
 }
 
-.theme-b2b .auth__role {
+html.theme-b2b .auth__role {
   border-radius: 2px;
 }
 
 /* Активная роль — графит, а не зелёный. Зелёный в корпоративной
    палитре закреплён за целевым действием: если им красить ещё и
    переключатель, кнопка «Войти» перестаёт быть главной на экране. */
-.theme-b2b .auth__role.is-active {
+html.theme-b2b .auth__role.is-active {
   background: var(--lk-ink-800);
   color: #fff;
 }
@@ -172,13 +325,13 @@
 /* Вкладки «Войти / Регистрация» — подчёркиванием, а не пилюлями.
    Два ряда одинаковых пилюль подряд читались как один переключатель
    из пяти кнопок. */
-.theme-b2b .auth__tabs {
+html.theme-b2b .auth__tabs {
   display: flex;
   gap: 22px;
   border-bottom: 1px solid var(--lk-border);
 }
 
-.theme-b2b .auth__tab {
+html.theme-b2b .auth__tab {
   position: relative;
   height: auto;
   padding: 0 0 11px;
@@ -192,13 +345,13 @@
   text-transform: uppercase;
 }
 
-.theme-b2b .auth__tab.is-active {
+html.theme-b2b .auth__tab.is-active {
   background: transparent;
   color: var(--lk-text);
   box-shadow: none;
 }
 
-.theme-b2b .auth__tab.is-active::after {
+html.theme-b2b .auth__tab.is-active::after {
   content: '';
   position: absolute;
   inset: auto 0 -1px 0;
@@ -206,13 +359,13 @@
   background: var(--lk-brand);
 }
 
-.theme-b2b .auth__submit,
-.theme-b2b .auth__input,
-.theme-b2b .auth__card .lk-btn {
+html.theme-b2b .auth__submit,
+html.theme-b2b .auth__input,
+html.theme-b2b .auth__card .lk-btn {
   border-radius: 3px;
 }
 
-.theme-b2b .auth__submit {
+html.theme-b2b .auth__submit {
   box-shadow: none;
   font-size: 12px;
   font-weight: 700;
@@ -220,7 +373,7 @@
   text-transform: uppercase;
 }
 
-.theme-b2b .auth__intro h2 {
+html.theme-b2b .auth__intro h2 {
   text-transform: uppercase;
   font-weight: 800;
   letter-spacing: -0.01em;
@@ -245,7 +398,7 @@
 // сноска, у частного клиента «Забыли пароль», — и центрирование снова
 // начало бы сдвигать форму. Центрируется сама карточка целиком, этим
 // занимается правая панель.
-.theme-b2b .auth__card {
+html.theme-b2b .auth__card {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -255,7 +408,7 @@
 /* Переключатель ролей тоже обязан стоять на месте: названия вкладок
    разной длины, и без фиксированной сетки колонки пересчитывались
    под активную. */
-.theme-b2b .auth__roles {
+html.theme-b2b .auth__roles {
   grid-template-columns: repeat(3, 1fr);
 }
 
@@ -265,8 +418,8 @@
    три. Содержимое прижато к низу слота, поэтому форма ниже начинается
    на одной высоте во всех трёх состояниях. */
 
-.theme-b2b .auth__intro,
-.theme-b2b .auth__tabs {
+html.theme-b2b .auth__intro,
+html.theme-b2b .auth__tabs {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -274,7 +427,24 @@
   margin-bottom: 24px;
 }
 
-.theme-b2b .auth__tabs {
+html.theme-b2b .auth__tabs {
   flex-direction: row;
   align-items: flex-end;
+}
+
+
+/* ── Навигация кабинета ────────────────────────────────────────────
+   Активный пункт — графит, а не зелёная пилюля. Причина та же, что на
+   экране входа: зелёный в корпоративной палитре закреплён за целевым
+   действием, и если им красить ещё и текущий раздел, кнопка на экране
+   перестаёт быть главной. Пилюля уходит по той же причине, по какой
+   ушли двадцатипиксельные скругления, — на сайте радиус один. */
+
+html.theme-b2b .lk-hr-nav__link {
+  border-radius: 6px;
+}
+
+html.theme-b2b .lk-hr-nav__link.is-active {
+  background: var(--lk-ink-800);
+  color: #fff;
 }

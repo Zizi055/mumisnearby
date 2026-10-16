@@ -87,7 +87,7 @@
   align-items: center;
   justify-content: center;
 
-  border-radius: 10px;
+  border-radius: var(--lk-r, 10px);
   border: none;
   background: transparent;
   cursor: pointer;
@@ -113,7 +113,7 @@
   height: 38px;
 
   border: none;
-  border-radius: 10px;
+  border-radius: var(--lk-r, 10px);
   background: rgba(var(--lk-brand-rgb), 0.08);
   color: $lk-text;
 
@@ -215,7 +215,7 @@
   .lk-header__icon-btn {
     width: 30px;
     height: 30px;
-    border-radius: 8px;
+    border-radius: var(--lk-r, 8px);
   }
 }
 

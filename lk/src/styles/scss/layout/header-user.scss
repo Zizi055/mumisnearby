@@ -68,7 +68,7 @@
   width: 320px;
   background: #fff;
   border: 1px solid var(--color-border, #e4e7e4);
-  border-radius: 16px;
+  border-radius: var(--lk-r, 16px);
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.10);
   z-index: 100;
   overflow: hidden;
@@ -145,7 +145,7 @@
   align-items: center;
   justify-content: center;
 
-  border-radius: 9px;
+  border-radius: var(--lk-r, 9px);
 
   background: rgba(var(--lk-brand-rgb), 0.1);
   color: var(--lk-brand, var(--lk-brand));

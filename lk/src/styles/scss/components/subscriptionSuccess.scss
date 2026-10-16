@@ -100,7 +100,7 @@
 
   .lk-checkout-card {
     padding: 14px;
-    border-radius: 16px;
+    border-radius: var(--lk-r, 16px);
   }
 }
 

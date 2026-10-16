@@ -130,7 +130,7 @@
   height: 30px;
   padding: 0 12px;
 
-  border-radius: 999px;
+  border-radius: var(--lk-pill, 999px);
 
   font-size: 12px;
   font-weight: 500;
@@ -230,7 +230,7 @@
   height: 30px;
   padding: 0 12px;
 
-  border-radius: 999px;
+  border-radius: var(--lk-pill, 999px);
 
   background: linear-gradient(180deg, rgba(var(--lk-brand-rgb), 0.12), rgba(var(--lk-brand-rgb), 0.07));
 
@@ -257,7 +257,7 @@
   height: 44px;
   padding: 0 20px;
 
-  border-radius: 999px;
+  border-radius: var(--lk-pill, 999px);
 
   border: 1.5px solid $lk-border;
 

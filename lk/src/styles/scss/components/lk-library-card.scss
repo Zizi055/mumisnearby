@@ -15,7 +15,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    border-radius: 28px;
+    border-radius: var(--lk-r, 28px);
     background: rgba(255, 255, 255, 0.08);
     z-index: 1;
     pointer-events: none;
@@ -67,7 +67,7 @@
   align-items: center;
   gap: 6px;
   padding: 8px 18px;
-  border-radius: 999px;
+  border-radius: var(--lk-pill, 999px);
   border: none;
   background: linear-gradient(135deg, var(--lk-brand), #4a7a5c);
   color: white;
@@ -95,7 +95,7 @@
 
   overflow: hidden;
 
-  border-radius: 28px;
+  border-radius: var(--lk-r, 28px);
 
   background:
     linear-gradient(
@@ -188,7 +188,7 @@
 
   padding: 0 12px;
 
-  border-radius: 999px;
+  border-radius: var(--lk-pill, 999px);
 
   background: rgba(255,255,255,0.18);
 
@@ -250,7 +250,7 @@
 
   padding: 0 12px;
 
-  border-radius: 999px;
+  border-radius: var(--lk-pill, 999px);
 
   display: inline-flex;
   align-items: center;
@@ -367,7 +367,7 @@
 
   padding: 0 12px;
 
-  border-radius: 999px;
+  border-radius: var(--lk-pill, 999px);
 
   background:
     linear-gradient(
@@ -430,7 +430,7 @@
 
   overflow-y: auto;
 
-  border-radius: 28px;
+  border-radius: var(--lk-r, 28px);
 
   background:
     linear-gradient(
@@ -488,7 +488,7 @@
 
   overflow: hidden;
 
-  border-radius: 28px 28px 0 0;
+  border-radius: var(--lk-r, 28px) 28px 0 0;
 }
 
 .lk-card-modal__image img {
@@ -591,7 +591,7 @@
   height: 44px;
   padding: 0 20px;
 
-  border-radius: 999px;
+  border-radius: var(--lk-pill, 999px);
 
   border: 1.5px solid $lk-border;
 
@@ -668,7 +668,7 @@
 
   .lk-card-modal {
     max-width: calc(100vw - 32px);
-    border-radius: 22px;
+    border-radius: var(--lk-r, 22px);
   }
 
   .lk-card-modal__image {
@@ -706,12 +706,12 @@
 
   .lk-card-modal {
     max-height: 95vh;
-    border-radius: 22px 22px 0 0;
+    border-radius: var(--lk-r, 22px) 22px 0 0;
   }
 
   .lk-card-modal__image {
     height: 200px;
-    border-radius: 22px 22px 0 0;
+    border-radius: var(--lk-r, 22px) 22px 0 0;
   }
 
   .lk-card-modal__body {
@@ -735,7 +735,7 @@
 
 @media (max-width: 480px) {
   .lk-library-card {
-    border-radius: 20px;
+    border-radius: var(--lk-r, 20px);
   }
 
   /* высоту не задаём — работает aspect-ratio из блока 640px */

@@ -333,7 +333,7 @@
 .auth__forgot {
   display: flex;
   justify-content: flex-end;
-  margin-top: -$lk-space-4;
+  margin-top: calc(-1 * #{$lk-space-4});
 
   button {
     border: none;
@@ -569,7 +569,7 @@
   margin-bottom: 16px;
   padding: 10px 14px;
 
-  border-radius: 12px;
+  border-radius: var(--lk-r, 12px);
 
   background: rgba(var(--lk-brand-rgb), 0.1);
   border: 1px solid rgba(var(--lk-brand-rgb), 0.2);
