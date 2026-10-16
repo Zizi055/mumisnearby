@@ -49,7 +49,9 @@ async function request(path, options = {}) {
 
   if (!res.ok) {
     const text = await res.text().catch(() => '');
-    throw new Error(`HTTP ${res.status}: ${text}`);
+    const err = new Error(describeAdminError(res.status, text));
+    err.status = res.status;
+    throw err;
   }
 
   if (res.status === 204) {
@@ -57,6 +59,38 @@ async function request(path, options = {}) {
   }
 
   return res.json();
+}
+
+// Бэк отвечает { detail: "текст" } — показываем его как есть, он
+// написан для человека.
+//
+// Отдельный случай — HTML в ответе. На /admin/* у бэкенда живёт ещё и
+// собственная серверная админка, и на неизвестный адрес она отдаёт
+// свою страницу 404 целиком. Вываливать её разметку в интерфейс
+// бессмысленно: человек видит простыню тегов вместо сообщения.
+function describeAdminError(status, text) {
+  const trimmed = text.trim();
+
+  if (trimmed.startsWith('{')) {
+    try {
+      const parsed = JSON.parse(trimmed);
+      if (typeof parsed.detail === 'string') return parsed.detail;
+    } catch {
+      // не JSON — ниже по коду
+    }
+  }
+
+  if (trimmed.startsWith('<')) {
+    return status === 404
+      ? 'Этого раздела нет в API сервера — корпоративный модуль ещё не выкачен.'
+      : `Сервер ответил страницей, а не данными (код ${status}).`;
+  }
+
+  if (status === 403) return 'Недостаточно прав для этого действия.';
+  if (status === 404) return 'Раздел не найден на сервере.';
+  if (status >= 500) return 'Ошибка на сервере. Мы уже знаем о проблеме.';
+
+  return `Запрос не выполнен (код ${status}).`;
 }
 
 export const adminApi = {
