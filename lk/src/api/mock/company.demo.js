@@ -185,3 +185,15 @@ export function demoCompanyResponse(path, method = 'GET', body = null) {
 
   return undefined;
 }
+
+/**
+ * Открыть кабинет на демо-данных.
+ *
+ * Нужна ровно в одном месте — на входе компании, когда сервер отвечает
+ * 404 и проверять пароль негде. Токен заведомо нерабочий: любой запрос
+ * с ним вернёт 401 или 404, и во втором случае ответит этот файл.
+ */
+export function startDemoCompanySession() {
+  localStorage.setItem('companyToken', 'demo');
+  localStorage.setItem('companyName', COMPANY.name);
+}

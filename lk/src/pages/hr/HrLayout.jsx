@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { LogOut, AlertTriangle, Repeat2, FlaskConical } from 'lucide-react';
+import { LogOut, AlertTriangle, FlaskConical } from 'lucide-react';
 import {
   getCompanyProfile,
   logoutCompany,
@@ -8,7 +8,6 @@ import {
   hasCompanySession,
 } from '../../api/company.service';
 import { isDemoData } from '../../api/companyClient';
-import { getCompanyAsAdmin, closeCompanyAsAdmin } from '../../api/companySession';
 
 // ─────────────────────────────────────────────────────────────────────
 // Оболочка кабинета компании.
@@ -47,11 +46,7 @@ export default function HrLayout() {
   const [status, setStatus] = useState('checking'); // checking | ready
   const [demo, setDemo] = useState(false);
   const [company, setCompany] = useState(null);
-  // Под административной учёткой название берётся из выбранной
-  // карточки: запрос профиля ещё не вернулся, а шапка уже должна
-  // показывать, чей кабинет открыт.
-  const asAdmin = getCompanyAsAdmin();
-  const [name, setName] = useState(asAdmin?.name || getStoredCompanyName());
+  const [name, setName] = useState(getStoredCompanyName());
 
   useEffect(() => {
     if (!hasCompanySession()) {
@@ -84,12 +79,6 @@ export default function HrLayout() {
     navigate('/company/login', { replace: true });
   }
 
-  // Админ не выходит из своей учётки — он закрывает карточку компании
-  // и возвращается к списку.
-  function handleSwitchCompany() {
-    closeCompanyAsAdmin();
-    navigate('/company/select', { replace: true });
-  }
 
   if (status === 'checking') {
     return (
@@ -125,15 +114,6 @@ export default function HrLayout() {
         </div>
 
         <div className="lk-hr-nav__user">
-          {asAdmin && (
-            <button
-              type="button"
-              onClick={handleSwitchCompany}
-              title="Выбрать другую компанию"
-            >
-              <Repeat2 size={16} />
-            </button>
-          )}
           <button type="button" onClick={handleLogout} title="Выйти">
             <LogOut size={16} />
           </button>

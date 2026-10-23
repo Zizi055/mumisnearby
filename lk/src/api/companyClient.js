@@ -1,4 +1,3 @@
-import { resolveCompanyRequest, closeCompanyAsAdmin, isAdminMode } from './companySession';
 import { demoCompanyResponse } from './mock/company.demo';
 
 const BASE_URL = import.meta.env.VITE_API_URL || '';
@@ -41,20 +40,7 @@ function parseBody(body) {
 export const COMPANY_TOKEN_KEY = 'companyToken';
 export const COMPANY_NAME_KEY = 'companyName';
 
-// Куда возвращать человека после 401 — зависит от того, чья сессия
-// протухла. Админа нельзя сбрасывать на вход компании: у него нет и не
-// будет пароля юрлица, он ходит под своей учёткой.
 function handleUnauthorized() {
-  if (isAdminMode()) {
-    closeCompanyAsAdmin();
-
-    if (!window.location.hash.includes('/admin/login')) {
-      window.location.hash = '/admin/login';
-    }
-
-    return;
-  }
-
   localStorage.removeItem(COMPANY_TOKEN_KEY);
   localStorage.removeItem(COMPANY_NAME_KEY);
 
@@ -64,9 +50,8 @@ function handleUnauthorized() {
 }
 
 async function request(path, options = {}) {
-  // Адрес и токен выбирает companySession: под админской учёткой тот же
-  // запрос уходит на /admin/companies/{id}/*, тела при этом совпадают.
-  const { path: url, token } = resolveCompanyRequest(path);
+  const url = path;
+  const token = localStorage.getItem(COMPANY_TOKEN_KEY);
 
   const headers = { ...(options.headers || {}) };
 

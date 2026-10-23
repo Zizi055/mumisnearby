@@ -41,7 +41,6 @@ import AdminGrant from './pages/admin/AdminGrant.jsx';
 
 import { isB2B } from './config/edition';
 
-import CompanySelect from './pages/hr/CompanySelect.jsx';
 import HrLayout from './pages/hr/HrLayout.jsx';
 import HrLogin from './pages/hr/HrLogin.jsx';
 import HrDashboard from './pages/hr/HrDashboard.jsx';
@@ -73,9 +72,6 @@ function App() {
           компании на домене для частных клиентов не нужны и только
           путали бы. Монтируем по флагу редакции (config/edition.js). */}
       {isB2B && <Route path="/company/login" element={<HrLogin />} />}
-      {/* Шаг только для административного входа: выбрать, чей кабинет
-          открыть. Юрлицо сюда не попадает — у него компания одна. */}
-      {isB2B && <Route path="/company/select" element={<CompanySelect />} />}
       {isB2B && (
         <Route path="/company" element={<HrLayout />}>
           <Route index element={<Navigate to="/company/dashboard" replace />} />
