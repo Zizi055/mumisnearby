@@ -37,8 +37,12 @@ export function resolveInitialRole(searchParams) {
   if (fromUrl && ITEMS.some((i) => i.id === fromUrl)) return fromUrl;
 
   try {
+    // Сохранённый «частный клиент» пропускаем: такие записи остались у
+    // тех, кто успел заглянуть в третью вкладку до этой правки, и без
+    // проверки они продолжили бы открывать экран на чужом бренде.
     const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved && ITEMS.some((i) => i.id === saved)) return saved;
+    if (saved === ROLES.person) localStorage.removeItem(STORAGE_KEY);
+    else if (saved && ITEMS.some((i) => i.id === saved)) return saved;
   } catch {
     // Приватный режим Safari запрещает доступ к localStorage —
     // переключатель должен работать и без памяти.
@@ -47,9 +51,17 @@ export function resolveInitialRole(searchParams) {
   return ROLES.company;
 }
 
+// «Частного клиента» не запоминаем. Компания и сотрудник ходят своей
+// дверью каждый день, и открывать её сразу — удобно. А частный клиент
+// на корпоративном домене заходит разово: если запомнить и этот выбор,
+// экран входа навсегда открывается на вкладке с брендом «Родных
+// голосов» и формой регистрации, которой на этом домене быть не
+// должно. Человек при этом ничего не выбирал — он просто однажды
+// заглянул в третью вкладку.
 export function rememberRole(role) {
   try {
-    localStorage.setItem(STORAGE_KEY, role);
+    if (role === ROLES.person) localStorage.removeItem(STORAGE_KEY);
+    else localStorage.setItem(STORAGE_KEY, role);
   } catch {
     // см. выше
   }
