@@ -125,7 +125,7 @@
     transform .18s ease;
 
   &:hover {
-    background: #fff;
+    background: var(--b2b-white, #fff);
     border-color: rgba(var(--lk-brand-rgb), .24);
     transform: translateY(-1px);
   }

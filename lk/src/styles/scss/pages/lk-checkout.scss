@@ -50,7 +50,7 @@
   padding: 24px;
   border-radius: var(--lk-r, 20px);
   border: 1px solid $lk-border;
-  background: #fff;
+  background: var(--b2b-white, #fff);
 }
 
 .lk-summary__title {

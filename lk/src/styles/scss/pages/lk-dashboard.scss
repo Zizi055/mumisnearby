@@ -36,7 +36,7 @@
 
   padding: $lk-card-padding;
 
-  background: #fff;
+  background: var(--b2b-white, #fff);
 
   border: 1px solid $lk-border;
 
@@ -238,8 +238,8 @@
   background:
     linear-gradient(
       135deg,
-      #dce9df 0%,
-      #f5f8f4 100%
+      var(--b2b-border, #dce9df) 0%,
+      var(--b2b-surface-soft, #f5f8f4) 100%
     );
 
   border: 1px solid $lk-border;
@@ -374,7 +374,7 @@
 .lk-dashboard-block {
   padding: $lk-card-padding;
 
-  background: #fff;
+  background: var(--b2b-white, #fff);
 
   border: 1px solid $lk-border;
   border-radius: $lk-radius-24;
@@ -471,7 +471,7 @@
     transform .18s ease;
 
   &:hover {
-    background: #fff;
+    background: var(--b2b-white, #fff);
 
     border-color: rgba(var(--lk-brand-rgb), .28);
 
@@ -818,7 +818,7 @@ color: $lk-brand-dark;
   align-items: center;
   justify-content: center;
 
-  background: #fff;
+  background: var(--b2b-white, #fff);
 
   border: 1px solid $lk-border;
   border-radius: 50%;
@@ -922,7 +922,7 @@ color: $lk-brand-dark;
   .lk-dashboard-story__play {
     background: $lk-brand;
 
-    color: #fff;
+    color: var(--b2b-white, #fff);
   }
 }
 
@@ -1161,7 +1161,7 @@ display: flex;
 /* Виджет реферальной ссылки */
 .lk-dashboard-referral {
   padding: $lk-card-padding;
-  background: linear-gradient(160deg, rgba(var(--lk-brand-rgb), 0.06) 0%, #fff 100%);
+  background: linear-gradient(160deg, rgba(var(--lk-brand-rgb), 0.06) 0%, var(--b2b-white, #fff) 100%);
   border: 1px solid rgba(var(--lk-brand-rgb), 0.15);
   border-radius: $lk-radius-24;
   box-shadow: $lk-shadow-card;

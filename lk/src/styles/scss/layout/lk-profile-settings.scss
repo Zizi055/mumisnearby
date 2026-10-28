@@ -75,7 +75,7 @@
   border: 1px solid $lk-border;
   border-radius: 50%;
 
-  background: #fff;
+  background: var(--b2b-white, #fff);
 
   display: flex;
   align-items: center;
@@ -250,7 +250,7 @@
     0
     $lk-space-16;
 
-  background: #fff;
+  background: var(--b2b-white, #fff);
 
   border: 1px solid $lk-border;
   border-radius: $lk-radius-pill;
@@ -434,7 +434,7 @@
   border: 1px solid $lk-border;
   border-radius: 50%;
 
-  background: #fff;
+  background: var(--b2b-white, #fff);
 
   display: flex;
   align-items: center;
@@ -521,7 +521,7 @@
     0
     $lk-space-14;
 
-  background: #fff;
+  background: var(--b2b-white, #fff);
 
   border: 1px solid $lk-border;
   border-radius: $lk-radius-pill;

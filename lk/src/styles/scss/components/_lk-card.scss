@@ -100,7 +100,7 @@
   height: 28px;
   border-radius: 6px;
 
-  background: linear-gradient(135deg, #e5e5e5, #cfcfcf);
+  background: linear-gradient(135deg, var(--b2b-border, #e5e5e5), var(--b2b-border, #cfcfcf));
 
   position: relative;
   overflow: hidden;
@@ -159,7 +159,7 @@
 /* VISA */
 .lk-card__brand--visa ~ .lk-card__number,
 .lk-card__brand--visa {
-  color: #fff;
+  color: var(--b2b-white, #fff);
 }
 
 .lk-card.lk-card--visa .lk-card__face {
@@ -168,7 +168,7 @@
 
 /* MASTERCARD */
 .lk-card.lk-card--mastercard .lk-card__face {
-  background: linear-gradient(135deg, #3a1c1c, #b91c1c);
+  background: linear-gradient(135deg, #3a1c1c, var(--b2b-danger, #b91c1c));
 }
 
 /* DEFAULT */
@@ -218,7 +218,7 @@
 }
 
 .lk-card__cvc strong {
-  background: #fff;
+  background: var(--b2b-white, #fff);
   color: #000;
 
   padding: 4px 10px;

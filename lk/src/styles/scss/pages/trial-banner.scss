@@ -81,13 +81,13 @@
   // Active state — green/teal
   &--active {
     .trial-banner__inner {
-      background: linear-gradient(135deg, #e8f5ee 0%, #f0faf4 100%);
+      background: linear-gradient(135deg, var(--b2b-surface-soft, #e8f5ee) 0%, #f0faf4 100%);
       border: 1px solid #b8dfc8;
     }
 
     .trial-banner__icon {
       background: var(--lk-brand);
-      color: #fff;
+      color: var(--b2b-white, #fff);
     }
 
     .trial-banner__text strong {
@@ -95,7 +95,7 @@
     }
 
     .trial-banner__text span {
-      color: #4a7a5c;
+      color: var(--b2b-brand-soft, #4a7a5c);
     }
 
     .trial-banner__stat {
@@ -104,7 +104,7 @@
 
     .trial-banner__cta {
       background: var(--lk-brand);
-      color: #fff;
+      color: var(--b2b-white, #fff);
     }
   }
 
@@ -117,7 +117,7 @@
 
     .trial-banner__icon {
       background: #e07b39;
-      color: #fff;
+      color: var(--b2b-white, #fff);
     }
 
     .trial-banner__text strong {
@@ -130,7 +130,7 @@
 
     .trial-banner__cta--primary {
       background: #e07b39;
-      color: #fff;
+      color: var(--b2b-white, #fff);
     }
   }
 }
@@ -172,7 +172,7 @@
 .lk-item-trial-hint {
   padding: 8px 14px;
   margin-bottom: 12px;
-  background: #e8f5ee;
+  background: var(--b2b-surface-soft, #e8f5ee);
   border: 1px solid #b8dfc8;
   border-radius: var(--lk-r, 8px);
   font-size: 13px;

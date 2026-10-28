@@ -258,7 +258,7 @@
 .lk-generations-badge.is-pending,
 .lk-generations-badge.is-generating {
   background: rgba(245, 158, 11, 0.12);
-  color: #c27a00;
+  color: var(--b2b-warning, #c27a00);
 }
 
 .lk-generations-badge.is-ready {
@@ -268,7 +268,7 @@
 
 .lk-generations-badge.is-failed {
   background: rgba(220, 38, 38, 0.12);
-  color: #dc2626;
+  color: var(--b2b-danger, #dc2626);
 }
 
 .lk-generations-row__actions {

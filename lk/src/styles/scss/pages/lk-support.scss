@@ -24,8 +24,8 @@
   background:
     linear-gradient(
       135deg,
-      #f7faf8 0%,
-      #eef5f0 100%
+      var(--b2b-surface-soft, #f7faf8) 0%,
+      var(--b2b-surface-soft, #eef5f0) 100%
     );
 
   box-shadow: $lk-shadow-card;
@@ -123,7 +123,7 @@
   border: 1px solid $lk-border;
   border-radius: var(--lk-r, 32px);
 
-  background: #fff;
+  background: var(--b2b-white, #fff);
 
   box-shadow: $lk-shadow-card;
 }
@@ -241,7 +241,7 @@
   border: 1px solid $lk-border;
   border-radius: var(--lk-r, 24px);
 
-  background: #fff;
+  background: var(--b2b-white, #fff);
 
   color: $lk-text;
 
@@ -277,7 +277,7 @@
   border: 1px solid $lk-border;
   border-radius: var(--lk-r, 32px);
 
-  background: #fff;
+  background: var(--b2b-white, #fff);
 
   box-shadow: $lk-shadow-card;
 }
@@ -383,8 +383,8 @@
  background:
     linear-gradient(
       135deg,
-      #f7faf8 0%,
-      #eef5f0 100%
+      var(--b2b-surface-soft, #f7faf8) 0%,
+      var(--b2b-surface-soft, #eef5f0) 100%
     );
 
   box-shadow: $lk-shadow-card;
@@ -445,7 +445,7 @@
     linear-gradient(
       135deg,
       var(--lk-brand) 0%,
-      #79ab89 100%
+      var(--b2b-brand-soft, #79ab89) 100%
     );
 
   color: $lk-white;
@@ -508,7 +508,7 @@
  */
 
 
-$lk-gradient-brand: linear-gradient(135deg, var(--lk-brand) 0%, #79ab89 100%);
+$lk-gradient-brand: linear-gradient(135deg, var(--lk-brand) 0%, var(--b2b-brand-soft, #79ab89) 100%);
 
 
 .lk-support-modal-overlay {
@@ -1286,7 +1286,7 @@ $lk-gradient-brand: linear-gradient(135deg, var(--lk-brand) 0%, #79ab89 100%);
 .lk-ticket-reply__error {
   margin: 0;
 
-  color: #dc2626;
+  color: var(--b2b-danger, #dc2626);
 
   font-size: 12px;
 }
@@ -1317,12 +1317,12 @@ $lk-gradient-brand: linear-gradient(135deg, var(--lk-brand) 0%, #79ab89 100%);
 
   &--progress {
     background: rgba(234, 179, 8, 0.1);
-    color: #a16207;
+    color: var(--b2b-warning, #a16207);
   }
 
   &--resolved {
     background: rgba(34, 197, 94, 0.1);
-    color: #15803d;
+    color: var(--b2b-success, #15803d);
   }
 
   &--closed {

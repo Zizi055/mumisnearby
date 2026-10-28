@@ -273,7 +273,7 @@
 
 .lk-voice-training__badge.is-training {
   background: rgba(245, 158, 11, 0.12);
-  color: #c27a00;
+  color: var(--b2b-warning, #c27a00);
 }
 
 .lk-voice-training__badge.is-ready {
@@ -283,13 +283,13 @@
 
 .lk-voice-training__badge.is-error {
   background: rgba(220, 38, 38, 0.12);
-  color: #dc2626;
+  color: var(--b2b-danger, #dc2626);
 }
 
 .lk-voice-training__error {
   margin: 0;
   font-size: 13px;
-  color: #dc2626;
+  color: var(--b2b-danger, #dc2626);
 }
 
 .lk-voice-training__steps {
@@ -328,7 +328,7 @@
 }
 
 .lk-voice-training__step.is-active span {
-  background: #f59e0b;
+  background: var(--b2b-warning, #f59e0b);
 
   box-shadow:
     0 0 0 6px rgba(245, 158, 11, 0.12);
@@ -397,7 +397,7 @@
   width: 52px;
   height: 52px;
   border-radius: var(--lk-r, 14px);
-  background: linear-gradient(135deg, #e8f5ee, #c8e6d4);
+  background: linear-gradient(135deg, var(--b2b-surface-soft, #e8f5ee), var(--b2b-surface-accent, #c8e6d4));
   color: var(--lk-brand);
   font-size: 22px;
   font-weight: 700;
@@ -612,7 +612,7 @@
   border-radius: 50%;
   background: $lk-brand;
   border: 1px solid $lk-brand;
-  color: #fff;
+  color: var(--b2b-white, #fff);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1048,7 +1048,7 @@
 .lk-voice-consent__text {
   font-size: 13px;
   line-height: 1.6;
-  color: #4b4b4b;
+  color: var(--b2b-text-soft, #4b4b4b);
 }
 
 .lk-voice-consent__link {

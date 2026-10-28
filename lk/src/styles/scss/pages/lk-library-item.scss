@@ -276,14 +276,14 @@
 }
 
 .lk-item-fav-btn:hover {
-  border-color: #ef4444;
-  color: #ef4444;
+  border-color: var(--b2b-danger, #ef4444);
+  color: var(--b2b-danger, #ef4444);
 }
 
 .lk-item-fav-btn.is-active {
   background: rgba(239,68,68,0.06);
-  border-color: #ef4444;
-  color: #ef4444;
+  border-color: var(--b2b-danger, #ef4444);
+  color: var(--b2b-danger, #ef4444);
 }
 
 /* =========================================

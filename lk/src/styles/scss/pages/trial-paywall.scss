@@ -16,7 +16,7 @@
   max-width: 780px;
   max-height: 90vh;
   overflow-y: auto;
-  background: #fff;
+  background: var(--b2b-white, #fff);
   border-radius: var(--lk-r, 24px);
   box-shadow: 0 32px 80px rgba(15, 23, 42, 0.2);
   animation: paywall-up 0.25s ease;
@@ -48,13 +48,13 @@
       margin: 0 0 4px;
       font-size: 20px;
       font-weight: 700;
-      color: #111827;
+      color: var(--b2b-text, #111827);
     }
 
     p {
       margin: 0;
       font-size: 14px;
-      color: #6b7280;
+      color: var(--b2b-text-muted, #6b7280);
       line-height: 1.5;
     }
   }
@@ -64,8 +64,8 @@
     height: 36px;
     border-radius: 50%;
     border: none;
-    background: #f3f4f6;
-    color: #6b7280;
+    background: var(--b2b-surface-soft, #f3f4f6);
+    color: var(--b2b-text-muted, #6b7280);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -74,7 +74,7 @@
     transition: background 0.15s;
 
     &:hover {
-      background: #e5e7eb;
+      background: var(--b2b-border, #e5e7eb);
     }
   }
 
@@ -87,7 +87,7 @@
 
   &__plan {
     position: relative;
-    border: 1.5px solid #e5e7eb;
+    border: 1.5px solid var(--b2b-border, #e5e7eb);
     border-radius: var(--lk-r, 16px);
     padding: 20px;
     display: flex;
@@ -101,7 +101,7 @@
 
     &.is-featured {
       border-color: var(--lk-brand);
-      background: linear-gradient(180deg, #f0f9f4 0%, #fff 100%);
+      background: linear-gradient(180deg, #f0f9f4 0%, var(--b2b-white, #fff) 100%);
     }
   }
 
@@ -116,7 +116,7 @@
     padding: 4px 12px;
     border-radius: var(--lk-pill, 999px);
     background: var(--lk-brand);
-    color: #fff;
+    color: var(--b2b-white, #fff);
     font-size: 11px;
     font-weight: 600;
     white-space: nowrap;
@@ -125,7 +125,7 @@
   &__plan-name {
     font-size: 16px;
     font-weight: 700;
-    color: #111827;
+    color: var(--b2b-text, #111827);
   }
 
   &__plan-price {
@@ -136,12 +136,12 @@
     strong {
       font-size: 22px;
       font-weight: 800;
-      color: #111827;
+      color: var(--b2b-text, #111827);
     }
 
     span {
       font-size: 13px;
-      color: #9ca3af;
+      color: var(--b2b-text-muted, #9ca3af);
     }
   }
 
@@ -174,9 +174,9 @@
     width: 100%;
     padding: 10px;
     border-radius: var(--lk-r, 10px);
-    border: 1.5px solid #e5e7eb;
-    background: #fff;
-    color: #374151;
+    border: 1.5px solid var(--b2b-border, #e5e7eb);
+    background: var(--b2b-white, #fff);
+    color: var(--b2b-text-soft, #374151);
     font-size: 14px;
     font-weight: 600;
     cursor: pointer;
@@ -192,13 +192,13 @@
     }
 
     &.is-primary {
-      background: linear-gradient(135deg, var(--lk-brand), #4a7a5c);
+      background: linear-gradient(135deg, var(--lk-brand), var(--b2b-brand-soft, #4a7a5c));
       border-color: transparent;
-      color: #fff;
+      color: var(--b2b-white, #fff);
 
       &:hover {
         opacity: 0.9;
-        color: #fff;
+        color: var(--b2b-white, #fff);
       }
     }
   }
@@ -206,7 +206,7 @@
   &__footer {
     text-align: center;
     font-size: 12px;
-    color: #9ca3af;
+    color: var(--b2b-text-muted, #9ca3af);
     padding: 0 28px 20px;
     margin: 0;
   }
