@@ -83,37 +83,20 @@ const b2cNavigation = [
   },
 ];
 
-// ─────────────────────────────────────────────────────────────────────
-// Меню сотрудника компании (B2B).
-//
-// Отличия от B2C ровно два, и оба — состав, а не поведение:
-//
-//  1. В разделе «Подписка» остался только «Тариф», и он только для
-//     чтения. Сотрудник ничего не покупает и не отменяет: доступ оплатила
-//     компания и выдала промокодом. Показывать ему «Платежи», «Управление»
-//     и «Бонусы» — значит обещать кнопки, которые приведут к отказу бэка.
-//
-//  2. Нет пункта «Семья» в настройках: семейный доступ — история B2C
-//     подписки, в корпоративной его роль играют места компании.
-// ─────────────────────────────────────────────────────────────────────
-const b2bNavigation = b2cNavigation.map((section) => {
-  if (section.path === '/subscription') {
-    return {
-      ...section,
-      label: 'Доступ',
-      tooltip: 'Корпоративный доступ',
-      children: [{ label: 'Мой тариф', path: '/subscription/tariff' }],
-    };
-  }
+// Меню сотрудника компании (B2B): без подписки и тарифов — доступ
+// выдаёт компания. «Семья» в настройках тоже не нужна: места считает
+// кабинет компании, а не семейный доступ B2C.
+const b2bNavigation = b2cNavigation
+  .filter((section) => section.path !== '/subscription')
+  .map((section) => {
+    if (section.path === '/settings') {
+      return {
+        ...section,
+        children: section.children.filter((c) => c.path !== '/settings/family'),
+      };
+    }
 
-  if (section.path === '/settings') {
-    return {
-      ...section,
-      children: section.children.filter((c) => c.path !== '/settings/family'),
-    };
-  }
-
-  return section;
-});
+    return section;
+  });
 
 export const navigation = isB2B ? b2bNavigation : b2cNavigation;

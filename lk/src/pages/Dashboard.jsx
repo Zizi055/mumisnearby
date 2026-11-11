@@ -310,7 +310,10 @@ export default function Dashboard() {
 
       {/* ── STATS ── */}
       <section className="lk-dashboard-stats" aria-label="Статистика">
-        {withPlanStat(data.stats).map((item) => {
+        {(isB2B
+          ? data.stats.filter((item) => item.id !== 'plan')
+          : withPlanStat(data.stats)
+        ).map((item) => {
           const Icon = item.icon || STAT_ICONS[item.id];
 
           return (
@@ -466,9 +469,10 @@ export default function Dashboard() {
           распадалась на «широкий блок под двумя узкими». */}
       <section className="lk-dashboard-second">
 
-      {planName && (
+      {(isB2B ? planLimits.length > 0 : planName) && (
         <section className="lk-dashboard-plan">
 
+          {!isB2B && (
           <header className="lk-dashboard-plan__top">
             <div className="lk-dashboard-plan__ident">
               <p className="lk-dashboard-plan__eyebrow">Ваш тариф</p>
@@ -503,6 +507,7 @@ export default function Dashboard() {
               </span>
             </button>
           </header>
+          )}
 
           {planLimits.length > 0 && (
             <>

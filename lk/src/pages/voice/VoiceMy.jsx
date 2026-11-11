@@ -4,6 +4,7 @@ import LkButton from '../../components/ui/LkButton';
 import { useVoiceStore } from '../../store/voice.store';
 import { getTrialInfo } from '../../store/trial.store';
 import { useHasPaidPlan } from '../../store/subscription.store';
+import { isB2B } from '../../config/edition';
 
 
 import {
@@ -209,7 +210,7 @@ export default function VoiceMy() {
           title={voiceLimitReached ? 'В пробном периоде доступен 1 голос' : undefined}
           onClick={() => {
             if (voiceLimitReached) {
-              navigate('/subscription/tariff');
+              if (!isB2B) navigate('/subscription/tariff');
             } else {
               navigate('/voice/manage');
             }
@@ -287,7 +288,12 @@ export default function VoiceMy() {
       {/* Триал-подсказка */}
       {voiceLimitReached && (
         <div className="lk-voices-trial-hint">
-          <span>В пробном периоде доступен только 1 голос.</span>
+          <span>
+            {isB2B
+              ? 'Достигнут лимит голосов, который выдала компания.'
+              : 'В пробном периоде доступен только 1 голос.'}
+          </span>
+          {!isB2B && (
           <button
             type="button"
             className="lk-btn lk-btn--sm lk-btn--secondary"
@@ -295,6 +301,7 @@ export default function VoiceMy() {
           >
             Расширить доступ
           </button>
+          )}
         </div>
       )}
 

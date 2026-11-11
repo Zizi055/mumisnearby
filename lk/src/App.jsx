@@ -143,27 +143,23 @@ function App() {
           <Route path="analytics" element={<VoiceAnalytics />} />
         </Route>
 
-        {/* Подписка. В B2B сотрудник ничего не покупает и не отменяет:
-            доступ оплатила компания и выдала промокодом. Поэтому оплата,
-            платежи, управление, бонусы и конструктор там не смонтированы
-            — иначе прямая ссылка привела бы на экран с кнопками, которые
-            гарантированно получают отказ бэка. */}
-        <Route path="/subscription" element={<Subscription />}>
-          <Route index element={<Navigate to="tariff" replace />} />
-          <Route path="tariff" element={<SubscriptionTariff />} />
-
-          {!isB2B && <Route path="payments" element={<SubscriptionPayments />} />}
-          {!isB2B && <Route path="manage" element={<SubscriptionManage />} />}
-          {!isB2B && <Route path="bonus" element={<SubscriptionBonus />} />}
-          {!isB2B && <Route path="checkout" element={<Checkout />} />}
-          {!isB2B && (
+        {/* Подписка только у частных клиентов. Сотруднику тарифы не
+            показываем: доступ выдаёт компания, старые ссылки уводим
+            на главную кабинета. */}
+        {isB2B ? (
+          <Route path="/subscription/*" element={<Navigate to="/dashboard/progress" replace />} />
+        ) : (
+          <Route path="/subscription" element={<Subscription />}>
+            <Route index element={<Navigate to="tariff" replace />} />
+            <Route path="tariff" element={<SubscriptionTariff />} />
+            <Route path="payments" element={<SubscriptionPayments />} />
+            <Route path="manage" element={<SubscriptionManage />} />
+            <Route path="bonus" element={<SubscriptionBonus />} />
+            <Route path="checkout" element={<Checkout />} />
             <Route path="checkout/success" element={<SubscriptionSuccess />} />
-          )}
-          {!isB2B && <Route path="constructor" element={<Constructor />} />}
-
-          {/* Старые ссылки на закрытые разделы не должны вести в пустоту. */}
-          {isB2B && <Route path="*" element={<Navigate to="/subscription/tariff" replace />} />}
-        </Route>
+            <Route path="constructor" element={<Constructor />} />
+          </Route>
+        )}
 
       </Route>
 

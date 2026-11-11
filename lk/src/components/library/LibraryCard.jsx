@@ -13,6 +13,7 @@ import TrialPaywallModal from '../trial/TrialPaywallModal';
 import { useTrialStore } from '../../store/trial.store';
 import { useHasPaidPlan } from '../../store/subscription.store';
 import { getRequiredTariffLabel } from '../../utils/tariffAccess';
+import { isB2B } from '../../config/edition';
 
 // Запасная обложка: у стихов и рассказов preview_url в базе пустой.
 const FALLBACK_IMAGE = `${import.meta.env.BASE_URL}img/owl.png`;
@@ -36,7 +37,7 @@ export default function LibraryCard({ item, isTrialLocked = false, isTariffLocke
 
   const openDetails = () => {
     if (isTariffLocked) {
-      navigate('/subscription/tariff');
+      if (!isB2B) navigate('/subscription/tariff');
       return;
     }
     if (isTrialLocked) {
@@ -106,9 +107,12 @@ export default function LibraryCard({ item, isTrialLocked = false, isTariffLocke
             </div>
             <span>
               {isTariffLocked
-                ? `Доступно на тарифе «${getRequiredTariffLabel(item.accessLvl)}» и выше`
+                ? isB2B
+                  ? 'Этот материал в ваш доступ не входит'
+                  : `Доступно на тарифе «${getRequiredTariffLabel(item.accessLvl)}» и выше`
                 : 'Доступно по подписке'}
             </span>
+            {!isB2B && (
             <button
               type="button"
               className="lk-library-card__trial-lock-btn"
@@ -117,6 +121,7 @@ export default function LibraryCard({ item, isTrialLocked = false, isTariffLocke
               <Sparkles size={13} />
               {isTariffLocked ? 'Улучшить тариф' : 'Открыть доступ'}
             </button>
+            )}
           </div>
         )}
       </div>

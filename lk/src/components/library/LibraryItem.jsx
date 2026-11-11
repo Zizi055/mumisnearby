@@ -19,6 +19,7 @@ import { useLibraryStore } from '../../store/library.store';
 import { useTrialStore } from '../../store/trial.store';
 import { useHasPaidPlan, useTariffLevel } from '../../store/subscription.store';
 import { getRequiredTariffLabel } from '../../utils/tariffAccess';
+import { isB2B } from '../../config/edition';
 import { useGenerationsStore } from '../../store/generations.store';
 import TrialPaywallModal from '../trial/TrialPaywallModal';
 import {
@@ -126,7 +127,7 @@ export default function LibraryItem() {
     if (!selectedVoice || !item) return;
 
     if (tariffBlocked) {
-      navigate('/subscription/tariff');
+      if (!isB2B) navigate('/subscription/tariff');
       return;
     }
 
@@ -192,7 +193,11 @@ export default function LibraryItem() {
     }
     if (genStatus === 'failed') return 'Повторить';
     if (alreadyGenerated) return 'Уже озвучено';
-    if (tariffBlocked) return `Нужен тариф «${getRequiredTariffLabel(item?.accessLvl)}»`;
+    if (tariffBlocked) {
+      return isB2B
+        ? 'Материал недоступен'
+        : `Нужен тариф «${getRequiredTariffLabel(item?.accessLvl)}»`;
+    }
     if (trialBlocked) return 'Лимит исчерпан';
     if (audioUrl) return 'Создать новое';
     return 'Создать аудио';
@@ -307,13 +312,19 @@ export default function LibraryItem() {
 
           {tariffBlocked && (
             <div className="lk-item-trial-hint">
-              Эта сказка доступна на тарифе «{getRequiredTariffLabel(item?.accessLvl)}» и выше.{' '}
-              <span
-                style={{ textDecoration: 'underline', cursor: 'pointer' }}
-                onClick={() => navigate('/subscription/tariff')}
-              >
-                Улучшить тариф
-              </span>
+              {isB2B
+                ? 'Этот материал в ваш доступ не входит. Если он нужен — напишите своему HR.'
+                : (
+                  <>
+                    Эта сказка доступна на тарифе «{getRequiredTariffLabel(item?.accessLvl)}» и выше.{' '}
+                    <span
+                      style={{ textDecoration: 'underline', cursor: 'pointer' }}
+                      onClick={() => navigate('/subscription/tariff')}
+                    >
+                      Улучшить тариф
+                    </span>
+                  </>
+                )}
             </div>
           )}
 

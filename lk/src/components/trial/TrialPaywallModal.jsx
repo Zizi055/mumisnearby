@@ -10,15 +10,7 @@ export default function TrialPaywallModal({ reason = 'limit', onClose }) {
 
   const handleChoose = (tariffId) => {
     onClose();
-
-    // Сотрудник корпоративного клиента тариф не покупает. Ведём его на
-    // страницу тарифа — посмотреть, что открыто, — а не в оплату,
-    // которой в этой сборке нет.
-    if (isB2B) {
-      navigate('/subscription/tariff');
-      return;
-    }
-
+    if (isB2B) return;
     navigate(`/subscription/checkout?plan=${tariffId}&period=year`);
   };
 
@@ -27,7 +19,7 @@ export default function TrialPaywallModal({ reason = 'limit', onClose }) {
     : 'Лимит исчерпан';
 
   const subtitle = isB2B
-    ? 'Этот материал открыт на другом тарифе. Тариф выбирает компания — напишите своему HR.'
+    ? 'Этот материал в ваш доступ не входит. Если он нужен — напишите своему HR.'
     : reason === 'expired'
     ? 'Оформите подписку, чтобы продолжить пользоваться сервисом'
     : 'Вы использовали все 5 бесплатных сказок. Выберите тариф для безлимитного доступа';
@@ -56,7 +48,7 @@ export default function TrialPaywallModal({ reason = 'limit', onClose }) {
           </button>
         </div>
 
-        {/* Plans */}
+        {!isB2B && (
         <div className="trial-paywall__plans">
           {PLANS.map((plan) => (
             <div
@@ -106,10 +98,13 @@ export default function TrialPaywallModal({ reason = 'limit', onClose }) {
             </div>
           ))}
         </div>
+        )}
 
+        {!isB2B && (
         <p className="trial-paywall__footer">
           Нет комиссий. Отмена в любой момент.
         </p>
+        )}
       </div>
     </div>
   );

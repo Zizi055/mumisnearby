@@ -19,6 +19,7 @@ import LkButton from '../../components/ui/LkButton';
 
 import { useVoiceStore } from '../../store/voice.store';
 import { useSubscription } from '../../hooks/useSubscription';
+import { isB2B } from '../../config/edition';
 
 const trainingSteps = [
   'Файл загружен',
@@ -652,9 +653,15 @@ export default function VoiceManage() {
 
           <p>
             {availableCategories.length > 0
-              ? 'После обучения голос можно использовать в этих категориях — по вашему тарифу.'
+              ? isB2B
+                ? 'После обучения голос можно использовать в этих категориях.'
+                : 'После обучения голос можно использовать в этих категориях — по вашему тарифу.'
               : subscription.loading
-              ? 'Загружаем данные тарифа…'
+              ? isB2B
+                ? 'Загружаем данные доступа…'
+                : 'Загружаем данные тарифа…'
+              : isB2B
+              ? 'Доступ к библиотеке выдаёт компания.'
               : 'Оформите подписку, чтобы использовать голос в библиотеке.'}
           </p>
         </div>

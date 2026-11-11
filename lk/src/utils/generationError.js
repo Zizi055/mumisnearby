@@ -24,7 +24,7 @@ const RULES = [
   },
   {
     match: /quota|credit|insufficient|limit_exceeded|too_many_requests|rate.?limit/i,
-    text: 'Закончился доступный объём озвучки. Проверьте лимиты тарифа.',
+    text: 'Закончился доступный объём озвучки. Проверьте лимиты доступа.',
   },
   {
     match: /voice_not_found|invalid.?voice|voice.?id/i,

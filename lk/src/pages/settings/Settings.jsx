@@ -3,6 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Bell, Shield, Users, Sliders, Eye, EyeOff, Check } from 'lucide-react';
 import { changePassword, getPasswordChangedAt } from '../../api/profile.service';
 import { useAuth } from '../../context/AuthContext';
+import { isB2B } from '../../config/edition';
 
 export default function Settings() {
   const location = useLocation();
@@ -173,6 +174,7 @@ export default function Settings() {
               </label>
             </div>
 
+            {!isB2B && (
             <div className="lk-settings__row">
               <div>
                 <strong>Платежи</strong>
@@ -183,6 +185,7 @@ export default function Settings() {
                 <span />
               </label>
             </div>
+            )}
 
             <div className="lk-settings__row">
               <div>
