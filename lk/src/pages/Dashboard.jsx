@@ -16,6 +16,7 @@ import {
   Headphones,
   AudioLines,
   CreditCard,
+  Library,
 } from 'lucide-react';
 
 // Иконки карточек статистики. Раньше значок был только у «6 дней
@@ -331,6 +332,29 @@ export default function Dashboard() {
           </article>
           );
         })}
+
+        {isB2B && (
+          <article className="lk-dashboard-stat">
+            <header className="lk-dashboard-stat__top">
+              <div className="lk-dashboard-stat__icon">
+                <Library size={18} />
+              </div>
+              <p className="lk-dashboard-stat__label">Открытые разделы</p>
+            </header>
+            <h3 className="lk-dashboard-stat__value">
+              {subscription.loading ? '—' : planLimits.length}
+            </h3>
+            <p className="lk-dashboard-stat__text">
+              {subscription.loading
+                ? 'Смотрим, что открыла компания'
+                : planLimits.length === 0
+                  ? 'Компания ещё не открыла разделы'
+                  : planLimits.length <= 3
+                    ? planLimits.map((row) => row.label).join(', ')
+                    : `${planLimits.slice(0, 2).map((row) => row.label).join(', ')} и ещё ${planLimits.length - 2}`}
+            </p>
+          </article>
+        )}
 
         <article className="lk-dashboard-side-card">
           <div className="lk-dashboard-side-card__icon">
