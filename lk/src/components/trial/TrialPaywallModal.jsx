@@ -1,16 +1,16 @@
 import { useNavigate } from 'react-router-dom';
 import { X, Check, Sparkles, Star, Lock } from 'lucide-react';
 import { tariffs } from '../../data/tariffs.data';
-import { isB2B } from '../../config/edition';
-
-const PLANS = tariffs.filter((t) => !t.isBuilder);
+import { isStaffCabinet } from '../../config/cabinetMode';
 
 export default function TrialPaywallModal({ reason = 'limit', onClose }) {
   const navigate = useNavigate();
+  const staff = isStaffCabinet();
+  const plans = tariffs.filter((t) => !t.isBuilder);
 
   const handleChoose = (tariffId) => {
     onClose();
-    if (isB2B) return;
+    if (staff) return;
     navigate(`/subscription/checkout?plan=${tariffId}&period=year`);
   };
 
@@ -18,7 +18,7 @@ export default function TrialPaywallModal({ reason = 'limit', onClose }) {
     ? 'Пробный период завершён'
     : 'Лимит исчерпан';
 
-  const subtitle = isB2B
+  const subtitle = staff
     ? 'Этот материал в ваш доступ не входит. Если он нужен — напишите своему HR.'
     : reason === 'expired'
     ? 'Оформите подписку, чтобы продолжить пользоваться сервисом'
@@ -48,9 +48,9 @@ export default function TrialPaywallModal({ reason = 'limit', onClose }) {
           </button>
         </div>
 
-        {!isB2B && (
+        {!staff && (
         <div className="trial-paywall__plans">
-          {PLANS.map((plan) => (
+          {plans.map((plan) => (
             <div
               key={plan.id}
               className={`trial-paywall__plan ${plan.accent === 'green' ? 'is-featured' : ''}`}
@@ -100,7 +100,7 @@ export default function TrialPaywallModal({ reason = 'limit', onClose }) {
         </div>
         )}
 
-        {!isB2B && (
+        {!staff && (
         <p className="trial-paywall__footer">
           Нет комиссий. Отмена в любой момент.
         </p>

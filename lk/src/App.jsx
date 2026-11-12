@@ -40,6 +40,7 @@ import AdminAdmins from './pages/admin/AdminAdmins.jsx';
 import AdminGrant from './pages/admin/AdminGrant.jsx';
 
 import { isB2B } from './config/edition';
+import { isStaffCabinet } from './config/cabinetMode';
 
 import HrLayout from './pages/hr/HrLayout.jsx';
 import HrLogin from './pages/hr/HrLogin.jsx';
@@ -143,10 +144,10 @@ function App() {
           <Route path="analytics" element={<VoiceAnalytics />} />
         </Route>
 
-        {/* Подписка только у частных клиентов. Сотруднику тарифы не
-            показываем: доступ выдаёт компания, старые ссылки уводим
-            на главную кабинета. */}
-        {isB2B ? (
+        {/* Подписка есть у частного клиента — и на «Родных голосах»,
+            и на вкладке «Частный клиент» корпоративного сайта.
+            Сотруднику тарифы не показываем: доступ выдаёт компания. */}
+        {isStaffCabinet() ? (
           <Route path="/subscription/*" element={<Navigate to="/dashboard/progress" replace />} />
         ) : (
           <Route path="/subscription" element={<Subscription />}>

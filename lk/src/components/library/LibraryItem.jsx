@@ -19,7 +19,7 @@ import { useLibraryStore } from '../../store/library.store';
 import { useTrialStore } from '../../store/trial.store';
 import { useHasPaidPlan, useTariffLevel } from '../../store/subscription.store';
 import { getRequiredTariffLabel } from '../../utils/tariffAccess';
-import { isB2B } from '../../config/edition';
+import { isStaffCabinet } from '../../config/cabinetMode';
 import { useGenerationsStore } from '../../store/generations.store';
 import TrialPaywallModal from '../trial/TrialPaywallModal';
 import {
@@ -127,7 +127,7 @@ export default function LibraryItem() {
     if (!selectedVoice || !item) return;
 
     if (tariffBlocked) {
-      if (!isB2B) navigate('/subscription/tariff');
+      if (!isStaffCabinet()) navigate('/subscription/tariff');
       return;
     }
 
@@ -194,7 +194,7 @@ export default function LibraryItem() {
     if (genStatus === 'failed') return 'Повторить';
     if (alreadyGenerated) return 'Уже озвучено';
     if (tariffBlocked) {
-      return isB2B
+      return isStaffCabinet()
         ? 'Материал недоступен'
         : `Нужен тариф «${getRequiredTariffLabel(item?.accessLvl)}»`;
     }
@@ -312,7 +312,7 @@ export default function LibraryItem() {
 
           {tariffBlocked && (
             <div className="lk-item-trial-hint">
-              {isB2B
+              {isStaffCabinet()
                 ? 'Этот материал в ваш доступ не входит. Если он нужен — напишите своему HR.'
                 : (
                   <>

@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Eye, EyeOff, ArrowRight, Sparkles, MailCheck } from 'lucide-react';
 import { login, register, resendVerification } from '../api/auth.service';
 import { isB2B } from '../config/edition';
+import { setCabinetMode } from '../config/cabinetMode';
 import RoleSwitch, { ROLES, resolveInitialRole, rememberRole } from '../components/auth/RoleSwitch';
 import CompanyLoginForm from '../components/auth/CompanyLoginForm';
 import { getStoredReferralCode, clearStoredReferralCode } from '../utils/referral';
@@ -46,7 +47,7 @@ const ROLE_COPY = {
   },
 
   [ROLES.person]: {
-    brand: 'Родные голоса',
+    brand: isB2B ? 'Родной Голос' : 'Родные голоса',
     title: 'Голос близких —',
     accent: 'в каждой сказке',
     lead: 'Создайте голосового двойника и подарите ребёнку сказки, рассказанные именно вами.',
@@ -121,12 +122,10 @@ export default function Auth() {
   const isRegister = tab === 'register';
   const isLoading = status === 'loading';
 
-  // На корпоративном домене сборка /lk без оплаты: это кабинет компании
-  // и сотрудника. Частный клиент с тарифами и оплатой живёт отдельно.
+  // Вкладка задаёт кабинет ещё до входа: частный клиент дальше видит
+  // тарифы и оплату, сотрудник — нет. Цвета остаются корпоративными.
   useEffect(() => {
-    if (isB2B && role === ROLES.person) {
-      window.location.replace('/private/#/auth');
-    }
+    setCabinetMode(role);
   }, [role]);
 
   const errors = {

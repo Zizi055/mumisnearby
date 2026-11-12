@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { isB2B } from '../config/edition';
+import { isStaffCabinet } from '../config/cabinetMode';
 import { useNavigate } from 'react-router-dom';
 import {
   Sparkles,
@@ -310,7 +310,7 @@ export default function Dashboard() {
 
       {/* ── STATS ── */}
       <section className="lk-dashboard-stats" aria-label="Статистика">
-        {(isB2B
+        {(isStaffCabinet()
           ? data.stats.filter((item) => item.id !== 'plan')
           : withPlanStat(data.stats)
         ).map((item) => {
@@ -332,7 +332,7 @@ export default function Dashboard() {
           );
         })}
 
-        {isB2B && (
+        {isStaffCabinet() && (
           <article className="lk-dashboard-stat">
             <header className="lk-dashboard-stat__top">
               <div className="lk-dashboard-stat__icon">
@@ -492,10 +492,10 @@ export default function Dashboard() {
           распадалась на «широкий блок под двумя узкими». */}
       <section className="lk-dashboard-second">
 
-      {(isB2B ? planLimits.length > 0 : planName) && (
+      {(isStaffCabinet() ? planLimits.length > 0 : planName) && (
         <section className="lk-dashboard-plan">
 
-          {!isB2B && (
+          {!isStaffCabinet() && (
           <header className="lk-dashboard-plan__top">
             <div className="lk-dashboard-plan__ident">
               <p className="lk-dashboard-plan__eyebrow">Ваш тариф</p>
@@ -794,7 +794,7 @@ export default function Dashboard() {
           {/* Бонус «месяц бесплатно за приглашения» в корпоративной
               версии не работает: подписку оплачивает компания, и
               продлить её приглашением друга сотрудник не может. */}
-          {!isB2B && (
+          {!isStaffCabinet() && (
           <section className="lk-dashboard-referral">
             <div className="lk-dashboard-referral__icon">
               <Users size={18} />

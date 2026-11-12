@@ -7,7 +7,7 @@
 //   Волшебник  (plan_id 5, access_lvl 3): year 59900, month 59900 (!)
 // Поле level ОБЯЗАНО совпадать с access_lvl тарифа на бэке — по нему
 // открывается контент библиотеки (см. store/subscription.store.js).
-import { isB2B } from '../config/edition';
+import { isStaffCabinet } from '../config/cabinetMode';
 
 export const b2cTariffs = [
   {
@@ -185,7 +185,19 @@ export const b2bTariffs = [
   },
 ];
 
-// Единая точка: все экраны импортируют `tariffs` и получают набор своей
-// редакции. Структура одинаковая, поэтому ни один компонент не знает,
-// в какой он сборке.
-export const tariffs = isB2B ? b2bTariffs : b2cTariffs;
+// Сотрудник видит корпоративные тарифы (их назначает компания).
+// Частный клиент — те же тарифы, что в кабинете «Родных голосов».
+function liveList(pick) {
+  return new Proxy([], {
+    get(_target, prop) {
+      const list = pick();
+      if (prop === Symbol.iterator) return list[Symbol.iterator].bind(list);
+      const value = list[prop];
+      return typeof value === 'function' ? value.bind(list) : value;
+    },
+  });
+}
+
+export const tariffs = liveList(() => (
+  isStaffCabinet() ? b2bTariffs : b2cTariffs
+));

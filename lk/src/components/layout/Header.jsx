@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { navigation } from '../../config/navigation';
+import { PRODUCT_NAME } from '../../config/edition';
 import {
   Bell,
   Check,
@@ -238,9 +239,9 @@ export default function Header({ onMenuToggle }) {
           <a
             href="/"
             className="lk-header__breadcrumb-home"
-            title="Перейти на сайт «Родные голоса»"
+            title={`Перейти на сайт «${PRODUCT_NAME}»`}
           >
-            Родные голоса
+            {PRODUCT_NAME}
           </a>
           {current?.label && (
             <>

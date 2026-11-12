@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Mail, CheckCircle, Sparkles } from 'lucide-react';
 import AuthDNA from './AuthDNA';
+import { PRODUCT_NAME } from '../config/edition';
 import '../styles/scss/pages/auth.scss';
 
 function validateEmail(email) {
@@ -53,7 +54,7 @@ export default function AuthReset() {
         <div className="auth__left-content">
           <div className="auth__brand">
             <Sparkles size={16} />
-            Родные голоса
+            {PRODUCT_NAME}
           </div>
           <div className="auth__tagline">
             <h1>Восстановление<br />доступа</h1>

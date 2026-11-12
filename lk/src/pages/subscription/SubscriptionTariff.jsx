@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Check, Sparkles, ArrowUpRight } from 'lucide-react';
 import { tariffs as staticTariffs } from '../../data/tariffs.data';
-import { isB2B } from '../../config/edition';
+import { isStaffCabinet } from '../../config/cabinetMode';
 import CompanyPaidNotice from '../../components/subscription/CompanyPaidNotice';
 import LkButton from '../../components/ui/LkButton';
 import { useSubscription } from '../../hooks/useSubscription';
@@ -156,7 +156,7 @@ export default function SubscriptionTariff() {
 
       {/* В корпоративной редакции тариф сотруднику назначает компания:
           объясняем это до того, как он нажмёт на карточку и получит 403. */}
-      {isB2B && (
+      {isStaffCabinet() && (
         <CompanyPaidNotice
           planName={currentPlanName}
           expiresAt={expiresAt}
@@ -446,7 +446,7 @@ function TariffAccess({ currentPlan, navigate }) {
           </span>
         </div>
 
-        {locked && isB2B ? (
+        {locked && isStaffCabinet() ? (
           /* Расширить доступ сотрудник не может — тариф на всю компанию.
              Вместо кнопки в несуществующую оплату говорим, к кому идти. */
           <span className="lk-tariff-access__status">Спросите у HR</span>
@@ -509,7 +509,7 @@ function getTariffAction(tariff, currentPlan) {
   // /subscription/checkout, которого в этой сборке нет, и человек попал
   // бы на пустой экран. Одна точка на оба места вызова — карточку и
   // таблицу сравнения.
-  if (isB2B) {
+  if (isStaffCabinet()) {
     if (currentPlan && tariff.id === currentPlan.id) {
       return { label: 'Ваш тариф', type: 'current', buttonVariant: 'ghost' };
     }

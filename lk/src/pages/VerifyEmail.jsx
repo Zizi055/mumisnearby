@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { MailCheck, XCircle } from 'lucide-react';
 import { verifyEmail } from '../api/auth.service';
+import { PRODUCT_NAME } from '../config/edition';
 import { initTrial } from '../store/trial.store';
 import AuthDNA from './AuthDNA';
 import '../styles/scss/pages/auth.scss';
@@ -42,7 +43,7 @@ export default function VerifyEmail() {
       <div className="auth__left">
         <AuthDNA />
         <div className="auth__left-content">
-          <div className="auth__brand">Родные голоса</div>
+          <div className="auth__brand">{PRODUCT_NAME}</div>
           <div className="auth__tagline">
             <h1>Голос близких —<br />в каждой сказке</h1>
           </div>

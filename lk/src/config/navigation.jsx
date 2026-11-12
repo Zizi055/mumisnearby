@@ -1,5 +1,5 @@
 import { Home, Book, Mic, CreditCard, Settings, User } from 'lucide-react';
-import { isB2B } from './edition';
+import { isStaffCabinet } from './cabinetMode';
 
 const b2cNavigation = [
   {
@@ -83,9 +83,8 @@ const b2cNavigation = [
   },
 ];
 
-// Меню сотрудника компании (B2B): без подписки и тарифов — доступ
-// выдаёт компания. «Семья» в настройках тоже не нужна: места считает
-// кабинет компании, а не семейный доступ B2C.
+// Меню сотрудника: без подписки и тарифов — доступ выдаёт компания.
+// «Семья» в настройках тоже не нужна: места считает кабинет компании.
 const b2bNavigation = b2cNavigation
   .filter((section) => section.path !== '/subscription')
   .map((section) => {
@@ -99,4 +98,18 @@ const b2bNavigation = b2cNavigation
     return section;
   });
 
-export const navigation = isB2B ? b2bNavigation : b2cNavigation;
+// Частный клиент на том же домене получает полное меню.
+function liveList(pick) {
+  return new Proxy([], {
+    get(_target, prop) {
+      const list = pick();
+      if (prop === Symbol.iterator) return list[Symbol.iterator].bind(list);
+      const value = list[prop];
+      return typeof value === 'function' ? value.bind(list) : value;
+    },
+  });
+}
+
+export const navigation = liveList(() => (
+  isStaffCabinet() ? b2bNavigation : b2cNavigation
+));

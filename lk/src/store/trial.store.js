@@ -1,4 +1,4 @@
-import { isB2B } from '../config/edition';
+import { isStaffCabinet } from '../config/cabinetMode';
 
 import { create } from 'zustand';
 
@@ -35,7 +35,7 @@ export function getTrialInfo() {
   // промокод и сразу получает тариф, оплаченный компанией. Возвращаем
   // null в одной точке — баннер триала, лимит «5 сказок» и пейволл
   // отключаются во всех местах сразу, без флагов по компонентам.
-  if (isB2B) return null;
+  if (isStaffCabinet()) return null;
 
   const trial = readTrial();
   if (!trial) return null;
