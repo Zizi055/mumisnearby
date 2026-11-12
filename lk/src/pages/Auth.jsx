@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Eye, EyeOff, ArrowRight, Sparkles, MailCheck } from 'lucide-react';
 import { login, register, resendVerification } from '../api/auth.service';
@@ -120,6 +120,14 @@ export default function Auth() {
 
   const isRegister = tab === 'register';
   const isLoading = status === 'loading';
+
+  // На корпоративном домене сборка /lk без оплаты: это кабинет компании
+  // и сотрудника. Частный клиент с тарифами и оплатой живёт отдельно.
+  useEffect(() => {
+    if (isB2B && role === ROLES.person) {
+      window.location.replace('/private/#/auth');
+    }
+  }, [role]);
 
   const errors = {
     name: isRegister && !validateName(name) ? 'Введите имя (минимум 2 символа)' : '',

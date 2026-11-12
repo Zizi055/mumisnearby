@@ -15,7 +15,7 @@ export default defineConfig(() => {
   return {
     plugins: [react()],
 
-    base: '/lk/',
+    base: process.env.VITE_BASE || '/lk/',
 
     define: {
       // Пробрасываем явно, а не через .env-файлы: флаг приходит из
@@ -27,7 +27,7 @@ export default defineConfig(() => {
     build: {
       // Отдельная папка на редакцию: иначе вторая сборка затирает первую,
       // и на один из двух доменов уезжает чужой кабинет.
-      outDir: edition === 'b2b' ? 'dist-b2b' : 'dist',
+      outDir: process.env.VITE_OUTDIR || (edition === 'b2b' ? 'dist-b2b' : 'dist'),
       emptyOutDir: true,
     },
   };

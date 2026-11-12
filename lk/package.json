@@ -8,6 +8,7 @@
     "dev:b2b": "VITE_EDITION=b2b vite",
     "build": "vite build",
     "build:b2b": "VITE_EDITION=b2b vite build",
+    "build:private": "VITE_EDITION=b2c VITE_BASE=/private/ VITE_OUTDIR=dist-private vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
