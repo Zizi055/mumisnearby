@@ -32,9 +32,9 @@ export function initPricing() {
       card.classList.toggle('is-unavailable', unavailable);
 
       if (amount) {
-        amount.textContent = unavailable
-          ? card.dataset.price12
-          : card.dataset[`price${period}`] || card.dataset.price12;
+        const value = card.getAttribute(`data-price-${period}`)
+          || card.getAttribute('data-price-12');
+        if (value) amount.textContent = value;
       }
 
       if (note) {
