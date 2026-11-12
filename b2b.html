@@ -615,10 +615,23 @@
               <h2 class="rg-h2">Три тарифа. Вы сами решаете, как включить их в соцпакет</h2>
             </div>
             <p class="rg-lead">
-              Цена за одного сотрудника. Итоговая сумма — цена выбранного срока, умноженная
-              на количество подключённых сотрудников. «Волшебник» подключается только на 12 месяцев.
+              Цена за одного сотрудника. Итог — выбранный срок, умноженный
+              на число подключённых сотрудников.
             </p>
           </div>
+
+          <div data-pricing>
+            <div class="rg-billing" role="tablist" aria-label="Срок подписки">
+              <button type="button" class="rg-billing__btn is-active" role="tab" aria-selected="true" data-period="12">
+                12 месяцев
+              </button>
+              <button type="button" class="rg-billing__btn" role="tab" aria-selected="false" data-period="3">
+                3 месяца
+              </button>
+              <button type="button" class="rg-billing__btn" role="tab" aria-selected="false" data-period="1">
+                1 месяц
+              </button>
+            </div>
 
           <div class="rg-plans" data-reveal>
             <article class="rg-plan">
@@ -634,12 +647,9 @@
                 <li><svg class="rg-icon rg-icon--sm" aria-hidden="true"><use href="#i-check" /></svg><span>5 терапевтических сценариев</span></li>
               </ul>
 
-              <div class="rg-plan__price">
-                <ul class="rg-plan__periods">
-                  <li><span>12 месяцев</span><strong>24 000 ₽</strong></li>
-                  <li><span>3 месяца</span><strong>6 000 ₽</strong></li>
-                  <li><span>1 месяц</span><strong>2 400 ₽</strong></li>
-                </ul>
+              <div class="rg-plan__price" data-plan-price data-price-12="24 000 ₽" data-price-3="6 000 ₽" data-price-1="2 400 ₽">
+                <span class="rg-plan__amount">24 000 ₽</span>
+                <span class="rg-plan__period" data-plan-note>за сотрудника на 12 месяцев</span>
                 <a class="rg-btn rg-btn--outline rg-btn--block rg-plan__cta" href="#lead">
                   Оставить заявку
                 </a>
@@ -661,12 +671,9 @@
                 <li><svg class="rg-icon rg-icon--sm" aria-hidden="true"><use href="#i-check" /></svg><span>Приоритетная поддержка</span></li>
               </ul>
 
-              <div class="rg-plan__price">
-                <ul class="rg-plan__periods">
-                  <li><span>12 месяцев</span><strong>31 200 ₽</strong></li>
-                  <li><span>3 месяца</span><strong>7 800 ₽</strong></li>
-                  <li><span>1 месяц</span><strong>3 900 ₽</strong></li>
-                </ul>
+              <div class="rg-plan__price" data-plan-price data-price-12="31 200 ₽" data-price-3="7 800 ₽" data-price-1="3 900 ₽">
+                <span class="rg-plan__amount">31 200 ₽</span>
+                <span class="rg-plan__period" data-plan-note>за сотрудника на 12 месяцев</span>
                 <a class="rg-btn rg-btn--primary rg-btn--block rg-plan__cta" href="#lead">
                   Оставить заявку
                 </a>
@@ -687,16 +694,15 @@
                 <li><svg class="rg-icon rg-icon--sm" aria-hidden="true"><use href="#i-check" /></svg><span>Персональный менеджер для компании</span></li>
               </ul>
 
-              <div class="rg-plan__price">
-                <ul class="rg-plan__periods">
-                  <li><span>12 месяцев</span><strong>59 900 ₽</strong></li>
-                </ul>
-                <span class="rg-plan__period">Только на 12 месяцев</span>
+              <div class="rg-plan__price" data-plan-price data-year-only data-price-12="59 900 ₽">
+                <span class="rg-plan__amount">59 900 ₽</span>
+                <span class="rg-plan__period" data-plan-note>за сотрудника на 12 месяцев</span>
                 <a class="rg-btn rg-btn--outline rg-btn--block rg-plan__cta" href="#lead">
                   Оставить заявку
                 </a>
               </div>
             </article>
+          </div>
           </div>
 
           <div class="rg-plans__note" data-reveal>

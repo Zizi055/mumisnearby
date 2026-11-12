@@ -99,28 +99,51 @@
   @include type(price);
 }
 
-.rg-plan__periods {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-}
-
-.rg-plan__periods li {
+.rg-billing {
   display: flex;
-  justify-content: space-between;
-  gap: space(3);
-  padding: space(2) 0;
-  border-bottom: 1px solid var(--rg-line);
+  justify-content: center;
+  width: fit-content;
+  margin: 0 auto space-fluid(6, 3vw, 8);
+  padding: 4px;
+  border: 1px solid var(--rg-line);
+  border-radius: 999px;
+  background: var(--rg-paper);
+}
+
+.rg-billing__btn {
+  appearance: none;
+  border: 0;
+  border-radius: 999px;
+  padding: space(2) space(5);
+  background: transparent;
+  color: var(--rg-text-muted);
+  font: inherit;
+  cursor: pointer;
   @include type(body-sm);
+
+  &.is-active {
+    background: var(--rg-ink-800);
+    color: #fff;
+  }
 }
 
-.rg-plan__periods strong {
-  font-weight: 600;
-  white-space: nowrap;
+@media (max-width: 560px) {
+  .rg-billing {
+    width: 100%;
+  }
+
+  .rg-billing__btn {
+    flex: 1;
+    padding: space(2) space(2);
+  }
 }
 
-.rg-plan--featured .rg-plan__periods li {
-  border-bottom-color: var(--rg-line-on-dark);
+.rg-plan__price.is-unavailable .rg-plan__amount {
+  opacity: 0.45;
+}
+
+.rg-plan--featured .rg-plan__price.is-unavailable .rg-plan__period {
+  color: var(--rg-green-300);
 }
 
 .rg-plan__period {

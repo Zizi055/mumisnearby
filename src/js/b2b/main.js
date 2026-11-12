@@ -13,6 +13,7 @@ import { initDnaHelix } from './dna-helix.js';
 import { initPlayers } from './player.js';
 import { initAccordion } from './accordion.js';
 import { initLeadForms } from './lead-form.js';
+import { initPricing } from './pricing.js';
 import { initReveal } from './reveal.js';
 
 function bootstrap() {
@@ -22,6 +23,7 @@ function bootstrap() {
   initPlayers();
   initAccordion();
   initLeadForms();
+  initPricing();
   initReveal();
 }
 
