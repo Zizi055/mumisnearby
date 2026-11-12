@@ -99,6 +99,30 @@
   @include type(price);
 }
 
+.rg-plan__periods {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.rg-plan__periods li {
+  display: flex;
+  justify-content: space-between;
+  gap: space(3);
+  padding: space(2) 0;
+  border-bottom: 1px solid var(--rg-line);
+  @include type(body-sm);
+}
+
+.rg-plan__periods strong {
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.rg-plan--featured .rg-plan__periods li {
+  border-bottom-color: var(--rg-line-on-dark);
+}
+
 .rg-plan__period {
   @include type(caption);
   color: var(--rg-text-muted);

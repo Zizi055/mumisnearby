@@ -518,7 +518,7 @@ function getTariffAction(tariff, currentPlan) {
 
   if (!currentPlan) {
     return {
-      label: tariff.isBuilder ? 'Собрать тариф' : 'Выбрать',
+      label: tariff.isBuilder ? 'Собрать тариф' : 'Перейти к оплате',
       type: tariff.isBuilder ? 'builder' : 'default',
       buttonVariant: 'primary',
     };
@@ -544,7 +544,7 @@ function getTariffAction(tariff, currentPlan) {
 
   if (tariff.level > currentPlan.level) {
     return {
-      label: 'Перейти',
+      label: 'Перейти к оплате',
       type: 'upgrade',
       buttonVariant: 'primary',
     };
@@ -553,7 +553,7 @@ function getTariffAction(tariff, currentPlan) {
   // secondary, а не ghost: ghost без обводки сливался с фоном карточки
   // и рядом с «Текущий тариф» они выглядели одинаково.
   return {
-    label: 'Выбрать',
+    label: 'Перейти к оплате',
     type: 'downgrade',
     buttonVariant: 'secondary',
   };
