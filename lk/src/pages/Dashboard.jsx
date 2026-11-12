@@ -16,7 +16,6 @@ import {
   Headphones,
   AudioLines,
   CreditCard,
-  Library,
 } from 'lucide-react';
 
 // Иконки карточек статистики. Раньше значок был только у «6 дней
@@ -337,21 +336,21 @@ export default function Dashboard() {
           <article className="lk-dashboard-stat">
             <header className="lk-dashboard-stat__top">
               <div className="lk-dashboard-stat__icon">
-                <Library size={18} />
+                <CreditCard size={18} />
               </div>
-              <p className="lk-dashboard-stat__label">Открытые разделы</p>
+              <p className="lk-dashboard-stat__label">Тариф</p>
             </header>
             <h3 className="lk-dashboard-stat__value">
-              {subscription.loading ? '—' : planLimits.length}
+              {planName || (subscription.loading ? '—' : 'Не назначен')}
             </h3>
             <p className="lk-dashboard-stat__text">
               {subscription.loading
-                ? 'Смотрим, что открыла компания'
-                : planLimits.length === 0
-                  ? 'Компания ещё не открыла разделы'
-                  : planLimits.length <= 3
-                    ? planLimits.map((row) => row.label).join(', ')
-                    : `${planLimits.slice(0, 2).map((row) => row.label).join(', ')} и ещё ${planLimits.length - 2}`}
+                ? 'Загружаем тариф…'
+                : subscription.status === 'active' && subscription.expiresAt
+                  ? `Действует до ${new Date(subscription.expiresAt).toLocaleDateString('ru-RU')}`
+                  : planName
+                    ? 'Назначен компанией'
+                    : 'Компания ещё не назначила тариф'}
             </p>
           </article>
         )}
