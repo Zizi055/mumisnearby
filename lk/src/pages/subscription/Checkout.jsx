@@ -6,7 +6,7 @@ import { createPayment } from '../../api/payments.service';
 import { getBackendPlanId, getTariffSlug } from '../../data/planIdMap';
 import { useSubscription } from '../../hooks/useSubscription';
 import { useTariffPricing } from '../../hooks/useTariffPricing';
-import PlanLimitsList from '../../components/subscription/PlanLimitsList';
+import { isB2B } from '../../config/edition';
 
 function formatPrice(value) {
   if (!value) return '—';
@@ -19,16 +19,28 @@ function getMonthlyFromYear(priceYear) {
   return `${monthly.toLocaleString('ru-RU')} ₽ / мес`;
 }
 
-function getEffectivePeriod(plan, period) {
-  if (plan?.isYearOnly) return 'year';
-  return period || 'year';
-}
-
 function getPlanPrice(plan, period) {
   if (!plan || plan.isBuilder) return null;
-  const effectivePeriod = getEffectivePeriod(plan, period);
-  if (effectivePeriod === 'year') return plan.priceYear;
-  return plan.priceMonth || plan.priceYear;
+  if (plan.isYearOnly) return plan.priceYear;
+  if (period === '3') return plan.priceQuarter || null;
+  if (period === '1' || period === 'month') return plan.priceMonth || plan.priceYear;
+  return plan.priceYear;
+}
+
+function paymentPeriod(period) {
+  if (period === '1' || period === 'month') return 'month';
+  if (period === '3') return null;
+  return 'year';
+}
+
+function periodTitle(period, plan) {
+  if (!isB2B) {
+    return plan?.isYearOnly || period === 'year' ? '1 год' : '1 месяц';
+  }
+
+  if (plan?.isYearOnly || period === '12' || period === 'year') return '12 месяцев';
+  if (period === '3') return '3 месяца';
+  return '1 месяц';
 }
 
 function getChangeType(plan, currentPlan) {
@@ -75,8 +87,9 @@ export default function Checkout() {
     return tariffs.find((tariff) => tariff.id === planId) || tariffs[0];
   }, [tariffs, planId]);
 
-  const effectivePeriod = getEffectivePeriod(plan, requestedPeriod);
-  const price = getPlanPrice(plan, effectivePeriod);
+  const selectedPeriod = plan?.isYearOnly ? (isB2B ? '12' : 'year') : requestedPeriod;
+  const apiPeriod = paymentPeriod(selectedPeriod);
+  const price = getPlanPrice(plan, selectedPeriod);
   const changeType = getChangeType(plan, currentPlan);
 
   const isLoading = status === 'loading';
@@ -87,7 +100,7 @@ export default function Checkout() {
   // приходит асинхронно через вебхук, а клиент возвращается на
   // /subscription/checkout/success уже после оплаты на стороне ЮKassa.
   const handlePay = async () => {
-    if (!plan || !price || changeType === 'current') return;
+    if (!plan || !price || !apiPeriod || changeType === 'current') return;
 
     setStatus('loading');
     setError('');
@@ -99,7 +112,7 @@ export default function Checkout() {
 
       const response = await createPayment({
         planId: backendPlanId,
-        billingPeriod: effectivePeriod,
+        billingPeriod: apiPeriod,
       });
 
       if (!response?.confirmation_url) {
@@ -188,12 +201,10 @@ export default function Checkout() {
 
             <div className="lk-summary__row">
               <span>Период</span>
-              <strong>
-                {effectivePeriod === 'year' ? '1 год' : '1 месяц'}
-              </strong>
+              <strong>{periodTitle(selectedPeriod, plan)}</strong>
             </div>
 
-            {effectivePeriod === 'year' && (
+            {requestedPeriod === 'year' && !isB2B && (
               <div className="lk-summary__hint">
                 ≈ {getMonthlyFromYear(plan.priceYear)}
               </div>
@@ -201,7 +212,15 @@ export default function Checkout() {
 
             {plan.isYearOnly && (
               <div className="lk-summary__hint">
-                Этот тариф доступен только при годовой оплате
+                {isB2B
+                  ? 'Этот тариф доступен только на 12 месяцев'
+                  : 'Этот тариф доступен только при годовой оплате'}
+              </div>
+            )}
+
+            {!apiPeriod && (
+              <div className="lk-summary__hint">
+                Оплата на 3 месяца на сайте пока не подключена. Можно оплатить 1 месяц или 12 месяцев.
               </div>
             )}
 
@@ -222,7 +241,7 @@ export default function Checkout() {
               variant="primary"
               size="lg"
               className="lk-summary__button"
-              disabled={isLoading || changeType === 'current'}
+              disabled={isLoading || changeType === 'current' || !apiPeriod}
               onClick={handlePay}
             >
               {isLoading

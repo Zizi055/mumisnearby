@@ -335,6 +335,18 @@
   color: $lk-white;
 }
 
+.lk-tariff-card__kicker {
+  margin: 0 0 4px;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: $lk-text-soft;
+}
+
+.lk-tariff-price.is-unavailable .lk-tariff-price__value {
+  opacity: 0.45;
+}
+
 .lk-billing__discount {
   display: inline-block;
   margin-left: 6px;

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { tariffs as staticTariffs } from '../data/tariffs.data';
 import { PLAN_ID_MAP } from '../data/planIdMap';
 import { getPlanInfo } from '../api/subscription.service';
+import { isB2B } from '../config/edition';
 
 // Подтверждённая форма ответа GET /subscription/{plan_id} (снято с Network):
 // {
@@ -52,10 +53,14 @@ function mapLimits(info) {
 }
 
 export function useTariffPricing() {
+  // На корпоративном сайте суммы берём с главной, а не из старых цен
+  // базы: иначе карточки показывают чужой тариф.
   const [tariffs, setTariffs] = useState(staticTariffs);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!isB2B);
 
   useEffect(() => {
+    if (isB2B) return;
+
     let cancelled = false;
 
     async function load() {

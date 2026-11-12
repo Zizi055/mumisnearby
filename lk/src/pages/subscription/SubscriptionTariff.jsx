@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Check, Sparkles, ArrowUpRight } from 'lucide-react';
 import { tariffs as staticTariffs } from '../../data/tariffs.data';
 import { isStaffCabinet } from '../../config/cabinetMode';
+import { isB2B } from '../../config/edition';
 import CompanyPaidNotice from '../../components/subscription/CompanyPaidNotice';
 import LkButton from '../../components/ui/LkButton';
 import { useSubscription } from '../../hooks/useSubscription';
@@ -70,6 +71,38 @@ const COMPARE_FEATURES = [
     },
   },
 ];
+
+const CORPORATE_COMPARE = [
+  {
+    id: 'voices',
+    label: 'Голоса',
+    getValue: (tariff) => ({ fairy: '1', guardian: '2', wizard: 'до 5' }[tariff.id] || '—'),
+  },
+  {
+    id: 'library',
+    label: 'Библиотека',
+    getValue: (tariff) => ({
+      fairy: '50 сказок и 10 колыбельных',
+      guardian: '100+ сказок, рассказы, семейные истории',
+      wizard: 'Безграничная',
+    }[tariff.id] || '—'),
+  },
+  {
+    id: 'therapy',
+    label: 'Терапевтические сценарии',
+    getValue: (tariff) => ({ fairy: '5', guardian: '20+', wizard: '—' }[tariff.id] || '—'),
+  },
+  {
+    id: 'extra',
+    label: 'Дополнительно',
+    getValue: (tariff) => ({
+      fairy: '—',
+      guardian: 'Приоритетная поддержка',
+      wizard: 'Архив и персональный менеджер',
+    }[tariff.id] || '—'),
+  },
+];
+
 const FEATURE_GATES = {
   voiceTraining: {
     label: 'Обучение голоса',
@@ -104,29 +137,38 @@ function getMonthlyFromYear(priceYear) {
 }
 
 function getEffectivePeriod(tariff, billingPeriod) {
-  return tariff.isYearOnly ? 'year' : billingPeriod;
+  if (tariff.isYearOnly) return isB2B ? '12' : 'year';
+  return billingPeriod;
 }
 
 function getTariffPrice(tariff, billingPeriod) {
   if (tariff.isBuilder) return '';
+  if (tariff.isYearOnly) return tariff.priceYear;
 
-  const period = getEffectivePeriod(tariff, billingPeriod);
+  if (billingPeriod === '3') return tariff.priceQuarter ?? tariff.priceYear;
+  if (billingPeriod === '1' || billingPeriod === 'month') {
+    return tariff.priceMonth ?? tariff.priceYear;
+  }
 
-  if (period === 'year') return tariff.priceYear;
-
-  return tariff.priceMonth ?? tariff.priceYear;
+  return tariff.priceYear;
 }
 
 function getTariffPeriodLabel(tariff, billingPeriod) {
-  const period = getEffectivePeriod(tariff, billingPeriod);
-  return period === 'year' ? 'год' : 'мес';
+  if (!isB2B) {
+    return getEffectivePeriod(tariff, billingPeriod) === 'year' ? 'год' : 'мес';
+  }
+
+  if (tariff.isYearOnly && billingPeriod !== '12') return 'только на 12 месяцев';
+  if (billingPeriod === '3') return '3 месяца';
+  if (billingPeriod === '1') return 'месяц';
+  return '12 месяцев';
 }
 
 /* ================= COMPONENT ================= */
 
 export default function SubscriptionTariff() {
   const navigate = useNavigate();
-  const [billingPeriod, setBillingPeriod] = useState('year');
+  const [billingPeriod, setBillingPeriod] = useState(isB2B ? '12' : 'year');
 
   // Реальный тариф пользователя — из /subscription/status, а не заглушка.
   const { planId, plan: apiPlan, expiresAt } = useSubscription();
@@ -182,28 +224,55 @@ export default function SubscriptionTariff() {
       {/* BILLING */}
       <div className="lk-billing">
         <div className="lk-billing__switch">
-
-          <button
-            type="button"
-            className={billingPeriod === 'month' ? 'is-active' : ''}
-            onClick={() => setBillingPeriod('month')}
-          >
-            Месяц
-          </button>
-
-          <button
-            type="button"
-            className={billingPeriod === 'year' ? 'is-active' : ''}
-            onClick={() => setBillingPeriod('year')}
-          >
-            Год
-            <span className="lk-billing__discount">-20%</span>
-          </button>
-
+          {isB2B ? (
+            <>
+              <button
+                type="button"
+                className={billingPeriod === '12' ? 'is-active' : ''}
+                onClick={() => setBillingPeriod('12')}
+              >
+                12 месяцев
+              </button>
+              <button
+                type="button"
+                className={billingPeriod === '3' ? 'is-active' : ''}
+                onClick={() => setBillingPeriod('3')}
+              >
+                3 месяца
+              </button>
+              <button
+                type="button"
+                className={billingPeriod === '1' ? 'is-active' : ''}
+                onClick={() => setBillingPeriod('1')}
+              >
+                1 месяц
+              </button>
+            </>
+          ) : (
+            <>
+              <button
+                type="button"
+                className={billingPeriod === 'month' ? 'is-active' : ''}
+                onClick={() => setBillingPeriod('month')}
+              >
+                Месяц
+              </button>
+              <button
+                type="button"
+                className={billingPeriod === 'year' ? 'is-active' : ''}
+                onClick={() => setBillingPeriod('year')}
+              >
+                Год
+                <span className="lk-billing__discount">-20%</span>
+              </button>
+            </>
+          )}
         </div>
 
         <p className="lk-billing__note">
-          Тариф «Волшебник» доступен только при годовой оплате.
+          {isB2B
+            ? 'Тариф «Волшебник» доступен только на 12 месяцев.'
+            : 'Тариф «Волшебник» доступен только при годовой оплате.'}
         </p>
       </div>
 
@@ -236,7 +305,7 @@ export default function SubscriptionTariff() {
 /* ================= CARD ================= */
 
 function TariffCard({ tariff, currentPlan, billingPeriod, navigate }) {
-  const action = getTariffAction(tariff, currentPlan);
+  const action = getTariffAction(tariff, currentPlan, billingPeriod);
 
   const isCurrent = currentPlan?.id === tariff.id;
   const isUpgrade = currentPlan && tariff.level > currentPlan.level;
@@ -278,12 +347,13 @@ function TariffCard({ tariff, currentPlan, billingPeriod, navigate }) {
 
       <div className="lk-tariff-card__head">
         <h3>{tariff.isBuilder ? 'Конструктор' : tariff.name}</h3>
+        {tariff.subtitle && <p className="lk-tariff-card__kicker">{tariff.subtitle}</p>}
         <p>{tariff.description}</p>
       </div>
 
       {/* PRICE */}
       {!tariff.isBuilder && (
-        <div className="lk-tariff-price">
+        <div className={`lk-tariff-price${tariff.isYearOnly && billingPeriod !== '12' && billingPeriod !== 'year' ? ' is-unavailable' : ''}`}>
 
           <span className="lk-tariff-price__value">
             {formatPrice(priceRaw)}
@@ -348,12 +418,12 @@ function TariffCompare({ tariffs, currentPlan, billingPeriod, navigate }) {
                 </span>
               )}
 
-              {tariff.isYearOnly && <small>только год</small>}
+              {tariff.isYearOnly && <small>только 12 месяцев</small>}
             </div>
           ))}
         </div>
 
-        {COMPARE_FEATURES.map((feature) => (
+        {(isB2B ? CORPORATE_COMPARE : COMPARE_FEATURES).map((feature) => (
           <div key={feature.id} className="lk-compare-row">
             <div className="lk-compare-feature">{feature.label}</div>
 
@@ -373,7 +443,7 @@ function TariffCompare({ tariffs, currentPlan, billingPeriod, navigate }) {
           <div />
 
           {tariffs.map((tariff) => {
-            const action = getTariffAction(tariff, currentPlan);
+            const action = getTariffAction(tariff, currentPlan, billingPeriod);
 
             return (
               <div key={tariff.id} className="lk-compare-action">
@@ -502,13 +572,13 @@ function getRecommendedPlanForFeature(featureKey) {
 }
 /* ================= ACTION ================= */
 
-function getTariffAction(tariff, currentPlan) {
-  // В корпоративной редакции тариф выбирает компания. Сотрудник его не
-  // покупает и не меняет, поэтому все кнопки, кроме «ваш тариф»,
-  // становятся состоянием без действия: нажатие ушло бы в
-  // /subscription/checkout, которого в этой сборке нет, и человек попал
-  // бы на пустой экран. Одна точка на оба места вызова — карточку и
-  // таблицу сравнения.
+function getTariffAction(tariff, currentPlan, billingPeriod) {
+  if (isB2B && tariff.isYearOnly && billingPeriod && billingPeriod !== '12') {
+    return { label: 'Только на 12 месяцев', type: 'locked', buttonVariant: 'ghost' };
+  }
+
+  // Сотруднику тариф назначает компания. Частный клиент на этом сайте
+  // оплачивает сам, теми же суммами, что на главной.
   if (isStaffCabinet()) {
     if (currentPlan && tariff.id === currentPlan.id) {
       return { label: 'Ваш тариф', type: 'current', buttonVariant: 'ghost' };
