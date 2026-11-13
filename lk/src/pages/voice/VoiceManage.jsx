@@ -20,6 +20,7 @@ import LkButton from '../../components/ui/LkButton';
 import { useVoiceStore } from '../../store/voice.store';
 import { useSubscription } from '../../hooks/useSubscription';
 import { isStaffCabinet } from '../../config/cabinetMode';
+import { isB2B } from '../../config/edition';
 
 const trainingSteps = [
   'Файл загружен',
@@ -489,18 +490,18 @@ export default function VoiceManage() {
             <span className="lk-voice-consent__text">
               Я даю{' '}
               <a
-                href="/lk/docs/согласие-на-биометрию.docx"
+                href={isB2B ? '/lk/docs/согласие-на-биометрию-rg.docx' : '/lk/docs/согласие-на-биометрию.docx'}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="lk-voice-consent__link"
-                download
+                download="согласие-на-биометрию.docx"
               >
                 согласие на обработку биометрических персональных данных
               </a>{' '}
               (голосового образца) в целях создания голосовой модели и генерации аудиофайлов.
               Согласие может быть отозвано в любой момент на&nbsp;
-              <a href="mailto:info@rodnyegolosa.ru" className="lk-voice-consent__link">
-                info@rodnyegolosa.ru
+              <a href={isB2B ? 'mailto:info@rodnoygolos.ru' : 'mailto:info@rodnyegolosa.ru'} className="lk-voice-consent__link">
+                {isB2B ? 'info@rodnoygolos.ru' : 'info@rodnyegolosa.ru'}
               </a>
             </span>
           </label>

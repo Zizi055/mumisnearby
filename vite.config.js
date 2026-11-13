@@ -20,6 +20,7 @@ export default defineConfig({
         policy: resolve(__dirname, 'policy.html'),
         offer: resolve(__dirname, 'offer.html'),
         agreement: resolve(__dirname, 'agreement.html'),
+        biometry: resolve(__dirname, 'biometry.html'),
       },
     },
   },
