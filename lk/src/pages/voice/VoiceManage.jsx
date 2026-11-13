@@ -443,8 +443,16 @@ export default function VoiceManage() {
             <p className="lk-voice-sample__label">Прочитайте этот текст вслух</p>
             <p className="lk-voice-sample__text">{readingSample}</p>
             <p className="lk-voice-sample__note">
-              Спокойно, без музыки и постороннего шума. По этой записи собирается ваш голос.
+              Спокойно, без музыки и постороннего шума. Сначала послушайте образец, затем прочитайте текст так же.
             </p>
+            <audio
+              className="lk-voice-sample__audio"
+              controls
+              preload="none"
+              src={`${import.meta.env.BASE_URL}voice-sample.mp3`}
+            >
+              Ваш браузер не воспроизводит эту запись.
+            </audio>
           </div>
 
           <button

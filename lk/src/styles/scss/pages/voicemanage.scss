@@ -199,6 +199,12 @@
   color: $lk-text-muted;
 }
 
+.lk-voice-sample__audio {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+}
+
 .lk-voice-upload__drop {
   min-height: 160px;
 
