@@ -440,20 +440,32 @@ export default function VoiceManage() {
             </p>
           </div>
 
-          <div className="lk-voice-sample">
-            <p className="lk-voice-sample__label">Прочитайте этот текст вслух</p>
-            <p className="lk-voice-sample__text">{readingSample}</p>
-            <p className="lk-voice-sample__note">
-              Спокойно, без музыки и постороннего шума. Сначала послушайте образец, затем прочитайте текст так же.
-            </p>
-            <audio
-              className="lk-voice-sample__audio"
-              controls
-              preload="none"
-              src={`${import.meta.env.BASE_URL}voice-sample.mp3`}
-            >
-              Ваш браузер не воспроизводит эту запись.
-            </audio>
+          <div className="lk-voice-guide">
+            <article className="lk-voice-guide__card lk-voice-guide__card--listen">
+              <span className="lk-voice-guide__num">1</span>
+              <div>
+                <p className="lk-voice-guide__title">Послушайте эту запись</p>
+                <p className="lk-voice-guide__hint">
+                  Так должна звучать читка: спокойно, без музыки и постороннего шума.
+                </p>
+                <audio
+                  className="lk-voice-guide__audio"
+                  controls
+                  preload="metadata"
+                  src={`${import.meta.env.BASE_URL}voice-sample.mp3`}
+                >
+                  Ваш браузер не воспроизводит эту запись.
+                </audio>
+              </div>
+            </article>
+
+            <article className="lk-voice-guide__card lk-voice-guide__card--read">
+              <span className="lk-voice-guide__num">2</span>
+              <div>
+                <p className="lk-voice-guide__title">Прочитайте этот текст вслух</p>
+                <p className="lk-voice-guide__text">{readingSample}</p>
+              </div>
+            </article>
           </div>
 
           <button
