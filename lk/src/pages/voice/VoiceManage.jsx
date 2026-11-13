@@ -507,6 +507,8 @@ export default function VoiceManage() {
 
         </div>
 
+        <div className="lk-voice-manage__side">
+
         <div className="lk-voice-training">
 
           <div className="lk-voice-training__head">
@@ -652,6 +654,8 @@ export default function VoiceManage() {
               {formatTime(playerTime)} / {formatTime(playerDuration)}
             </div>
           </div>
+
+        </div>
 
         </div>
 

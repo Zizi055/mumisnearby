@@ -25,27 +25,23 @@
    GRID
 ========================================= */
 
-/* Три равнозначных блока в ряд: загрузка, статус обучения и активный
-   голос. Раньше плеер стоял отдельной полосой во всю ширину под ними. */
+/* Слева — запись и образец чтения. Справа две короткие карточки
+   одна под другой: статус и активный голос. Они не тянутся на высоту
+   левой колонки, иначе посередине остаётся пустота. */
 .lk-voice-manage__grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.85fr);
   gap: $lk-space-16;
-
-  align-items: stretch;
+  align-items: start;
 }
 
-@media (max-width: 1400px) {
-  .lk-voice-manage__grid {
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  }
-
-  .lk-voice-player {
-    grid-column: 1 / -1;
-  }
+.lk-voice-manage__side {
+  display: flex;
+  flex-direction: column;
+  gap: $lk-space-16;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 980px) {
   .lk-voice-manage__grid {
     grid-template-columns: 1fr;
   }
@@ -206,7 +202,7 @@
 }
 
 .lk-voice-upload__drop {
-  min-height: 160px;
+  min-height: 88px;
 
   border-radius: $lk-radius-20;
 
@@ -279,7 +275,7 @@
 
   display: flex;
   flex-direction: column;
-  gap: $lk-space-24;
+  gap: $lk-space-16;
 }
 
 .lk-voice-training__head {
@@ -331,13 +327,19 @@
 .lk-voice-training__steps {
   display: flex;
   flex-direction: column;
-  gap: $lk-space-14;
+  gap: 8px;
 }
 
 .lk-voice-training__step {
   display: flex;
   align-items: center;
   gap: $lk-space-12;
+
+  margin: 0;
+  padding: 10px 12px;
+
+  border-radius: 12px;
+  background: rgba(var(--lk-brand-rgb), 0.05);
 
   color: $lk-text-muted;
 
@@ -413,13 +415,11 @@
   padding: $lk-space-24;
   display: flex;
   flex-direction: column;
-  gap: $lk-space-20;
+  gap: $lk-space-16;
 }
 
-/* Плеер прижимается к низу карточки, чтобы три блока в ряду
-   заканчивались на одной линии. */
 .lk-voice-player__body {
-  margin-top: auto;
+  margin-top: 0;
 }
 
 /* Header — аватар + имя + статус */
