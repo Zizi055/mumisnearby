@@ -23,10 +23,12 @@ import { isStaffCabinet } from '../../config/cabinetMode';
 
 const trainingSteps = [
   'Файл загружен',
-  'Анализируем голос',
-  'Обучаем модель',
   'Готово к использованию',
 ];
+
+const readingSample = `Дорогой Перигрин!
+Мы слыхали, что вы живёте недалеко и мы будем очень рады, если вы придёте к нам в гости. Пожалуйста, наденьте ваш цилиндр и возьмите зонтик чтобы мы вас сразу узнали.
+Полевые птички`;
 
 const emotionPresets = [
   'Спокойный',
@@ -202,7 +204,6 @@ export default function VoiceManage() {
 
       setActiveVoiceId(createdVoice.id);
 
-      setTrainingStep(1);
       setTrainingProgress(35);
 
       // Реальный поллинг статуса через GET /voices/{id} — вместо
@@ -212,7 +213,6 @@ export default function VoiceManage() {
         createdVoice.id,
         (voice) => {
           if (voice.status === 'training') {
-            setTrainingStep(2);
             setTrainingProgress(70);
           }
         }
@@ -439,6 +439,14 @@ export default function VoiceManage() {
             </p>
           </div>
 
+          <div className="lk-voice-sample">
+            <p className="lk-voice-sample__label">Прочитайте этот текст вслух</p>
+            <p className="lk-voice-sample__text">{readingSample}</p>
+            <p className="lk-voice-sample__note">
+              Спокойно, без музыки и постороннего шума. По этой записи собирается ваш голос.
+            </p>
+          </div>
+
           <button
             type="button"
             className={`lk-voice-upload__drop ${!biometryConsent ? 'is-disabled' : ''}`}
@@ -499,10 +507,9 @@ export default function VoiceManage() {
               <h3>Статус обучения</h3>
 
               <p>
-                Модель проходит
-                несколько этапов
-                перед публикацией
-                в библиотеке голосов.
+                Сначала принимаем файл,
+                затем голос готов
+                к использованию.
               </p>
             </div>
 

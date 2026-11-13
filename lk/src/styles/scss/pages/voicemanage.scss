@@ -169,6 +169,36 @@
   color: $lk-text-muted;
 }
 
+.lk-voice-sample {
+  padding: 14px 16px;
+  border-radius: $lk-radius-20;
+  background: rgba(var(--lk-brand-rgb), 0.06);
+}
+
+.lk-voice-upload .lk-voice-sample__label {
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: $lk-text-soft;
+}
+
+.lk-voice-upload .lk-voice-sample__text {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.55;
+  white-space: pre-line;
+  color: $lk-text;
+}
+
+.lk-voice-upload .lk-voice-sample__note {
+  margin: 10px 0 0;
+  font-size: 12px;
+  line-height: 1.45;
+  color: $lk-text-muted;
+}
+
 .lk-voice-upload__drop {
   min-height: 160px;
 
