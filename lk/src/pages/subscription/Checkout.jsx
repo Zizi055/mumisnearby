@@ -6,6 +6,7 @@ import { createPayment } from '../../api/payments.service';
 import { getBackendPlanId, getTariffSlug } from '../../data/planIdMap';
 import { useSubscription } from '../../hooks/useSubscription';
 import { useTariffPricing } from '../../hooks/useTariffPricing';
+import PlanLimitsList from '../../components/subscription/PlanLimitsList';
 import { isB2B } from '../../config/edition';
 
 function formatPrice(value) {
