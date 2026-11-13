@@ -450,11 +450,11 @@ export default function Auth() {
             {isRegister && (
               <p className="auth__agree">
                 Регистрируясь, вы принимаете{' '}
-                <a href="/terms" target="_blank" rel="noreferrer">
+                <a href={isB2B ? '/agreement.html' : '/terms'} target="_blank" rel="noreferrer">
                   условия использования
                 </a>
                 {' '}и{' '}
-                <a href="/privacy.html" target="_blank" rel="noreferrer">
+                <a href={isB2B ? '/policy.html' : '/privacy.html'} target="_blank" rel="noreferrer">
                   политику конфиденциальности
                 </a>
               </p>

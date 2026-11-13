@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Пользовательское соглашение — Родной Голос</title>
+  <meta name="description" content="Сервис клонирования голоса и озвучивания детской библиотеки на сайте rodnoygolos.ru" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f8f5f0;
+      color: #1a1a1a;
+      line-height: 1.7;
+    }
+
+    /* HEADER */
+    .pp-header {
+      background: #fff;
+      border-bottom: 1px solid #ede9e3;
+      padding: 18px 0;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .pp-header__inner {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .pp-logo {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1a1a1a;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pp-logo::before {
+      content: '✦';
+      color: #5d8f72;
+      font-size: 18px;
+    }
+
+    .pp-back {
+      font-size: 13px;
+      color: #5d8f72;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: opacity 0.15s;
+    }
+
+    .pp-back:hover { opacity: 0.75; }
+
+    /* HERO */
+    .pp-hero {
+      background: linear-gradient(135deg, #2d5a3d 0%, #4a7a5c 100%);
+      color: #fff;
+      padding: 56px 24px 48px;
+      text-align: center;
+    }
+
+    .pp-hero__tag {
+      display: inline-block;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 999px;
+      padding: 5px 16px;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .pp-hero h1 {
+      font-size: clamp(26px, 5vw, 38px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 12px;
+    }
+
+    .pp-hero p {
+      font-size: 15px;
+      opacity: 0.8;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    .pp-hero__date {
+      display: inline-block;
+      margin-top: 20px;
+      font-size: 12px;
+      opacity: 0.6;
+    }
+
+    /* CONTENT */
+    .pp-content {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    .pp-section {
+      background: #fff;
+      border-radius: 20px;
+      padding: 36px 40px;
+      margin-bottom: 16px;
+      border: 1px solid #ede9e3;
+    }
+
+    .pp-section:first-child { margin-top: 0; }
+
+    .pp-section h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid #f0ede8;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .pp-section h2 .pp-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      background: #e8f5ee;
+      color: #5d8f72;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .pp-section p {
+      font-size: 14px;
+      color: #4a4a4a;
+      margin-bottom: 12px;
+    }
+
+    .pp-section p:last-child { margin-bottom: 0; }
+
+    .pp-section ul, .pp-section ol {
+      padding-left: 20px;
+      margin-bottom: 12px;
+    }
+
+    .pp-section li {
+      font-size: 14px;
+      color: #4a4a4a;
+      margin-bottom: 6px;
+    }
+
+    /* TABLE */
+    .pp-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 16px 0;
+      font-size: 13px;
+    }
+
+    .pp-table th {
+      background: #f0f9f4;
+      color: #2d5a3d;
+      font-weight: 600;
+      padding: 10px 14px;
+      text-align: left;
+      border-bottom: 1px solid #d4ead9;
+    }
+
+    .pp-table td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #f0ede8;
+      color: #4a4a4a;
+      vertical-align: top;
+    }
+
+    .pp-table tr:last-child td { border-bottom: none; }
+    .pp-table tr:hover td { background: #faf9f7; }
+
+    /* HIGHLIGHT */
+    .pp-highlight {
+      background: #f0f9f4;
+      border-left: 3px solid #5d8f72;
+      border-radius: 0 10px 10px 0;
+      padding: 14px 18px;
+      margin: 16px 0;
+      font-size: 13px;
+      color: #2d5a3d;
+    }
+
+    .pp-warn {
+      background: #fff8ed;
+      border-left: 3px solid #e07b39;
+      border-radius: 0 10px 10px 0;
+      padding: 14px 18px;
+      margin: 16px 0;
+      font-size: 13px;
+      color: #7a3d0a;
+    }
+
+    a { color: #5d8f72; }
+    a:hover { opacity: 0.8; }
+
+    strong { font-weight: 600; color: #1a1a1a; }
+
+    /* CONTACT CARD */
+    .pp-contact {
+      background: linear-gradient(135deg, #3d6b50 0%, #5d8f72 100%);
+      border-radius: 20px;
+      padding: 32px 40px;
+      color: #fff;
+      margin-top: 16px;
+    }
+
+    .pp-contact h2 {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      color: #fff;
+      border: none;
+      padding: 0;
+    }
+
+    .pp-contact p {
+      font-size: 14px;
+      opacity: 0.9;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+
+    .pp-contact p strong {
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .pp-contact a {
+      color: rgba(255,255,255,0.85);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    .pp-contact a:hover {
+      color: #fff;
+      opacity: 1;
+    }
+
+    /* FOOTER */
+    .pp-footer {
+      text-align: center;
+      padding: 40px 24px 56px;
+      font-size: 12px;
+      color: #9ca3af;
+      border-top: 1px solid #ede9e3;
+      margin-top: 16px;
+    }
+
+    @media (max-width: 600px) {
+      .pp-section { padding: 24px 20px; border-radius: 16px; }
+      .pp-contact { padding: 24px 20px; border-radius: 16px; }
+      .pp-table { display: block; overflow-x: auto; }
+    }
+  </style>
+</head>
+<body>
+  <header class="pp-header">
+    <div class="pp-header__inner">
+      <a href="/" class="pp-logo">Родной Голос</a>
+      <a href="/" class="pp-back">← На главную</a>
+    </div>
+  </header>
+  <div class="pp-hero">
+    <div class="pp-hero__tag">Юридический документ</div>
+    <h1>Пользовательское соглашение</h1>
+    <p>Сервис клонирования голоса и озвучивания детской библиотеки на сайте rodnoygolos.ru</p>
+    <span class="pp-hero__date">Сайт rodnoygolos.ru</span>
+  </div>
+  <div class="pp-content">
+    <div class="pp-section"><p>Дата публикации: [Дата]</p>
+<p>Индивидуальный предприниматель Зимакина Анастасия Олеговна  (ОГРНИП 326508100566700, ИНН 502105046553 (далее – Администрация), публикует настоящее Пользовательское соглашение (далее – Соглашение).</p>
+<p>Используя Сайт <a href="https://rodnoygolos.ru/">https://rodnoygolos.ru/</a>, Пользователь безусловно принимает условия настоящего Соглашения.</p></div>
+<div class="pp-section"><h2><span class="pp-num">1</span> Термины и определения</h2><ul><li>Сайт –  <a href="https://rodnoygolos.ru/">https://rodnoygolos.ru/</a> и все его поддомены.</li><li>Голосовой образец – аудиофайл (запись голоса), загружаемый Пользователем.</li><li>Голосовой двойник – цифровая модель голоса, созданная технологией Сайта на основе Голосового образца.</li><li>Библиотека – коллекция текстов (сказки, рассказы, стихи, колыбельные), размещённая на Сайте и принадлежащая Администрации либо используемая на законных основаниях.</li><li>Озвученный текст – аудиофайл, сгенерированный с использованием Голосового двойника на основе текста из Библиотеки. Озвученный текст хранится на Сайте и доступен Пользователю для прослушивания в Личном кабинете.</li><li>Подписка – платный доступ к сервису на определённый срок (месяц, год), дающий право генерировать и слушать Озвученные тексты в рамках выбранного тарифа.</li><li>Демо-доступ – бесплатный период 3 дня с ограниченным функционалом (до 3 озвученных текстов).</li></ul></div>
+<div class="pp-section"><h2><span class="pp-num">2</span> Предмет Соглашения</h2><p>2.1. Администрация предоставляет Пользователю возможность:</p>
+<ul><li>загружать Голосовые образцы для создания Голосового двойника;</li><li>использовать Демо-доступ для тестирования;</li><li>приобретать Подписку для генерации Озвученных текстов из Библиотеки.</li></ul>
+<p>2.2. Платные услуги регулируются Договором оферты.</p>
+<p>2.3. Озвученные тексты не передаются Пользователю в виде файлов, а остаются на Сайте. Пользователь получает право прослушивать их в Личном кабинете в течение всего срока действующей Подписки.</p></div>
+<div class="pp-section"><h2><span class="pp-num">3</span> Права и обязанности Пользователя</h2><p>Пользователь имеет право:</p>
+<p>3.1. Загружать Голосовые образцы, записанные лично им или с письменного согласия третьего лица (для голоса ребёнка – согласие законного представителя).</p>
+<p>3.2. Создать одного Голосового двойника (повторная загрузка перезаписывает предыдущего с предварительным уведомлением).</p>
+<p>3.3. Прослушивать Озвученные тексты через Личный кабинет в течение всего оплаченного периода Подписки.</p>
+<p>Пользователь обязуется:</p>
+<p>3.4. Не загружать Голосовые образцы:</p>
+<ul><li>публичных лиц, знаменитостей без их письменного согласия;</li><li>умерших лиц без согласия наследников;</li><li>записанные скрыто, без ведома говорящего;</li><li>содержащие нецензурную брань, угрозы, призывы к насилию.</li></ul>
+<p>3.5. Не использовать сервис для:</p>
+<ul><li>введения в заблуждение (выдача синтезированной речи за реальную запись);</li><li>мошенничества, социальной инженерии;</li><li>генерации оскорбительного, порнографического или противозаконного контента (Библиотека такого не содержит, но Пользователь не может загружать свои тексты).</li></ul>
+<p>3.6. Не передавать доступ к своему аккаунту третьим лицам.</p>
+<p>3.7. Не пытаться скачивать, записывать или копировать Озвученные тексты техническими средствами.</p></div>
+<div class="pp-section"><h2><span class="pp-num">4</span> Права и обязанности Администрации</h2><p>Администрация имеет право:</p>
+<p>4.1. Блокировать или удалять Голосовой двойник без предупреждения при нарушении п. 3.4 или 3.5.</p>
+<p>4.2. Изменять состав Библиотеки (добавлять/удалять произведения).</p>
+<p>4.3. Хранить Голосовой образец и Голосового двойника только на время действия Подписки + 30 дней после её окончания (для возможности возобновления).</p>
+<p>Администрация обязуется:</p>
+<p>4.4. Не передавать Голосовые образцы третьим лицам, за исключением случаев, предусмотренных законом (по запросу суда, правоохранительных органов).</p>
+<p>4.5. Не использовать Голосовой двойник Пользователя без его явного запроса (генерации текстов из Библиотеки).</p>
+<p>4.6. Удалить Голосовой двойник и все связанные с ним данные (включая Голосовой образец) в течение 7 (семи) рабочих дней после получения письменного требования Пользователя, направленного на электронную почту  <a href="https://rodnoygolos.ru/">https://rodnoygolos.ru/</a>с указанием логина (адреса электронной почты, использованного при регистрации). Администрация вправе запросить дополнительные данные для подтверждения личности перед удалением.</p></div>
+<div class="pp-section"><h2><span class="pp-num">5</span> Интеллектуальная собственность и доступ к озвученным текстам</h2><p>5.1. Голосовой образец остаётся собственностью Пользователя (или лица, чей голос записан). Загружая образец, Пользователь предоставляет Администрации ограниченную лицензию на его обработку для создания Голосового двойника.</p>
+<p>5.2. Голосовой двойник (алгоритмическая модель) является объектом исключительного права Администрации. Пользователь получает право использовать его только через интерфейс Сайта в рамках действующей Подписки.</p>
+<p>5.3. Озвученный текст (аудиофайл) хранится на Сайте и не передаётся Пользователю. Право доступа к прослушиванию Озвученного текста действует в течение всего оплаченного периода Подписки. После прекращения Подписки (в том числе досрочного) доступ к ранее созданным Озвученным текстам блокируется.</p>
+<p>5.4. Пользователь не вправе:</p>
+<ul><li>пытаться скачать, скопировать или записать Озвученный текст техническими средствами (запись с экрана, захват аудиопотока и т.п.);</li><li>передавать третьим лицам ссылки на прослушивание;</li><li>использовать Озвученные тексты в коммерческих целях.</li></ul>
+<p>5.5. Библиотека текстов принадлежит Администрации либо используется на основании лицензий. Пользователь не вправе копировать тексты из Библиотеки в полном объёме.</p></div>
+<div class="pp-section"><h2><span class="pp-num">6</span> Библиотека и генерация</h2><p>6.1. Пользователь не загружает собственные тексты. Для озвучивания используются тексты из Библиотеки, предоставленной Администрацией.</p>
+<p>6.2. Пользователь выбирает произведение из Библиотеки и запускает генерацию. Запуск возможен только при наличии активной Подписки и доступного лимита (если тариф не безлимитный).</p>
+<p>6.3. Качество генерации (узнаваемость голоса, эмоциональная окраска) зависит от качества загруженного Голосового образца. Администрация не гарантирует 100% идентичности с оригинальным голосом. Сервис предоставляется «как есть» (as is).</p></div>
+<div class="pp-section"><h2><span class="pp-num">7</span> Ответственность</h2><p>7.1. Пользователь несёт полную ответственность за наличие согласия лица, чей голос загружен. При претензиях третьих лиц – возмещает все документально подтверждённые убытки Администрации.</p>
+<p>7.2. Администрация не проверяет наличие согласия и действует на основании заверений Пользователя.</p>
+<p>7.3. Администрация не несёт ответственности за психологическое или эмоциональное воздействие Озвученных текстов на детей (например, если голос кажется ребёнку пугающим или неестественным).</p></div>
+<div class="pp-section"><h2><span class="pp-num">8</span> Заключительные положения</h2><p>8.1. Администрация вправе изменять Соглашение с уведомлением за 3 дня через публикацию на Сайте. Продолжение использования Сайта после изменений означает согласие с новой редакцией.</p>
+<p>8.2. Ко всем отношениям применяется право Российской Федерации.</p>
+<p>8.3. Признание недействительным одного пункта не влечёт недействительности остальных.</p>
+<p>Индивидуальный предприниматель Зимакина Анастасия Олеговна  (ОГРНИП 326508100566700, ИНН 502105046553</p>
+<p>Система налогообложения: УСН 6% (доходы), НДС не облагается</p></div>
+    <div class="pp-section" style="text-align: center; padding: 24px;">
+      <p style="font-size: 13px; color: #9ca3af; margin-bottom: 8px;">Документ можно также скачать в исходном виде.</p>
+      <p style="font-size: 13px;"><a href="/docs/пользовательское-соглашение.docx" download>Скачать документ</a></p>
+    </div>
+  </div>
+  <footer class="pp-footer">
+    © 2026 Родной Голос · <a href="/">На главную</a> · <a href="mailto:info@rodnoygolos.ru">info@rodnoygolos.ru</a>
+  </footer>
+</body>
+</html>
