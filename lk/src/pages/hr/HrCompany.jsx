@@ -259,8 +259,8 @@ export default function HrCompany() {
 
               <p className="lk-hr-hint lk-hr-form__full">
                 <Info size={14} />
-                После смены пароля текущая сессия закроется — нужно будет войти
-                заново.
+                Новый пароль — не короче 8 символов. После смены текущая
+                сессия закроется, нужно будет войти заново.
               </p>
 
               {pwdError && <div className="lk-hr-error lk-hr-form__full">{pwdError}</div>}
