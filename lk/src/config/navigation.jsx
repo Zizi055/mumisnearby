@@ -1,5 +1,6 @@
 import { Home, Book, Mic, CreditCard, Settings, User } from 'lucide-react';
 import { isStaffCabinet } from './cabinetMode';
+import { isB2B } from './edition';
 
 const b2cNavigation = [
   {
@@ -60,9 +61,7 @@ const b2cNavigation = [
       { label: 'Общие', path: '/settings/general' },
       { label: 'Уведомления', path: '/settings/notifications' },
       { label: 'Безопасность', path: '/settings/security' },
-      // Семейный доступ убран из кабинета. Пункт оставлен в комментарии,
-      // чтобы вернуть, когда появится общий аккаунт на семью.
-      // { label: 'Семья', path: '/settings/family' },
+      { label: 'Семья', path: '/settings/family' },
     ],
   },
   {
@@ -112,6 +111,15 @@ function liveList(pick) {
   });
 }
 
-export const navigation = liveList(() => (
-  isStaffCabinet() ? b2bNavigation : b2cNavigation
-));
+export const navigation = liveList(() => {
+  const base = isStaffCabinet() ? b2bNavigation : b2cNavigation;
+  // Семейный доступ убран на «Родном голосе». Пункт в меню оставлен
+  // в данных выше, чтобы вернуть его, когда появится общий аккаунт.
+  // «Родные голоса» этот фильтр не применяют.
+  if (!isB2B) return base;
+  return base.map((section) => (
+    section.path === '/settings'
+      ? { ...section, children: section.children.filter((c) => c.path !== '/settings/family') }
+      : section
+  ));
+});

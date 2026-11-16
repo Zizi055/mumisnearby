@@ -4,6 +4,7 @@ import { Bell, Shield, Users, Sliders, Eye, EyeOff, Check } from 'lucide-react';
 import { changePassword, getPasswordChangedAt } from '../../api/profile.service';
 import { useAuth } from '../../context/AuthContext';
 import { isStaffCabinet } from '../../config/cabinetMode';
+import { isB2B } from '../../config/edition';
 import { readPref, writePref } from '../../utils/prefs';
 
 export default function Settings() {
@@ -304,11 +305,10 @@ export default function Settings() {
               </div>
             )}
 
-            {/* Двухфакторная проверка. Переключатель только менял
-                состояние на экране: SMS-кода и эндпоинта на сервере нет,
-                поэтому «включённая» защита никого не защищала. Код
-                оставлен, чтобы подключить, когда появится отправка кода.
-
+            {/* На «Родном голосе» переключатель скрыт: SMS-кода и
+                эндпоинта нет, включение ничего не защищало. Код ниже
+                оставлен. На «Родных голосах» строка по-прежнему видна. */}
+            {!isB2B && (
             <div className="lk-settings__row">
               <div>
                 <strong>Двухфакторная аутентификация</strong>
@@ -319,13 +319,13 @@ export default function Settings() {
                 <span />
               </label>
             </div>
-            */}
+            )}
           </div>
         </div>
       )}
 
       {/* ── СЕМЬЯ ── */}
-      {tab === 'family' && (
+      {tab === 'family' && !isB2B && (
         <div className="lk-settings__block">
           <div className="lk-settings__block-head">
             <div className="lk-settings__block-icon"><Users size={16} /></div>
@@ -333,10 +333,10 @@ export default function Settings() {
           </div>
 
           <div className="lk-settings__rows">
-            {/* Семейный доступ убран: общего входа для семьи нет,
-                переключатель ничего не сохранял. Вернуть вместе с пунктом
-                «Семья» в navigation.jsx.
-
+            {/* Семейный доступ на «Родном голосе» убран: общего входа
+                для семьи нет, переключатель ничего не сохранял. Вернуть —
+                убрать условие isB2B. На «Родных голосах» строка остаётся. */}
+            {!isB2B && (
             <div className="lk-settings__row">
               <div>
                 <strong>Семейный доступ</strong>
@@ -347,7 +347,7 @@ export default function Settings() {
                 <span />
               </label>
             </div>
-            */}
+            )}
 
             {/* Детский режим — пока такого функционала на сайте не будет,
                 скрыла. Код оставила в комментарии, чтобы вернуть, когда
