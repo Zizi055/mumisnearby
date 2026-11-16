@@ -573,6 +573,18 @@ $hr-gutter: $lk-space-32;
 
 .lk-hr-form__full { grid-column: 1 / -1; }
 
+/* Кнопка в сетке формы не должна занимать всю строку.
+   justify-items у грида по умолчанию stretch, и без этого
+   «Создать доступ» растягивается на ширину карточки. */
+.lk-hr-form__actions {
+  grid-column: 1 / -1;
+  justify-self: start;
+
+  .lk-btn {
+    width: auto;
+  }
+}
+
 .lk-hr-field {
   display: flex;
   flex-direction: column;
@@ -1448,8 +1460,9 @@ html.theme-b2b .lk-hr-shell {
   }
 
   .lk-btn {
-    min-height: 40px;
-    border-radius: 10px;
+    width: auto;
+    min-height: 0;
+    border-radius: $lk-radius-pill;
   }
 
   .lk-hr-field > span,

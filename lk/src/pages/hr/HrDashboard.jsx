@@ -226,7 +226,7 @@ export default function HrDashboard() {
           )}
 
           <div className="lk-hr-actions">
-            <Link to="/company/staff" className="lk-btn lk-btn--primary lk-btn--md">
+            <Link to="/company/staff" className="lk-btn lk-btn--primary lk-btn--sm">
               Сотрудники
             </Link>
           </div>

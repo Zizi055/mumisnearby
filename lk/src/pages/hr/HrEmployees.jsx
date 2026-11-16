@@ -24,6 +24,7 @@ import {
 } from '../../api/company.service';
 import { isNotImplemented } from '../../api/companyClient';
 import HrPending from '../../components/hr/HrPending';
+import LkButton from '../../components/ui/LkButton';
 
 // ─────────────────────────────────────────────────────────────────────
 // Сотрудники компании.
@@ -402,15 +403,17 @@ export default function HrEmployees() {
             <div className="lk-hr-error lk-hr-form__full">{createError}</div>
           )}
 
-          <div className="lk-hr-form__full">
-            <button
+          <div className="lk-hr-form__actions">
+            <LkButton
               type="submit"
-              className="lk-btn lk-btn--primary lk-btn--md"
+              variant="primary"
+              size="sm"
               disabled={creating || !canAdd}
+              loading={creating}
             >
               <UserPlus size={15} />
-              {creating ? 'Создаём…' : 'Создать доступ'}
-            </button>
+              Создать доступ
+            </LkButton>
           </div>
         </form>
       </section>

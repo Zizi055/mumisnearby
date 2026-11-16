@@ -9,6 +9,7 @@ import {
 } from '../../api/company.service';
 import { isNotImplemented } from '../../api/companyClient';
 import HrPending from '../../components/hr/HrPending';
+import LkButton from '../../components/ui/LkButton';
 
 // ─────────────────────────────────────────────────────────────────────
 // Карточка компании: реквизиты, договор, пакет слотов, смена пароля.
@@ -271,15 +272,11 @@ export default function HrCompany() {
                 </div>
               )}
 
-              <div className="lk-hr-form__full">
-                <button
-                  type="submit"
-                  className="lk-btn lk-btn--primary lk-btn--md"
-                  disabled={saving}
-                >
+              <div className="lk-hr-form__actions">
+                <LkButton type="submit" variant="primary" size="sm" disabled={saving} loading={saving}>
                   <Save size={15} />
-                  {saving ? 'Сохраняем…' : 'Сменить пароль'}
-                </button>
+                  Сменить пароль
+                </LkButton>
               </div>
             </form>
           </section>
