@@ -27,6 +27,12 @@ const NAV_ITEMS = [
   { path: '/company/profile', label: 'Компания' },
 ];
 
+function readableName(value) {
+  const text = String(value || '').trim();
+  if (!text || /^[\s?]+$/.test(text)) return '';
+  return text;
+}
+
 function formatDate(iso) {
   if (!iso) return '';
   try {
@@ -95,8 +101,8 @@ export default function HrLayout() {
     <div className="lk-hr-shell">
       <nav className="lk-hr-nav">
         <div className="lk-hr-nav__brand">
+          <span className="lk-hr-nav__mark">Родной Голос</span>
           <span className="lk-hr-nav__title">Кабинет компании</span>
-          {name && <span className="lk-hr-nav__company">{name}</span>}
         </div>
 
         <div className="lk-hr-nav__links">
@@ -114,8 +120,12 @@ export default function HrLayout() {
         </div>
 
         <div className="lk-hr-nav__user">
-          <button type="button" onClick={handleLogout} title="Выйти">
-            <LogOut size={16} />
+          <span className="lk-hr-nav__company">
+            {readableName(name) || company?.email || 'Компания'}
+          </span>
+          <button type="button" onClick={handleLogout}>
+            <LogOut size={15} />
+            Выйти
           </button>
         </div>
       </nav>

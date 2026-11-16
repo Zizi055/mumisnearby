@@ -90,7 +90,6 @@ export default function HrDashboard() {
     <div className="lk-hr-page">
       <header className="lk-hr-page__head">
         <div>
-          <span className="lk-text-eyebrow">Кабинет компании</span>
           <h1>Обзор</h1>
         </div>
 

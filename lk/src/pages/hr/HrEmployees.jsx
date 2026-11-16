@@ -39,6 +39,12 @@ import HrPending from '../../components/hr/HrPending';
 // выбирает тариф и получает 429 уже после отправки формы.
 // ─────────────────────────────────────────────────────────────────────
 
+function staffName(user) {
+  const text = String(user?.username || '').trim();
+  if (text && !/^[\s?]+$/.test(text)) return text;
+  return user?.email || `Сотрудник ${user?.id ?? ''}`.trim();
+}
+
 function generatePassword() {
   // Без похожих знаков: пароль диктуют по телефону и переписывают с
   // бумаги, и 0/O, 1/l/I — самая частая причина «не могу войти».
@@ -228,7 +234,6 @@ export default function HrEmployees() {
     <div className="lk-hr-page">
       <header className="lk-hr-page__head">
         <div>
-          <span className="lk-text-eyebrow">Кабинет компании</span>
           <h1>Сотрудники</h1>
         </div>
 
@@ -291,6 +296,10 @@ export default function HrEmployees() {
       {/* ДОБАВЛЕНИЕ */}
       <section className="lk-hr-card">
         <h2 className="lk-hr-card__title">Добавить сотрудника</h2>
+        <p className="lk-hr-card__lead">
+          Почта станет логином. Телефон можно не указывать. Пароль уже
+          сгенерирован — его можно заменить своим.
+        </p>
 
         {!canAdd && (
           <p className="lk-hr-hint lk-hr-hint--warn">
@@ -303,7 +312,7 @@ export default function HrEmployees() {
 
         <form className="lk-hr-form lk-hr-form--grid" onSubmit={handleCreate}>
           <label className="lk-hr-field">
-            <span>Рабочая почта <em>— это логин сотрудника</em></span>
+            <span>Почта</span>
             <input
               type="email"
               value={form.email}
@@ -327,7 +336,7 @@ export default function HrEmployees() {
           </label>
 
           <label className="lk-hr-field">
-            <span>Телефон <em>— необязательно</em></span>
+            <span>Телефон</span>
             <input
               type="tel"
               value={form.phoneNumber}
@@ -337,10 +346,7 @@ export default function HrEmployees() {
           </label>
 
           <label className="lk-hr-field">
-            <span>
-              Тариф
-              {seatsLeft != null && <em> — мест свободно {seatsLeft}</em>}
-            </span>
+            <span>Тариф</span>
             <select
               value={form.planId}
               disabled={!canAdd}
@@ -372,7 +378,7 @@ export default function HrEmployees() {
           </label>
 
           <label className="lk-hr-field lk-hr-form__full">
-            <span>Пароль <em>— сгенерирован, можно заменить своим</em></span>
+            <span>Пароль</span>
             <div className="lk-hr-field__password">
               <input
                 type="text"
@@ -447,7 +453,7 @@ export default function HrEmployees() {
 
             {staff.map((u) => (
               <div key={u.id} className="lk-hr-table__row">
-                <span className="lk-hr-table__name">{u.username || `#${u.id}`}</span>
+                <span className="lk-hr-table__name">{staffName(u)}</span>
 
                 <span className="lk-hr-table__contacts">
                   <a href={`mailto:${u.email}`}>{u.email}</a>

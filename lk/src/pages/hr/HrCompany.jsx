@@ -25,6 +25,12 @@ const LEVEL_LABELS = {
   3: 'Уровень 3 · Волшебник',
 };
 
+function readableCompanyName(value) {
+  const text = String(value || '').trim();
+  if (!text || /^[\s?]+$/.test(text)) return '';
+  return text;
+}
+
 function formatDate(iso) {
   if (!iso) return '—';
   try {
@@ -117,7 +123,6 @@ export default function HrCompany() {
     <div className="lk-hr-page">
       <header className="lk-hr-page__head">
         <div>
-          <span className="lk-text-eyebrow">Кабинет компании</span>
           <h1>Компания</h1>
         </div>
       </header>
@@ -146,7 +151,7 @@ export default function HrCompany() {
 
             <dl className="lk-hr-dl">
               <dt>Название</dt>
-              <dd>{company?.name ?? '—'}</dd>
+              <dd>{readableCompanyName(company?.name) || 'Название не сохранилось'}</dd>
 
               <dt>ИНН</dt>
               <dd>{company?.inn ?? '—'}</dd>
@@ -209,7 +214,7 @@ export default function HrCompany() {
           <section className="lk-hr-card">
             <h2 className="lk-hr-card__title">Смена пароля</h2>
 
-            <form className="lk-hr-form lk-hr-form--grid" onSubmit={handlePassword}>
+            <form className="lk-hr-form lk-hr-form--grid lk-hr-form--password" onSubmit={handlePassword}>
               <label className="lk-hr-field">
                 <span>Текущий пароль</span>
                 <input
@@ -222,7 +227,7 @@ export default function HrCompany() {
               </label>
 
               <label className="lk-hr-field">
-                <span>Новый пароль <em>— минимум 8 символов</em></span>
+                <span>Новый пароль</span>
                 <div className="lk-hr-field__password">
                   <input
                     type={showPwd ? 'text' : 'password'}

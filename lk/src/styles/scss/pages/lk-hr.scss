@@ -46,11 +46,11 @@ $hr-gutter: $lk-space-32;
 .lk-hr-nav {
   display: flex;
   align-items: center;
-  gap: $lk-space-24;
-  flex-wrap: wrap;
+  gap: $lk-space-20;
+  min-height: 64px;
 
-  padding-top: $lk-space-16;
-  padding-bottom: $lk-space-16;
+  padding-top: 0;
+  padding-bottom: 0;
   @include hr-column;
 
   border-bottom: 1px solid $lk-border;
@@ -60,23 +60,34 @@ $hr-gutter: $lk-space-32;
 .lk-hr-nav__brand {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 1px;
+  min-width: 0;
+}
 
-  margin-right: auto;
+.lk-hr-nav__mark {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: $lk-text;
 }
 
 .lk-hr-nav__title {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
   color: $lk-text-muted;
 }
 
 .lk-hr-nav__company {
-  font-size: 15px;
+  max-width: 280px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+
+  font-size: 13px;
   font-weight: 600;
-  color: $lk-text;
+  color: $lk-text-soft;
 }
 
 .lk-hr-nav__links {
@@ -106,7 +117,8 @@ $hr-gutter: $lk-space-32;
 .lk-hr-nav__user {
   display: flex;
   align-items: center;
-  gap: $lk-space-10;
+  gap: $lk-space-12;
+  margin-left: auto;
 
   font-size: 13px;
   color: $lk-text-soft;
@@ -114,18 +126,34 @@ $hr-gutter: $lk-space-32;
   button {
     display: inline-flex;
     align-items: center;
-
-    padding: $lk-space-8;
+    gap: 6px;
+    height: 36px;
+    padding: 0 12px;
 
     border: 1px solid $lk-border;
     border-radius: $lk-radius-pill;
     background: $lk-white;
 
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
     color: $lk-text-soft;
     cursor: pointer;
 
     &:hover { border-color: $lk-danger; color: $lk-danger; }
   }
+}
+
+@media (max-width: 860px) {
+  .lk-hr-nav {
+    flex-wrap: wrap;
+    padding-top: $lk-space-12;
+    padding-bottom: $lk-space-12;
+  }
+
+  .lk-hr-nav__links { order: 3; width: 100%; }
+  .lk-hr-nav__user { margin-left: auto; }
 }
 
 /* ─── Страница ───────────────────────────────────────────────────── */
@@ -152,11 +180,12 @@ $hr-gutter: $lk-space-32;
 
 .lk-hr-page__head {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
   gap: $lk-space-16;
+  min-height: 40px;
 
-  h1 { margin: $lk-space-4 0 0; }
+  h1 { margin: 0; }
 }
 
 .lk-hr-refresh {
@@ -392,7 +421,26 @@ $hr-gutter: $lk-space-32;
 }
 
 .lk-hr-card__title {
+  margin: 0 0 $lk-space-4;
+
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.lk-hr-card__lead {
   margin: 0 0 $lk-space-16;
+
+  font-size: 13px;
+  line-height: 1.5;
+  color: $lk-text-soft;
+}
+
+.lk-hr-card__title + .lk-hr-dl,
+.lk-hr-card__title + .lk-hr-form,
+.lk-hr-card__title + .lk-hr-levels,
+.lk-hr-card__title + .lk-hr-hint {
+  margin-top: $lk-space-16;
 }
 
 .lk-hr-card__foot {
@@ -513,7 +561,13 @@ $hr-gutter: $lk-space-32;
 
   &--grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: end;
+    gap: $lk-space-16 $lk-space-20;
+  }
+
+  &--password {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
@@ -911,29 +965,39 @@ $hr-gutter: $lk-space-32;
 
 .lk-hr-dl {
   display: grid;
-  grid-template-columns: minmax(0, 200px) minmax(0, 1fr);
-  gap: $lk-space-10 $lk-space-16;
+  grid-template-columns: 180px minmax(0, 1fr);
+  gap: 0 20px;
+  align-items: center;
 
   margin: 0 0 $lk-space-16;
+  border-top: 1px solid $lk-border;
+
+  dt,
+  dd {
+    margin: 0;
+    padding: 12px 0;
+    border-bottom: 1px solid $lk-border;
+  }
 
   dt {
     color: $lk-text-muted;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
   }
 
   dd {
-    margin: 0;
     min-width: 0;
 
     font-size: 14px;
+    font-weight: 600;
     color: $lk-text;
     overflow-wrap: anywhere;
 
     em {
       font-style: normal;
+      font-weight: 500;
       color: $lk-text-muted;
     }
   }
@@ -1362,6 +1426,50 @@ $hr-gutter: $lk-space-32;
     text-decoration: none;
 
     &:hover { text-decoration: underline; }
+  }
+}
+
+html.theme-b2b .lk-hr-shell {
+  .lk-hr-page__head h1 {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    text-transform: none;
+  }
+
+  .lk-hr-nav__link,
+  .lk-hr-nav__user button,
+  .lk-btn {
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+
+  .lk-btn {
+    min-height: 40px;
+    border-radius: 10px;
+  }
+
+  .lk-hr-field > span,
+  label {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0;
+    text-transform: none;
+  }
+}
+
+@media (max-width: 900px) {
+  .lk-hr-form--password {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .lk-hr-form--grid {
+    grid-template-columns: 1fr;
   }
 }
 
