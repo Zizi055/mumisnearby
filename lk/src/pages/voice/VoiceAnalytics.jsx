@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import {
   AreaChart,
   Area,
@@ -12,56 +13,66 @@ import {
   Headphones,
   Clock3,
   Activity,
-  Sparkles,
-  TrendingUp,
   AudioLines,
-  ShieldCheck,
 } from 'lucide-react';
+import { getVoiceAnalytics } from '../../api/generations.service';
 
-const listensData = [
-  { day: '01', value: 120 },
-  { day: '02', value: 180 },
-  { day: '03', value: 260 },
-  { day: '04', value: 310 },
-  { day: '05', value: 420 },
-  { day: '06', value: 510 },
-  { day: '07', value: 640 },
-];
+const PERIODS = [7, 30, 90];
 
-const emotionsData = [
-  {
-    label: 'Спокойный',
-    value: 48,
-  },
-  {
-    label: 'Колыбельный',
-    value: 31,
-  },
-  {
-    label: 'Терапевтический',
-    value: 21,
-  },
-];
+function formatCount(value) {
+  return Number(value || 0).toLocaleString('ru-RU');
+}
 
-const topStories = [
-  {
-    title: 'Сонный лес',
-    listens: 284,
-    avg: '5:22',
-  },
-  {
-    title: 'Тихий океан',
-    listens: 196,
-    avg: '4:48',
-  },
-  {
-    title: 'Лунный свет',
-    listens: 142,
-    avg: '6:11',
-  },
-];
+function formatRetention(value) {
+  if (value == null) return '—';
+  return `${Math.round(value * 100)}%`;
+}
+
+function formatDuration(seconds) {
+  if (seconds == null) return '—';
+  const total = Math.round(seconds);
+  if (total < 60) return `${total} сек`;
+  return `${Math.round(total / 60)} мин`;
+}
+
+function formatDay(iso) {
+  const date = new Date(`${iso}T12:00:00+03:00`);
+  if (Number.isNaN(date.getTime())) return iso;
+  return date.toLocaleDateString('ru-RU', { day: 'numeric', month: 'short' });
+}
 
 export default function VoiceAnalytics() {
+  const [days, setDays] = useState(7);
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    let mounted = true;
+    setLoading(true);
+    setError('');
+
+    getVoiceAnalytics({ days, topLimit: 5 })
+      .then((res) => {
+        if (mounted) setData(res);
+      })
+      .catch((err) => {
+        if (mounted) setError(err.message || 'Не удалось загрузить аналитику');
+      })
+      .finally(() => {
+        if (mounted) setLoading(false);
+      });
+
+    return () => { mounted = false; };
+  }, [days]);
+
+  const summary = data?.summary ?? {};
+  const series = (data?.series ?? []).map((point) => ({
+    day: formatDay(point.date),
+    listens: point.listens ?? 0,
+  }));
+  const top = data?.top_scenarios ?? [];
+
   return (
     <section className="lk-voice-analytics">
       {/* hero */}
@@ -85,9 +96,17 @@ export default function VoiceAnalytics() {
           </p>
         </div>
 
-        <div className="lk-voice-analytics__badge">
-          <ShieldCheck size={16} />
-          Голос активен
+        <div className="lk-voice-analytics__badge" style={{ display: 'flex', gap: 8 }}>
+          {PERIODS.map((period) => (
+            <button
+              key={period}
+              type="button"
+              className={`lk-btn lk-btn--sm ${days === period ? 'lk-btn--primary' : 'lk-btn--secondary'}`}
+              onClick={() => setDays(period)}
+            >
+              {period} дн.
+            </button>
+          ))}
         </div>
       </div>
 
@@ -96,36 +115,29 @@ export default function VoiceAnalytics() {
         <AnalyticsCard
           icon={<Headphones size={18} />}
           title="Прослушивания"
-          value="1 240"
-          growth="+18%"
+          value={loading ? '…' : formatCount(summary.listens)}
         />
 
         <AnalyticsCard
           icon={<Activity size={18} />}
           title="Удержание"
-          value="78%"
-          growth="+4%"
+          value={loading ? '…' : formatRetention(summary.retention)}
         />
 
         <AnalyticsCard
           icon={<Clock3 size={18} />}
           title="Среднее время"
-          value="6 мин"
-          growth="+12%"
+          value={loading ? '…' : formatDuration(summary.avg_duration_sec)}
         />
 
-        {/* Было «Уникальные дети» — лексика корпоративной веб-аналитики.
-            Первый вариант «Сценариев прослушано» дублировал по смыслу
-            карточку «Прослушивания»: 1240 включений против 86 — читалось
-            как одна и та же метрика дважды. «Разных сценариев» — это
-            охват библиотеки: сколько непохожих историй звучало. */}
         <AnalyticsCard
           icon={<AudioLines size={18} />}
           title="Разных сценариев"
-          value="86"
-          growth="+9%"
+          value={loading ? '…' : formatCount(summary.generated_audios)}
         />
       </div>
+
+      {error && <p className="lk-text">{error}</p>}
 
       {/* chart + side */}
       <div className="lk-voice-analytics__grid">
@@ -136,7 +148,7 @@ export default function VoiceAnalytics() {
               <h3>Активность прослушиваний</h3>
 
               <p>
-                Динамика использования голосовой модели за последние 7 дней.
+                Сколько раз включали записи за последние {days} дней.
               </p>
             </div>
 
@@ -148,7 +160,7 @@ export default function VoiceAnalytics() {
 
           <div className="lk-analytics-chart__body">
             <ResponsiveContainer width="100%" height={320}>
-              <AreaChart data={listensData}>
+              <AreaChart data={series}>
                 <defs>
                   <linearGradient
                     id="voiceGradient"
@@ -190,7 +202,7 @@ export default function VoiceAnalytics() {
 
                 <Area
                   type="monotone"
-                  dataKey="value"
+                  dataKey="listens"
                   stroke="#5d8f72"
                   strokeWidth={3}
                   fill="url(#voiceGradient)"
@@ -200,195 +212,48 @@ export default function VoiceAnalytics() {
           </div>
         </div>
 
-        {/* side */}
-        <div className="lk-analytics-side">
-          <div className="lk-analytics-side__card">
-            <div className="lk-analytics-side__icon">
-              <Sparkles size={18} />
-            </div>
-
-            <div>
-              <h3>Эмоциональный профиль</h3>
-
-              <p>
-                Наиболее востребованные режимы использования голоса.
-              </p>
-            </div>
-
-            <div className="lk-analytics-emotions">
-              {emotionsData.map((item) => (
-                <div
-                  key={item.label}
-                  className="lk-analytics-emotions__item"
-                >
-                  <div>
-                    <strong>{item.label}</strong>
-                    <span>{item.value}%</span>
-                  </div>
-
-                  <div className="lk-analytics-emotions__line">
-                    <span
-                      style={{
-                        width: `${item.value}%`,
-                      }}
-                    />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="lk-analytics-side__card">
-            <div className="lk-analytics-side__icon">
-              <TrendingUp size={18} />
-            </div>
-
-            <div>
-              <h3>AI рекомендации</h3>
-
-              <p>
-                Система предлагает улучшения для повышения удержания.
-              </p>
-            </div>
-
-            <ul className="lk-analytics-ai">
-              <li>
-                Увеличить мягкость голоса на 6%
-              </li>
-
-              <li>
-                Замедлить скорость чтения перед сном
-              </li>
-
-              <li>
-                Добавить больше пауз между фразами
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-
-      {/* content */}
-      <div className="lk-analytics-content">
-        {/* stories */}
         <div className="lk-analytics-table">
           <div className="lk-analytics-table__head">
             <div>
               <h3>Популярные сценарии</h3>
-
-              <p>
-                Контент, в котором голос используется чаще всего.
-              </p>
+              <p>Что включали чаще всего за выбранные дни.</p>
             </div>
-
             <AudioLines size={18} />
           </div>
 
           <div className="lk-analytics-table__list">
-            {topStories.map((story) => (
+            {top.length === 0 && (
+              <p className="lk-text">Прослушиваний за этот период ещё не было.</p>
+            )}
+            {top.map((story) => (
               <div
-                key={story.title}
+                key={`${story.content_type}-${story.content_id}`}
                 className="lk-analytics-table__row"
               >
                 <div>
-                  <strong>{story.title}</strong>
-
-                  <span>
-                    Среднее прослушивание {story.avg}
-                  </span>
+                  <strong>{story.title || 'Без названия'}</strong>
                 </div>
-
                 <div className="lk-analytics-table__value">
-                  {story.listens}
+                  {formatCount(story.listens)}
                 </div>
               </div>
             ))}
           </div>
         </div>
-
-       {/* insights */}
-<div className="lk-analytics-meta">
-  <div className="lk-analytics-meta__head">
-    <div>
-      <h3>Состояние голосовой модели</h3>
-
-      <p>
-        Краткая сводка по качеству взаимодействия и активности пользователей.
-      </p>
-    </div>
-
-    <div className="lk-analytics-meta__badge">
-      Активно
-    </div>
-  </div>
-
-  <div className="lk-analytics-meta__list">
-    <div className="lk-analytics-meta__item">
-      <strong>Высокое удержание</strong>
-
-      <span>
-        Пользователи дослушивают большинство сценариев до конца.
-      </span>
-    </div>
-
-    <div className="lk-analytics-meta__item">
-      <strong>Стабильная активность</strong>
-
-      <span>
-        Голос используется регулярно в вечернее время.
-      </span>
-    </div>
-
-    <div className="lk-analytics-meta__item">
-      <strong>Лучший эмоциональный режим</strong>
-
-      <span>
-        Наиболее высокий отклик показывает колыбельный пресет.
-      </span>
-    </div>
-
-    <div className="lk-analytics-meta__item">
-      <strong>Средняя глубина прослушивания</strong>
-
-      <span>
-        Пользователи проводят с голосом более 6 минут за сессию.
-      </span>
-    </div>
-
-    <div className="lk-analytics-meta__item">
-      <strong>AI оптимизация активна</strong>
-
-      <span>
-        Система анализирует поведение пользователей для улучшения сценариев.
-      </span>
-    </div>
-  </div>
-</div>
       </div>
     </section>
   );
 }
 
-function AnalyticsCard({
-  icon,
-  title,
-  value,
-  growth,
-}) {
+function AnalyticsCard({ icon, title, value }) {
   return (
     <div className="lk-analytics-card">
       <div className="lk-analytics-card__icon">
         {icon}
       </div>
-
       <div className="lk-analytics-card__body">
         <span>{title}</span>
-
         <strong>{value}</strong>
-      </div>
-
-      <div className="lk-analytics-card__growth">
-        {growth}
       </div>
     </div>
   );

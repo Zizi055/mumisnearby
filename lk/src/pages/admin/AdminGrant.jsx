@@ -20,6 +20,21 @@ import { tariffs } from '../../data/tariffs.data';
 
 // Тарифы, которые реально можно выдать: у «Конструктора» числового
 // plan_id нет, демо-тариф через этот эндпоинт не выдаётся.
+function todayStamp() {
+  const date = new Date();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${date.getFullYear()}-${month}-${day}`;
+}
+
+function defaultExpiryDate() {
+  const date = new Date();
+  date.setFullYear(date.getFullYear() + 1);
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${date.getFullYear()}-${month}-${day}`;
+}
+
 const GRANTABLE = tariffs
   .filter((t) => PLAN_ID_MAP[t.id])
   .map((t) => ({ id: PLAN_ID_MAP[t.id], name: t.name }));
@@ -31,7 +46,7 @@ export default function AdminGrant() {
 
   const [userId, setUserId] = useState(params.get('user') ?? '');
   const [planId, setPlanId] = useState(String(GRANTABLE[0]?.id ?? ''));
-  const [billingPeriod, setBillingPeriod] = useState('year');
+  const [expiresOn, setExpiresOn] = useState(defaultExpiryDate);
 
   const [status, setStatus] = useState('idle'); // idle | loading | success | error
   const [error, setError] = useState('');
@@ -47,18 +62,25 @@ export default function AdminGrant() {
       return;
     }
 
+    if (!expiresOn || expiresOn < todayStamp()) {
+      setError('Укажите дату окончания не раньше сегодняшнего дня.');
+      setStatus('error');
+      return;
+    }
+
     const plan = GRANTABLE.find((p) => String(p.id) === String(planId));
 
     setStatus('loading');
     setError('');
 
     try {
-      await grantSubscription({ userId: id, planId, billingPeriod });
+      const expiresAt = `${expiresOn}T23:59:59+03:00`;
+      await grantSubscription({ userId: id, planId, expiresAt });
 
       setGranted({
         userId: id,
         planName: plan?.name ?? `тариф #${planId}`,
-        period: billingPeriod === 'month' ? 'месяц' : 'год',
+        until: new Date(expiresAt).toLocaleDateString('ru-RU'),
       });
       setStatus('success');
       setUserId('');
@@ -118,14 +140,14 @@ export default function AdminGrant() {
           </label>
 
           <label className="lk-admin-login__field">
-            <span>Период</span>
-            <select
-              value={billingPeriod}
-              onChange={(e) => setBillingPeriod(e.target.value)}
-            >
-              <option value="year">Год</option>
-              <option value="month">Месяц</option>
-            </select>
+            <span>Действует до</span>
+            <input
+              type="date"
+              value={expiresOn}
+              min={todayStamp()}
+              required
+              onChange={(e) => setExpiresOn(e.target.value)}
+            />
           </label>
 
           {status === 'error' && (
@@ -135,7 +157,7 @@ export default function AdminGrant() {
           {status === 'success' && granted && (
             <div className="lk-admin-login__success lk-admin-form__full">
               Пользователю #{granted.userId} выдан «{granted.planName}»
-              на {granted.period}.
+              до {granted.until}.
             </div>
           )}
 

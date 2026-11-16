@@ -27,6 +27,7 @@ import {
   waitForGeneration,
   getGenerationAudio,
 } from '../../api/generations.service.js';
+import { bindGenerationPlayback } from '../../utils/listenTracking';
 
 export default function LibraryItem() {
   const { type, id } = useParams();
@@ -58,6 +59,7 @@ export default function LibraryItem() {
   const [genError, setGenError] = useState('');
   const [genStatus, setGenStatus] = useState('');
   const [audioUrl, setAudioUrl] = useState(null);
+  const generationIdRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [showPaywall, setShowPaywall] = useState(false);
   const [previewVoiceId, setPreviewVoiceId] = useState(null);
@@ -123,6 +125,12 @@ export default function LibraryItem() {
     };
   }, []);
 
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return undefined;
+    return bindGenerationPlayback(audio, () => generationIdRef.current);
+  }, []);
+
   const handleGenerate = async () => {
     if (!selectedVoice || !item) return;
 
@@ -146,6 +154,7 @@ export default function LibraryItem() {
 
     try {
       const gen = await createGeneration(selectedVoice.id, type, item.id);
+      generationIdRef.current = gen.id;
       rememberGeneration(type, item.id, selectedVoice.id, gen.id);
       await waitForGeneration(gen.id, setGenStatus);
       const { url } = await getGenerationAudio(gen.id);

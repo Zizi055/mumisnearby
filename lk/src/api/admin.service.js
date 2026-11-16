@@ -63,15 +63,15 @@ export async function updateAdminTicketStatus(id, status) {
 // тариф без оплаты. Раньше это умел POST /subscription/activate, доступный
 // любому пользователю; его удалили по security-ревью (критичный пункт №3).
 //
-// Тело: { user_id, plan_id, billing_period }. billing_period — 'month'
-// или 'year'. Неизвестный пользователь или тариф → 404.
+// Тело: { user_id, plan_id, expires_at }. Срок — дата, до которой
+// тариф действует, а не месяц/год. Неизвестный пользователь или тариф → 404.
 //
 // Идёт через adminApi: требуется админский токен, пользовательский не подойдёт.
-export async function grantSubscription({ userId, planId, billingPeriod }) {
+export async function grantSubscription({ userId, planId, expiresAt }) {
   return adminApi.post('/subscription/admin/grant', {
     user_id: Number(userId),
     plan_id: Number(planId),
-    billing_period: billingPeriod === 'month' ? 'month' : 'year',
+    expires_at: expiresAt,
   });
 }
 

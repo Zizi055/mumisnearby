@@ -5,6 +5,7 @@ import { Play, Square, Loader2, ExternalLink, ChevronLeft, ChevronRight, AlertCi
 import { describeGenerationError } from '../../utils/generationError';
 
 import { getGenerations, getGenerationAudio } from '../../api/generations.service';
+import { bindGenerationPlayback } from '../../utils/listenTracking';
 import { getLibraryItems } from '../../api/library.service';
 import { useVoiceStore } from '../../store/voice.store';
 
@@ -157,7 +158,14 @@ export default function LibraryGenerations() {
 
     const audio = new Audio(url);
     audioRef.current = audio;
-    audio.addEventListener('ended', () => setPlayingId(null));
+    const stopTracking = bindGenerationPlayback(audio, () => gen.id);
+    audio.addEventListener('ended', () => {
+      setPlayingId(null);
+      stopTracking();
+    });
+    audio.addEventListener('pause', () => {
+      if (audio.paused) stopTracking();
+    });
     audio.play().catch(() => {});
     setPlayingId(gen.id);
   };

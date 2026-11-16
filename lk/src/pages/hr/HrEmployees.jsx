@@ -300,6 +300,9 @@ export default function HrEmployees() {
         <p className="lk-hr-card__lead">
           Почта станет логином. Телефон можно не указывать. Пароль уже
           сгенерирован — его можно заменить своим.
+          {slots?.expires_at && (
+            <> Назначенный тариф действует до {formatDate(slots.expires_at)} — до конца договора, без отдельного периода.</>
+          )}
         </p>
 
         {!canAdd && (

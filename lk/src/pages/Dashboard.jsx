@@ -29,6 +29,7 @@ const STAT_ICONS = {
 import { getDashboardOverview } from '../api/dashboard.api.js';
 import { getReferralLink } from '../api/bonus.service.js';
 import { getGenerationAudio } from '../api/generations.service';
+import { bindGenerationPlayback } from '../utils/listenTracking';
 
 // Дата создания озвучки → «сегодня» / «вчера» / «12 марта».
 function formatTrackDate(iso) {
@@ -66,6 +67,7 @@ const LIMIT_LABELS = {
 export default function Dashboard() {
   const navigate = useNavigate();
   const audioRef = useRef(null);
+  const listenGenRef = useRef(null);
 
   // Реальный оплаченный тариф — на главной его раньше не было вообще.
   const subscription = useSubscription();
@@ -230,10 +232,13 @@ export default function Dashboard() {
     if (!url) return;
 
     if (audio.src !== url) {
+      audio.pause();
       audio.src = url;
       audio.load();
       setProgress(0);
     }
+
+    listenGenRef.current = track.generationId;
 
     try {
       await audio.play();
@@ -280,6 +285,12 @@ export default function Dashboard() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
     await playTrack(track);
   };
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return undefined;
+    return bindGenerationPlayback(audio, () => listenGenRef.current);
+  }, [data]);
 
   if (!data) {
     return (
