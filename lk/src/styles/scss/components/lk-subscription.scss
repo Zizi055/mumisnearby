@@ -488,8 +488,12 @@
 
 .lk-tariff-access__grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: $lk-space-16;
+  /* auto-fit, а не фиксированные две колонки: три карточки
+     корпоративного кабинета встают в один ряд, четыре карточки
+     «Родных голосов» складываются по две. Одинокая карточка
+     в последнем ряду больше не растягивается на всю ширину. */
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 12px;
 }
 
 /* карточки доступа */
@@ -541,9 +545,9 @@
   color: $lk-text-muted;
   margin-top: 2px;
 }
-.lk-tariff-access__grid {
-  display: grid;
-  gap: 12px; 
+.lk-tariff-access-item .lk-btn {
+  width: auto;
+  flex-shrink: 0;
 }
 
 .lk-tariff-access-item.is-locked {

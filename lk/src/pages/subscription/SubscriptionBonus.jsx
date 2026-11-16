@@ -2,6 +2,19 @@ import { useState, useEffect } from 'react';
 import { Percent, Users, Sparkles, Copy, Send, MessageCircle, Heart, UserCheck, Shield, ChevronDown, ArrowUpRight, Check } from 'lucide-react';
 import LkButton from '../../components/ui/LkButton';
 import { getBonus, claimBonus, getReferralLink, getReferralStats } from '../../api/bonus.service';
+import { isB2B } from '../../config/edition';
+
+const SUPPORT_EMAIL = isB2B ? 'info@rodnoygolos.ru' : 'support@rodnyegolosa.ru';
+const SHARE_TEXT = isB2B
+  ? 'Попробуй Родной Голос — голос близкого будет читать сказки ребёнку'
+  : 'Попробуй Родные Голоса — голос мамы или папы будет читать сказки твоему ребёнку';
+
+// Ссылка приходит с того же /referral/link. На корпоративном сайте
+// подменяем только домен: отдельного эндпоинта для «Родного голоса» нет.
+function publicReferralLink(link) {
+  if (!link || !isB2B) return link;
+  return link.replace(/https?:\/\/(?:www\.)?rodnyegolosa\.ru/gi, 'https://rodnoygolos.ru');
+}
 
 const YEARLY_DISCOUNT = 20;
 const BONUS_THRESHOLD = 5;   // при 5+ приглашениях — 1 месяц бесплатно
@@ -41,7 +54,7 @@ export default function SubscriptionBonus() {
     return () => { mounted = false; };
   }, []);
 
-  const inviteLink     = refLink?.link || '';
+  const inviteLink     = publicReferralLink(refLink?.link || '');
   const referralCode   = refLink?.referral_code || bonus?.referralCode || '';
   const referredUsers  = Array.isArray(stats?.referred_users) ? stats.referred_users : null;
 
@@ -256,7 +269,7 @@ export default function SubscriptionBonus() {
             </ul>
             <p className="lk-bonus-docs__contact">
               Для получения скидки напишите на{' '}
-              <a href="mailto:support@rodnyegolosa.ru">support@rodnyegolosa.ru</a>
+              <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>
             </p>
           </div>
         </div>
@@ -280,7 +293,7 @@ export default function SubscriptionBonus() {
             </ul>
             <p className="lk-bonus-docs__contact">
               Для получения скидки напишите на{' '}
-              <a href="mailto:support@rodnyegolosa.ru">support@rodnyegolosa.ru</a>
+              <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>
             </p>
           </div>
         </div>
@@ -305,7 +318,7 @@ export default function SubscriptionBonus() {
             </ul>
             <p className="lk-bonus-docs__contact">
               Для получения скидки напишите на{' '}
-              <a href="mailto:support@rodnyegolosa.ru">support@rodnyegolosa.ru</a>
+              <a href={`mailto:${SUPPORT_EMAIL}`}>{SUPPORT_EMAIL}</a>
             </p>
           </div>
         </div>
@@ -333,7 +346,7 @@ export default function SubscriptionBonus() {
             </div>
             <div className="lk-invite__actions">
               <a
-                href={`https://t.me/share/url?url=${encodeURIComponent(inviteLink)}&text=${encodeURIComponent('Попробуй Родные Голоса — голос мамы или папы будет читать сказки твоему ребёнку 🎁')}`}
+                href={`https://t.me/share/url?url=${encodeURIComponent(inviteLink)}&text=${encodeURIComponent(`${SHARE_TEXT} 🎁`)}`}
                 target="_blank"
                 rel="noreferrer"
               >
@@ -341,7 +354,7 @@ export default function SubscriptionBonus() {
                 Telegram
               </a>
               <a
-                href={`https://wa.me/?text=${encodeURIComponent('Попробуй Родные Голоса — голос мамы или папы будет читать сказки твоему ребёнку 🎁 ' + inviteLink)}`}
+                href={`https://wa.me/?text=${encodeURIComponent(`${SHARE_TEXT} 🎁 ${inviteLink}`)}`}
                 target="_blank"
                 rel="noreferrer"
               >

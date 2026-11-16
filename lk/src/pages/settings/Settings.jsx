@@ -4,6 +4,7 @@ import { Bell, Shield, Users, Sliders, Eye, EyeOff, Check } from 'lucide-react';
 import { changePassword, getPasswordChangedAt } from '../../api/profile.service';
 import { useAuth } from '../../context/AuthContext';
 import { isStaffCabinet } from '../../config/cabinetMode';
+import { readPref, writePref } from '../../utils/prefs';
 
 export default function Settings() {
   const location = useLocation();
@@ -19,10 +20,11 @@ export default function Settings() {
   const tab = getTab();
 
   // Уведомления
-  const [notifStories, setNotifStories] = useState(true);
-  const [notifPayments, setNotifPayments] = useState(true);
-  const [notifTips, setNotifTips] = useState(false);
-  const [notifEmail, setNotifEmail] = useState(true);
+  const [notifStories, setNotifStories] = useState(() => readPref('notifStories', true));
+  const [notifPayments, setNotifPayments] = useState(() => readPref('notifPayments', true));
+  const [notifTips, setNotifTips] = useState(() => readPref('notifTips', false));
+  const [notifEmail, setNotifEmail] = useState(() => readPref('notifEmail', true));
+  const [autoplay, setAutoplay] = useState(() => readPref('autoplay', true));
 
   // Безопасность
   const [showPasswordForm, setShowPasswordForm] = useState(false);
@@ -113,7 +115,14 @@ export default function Settings() {
                 <p>Следующая сказка запускается автоматически</p>
               </div>
               <label className="lk-switch">
-                <input type="checkbox" defaultChecked />
+                <input
+                  type="checkbox"
+                  checked={autoplay}
+                  onChange={() => setAutoplay((v) => {
+                    writePref('autoplay', !v);
+                    return !v;
+                  })}
+                />
                 <span />
               </label>
             </div>
@@ -169,7 +178,7 @@ export default function Settings() {
                 <p>Когда в библиотеке появляется новый контент</p>
               </div>
               <label className="lk-switch">
-                <input type="checkbox" checked={notifStories} onChange={() => setNotifStories(v => !v)} />
+                <input type="checkbox" checked={notifStories} onChange={() => setNotifStories((v) => { writePref('notifStories', !v); return !v; })} />
                 <span />
               </label>
             </div>
@@ -181,7 +190,7 @@ export default function Settings() {
                 <p>Уведомления о списаниях и статусе подписки</p>
               </div>
               <label className="lk-switch">
-                <input type="checkbox" checked={notifPayments} onChange={() => setNotifPayments(v => !v)} />
+                <input type="checkbox" checked={notifPayments} onChange={() => setNotifPayments((v) => { writePref('notifPayments', !v); return !v; })} />
                 <span />
               </label>
             </div>
@@ -193,7 +202,7 @@ export default function Settings() {
                 <p>AI-инсайты по использованию голосов</p>
               </div>
               <label className="lk-switch">
-                <input type="checkbox" checked={notifTips} onChange={() => setNotifTips(v => !v)} />
+                <input type="checkbox" checked={notifTips} onChange={() => setNotifTips((v) => { writePref('notifTips', !v); return !v; })} />
                 <span />
               </label>
             </div>
@@ -204,7 +213,7 @@ export default function Settings() {
                 <p>Дайджест и новости платформы</p>
               </div>
               <label className="lk-switch">
-                <input type="checkbox" checked={notifEmail} onChange={() => setNotifEmail(v => !v)} />
+                <input type="checkbox" checked={notifEmail} onChange={() => setNotifEmail((v) => { writePref('notifEmail', !v); return !v; })} />
                 <span />
               </label>
             </div>
@@ -284,7 +293,7 @@ export default function Settings() {
                 )}
                 <button
                   type="button"
-                  className="lk-btn lk-btn--primary lk-btn--md"
+                  className="lk-btn lk-btn--primary"
                   onClick={handleSavePassword}
                   disabled={passwordSaving}
                 >
@@ -294,6 +303,11 @@ export default function Settings() {
                 </button>
               </div>
             )}
+
+            {/* Двухфакторная проверка. Переключатель только менял
+                состояние на экране: SMS-кода и эндпоинта на сервере нет,
+                поэтому «включённая» защита никого не защищала. Код
+                оставлен, чтобы подключить, когда появится отправка кода.
 
             <div className="lk-settings__row">
               <div>
@@ -305,6 +319,7 @@ export default function Settings() {
                 <span />
               </label>
             </div>
+            */}
           </div>
         </div>
       )}
@@ -318,6 +333,10 @@ export default function Settings() {
           </div>
 
           <div className="lk-settings__rows">
+            {/* Семейный доступ убран: общего входа для семьи нет,
+                переключатель ничего не сохранял. Вернуть вместе с пунктом
+                «Семья» в navigation.jsx.
+
             <div className="lk-settings__row">
               <div>
                 <strong>Семейный доступ</strong>
@@ -328,6 +347,7 @@ export default function Settings() {
                 <span />
               </label>
             </div>
+            */}
 
             {/* Детский режим — пока такого функционала на сайте не будет,
                 скрыла. Код оставила в комментарии, чтобы вернуть, когда

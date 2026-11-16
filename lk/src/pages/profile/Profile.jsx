@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { getProfile, updateProfile, requestEmailChange, cancelEmailChange } from '../../api/profile.service';
+import { readPref, writePref } from '../../utils/prefs';
 import {
   Camera,
   Plus,
@@ -53,6 +54,7 @@ export default function Profile() {
   // PROFILE
   // ─────────────────────────────────────
 
+  const [autoplay, setAutoplay] = useState(() => readPref('autoplay', true));
   const [name, setName] = useState(user?.name || '');
   const [email, setEmail] = useState(user?.email || '');
   const [phone, setPhone] = useState(user?.phone_number || user?.phone || '');
@@ -703,7 +705,14 @@ export default function Profile() {
               </div>
 
               <label className="lk-switch">
-                <input type="checkbox" defaultChecked />
+                <input
+                  type="checkbox"
+                  checked={autoplay}
+                  onChange={() => setAutoplay((v) => {
+                    writePref('autoplay', !v);
+                    return !v;
+                  })}
+                />
                 <span />
               </label>
 

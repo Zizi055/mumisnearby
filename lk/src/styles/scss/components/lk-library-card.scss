@@ -190,19 +190,19 @@
 
   border-radius: var(--lk-pill, 999px);
 
-  background: rgba(255,255,255,0.18);
+  /* Плотная плашка: на светлом портрете белый текст на стекле
+     не читался. Тёмный фон держит «Сказка» и «История» на любой обложке. */
+  background: rgba(15, 23, 42, 0.82);
 
-  backdrop-filter: blur(16px);
-
-  border: 1px solid rgba(255,255,255,0.2);
+  border: none;
 
   display: inline-flex;
   align-items: center;
 
   font-size: 12px;
-  font-weight: 500;
+  font-weight: 600;
 
-  color: white;
+  color: #fff;
 }
 
 .lk-library-card__favorite {
@@ -391,7 +391,13 @@
 }
 
 .lk-library-card__footer .lk-btn {
-  width: 100%;
+  width: auto;
+  align-self: flex-start;
+}
+
+.lk-library-card__trial-lock .lk-btn {
+  width: auto;
+  align-self: center;
 }
 
 /* =========================================

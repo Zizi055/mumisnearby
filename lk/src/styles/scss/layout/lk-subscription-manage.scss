@@ -304,43 +304,9 @@
 }
 
 
-.lk-switch {
-  position: relative;
-  width: 40px;
-  height: 22px;
-
-  input {
-    display: none;
-  }
-
-  span {
-    position: absolute;
-    inset: 0;
-    background: $lk-line;
-    border-radius: var(--lk-pill, 999px);
-    transition: 0.2s ease;
-  }
-
-  span::after {
-    content: '';
-    position: absolute;
-    width: 18px;
-    height: 18px;
-    top: 2px;
-    left: 2px;
-    background: $lk-white;
-    border-radius: 50%;
-    transition: 0.2s ease;
-  }
-
-  input:checked + span {
-    background: $lk-brand;
-  }
-
-  input:checked + span::after {
-    transform: translateX(18px);
-  }
-}
+/* Переключатель один на весь кабинет — .lk-switch в lk-settings.scss.
+   Второй набор правил рисовал свой кружок через ::after поверх первого,
+   и тумблер на разных страницах выглядел по-разному. */
 
 
 

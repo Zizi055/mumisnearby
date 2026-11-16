@@ -60,7 +60,9 @@ const b2cNavigation = [
       { label: 'Общие', path: '/settings/general' },
       { label: 'Уведомления', path: '/settings/notifications' },
       { label: 'Безопасность', path: '/settings/security' },
-      { label: 'Семья', path: '/settings/family' },
+      // Семейный доступ убран из кабинета. Пункт оставлен в комментарии,
+      // чтобы вернуть, когда появится общий аккаунт на семью.
+      // { label: 'Семья', path: '/settings/family' },
     ],
   },
   {

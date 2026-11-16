@@ -115,7 +115,7 @@ export default function LibraryCard({ item, isTrialLocked = false, isTariffLocke
             {!isStaffCabinet() && (
             <button
               type="button"
-              className="lk-library-card__trial-lock-btn"
+              className="lk-btn lk-btn--primary lk-btn--sm"
               onClick={openDetails}
             >
               <Sparkles size={13} />

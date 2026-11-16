@@ -39,6 +39,13 @@
 
   white-space: nowrap;
 
+  /* Ширина по тексту. В колонке и в сетке кнопка иначе растягивается
+     на всю строку — так «Создать доступ» занимала карточку целиком. */
+  width: auto;
+  max-width: 100%;
+  justify-self: start;
+  align-self: flex-start;
+
   /* убираем дефолтные стили кнопки */
   appearance: none;
   -webkit-appearance: none;
