@@ -34,8 +34,11 @@ export const useSubscriptionStore = create((set, get) => ({
       const sub = await fetchSubscription();
       set({ subscription: sub, loading: false, loaded: true });
     } catch (error) {
-      // Не залогинен / бэк недоступен — считаем, что платного плана нет,
-      // но не даём ошибке сломать рендер остального ЛК.
+      // 404 — подписки нет (демо закончилось). Это не сбой сервера.
+      if (error.status === 404) {
+        set({ subscription: null, loading: false, loaded: true, error: null });
+        return;
+      }
       console.error('Не удалось загрузить статус подписки:', error);
       set({ subscription: null, loading: false, loaded: true, error: error.message });
     }

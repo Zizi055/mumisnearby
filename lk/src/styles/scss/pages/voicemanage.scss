@@ -30,7 +30,7 @@
    левой колонки, иначе посередине остаётся пустота. */
 .lk-voice-manage__grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.45fr) minmax(280px, 0.85fr);
+  grid-template-columns: minmax(0, 1.45fr) minmax(0, 0.85fr);
   gap: $lk-space-16;
   align-items: start;
 }
@@ -165,6 +165,37 @@
   color: $lk-text-muted;
 }
 
+.lk-voice-subscription {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 14px 16px;
+  border-radius: $lk-radius-20;
+  background: rgba(180, 83, 9, 0.08);
+  border: 1px solid rgba(180, 83, 9, 0.28);
+}
+
+.lk-voice-upload .lk-voice-subscription p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: $lk-text;
+}
+
+.lk-voice-subscription a {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: var(--lk-brand);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
 .lk-voice-guide {
   display: grid;
   gap: 12px;
@@ -172,9 +203,10 @@
 
 .lk-voice-guide__card {
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: auto minmax(0, 1fr);
   gap: 14px;
   align-items: start;
+  min-width: 0;
   padding: 16px;
   border-radius: $lk-radius-20;
 }
@@ -221,6 +253,8 @@
 .lk-voice-guide__audio {
   display: block;
   width: 100%;
+  max-width: 100%;
+  min-width: 0;
   margin-top: 12px;
 }
 

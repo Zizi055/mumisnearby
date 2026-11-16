@@ -62,7 +62,15 @@ export function useSubscription() {
       setData(normalizeSubscription(res));
       setError(null);
     } catch (e) {
-      setError(e.message);
+      // 404 «Активная подписка не найдена» — обычное состояние после
+      // демо, а не поломка. Иначе каждый экран пишет ошибку в консоль
+      // и выглядит сломанным.
+      if (e.status === 404) {
+        setData(normalizeSubscription(null));
+        setError(null);
+      } else {
+        setError(e.message);
+      }
     } finally {
       setLoading(false);
     }
@@ -73,7 +81,15 @@ export function useSubscription() {
 
     getSubscription()
       .then((res) => { if (mounted) setData(normalizeSubscription(res)); })
-      .catch((e) => { if (mounted) setError(e.message); })
+      .catch((e) => {
+        if (!mounted) return;
+        if (e.status === 404) {
+          setData(normalizeSubscription(null));
+          setError(null);
+        } else {
+          setError(e.message);
+        }
+      })
       .finally(() => { if (mounted) setLoading(false); });
 
     return () => { mounted = false; };

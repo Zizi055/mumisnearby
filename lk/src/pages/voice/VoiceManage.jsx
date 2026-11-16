@@ -92,6 +92,7 @@ export default function VoiceManage() {
   // Реальные категории тарифа: показываем только те, что пришли в limits
   // и у которых лимит больше нуля.
   const subscription = useSubscription();
+  const subscriptionClosed = !subscription.loading && !subscription.planId;
 
   const availableCategories = Object.entries(LIMIT_LABELS)
     .filter(([key]) => {
@@ -235,12 +236,21 @@ export default function VoiceManage() {
       console.error(error);
 
       setTrainingStatus('idle');
+      const message = error.message || '';
+      const noSubscription = error.status === 403 || /подписк/i.test(message);
+
       setTrainingError(
-        error.message?.includes('истекло')
+        message.includes('истекло')
           ? 'Обучение голоса заняло слишком много времени. Обновите страницу через пару минут — модель может быть уже готова.'
-          : error.message?.includes('идентификатор')
+          : message.includes('идентификатор')
             ? 'Запись загрузилась, но сервер не вернул идентификатор голоса. Обновите страницу — голос может быть уже в списке.'
-            : 'Не удалось загрузить голос. Попробуйте ещё раз.'
+            : noSubscription
+              ? (isStaffCabinet()
+                ? 'Запись голоса откроется, когда компания назначит тариф.'
+                : 'Сейчас нет активной подписки. Выберите тариф — после этого запись можно загрузить.')
+              : (message && !message.startsWith('HTTP ')
+                ? message
+                : 'Не удалось загрузить голос. Попробуйте ещё раз.')
       );
     }
 
@@ -405,12 +415,19 @@ export default function VoiceManage() {
         <LkButton
           variant="primary"
           size="sm"
+          disabled={subscriptionClosed}
           onClick={() =>
             biometryConsent
               ? fileRef.current.click()
               : document.querySelector('.lk-voice-consent')?.scrollIntoView({ behavior: 'smooth' })
           }
-          title={!biometryConsent ? 'Сначала дайте согласие на биометрию' : ''}
+          title={
+            subscriptionClosed
+              ? 'Нет активной подписки'
+              : !biometryConsent
+                ? 'Сначала дайте согласие на биометрию'
+                : ''
+          }
         >
           <Upload size={15} />
           Загрузить запись
@@ -439,6 +456,19 @@ export default function VoiceManage() {
               музыки и фонового шума.
             </p>
           </div>
+
+          {subscriptionClosed && (
+            <div className="lk-voice-subscription">
+              <p>
+                {isStaffCabinet()
+                  ? 'Запись голоса откроется, когда компания назначит тариф.'
+                  : 'Демо-доступ закончился, поэтому сервер не принимает запись. Выберите тариф — после оплаты голос можно загрузить.'}
+              </p>
+              {!isStaffCabinet() && (
+                <a href="#/subscription/tariff">Выбрать тариф</a>
+              )}
+            </div>
+          )}
 
           <div className="lk-voice-guide">
             <article className="lk-voice-guide__card lk-voice-guide__card--listen">
@@ -470,12 +500,18 @@ export default function VoiceManage() {
 
           <button
             type="button"
-            className={`lk-voice-upload__drop ${!biometryConsent ? 'is-disabled' : ''}`}
+            className={`lk-voice-upload__drop ${!biometryConsent || subscriptionClosed ? 'is-disabled' : ''}`}
             onClick={() =>
-              biometryConsent && fileRef.current.click()
+              biometryConsent && !subscriptionClosed && fileRef.current.click()
             }
-            disabled={!biometryConsent}
-            title={!biometryConsent ? 'Необходимо дать согласие на обработку биометрических данных' : ''}
+            disabled={!biometryConsent || subscriptionClosed}
+            title={
+              subscriptionClosed
+                ? 'Нет активной подписки'
+                : !biometryConsent
+                  ? 'Необходимо дать согласие на обработку биометрических данных'
+                  : ''
+            }
           >
             <FileAudio size={18} />
 
