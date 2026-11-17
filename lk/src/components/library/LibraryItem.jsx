@@ -201,14 +201,13 @@ export default function LibraryItem() {
       return 'Генерация...';
     }
     if (genStatus === 'failed') return 'Повторить';
-    if (alreadyGenerated) return 'Уже озвучено';
     if (tariffBlocked) {
       return isStaffCabinet()
         ? 'Материал недоступен'
         : `Нужен тариф «${getRequiredTariffLabel(item?.accessLvl)}»`;
     }
     if (trialBlocked) return 'Лимит исчерпан';
-    if (audioUrl) return 'Создать новое';
+    if (audioUrl || alreadyGenerated) return 'Озвучить ещё раз';
     return 'Создать аудио';
   };
 
@@ -352,14 +351,7 @@ export default function LibraryItem() {
               type="button"
               className={`lk-btn lk-btn--primary ${trialBlocked || tariffBlocked ? 'lk-btn--disabled' : ''}`}
               onClick={handleGenerate}
-              disabled={
-                !selectedVoice || isGenerating || trialBlocked || tariffBlocked || alreadyGenerated
-              }
-              title={
-                alreadyGenerated
-                  ? 'Этим голосом уже озвучено — послушайте в «Моих сказках»'
-                  : undefined
-              }
+              disabled={!selectedVoice || isGenerating || trialBlocked || tariffBlocked}
             >
               {isGenerating ? <Loader2 size={15} className="lk-spin" /> : <Play size={15} />}
               {generateLabel()}
@@ -532,7 +524,7 @@ export default function LibraryItem() {
             <button
               type="button"
               className="lk-btn lk-btn--primary lk-btn--full"
-              disabled={!selectedVoice || isGenerating || trialBlocked || alreadyGenerated}
+              disabled={!selectedVoice || isGenerating || trialBlocked || tariffBlocked}
               onClick={handleGenerate}
             >
               {isGenerating ? <Loader2 size={15} className="lk-spin" /> : <Play size={15} />}
@@ -541,9 +533,8 @@ export default function LibraryItem() {
 
             {alreadyGenerated && (
               <p className="lk-item-card__hint">
-                Этот материал уже озвучен выбранным голосом. Повторная
-                генерация не нужна — запись в разделе «Мои сказки».
-                Чтобы озвучить другим голосом, выберите его выше.
+                Этим голосом сказка уже записана. Новая озвучка тоже сохранится
+                в «Моих сказках» и потратит одну генерацию из тарифа.
               </p>
             )}
 
