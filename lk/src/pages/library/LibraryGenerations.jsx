@@ -8,6 +8,7 @@ import { getGenerations, getGenerationAudio } from '../../api/generations.servic
 import { bindGenerationPlayback } from '../../utils/listenTracking';
 import { getLibraryItems } from '../../api/library.service';
 import { useVoiceStore } from '../../store/voice.store';
+import { LULLABY_ONE, LULLABY_GEN } from '../../utils/contentLabels';
 
 // content_type генерации -> категория, которую грузит library.service.js.
 // Стихи и рассказы теперь два отдельных раздела и два отдельных запроса.
@@ -177,7 +178,7 @@ export default function LibraryGenerations() {
           <div>
             <span className="lk-library-hero__eyebrow">Библиотека</span>
             <h2>Мои сказки</h2>
-            <p>Все сказки, колыбельные и истории, которые вы уже озвучили своим голосом.</p>
+            <p>Все сказки, тексты {LULLABY_GEN} и истории, которые вы уже озвучили своим голосом.</p>
           </div>
 
           <div className="lk-library-hero__count">
@@ -362,7 +363,7 @@ function StatusBadge({ status }) {
 function getTypeLabel(type) {
   switch (type) {
     case 'fairy_tale': return 'Сказка';
-    case 'lullaby': return 'Колыбельная';
+    case 'lullaby': return LULLABY_ONE;
     case 'therapy': return 'Терапевтический сценарий';
     case 'family_story': return 'Семейная история';
     case 'poem': return 'Стихотворение';

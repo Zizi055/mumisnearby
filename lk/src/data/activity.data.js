@@ -1,3 +1,4 @@
+import { LULLABY_ONE } from '../utils/contentLabels';
 import {
   Play,
   Pause,
@@ -26,7 +27,7 @@ export const ACTIVITY_EVENTS = [
     icon: CheckCircle2,
     title: 'Сценарий дослушан до конца',
     description: 'Ребёнок полностью прослушал сценарий перед сном.',
-    category: 'Колыбельная',
+    category: LULLABY_ONE,
     voice: 'Мамин голос',
     time: 'Сегодня, 20:42',
     status: 'success',

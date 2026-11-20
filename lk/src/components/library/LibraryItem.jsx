@@ -28,6 +28,7 @@ import {
   getGenerationAudio,
 } from '../../api/generations.service.js';
 import { bindGenerationPlayback } from '../../utils/listenTracking';
+import { LULLABY_TITLE, LULLABY_ONE_PREP } from '../../utils/contentLabels';
 
 export default function LibraryItem() {
   const { type, id } = useParams();
@@ -572,7 +573,7 @@ function getCategoryPath(type) {
 function getTypeLabel(type) {
   switch (type) {
     case 'fairy_tale': return 'Сказки';
-    case 'lullaby': return 'Колыбельные';
+    case 'lullaby': return LULLABY_TITLE;
     case 'therapy': return 'Терапия';
     case 'family_story': return 'Семейные истории';
     case 'poem': return 'Стихи';
@@ -584,7 +585,7 @@ function getTypeLabel(type) {
 function getTypeShortLabel(type) {
   switch (type) {
     case 'fairy_tale': return ' сказки';
-    case 'lullaby': return ' колыбельной';
+    case 'lullaby': return ` ${LULLABY_ONE_PREP}`;
     case 'therapy': return ' сценария';
     case 'family_story': return ' истории';
     case 'poem': return ' стихотворения';
@@ -596,7 +597,7 @@ function getTypeShortLabel(type) {
 function getAboutLabel(type) {
   switch (type) {
     case 'fairy_tale': return 'сказке';
-    case 'lullaby': return 'колыбельной';
+    case 'lullaby': return LULLABY_ONE_PREP;
     case 'therapy': return 'сценарии';
     case 'family_story': return 'истории';
     case 'poem': return 'стихотворении';

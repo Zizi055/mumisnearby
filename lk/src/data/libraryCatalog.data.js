@@ -1,3 +1,5 @@
+import { LULLABY_TITLE } from '../utils/contentLabels';
+
 export const LIBRARY_CONTENT_TYPES = {
   FAIRY_TALE: 'fairy_tale',
   LULLABY: 'lullaby',
@@ -46,7 +48,7 @@ export const LIBRARY_CATEGORIES = [
   },
   {
     id: LIBRARY_CONTENT_TYPES.LULLABY,
-    label: 'Колыбельные',
+    label: LULLABY_TITLE,
     description: 'Мягкие аудиосценарии для засыпания и вечернего ритуала.',
   },
   {

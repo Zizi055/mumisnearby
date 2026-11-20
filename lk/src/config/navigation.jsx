@@ -1,6 +1,7 @@
 import { Home, Book, Mic, CreditCard, Settings, User } from 'lucide-react';
 import { isStaffCabinet } from './cabinetMode';
 import { isB2B } from './edition';
+import { LULLABY_TITLE } from '../utils/contentLabels';
 
 const b2cNavigation = [
   {
@@ -21,7 +22,7 @@ const b2cNavigation = [
     tooltip: 'Библиотека',
     children: [
       { label: 'Сказки', path: '/library/stories' },
-      { label: 'Колыбельные', path: '/library/lullabies' },
+      { label: LULLABY_TITLE, path: '/library/lullabies' },
       { label: 'Терапия', path: '/library/therapy' },
       { label: 'Семейные истории', path: '/library/family' },
       { label: 'Стихи', path: '/library/poems' },

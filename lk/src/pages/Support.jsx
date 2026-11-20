@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { createTicket, getTickets, getTicket, addTicketMessage } from '../api/support.service';
+import { isB2B } from '../config/edition';
 
 import {
   Search,
@@ -49,7 +50,7 @@ const FAQ = {
     {
       question: 'Можно ли загрузить собственный текст?',
       answer:
-        'Пока нет. Сейчас доступна озвучка произведений из нашей библиотеки — сказок, колыбельных, стихов и терапевтических сценариев — вашим голосом.',
+        `Пока нет. Сейчас доступна озвучка произведений из нашей библиотеки — сказок, ${isB2B ? 'текстов для малышей' : 'колыбельных'}, стихов и терапевтических сценариев — вашим голосом.`,
     },
   ],
   security: [

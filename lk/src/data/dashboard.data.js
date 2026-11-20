@@ -1,4 +1,5 @@
 import { Crown } from 'lucide-react';
+import { LULLABY_TITLE, LULLABY_ONE_PREP } from '../utils/contentLabels';
 
 export const DASHBOARD_OVERVIEW = {
   stats: [
@@ -48,14 +49,14 @@ export const DASHBOARD_OVERVIEW = {
   ],
 
   aiInsights: [
-    'Колыбельные лучше работают после 20:30.',
+    `${LULLABY_TITLE} лучше включать после 20:30.`,
     'Мамин голос чаще дослушивают до конца.',
     'Сценарии до 10 минут дают лучшее удержание.',
   ],
 
   recentActivity: [
     { id: 1, title: 'Прослушана сказка «Лесные друзья»',                              time: 'Сегодня, 21:14' },
-    { id: 2, title: 'Голосовая модель «Мамин голос» использована в колыбельной',       time: 'Сегодня, 20:42' },
+    { id: 2, title: `Голосовая модель «Мамин голос» использована в тексте ${LULLABY_ONE_PREP}`, time: 'Сегодня, 20:42' },
     { id: 3, title: 'Добавлен сценарий «Спокойной ночи»',                             time: 'Вчера, 22:08'   },
   ],
 };

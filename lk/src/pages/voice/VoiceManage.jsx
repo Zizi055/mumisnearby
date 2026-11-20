@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 
 import LkButton from '../../components/ui/LkButton';
+import { LULLABY_TITLE } from '../../utils/contentLabels';
 
 import { useVoiceStore } from '../../store/voice.store';
 import { useSubscription } from '../../hooks/useSubscription';
@@ -46,7 +47,7 @@ const emotionPresets = [
 // сценарии» даже тем, у кого их в тарифе нет.
 const LIMIT_LABELS = {
   fairy_tales: 'Сказки',
-  lullabies: 'Колыбельные',
+  lullabies: LULLABY_TITLE,
   therapic: 'Терапевтические сценарии',
   family_stories: 'Семейные истории',
   poems: 'Стихи',

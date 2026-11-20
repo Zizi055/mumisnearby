@@ -1,3 +1,5 @@
+import { LULLABY_ONE_PREP } from '../utils/contentLabels';
+
 export const VOICE_ANALYTICS_EVENTS = {
   VOICE_PLAY: 'voice_play',
   VOICE_PAUSE: 'voice_pause',
@@ -59,7 +61,7 @@ export const VOICE_ANALYTICS_EVENT_DESCRIPTIONS = [
   {
     event: VOICE_ANALYTICS_EVENTS.STORY_STARTED,
     title: 'Запуск сценария',
-    description: 'Пользователь запустил сказку, колыбельную или сценарий.',
+    description: `Пользователь запустил сказку, текст ${LULLABY_ONE_PREP} или сценарий.`,
     payload: {
       userId: 'string | number',
       storyId: 'string | number',

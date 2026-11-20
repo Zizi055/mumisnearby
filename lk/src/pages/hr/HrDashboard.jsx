@@ -28,7 +28,7 @@ const LEVEL_LABELS = {
 
 const CONTENT_LABELS = {
   fairy_tale: 'Сказки',
-  lullaby: 'Колыбельные',
+  lullaby: 'Для малышей',
   therapy: 'Терапевтические',
   family_story: 'Семейные истории',
   poem: 'Стихи',

@@ -9,6 +9,7 @@ import {
 } from 'lucide-react';
 
 import LibraryCard from '../components/library/LibraryCard';
+import { LULLABY_TITLE, LULLABY_GEN } from '../utils/contentLabels';
 
 import {
   LIBRARY_FILTERS,
@@ -31,8 +32,8 @@ const categoryMeta = {
   },
   lullabies: {
     type: 'lullaby',
-    title: 'Колыбельные',
-    count: '50+ колыбельных',
+    title: LULLABY_TITLE,
+    count: `50+ ${LULLABY_GEN}`,
     description: 'Мягкие голосовые сценарии для вечернего ритуала.',
   },
   therapy: {

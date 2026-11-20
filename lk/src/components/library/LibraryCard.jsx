@@ -14,6 +14,7 @@ import { useTrialStore } from '../../store/trial.store';
 import { useHasPaidPlan } from '../../store/subscription.store';
 import { getRequiredTariffLabel } from '../../utils/tariffAccess';
 import { isStaffCabinet } from '../../config/cabinetMode';
+import { LULLABY_ONE } from '../../utils/contentLabels';
 
 // Запасная обложка: у стихов и рассказов preview_url в базе пустой.
 const FALLBACK_IMAGE = `${import.meta.env.BASE_URL}img/owl.png`;
@@ -170,7 +171,7 @@ export default function LibraryCard({ item, isTrialLocked = false, isTariffLocke
 function getTypeLabel(type) {
   switch (type) {
     case 'fairy_tale': return 'Сказка';
-    case 'lullaby': return 'Колыбельная';
+    case 'lullaby': return LULLABY_ONE;
     case 'therapy': return 'Терапия';
     case 'family_story': return 'История';
     case 'poem': return 'Стих';

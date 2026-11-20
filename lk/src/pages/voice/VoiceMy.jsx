@@ -5,6 +5,7 @@ import { useVoiceStore } from '../../store/voice.store';
 import { getTrialInfo } from '../../store/trial.store';
 import { useHasPaidPlan } from '../../store/subscription.store';
 import { isStaffCabinet } from '../../config/cabinetMode';
+import { LULLABY_GEN } from '../../utils/contentLabels';
 
 
 import {
@@ -247,7 +248,7 @@ export default function VoiceMy() {
             управлять доступом и
             использовать их
             в сказках,
-            колыбельных
+            текстах {LULLABY_GEN}
             и сценариях.
           </p>
 

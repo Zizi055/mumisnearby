@@ -9,6 +9,7 @@ import { useTariffPricing } from '../../hooks/useTariffPricing';
 import { cancelAutoRenew } from '../../api/subscription.service';
 import { getTariffSlug } from '../../data/planIdMap';
 import { resolvePlanName } from '../../utils/tariffAccess';
+import { LULLABY_TITLE } from '../../utils/contentLabels';
 
 // ─────────────────────────────────────────────────────────────────────
 // ОТКЛЮЧЕНО 31.07.2026 по просьбе клиента: тумблер «Автопродление»
@@ -31,7 +32,7 @@ const SHOW_PAYMENT_CARDS = false;
 // Подписи для ключей limits из GET /subscription/status.
 const USAGE_LABELS = [
   ['fairy_tales', 'Сказки'],
-  ['lullabies', 'Колыбельные'],
+  ['lullabies', LULLABY_TITLE],
   ['therapic', 'Терапевтические'],
   ['family_stories', 'Семейные истории'],
   ['poems', 'Стихи'],

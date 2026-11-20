@@ -4,9 +4,11 @@
 // месте, таблица в другом), из-за чего одни и те же данные выглядели
 // по-разному.
 
+import { LULLABY_TITLE } from '../../utils/contentLabels';
+
 const LIMIT_ROWS = [
   ['fairyTales', 'Сказки'],
-  ['lullabies', 'Колыбельные'],
+  ['lullabies', LULLABY_TITLE],
   ['therapic', 'Терапевтические'],
   ['familyStories', 'Семейные истории'],
   ['poems', 'Стихи'],

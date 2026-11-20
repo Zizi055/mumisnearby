@@ -30,6 +30,7 @@ import { getDashboardOverview } from '../api/dashboard.api.js';
 import { getReferralLink } from '../api/bonus.service.js';
 import { getGenerationAudio } from '../api/generations.service';
 import { bindGenerationPlayback } from '../utils/listenTracking';
+import { LULLABY_TITLE } from '../utils/contentLabels';
 
 // Дата создания озвучки → «сегодня» / «вчера» / «12 марта».
 function formatTrackDate(iso) {
@@ -56,7 +57,7 @@ import { resolvePlanName } from '../utils/tariffAccess';
 // Подписи для ключей limits из GET /subscription/status.
 const LIMIT_LABELS = {
   fairy_tales: 'Сказки',
-  lullabies: 'Колыбельные',
+  lullabies: LULLABY_TITLE,
   therapic: 'Терапевтические',
   family_stories: 'Семейные истории',
   poems: 'Стихи',

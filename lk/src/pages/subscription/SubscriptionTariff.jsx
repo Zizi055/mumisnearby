@@ -4,6 +4,7 @@ import { Check, Sparkles, ArrowUpRight } from 'lucide-react';
 import { tariffs as staticTariffs } from '../../data/tariffs.data';
 import { isStaffCabinet } from '../../config/cabinetMode';
 import { isB2B } from '../../config/edition';
+import { LULLABY_TITLE } from '../../utils/contentLabels';
 import CompanyPaidNotice from '../../components/subscription/CompanyPaidNotice';
 import LkButton from '../../components/ui/LkButton';
 import { useSubscription } from '../../hooks/useSubscription';
@@ -35,7 +36,7 @@ const COMPARE_FEATURES = [
   },
   {
     id: 'lullabies',
-    label: 'Колыбельные в месяц',
+    label: `${LULLABY_TITLE} в месяц`,
     getValue: (tariff) =>
       tariff.isBuilder ? 'на выбор' : limitValue(tariff, 'lullabies'),
   },
@@ -82,7 +83,7 @@ const CORPORATE_COMPARE = [
     id: 'library',
     label: 'Библиотека',
     getValue: (tariff) => ({
-      fairy: '50 сказок и 10 колыбельных',
+      fairy: '50 сказок и 10 для малышей',
       guardian: '100+ сказок, рассказы, семейные истории',
       wizard: 'Безграничная',
     }[tariff.id] || '—'),

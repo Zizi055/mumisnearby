@@ -1,4 +1,5 @@
 import { api } from './client';
+import { LULLABY_ONE, LULLABY_TITLE } from '../utils/contentLabels';
 import { getGenerations } from './generations.service';
 import { getLibraryItems } from './library.service';
 
@@ -34,7 +35,7 @@ const CONTENT_TYPE_TO_CATEGORY = {
 
 const TYPE_LABELS = {
   fairy_tale: 'Сказка',
-  lullaby: 'Колыбельная',
+  lullaby: LULLABY_ONE,
   therapy: 'Терапия',
   family_story: 'Семейная история',
   poem: 'Стих',
@@ -164,7 +165,7 @@ export async function getDashboardOverview() {
     ],
 
     aiInsights: [
-      'Колыбельные лучше работают после 20:30.',
+      `${LULLABY_TITLE} лучше включать после 20:30.`,
       'Чем чище запись голоса — тем лучше результат.',
       'Сценарии до 10 минут дают лучшее удержание.',
     ],
