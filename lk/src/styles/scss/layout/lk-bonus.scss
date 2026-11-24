@@ -1,5 +1,26 @@
 @use '../abstracts/lk-tokens' as *;
 @use '../abstracts/lk-surface' as *;
+
+.lk-promo-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+
+  max-width: 420px;
+}
+
+.lk-promo-form .lk-input {
+  width: 100%;
+}
+
+.lk-promo-form__ok {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.45;
+  color: $lk-text;
+}
+
 .lk-bonus {
   @extend %lk-page-stack;
 }

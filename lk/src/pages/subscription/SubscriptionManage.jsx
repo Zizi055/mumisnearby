@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { LifeBuoy, Receipt, Gift, ChevronRight, ArrowUpRight, X, ArrowRight } from 'lucide-react';
+import { LifeBuoy, Receipt, Gift, Ticket, ChevronRight, ArrowUpRight, X, ArrowRight } from 'lucide-react';
 import LkButton from '../../components/ui/LkButton';
 import LkInput from '../../components/ui/LkInput';
 import LkCardPreview from '../../components/ui/LkCardPreview';
@@ -496,6 +496,21 @@ export default function SubscriptionManage() {
           <span className="lk-subscription-help__text">
             <strong>История платежей</strong>
             <span>Чеки и списания по подписке</span>
+          </span>
+          <ChevronRight size={15} />
+        </button>
+
+        <button
+          type="button"
+          className="lk-subscription-help__item"
+          onClick={() => navigate('/subscription/promo')}
+        >
+          <span className="lk-subscription-help__icon">
+            <Ticket size={17} />
+          </span>
+          <span className="lk-subscription-help__text">
+            <strong>Промокод</strong>
+            <span>Включить тариф без оплаты</span>
           </span>
           <ChevronRight size={15} />
         </button>

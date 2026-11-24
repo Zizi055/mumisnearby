@@ -51,6 +51,7 @@ const b2cNavigation = [
       { label: 'Платежи', path: '/subscription/payments' },
       { label: 'Управление', path: '/subscription/manage' },
       { label: 'Бонусы', path: '/subscription/bonus' },
+      { label: 'Промокод', path: '/subscription/promo' },
     ],
   },
   {

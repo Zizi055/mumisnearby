@@ -40,16 +40,16 @@ export default function AdminLogin() {
         await loginAdmin({ username: username.trim(), password });
       }
 
-      // Суперадмину /admin/* недоступен (там нужен админский токен),
-      // поэтому ведём его в «Админы», а не в «Обращения».
+      // Суперадмину большинство /admin/* недоступно (там нужен админский
+      // токен), поэтому по умолчанию ведём его в «Админы». «Промокоды»
+      // и «Пользователи» ему открыты — на них redirect сохраняем.
       const home = isSuperAdmin ? '/admin/admins' : '/admin/support';
 
-      // Сохранённый redirect уважаем только если роль его потянет.
       const redirect = params.get('redirect');
-      const target =
-        redirect && !(isSuperAdmin && !decodeURIComponent(redirect).startsWith('/admin/admins'))
-          ? decodeURIComponent(redirect)
-          : home;
+      const decoded = redirect ? decodeURIComponent(redirect) : '';
+      const superCanOpen = ['/admin/admins', '/admin/users', '/admin/promos']
+        .some((path) => decoded.startsWith(path));
+      const target = decoded && (!isSuperAdmin || superCanOpen) ? decoded : home;
 
       navigate(target, { replace: true });
     } catch (err) {

@@ -25,9 +25,10 @@ function handleAdminUnauthorized() {
 
 async function request(path, options = {}) {
   const token = localStorage.getItem('adminToken');
+  const { soft401, ...fetchOptions } = options;
 
   const headers = {
-    ...(options.headers || {}),
+    ...(fetchOptions.headers || {}),
   };
 
   if (!(options.body instanceof FormData)) {
@@ -40,13 +41,22 @@ async function request(path, options = {}) {
 
   const res = await fetch(`${BASE_URL}${path}`, {
     credentials: 'include',
-    ...options,
+    ...fetchOptions,
     headers,
   });
 
   if (res.status === 401) {
-    handleAdminUnauthorized();
-    throw new Error('Сессия администратора истекла. Войдите снова.');
+    // Промокоды на /admin/promo-codes принимает только супер-админ.
+    // Чужой токен отвечает 401. Без soft401 живую сессию обычного
+    // админа сразу выкинуло бы на вход.
+    if (!soft401) handleAdminUnauthorized();
+    const err = new Error(
+      soft401
+        ? 'Промокоды выпускает супер-администратор. Войдите с галочкой «Я супер-администратор».'
+        : 'Сессия администратора истекла. Войдите снова.'
+    );
+    err.status = 401;
+    throw err;
   }
 
   // Раздел компаний на сервере ещё не выкачен, а список нужен, чтобы
@@ -105,8 +115,8 @@ function describeAdminError(status, text) {
 }
 
 export const adminApi = {
-  get: (path) =>
-    request(path),
+  get: (path, options) =>
+    request(path, options),
 
   post: (path, body, options = {}) =>
     request(path, {

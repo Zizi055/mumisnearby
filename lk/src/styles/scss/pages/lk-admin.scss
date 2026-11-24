@@ -1079,6 +1079,22 @@
   grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
 }
 
+.lk-admin-table--promos {
+  overflow-x: auto;
+}
+
+.lk-admin-table--promos .lk-admin-table__row {
+  grid-template-columns: minmax(160px, 1.4fr) minmax(110px, 0.8fr) minmax(120px, 1fr) minmax(110px, 0.8fr) minmax(110px, 0.8fr) minmax(140px, 1fr);
+  min-width: 820px;
+}
+
+.lk-admin-table--promos .lk-admin-table__name {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
 @media (max-width: 900px) {
   .lk-admin-form {
     grid-template-columns: 1fr;

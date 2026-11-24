@@ -38,6 +38,8 @@ import AdminLeads from './pages/admin/AdminLeads.jsx';
 import AdminUsers from './pages/admin/AdminUsers.jsx';
 import AdminAdmins from './pages/admin/AdminAdmins.jsx';
 import AdminGrant from './pages/admin/AdminGrant.jsx';
+import AdminPromos from './pages/admin/AdminPromos.jsx';
+import PromoCode, { PromoEntry } from './pages/subscription/PromoCode.jsx';
 
 import { isB2B } from './config/edition';
 import { isStaffCabinet } from './config/cabinetMode';
@@ -82,11 +84,10 @@ function App() {
         </Route>
       )}
 
-      {/* Старые адреса из первой версии: промокодов и самостоятельной
-          регистрации на бэке не оказалось. Ссылки могли разойтись по
-          письмам и закладкам — уводим на вход, а не в 404. */}
+      {/* Старый адрес кабинета компании. Промокод теперь живой:
+          #/promo?code= открывает активацию, а без сессии — вход. */}
       {isB2B && <Route path="/hr/*" element={<Navigate to="/company/login" replace />} />}
-      {isB2B && <Route path="/promo" element={<Navigate to="/auth" replace />} />}
+      <Route path="/promo" element={<PromoEntry />} />
 
       <Route path="/admin/login" element={<AdminLogin />} />
       <Route path="/admin" element={<AdminLayout />}>
@@ -98,6 +99,7 @@ function App() {
             rodnyegolosa.ru этот раздел не нужен и не должен появляться. */}
         {isB2B && <Route path="companies" element={<AdminCompanies />} />}
         <Route path="grant" element={<AdminGrant />} />
+        <Route path="promos" element={<AdminPromos />} />
         <Route path="admins" element={<AdminAdmins />} />
       </Route>
 
@@ -156,6 +158,7 @@ function App() {
             <Route path="payments" element={<SubscriptionPayments />} />
             <Route path="manage" element={<SubscriptionManage />} />
             <Route path="bonus" element={<SubscriptionBonus />} />
+            <Route path="promo" element={<PromoCode />} />
             <Route path="checkout" element={<Checkout />} />
             <Route path="checkout/success" element={<SubscriptionSuccess />} />
             <Route path="constructor" element={<Constructor />} />

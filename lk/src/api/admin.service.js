@@ -130,3 +130,41 @@ export async function getAdminUsers({ page = 1, pageSize = 20, query = '' } = {}
 export async function getAdminUser(id) {
   return adminApi.get(`${usersBasePath()}/${id}`);
 }
+
+// ─── Промокоды ───────────────────────────────────────────────────────────────
+// POST /admin/promo-codes — выпустить одноразовый код.
+// GET  /admin/promo-codes — список с фильтром activated и счётчиком.
+//
+// expires_at — календарная дата, до конца которой действует ВЫДАННАЯ
+// подписка (по Москве). valid_days — сколько суток с момента выпуска
+// код ещё можно активировать. Это разные сроки.
+//
+// Выпуск требует get_current_super_admin. Обычный админский токен
+// получит 401 — не разлогиниваем из-за этого, на экране будет подсказка.
+const PROMO_AUTH = { soft401: true };
+
+export async function listPromoCodes({ activated = null, skip = 0, limit = 20 } = {}) {
+  const params = new URLSearchParams({
+    skip: String(skip),
+    limit: String(limit),
+  });
+
+  if (activated === true) params.set('activated', 'true');
+  if (activated === false) params.set('activated', 'false');
+
+  const data = await adminApi.get(`/admin/promo-codes?${params}`, PROMO_AUTH);
+
+  return {
+    items: Array.isArray(data?.items) ? data.items : [],
+    total: data?.total ?? 0,
+    activatedCount: data?.activated_count ?? 0,
+  };
+}
+
+export async function createPromoCode({ planId, expiresAt, validDays }) {
+  return adminApi.post('/admin/promo-codes', {
+    plan_id: Number(planId),
+    expires_at: expiresAt,
+    valid_days: Number(validDays),
+  }, PROMO_AUTH);
+}
