@@ -74,13 +74,15 @@ export default function AdminGrant() {
     setError('');
 
     try {
-      const expiresAt = `${expiresOn}T23:59:59+03:00`;
-      await grantSubscription({ userId: id, planId, expiresAt });
+      // Сервер ждёт календарную дату (2027-11-24), не момент времени.
+      // Дата со временем отвечает 422: «должна быть точной датой».
+      await grantSubscription({ userId: id, planId, expiresAt: expiresOn });
 
+      const [year, month, day] = expiresOn.split('-');
       setGranted({
         userId: id,
         planName: plan?.name ?? `тариф #${planId}`,
-        until: new Date(expiresAt).toLocaleDateString('ru-RU'),
+        until: `${day}.${month}.${year}`,
       });
       setStatus('success');
       setUserId('');
